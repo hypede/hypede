@@ -1,0 +1,23 @@
+[Desktop Entry]
+Type=Application
+Name=Files
+Name[ru]=Файлы
+GenericName=File Manager
+GenericName[ru]=Файловый менеджер
+Comment=Browse and organize files
+Comment[ru]=Просмотр и упорядочивание файлов
+Exec=hypede-files %U
+Icon=dev.hypede.Files
+Terminal=false
+Categories=GTK;GNOME;Utility;Core;FileManager;
+Keywords=files;folder;manager;explore;disk;filesystem;
+Keywords[ru]=файлы;папки;проводник;менеджер;диск;
+MimeType=inode/directory;
+StartupNotify=true
+DBusActivatable=false
+Actions=new-window;
+
+[Desktop Action new-window]
+Name=New Window
+Name[ru]=Новое окно
+Exec=hypede-files --new-window

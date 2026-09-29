@@ -1,0 +1,70 @@
+# Пакет HypeDE для Arch Linux и CachyOS.
+#
+# Сборка и установка из каталога с исходниками:
+#   git clone https://github.com/hypede/hypede && cd hypede/packaging && makepkg -si
+#
+# После установки выйдите из системы: в списке сеансов экрана входа
+# (GDM, SDDM, greetd…) появится «HypeDE».
+
+pkgname=hypede-git
+pkgver=1.0.0
+pkgrel=1
+pkgdesc="HypeDE — GNOME в облике Chrome OS: полка, лаунчер, «Файлы» и «Настройки» на модулях KDE"
+arch=('x86_64' 'aarch64')
+url="https://github.com/hypede/hypede"
+license=('GPL-3.0-or-later')
+
+depends=(
+  # оболочка и сеанс
+  'gnome-shell>=48' 'gnome-session' 'gnome-settings-daemon' 'mutter'
+  'xdg-desktop-portal-gnome' 'ttf-roboto'
+  # «Файлы»
+  'python' 'python-gobject' 'gtk4' 'libadwaita>=1.7' 'gvfs' 'gnome-desktop-4'
+  # «Настройки»
+  'qt6-base' 'qt6-declarative' 'kcmutils' 'kcolorscheme' 'kconfig' 'kcoreaddons'
+  'kirigami' 'qqc2-desktop-style' 'breeze' 'breeze-icons'
+)
+makedepends=('cmake' 'extra-cmake-modules' 'qt6-tools' 'gettext')
+optdepends=(
+  'plasma-nm: страница «Сеть → Подключения» (Wi‑Fi, VPN, Ethernet)'
+  'bluedevil: раздел «Bluetooth»'
+  'plasma-pa: «Устройство → Звук»'
+  'print-manager: «Устройство → Принтеры»'
+  'plasma-workspace: «Приложения по умолчанию» и «Автозапуск»'
+  'plasma-desktop: «Пользователи»'
+  'kde-cli-tools: «Типы файлов» (и kcmshell6 для модулей в отдельном окне)'
+  'flatpak-kcm: «Разрешения приложений»'
+  'plasma-firewall: «Брандмауэр»'
+  'kinfocenter: «О HypeDE → Сведения о системе»'
+  'power-profiles-daemon: переключатель режима питания'
+  'gnome-control-center: настройка мониторов (расположение и масштаб)'
+  'ptyxis: терминал для «Открыть в терминале»'
+  'qadwaitadecorations-qt6: заголовок окна «Настроек» как у GTK-приложений'
+)
+# LTO и отладочные символы только раздувают память при сборке, а выигрыша
+# для окна настроек не дают. Число заданий Makefile считает сам по свободной
+# памяти; вручную: JOBS=2 makepkg -si
+options=('!lto' '!debug')
+provides=('hypede')
+conflicts=('hypede')
+
+build() {
+  cd "$startdir/.."
+  make BUILD="$srcdir/build" PREFIX=/usr ${JOBS:+JOBS=$JOBS}
+}
+
+check() {
+  cd "$startdir/.."
+  python -m unittest discover -s apps/files/tests -t apps/files
+  msgfmt --check -o /dev/null po/ru.po
+}
+
+package() {
+  cd "$startdir/.."
+  make BUILD="$srcdir/build" PREFIX=/usr DESTDIR="$pkgdir" install
+  install -Dm644 README.md "$pkgdir/usr/share/doc/$pkgname/README.md"
+  for doc in docs/ru/*.md; do
+    install -Dm644 "$doc" "$pkgdir/usr/share/doc/$pkgname/ru/$(basename "$doc")"
+  done
+  install -Dm644 LICENSE "$pkgdir/usr/share/licenses/$pkgname/LICENSE"
+}

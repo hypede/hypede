@@ -1,0 +1,101 @@
+// Системные сведения и переключатели, которым не нужен целый модуль KDE:
+// профили питания, Wi-Fi, синхронизация времени, версии компонентов,
+// список обоев. Всё — через стандартные службы D-Bus freedesktop, поэтому
+// работает в любом сеансе.
+
+#pragma once
+
+#include <QObject>
+#include <QQmlEngine>
+#include <QStringList>
+#include <QVariantMap>
+
+class System : public QObject
+{
+    Q_OBJECT
+    QML_ELEMENT
+    QML_SINGLETON
+
+    Q_PROPERTY(QString appVersion READ appVersion CONSTANT)
+    Q_PROPERTY(QString osName READ osName CONSTANT)
+    Q_PROPERTY(QString osLogo READ osLogo CONSTANT)
+    Q_PROPERTY(QString kernel READ kernel CONSTANT)
+    Q_PROPERTY(QString hostname READ hostname CONSTANT)
+    Q_PROPERTY(QString qtVersion READ qtVersion CONSTANT)
+    Q_PROPERTY(QString kfVersion READ kfVersion CONSTANT)
+    Q_PROPERTY(QString shellVersion READ shellVersion NOTIFY shellVersionChanged)
+
+    Q_PROPERTY(bool powerProfilesAvailable READ powerProfilesAvailable NOTIFY powerChanged)
+    Q_PROPERTY(QStringList powerProfiles READ powerProfiles NOTIFY powerChanged)
+    Q_PROPERTY(QString powerProfile READ powerProfile WRITE setPowerProfile NOTIFY powerChanged)
+
+    Q_PROPERTY(bool wifiAvailable READ wifiAvailable NOTIFY wifiChanged)
+    Q_PROPERTY(bool wifiEnabled READ wifiEnabled WRITE setWifiEnabled NOTIFY wifiChanged)
+
+    Q_PROPERTY(QString timezone READ timezone NOTIFY timeChanged)
+    Q_PROPERTY(bool ntpAvailable READ ntpAvailable NOTIFY timeChanged)
+    Q_PROPERTY(bool ntp READ ntp WRITE setNtp NOTIFY timeChanged)
+
+public:
+    static System *create(QQmlEngine *, QJSEngine *);
+    static System *instance();
+
+    QString appVersion() const;
+    QString osName() const;
+    QString osLogo() const;
+    QString kernel() const;
+    QString hostname() const;
+    QString qtVersion() const;
+    QString kfVersion() const;
+    QString shellVersion() const { return m_shellVersion; }
+
+    bool powerProfilesAvailable() const { return !m_powerService.isEmpty(); }
+    QStringList powerProfiles() const { return m_powerProfiles; }
+    QString powerProfile() const { return m_powerProfile; }
+    void setPowerProfile(const QString &profile);
+
+    bool wifiAvailable() const { return m_wifiAvailable; }
+    bool wifiEnabled() const { return m_wifiEnabled; }
+    void setWifiEnabled(bool enabled);
+
+    QString timezone() const { return m_timezone; }
+    bool ntpAvailable() const { return m_ntpAvailable; }
+    bool ntp() const { return m_ntp; }
+    void setNtp(bool enabled);
+
+    Q_INVOKABLE bool hasProgram(const QString &name) const;
+    Q_INVOKABLE bool run(const QStringList &argv) const;
+    Q_INVOKABLE bool openUrl(const QString &url) const;
+    Q_INVOKABLE QStringList wallpapers() const;
+    Q_INVOKABLE bool clearRecentFiles() const;
+    Q_INVOKABLE QStringList locales() const;
+    Q_INVOKABLE QString localeName(const QString &code) const;
+    Q_INVOKABLE QString formatSample(const QString &code) const;
+
+Q_SIGNALS:
+    void shellVersionChanged();
+    void powerChanged();
+    void wifiChanged();
+    void timeChanged();
+
+private Q_SLOTS:
+    void onPropertiesChanged(const QString &interface, const QVariantMap &changed, const QStringList &invalidated);
+
+private:
+    explicit System(QObject *parent = nullptr);
+    void readPower();
+    void readWifi();
+    void readTime();
+    void readShellVersion();
+
+    QString m_shellVersion;
+    QString m_powerService;
+    QString m_powerPath;
+    QStringList m_powerProfiles;
+    QString m_powerProfile;
+    bool m_wifiAvailable = false;
+    bool m_wifiEnabled = false;
+    QString m_timezone;
+    bool m_ntpAvailable = false;
+    bool m_ntp = false;
+};

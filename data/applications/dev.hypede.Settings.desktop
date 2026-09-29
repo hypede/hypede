@@ -1,0 +1,32 @@
+[Desktop Entry]
+Type=Application
+Name=Settings
+Name[ru]=Настройки
+GenericName=HypeDE Settings
+GenericName[ru]=Настройки HypeDE
+Comment=Network, Bluetooth, devices, personalization and more
+Comment[ru]=Сеть, Bluetooth, устройства, персонализация и многое другое
+Exec=hypede-settings
+Icon=dev.hypede.Settings
+Terminal=false
+Categories=Settings;DesktopSettings;Qt;KDE;
+Keywords=settings;preferences;configuration;control;network;wifi;bluetooth;sound;display;wallpaper;
+Keywords[ru]=настройки;параметры;сеть;wifi;bluetooth;звук;экран;обои;тема;
+StartupNotify=true
+StartupWMClass=dev.hypede.Settings
+OnlyShowIn=HypeDE;GNOME;
+Actions=network;bluetooth;personalization;
+
+[Desktop Action network]
+Name=Network
+Name[ru]=Сеть
+Exec=hypede-settings --page network
+
+[Desktop Action bluetooth]
+Name=Bluetooth
+Exec=hypede-settings --page bluetooth
+
+[Desktop Action personalization]
+Name=Personalization
+Name[ru]=Персонализация
+Exec=hypede-settings --page personalization

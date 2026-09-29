@@ -1,0 +1,447 @@
+/* Сгенерировано tools/gen-shell-css.py из shell/theme/stylesheet.css.in — не править вручную. */
+/*
+ * HypeDE — оформление оболочки в духе Chrome OS.
+ *
+ * Файл-шаблон: tools/gen-shell-css.py подставляет сюда цвета светлой и
+ * тёмной схемы и пишет stylesheet-light.css и stylesheet-dark.css в папку
+ * расширения. GNOME сам выбирает нужный файл по системной схеме.
+ * Правьте этот шаблон, а не сгенерированные файлы.
+ */
+
+/* ------------------------------------------------------------------ */
+/* Полка                                                               */
+/* ------------------------------------------------------------------ */
+
+#panel.hypede-shelf {
+  height: 52px;
+  font-weight: normal;
+  font-size: 10.5pt;
+  color: #e3e3e3;
+  background-color: rgba(18, 19, 21, 0.78);
+  box-shadow: none;
+  transition-duration: 250ms;
+}
+
+/* В обзоре и на экране блокировки полка остаётся полупрозрачной подложкой */
+#panel.hypede-shelf:overview {
+  background-color: rgba(18, 19, 21, 0.45);
+}
+
+#panel.hypede-shelf #panelLeft,
+#panel.hypede-shelf #panelRight {
+  spacing: 4px;
+  padding: 0 6px;
+}
+
+#panel.hypede-shelf .panel-button {
+  color: #e3e3e3;
+  font-weight: normal;
+  border: none;
+  border-radius: 999px;
+  margin: 8px 0;
+  box-shadow: none;
+  background-color: transparent;
+  -natural-hpadding: 12px;
+  -minimum-hpadding: 8px;
+}
+#panel.hypede-shelf .panel-button:hover,
+#panel.hypede-shelf .panel-button:focus {
+  box-shadow: none;
+  background-color: rgba(255, 255, 255, 0.10);
+}
+#panel.hypede-shelf .panel-button:active,
+#panel.hypede-shelf .panel-button:checked {
+  box-shadow: none;
+  background-color: rgba(255, 255, 255, 0.16);
+}
+
+/* Кнопка лаунчера: кольцо, как в Chrome OS */
+#panel.hypede-shelf .panel-button.hypede-launcher-button {
+  margin: 8px 4px 8px 2px;
+  -natural-hpadding: 10px;
+  -minimum-hpadding: 10px;
+}
+.hypede-launcher-ring {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 2px solid #e3e3e3;
+}
+
+/* Значки приложений */
+.hypede-shelf-apps {
+  spacing: 2px;
+  padding: 0 4px;
+}
+.hypede-shelf-item {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  transition-duration: 150ms;
+}
+.hypede-shelf-item:hover,
+.hypede-shelf-item:focus {
+  background-color: rgba(255, 255, 255, 0.10);
+}
+.hypede-shelf-item:checked {
+  background-color: rgba(255, 255, 255, 0.16);
+}
+.hypede-shelf-dot {
+  width: 4px;
+  height: 4px;
+  margin-bottom: 1px;
+  border-radius: 999px;
+  background-color: rgba(227, 227, 227, 0.55);
+  transition-duration: 200ms;
+}
+.hypede-shelf-item:active .hypede-shelf-dot {
+  width: 12px;
+  background-color: #e3e3e3;
+}
+
+.hypede-shelf-tooltip {
+  color: #e3e3e3;
+  background-color: rgba(48, 49, 52, 0.96);
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 10pt;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Трей: дата и «пилюля» статуса со временем */
+#panel.hypede-shelf .panel-button.hypede-tray-date-button,
+#panel.hypede-shelf .panel-button.hypede-tray-status {
+  background-color: rgba(255, 255, 255, 0.08);
+  -natural-hpadding: 14px;
+  -minimum-hpadding: 10px;
+}
+#panel.hypede-shelf .panel-button.hypede-tray-date-button:hover,
+#panel.hypede-shelf .panel-button.hypede-tray-status:hover {
+  background-color: rgba(255, 255, 255, 0.14);
+}
+#panel.hypede-shelf .panel-button.hypede-tray-date-button:checked,
+#panel.hypede-shelf .panel-button.hypede-tray-status:checked {
+  background-color: rgba(255, 255, 255, 0.20);
+}
+/* Родная подсветка кнопки даты рисуется на внутренней метке — убираем */
+#panel.hypede-shelf .panel-button.clock-display .clock,
+#panel.hypede-shelf .panel-button.clock-display:hover .clock,
+#panel.hypede-shelf .panel-button.clock-display:checked .clock {
+  box-shadow: none;
+}
+.hypede-tray-date,
+.hypede-tray-clock {
+  font-weight: 500;
+  color: #e3e3e3;
+}
+.hypede-tray-clock {
+  padding-left: 6px;
+}
+#panel.hypede-shelf .panel-button .system-status-icon {
+  icon-size: 16px;
+  padding: 0;
+  margin: 0 2px;
+}
+#panel.hypede-shelf .panel-status-indicators-box {
+  spacing: 6px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Всплывающие «пузыри»: меню, быстрые настройки, календарь            */
+/* ------------------------------------------------------------------ */
+
+.popup-menu-boxpointer {
+  -arrow-rise: 8px;
+  -arrow-base: 0;
+  -arrow-border-radius: 0;
+}
+.popup-menu.panel-menu {
+  margin-bottom: 0;
+  margin-top: 24px;
+}
+.popup-menu {
+  color: #e3e3e3;
+}
+.popup-menu-content {
+  background-color: rgba(32, 33, 36, 0.97);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 20px;
+  padding: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+}
+.popup-menu-item {
+  border-radius: 10px;
+  padding: 9px 12px;
+}
+.popup-menu-item:hover,
+.popup-menu-item:focus,
+.popup-menu-item:selected {
+  background-color: rgba(255, 255, 255, 0.10);
+}
+.popup-separator-menu-item .popup-separator-menu-item-separator {
+  background-color: rgba(255, 255, 255, 0.10);
+}
+
+/* Быстрые настройки */
+.quick-settings {
+  padding: 16px;
+  border-radius: 24px;
+}
+.quick-settings-grid {
+  spacing-rows: 8px;
+  spacing-columns: 8px;
+}
+.quick-toggle,
+.quick-toggle-has-menu {
+  border-radius: 20px;
+  min-height: 3.6em;
+}
+.quick-toggle {
+  color: #e3e3e3;
+  background-color: rgba(255, 255, 255, 0.08);
+  box-shadow: none;
+}
+.quick-toggle:hover {
+  background-color: rgba(255, 255, 255, 0.14);
+}
+.quick-toggle:checked {
+  color: st-mix(-st-accent-color, #000000, 30%);
+  background-color: st-mix(-st-accent-color, #ffffff, 45%);
+}
+.quick-toggle:checked:hover {
+  background-color: st-mix(-st-accent-color, #ffffff, 38%);
+}
+.quick-toggle-has-menu .quick-toggle:ltr { border-radius: 20px 0 0 20px; }
+.quick-toggle-has-menu .quick-toggle:rtl { border-radius: 0 20px 20px 0; }
+.quick-toggle-has-menu .quick-toggle:ltr:last-child,
+.quick-toggle-has-menu .quick-toggle:rtl:last-child { border-radius: 20px; }
+.quick-toggle-has-menu .quick-toggle-menu-button:ltr { border-radius: 0 20px 20px 0; }
+.quick-toggle-has-menu .quick-toggle-menu-button:rtl { border-radius: 20px 0 0 20px; }
+.quick-toggle-has-menu .quick-toggle-menu-button {
+  color: #e3e3e3;
+  background-color: rgba(255, 255, 255, 0.08);
+}
+.quick-toggle-has-menu .quick-toggle-menu-button:hover {
+  background-color: rgba(255, 255, 255, 0.14);
+}
+.quick-toggle-has-menu .quick-toggle-menu-button:checked {
+  color: st-mix(-st-accent-color, #000000, 30%);
+  background-color: st-mix(-st-accent-color, #ffffff, 45%);
+}
+.quick-toggle-menu {
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.06);
+}
+.quick-slider .slider {
+  color: st-mix(-st-accent-color, #ffffff, 45%);
+  -slider-height: 6px;
+  -slider-background-color: rgba(255, 255, 255, 0.14);
+  -slider-active-background-color: st-mix(-st-accent-color, #ffffff, 45%);
+  -slider-handle-radius: 9px;
+  -barlevel-height: 6px;
+  -barlevel-background-color: rgba(255, 255, 255, 0.14);
+  -barlevel-active-background-color: st-mix(-st-accent-color, #ffffff, 45%);
+}
+.quick-settings .icon-button,
+.quick-settings .button {
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #e3e3e3;
+}
+.quick-settings .icon-button:hover,
+.quick-settings .button:hover {
+  background-color: rgba(255, 255, 255, 0.14);
+}
+
+/* Календарь и центр уведомлений */
+.datemenu-popover,
+#calendarArea {
+  border-radius: 20px;
+}
+.calendar,
+.datemenu-today-button,
+.world-clocks-button,
+.weather-button,
+.events-button,
+.message {
+  border-radius: 16px;
+}
+.calendar-day:selected,
+.calendar-today:selected {
+  color: st-mix(-st-accent-color, #000000, 30%);
+  background-color: st-mix(-st-accent-color, #ffffff, 45%);
+}
+
+/* Баннеры уведомлений — в правом нижнем углу */
+#notification-container {
+  margin: 8px 8px 8px 8px;
+}
+#notification-container .message {
+  background-color: rgba(32, 33, 36, 0.97);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+}
+
+/* ------------------------------------------------------------------ */
+/* Лаунчер                                                             */
+/* ------------------------------------------------------------------ */
+
+.hypede-launcher-menu .popup-menu-content {
+  padding: 0;
+  border-radius: 24px;
+}
+.hypede-launcher {
+  width: 640px;
+  padding: 16px 12px 12px 12px;
+  spacing: 12px;
+}
+.hypede-launcher-search {
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: none;
+  font-size: 11pt;
+  color: #e3e3e3;
+  background-color: rgba(255, 255, 255, 0.07);
+  selection-background-color: st-mix(-st-accent-color, #ffffff, 45%);
+  selected-color: st-mix(-st-accent-color, #000000, 30%);
+  caret-color: #e3e3e3;
+  box-shadow: none;
+}
+.hypede-launcher-search:focus {
+  background-color: rgba(255, 255, 255, 0.10);
+  box-shadow: inset 0 0 0 2px st-mix(-st-accent-color, #ffffff, 55%);
+}
+.hypede-launcher-search StLabel.hint-text {
+  color: #c4c7c5;
+}
+.hypede-launcher-search-icon {
+  icon-size: 18px;
+  color: #c4c7c5;
+  padding-right: 10px;
+}
+
+.hypede-launcher-scroll {
+  padding: 0 4px;
+}
+.hypede-launcher-section {
+  spacing: 2px;
+  padding-bottom: 8px;
+}
+.hypede-launcher-section-title {
+  font-size: 9.5pt;
+  font-weight: 500;
+  color: #c4c7c5;
+  padding: 6px 12px 6px 12px;
+}
+
+/* «Продолжить с того же места» */
+.hypede-launcher-continue {
+  padding: 0 4px 4px 4px;
+}
+.hypede-launcher-chip {
+  border-radius: 14px;
+  padding: 10px 12px;
+  background-color: rgba(255, 255, 255, 0.06);
+}
+.hypede-launcher-chip:hover,
+.hypede-launcher-chip:focus {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+.hypede-launcher-chip-box {
+  spacing: 12px;
+}
+.hypede-launcher-chip-icon {
+  color: st-mix(-st-accent-color, #ffffff, 55%);
+}
+.hypede-launcher-chip-title {
+  font-size: 10pt;
+  font-weight: 500;
+}
+.hypede-launcher-chip-subtitle {
+  font-size: 9pt;
+  color: #c4c7c5;
+}
+.hypede-launcher-separator {
+  height: 1px;
+  margin: 8px 12px 12px 12px;
+  background-color: rgba(255, 255, 255, 0.10);
+}
+
+/* Сетка приложений */
+.hypede-launcher-grid {
+  padding: 0 0 8px 0;
+}
+.hypede-launcher-app {
+  width: 112px;
+  padding: 10px 4px 8px 4px;
+  border-radius: 16px;
+  transition-duration: 120ms;
+}
+.hypede-launcher-app:hover {
+  background-color: rgba(255, 255, 255, 0.10);
+}
+.hypede-launcher-app:focus {
+  background-color: rgba(255, 255, 255, 0.10);
+  box-shadow: inset 0 0 0 2px st-mix(-st-accent-color, #ffffff, 55%);
+}
+.hypede-launcher-app-icon {
+  padding-bottom: 8px;
+}
+.hypede-launcher-app-label {
+  font-size: 9.5pt;
+  max-width: 100px;
+  text-align: center;
+  color: #e3e3e3;
+}
+
+/* Результаты поиска */
+.hypede-launcher-result {
+  border-radius: 12px;
+  padding: 8px 12px;
+}
+.hypede-launcher-result:hover {
+  background-color: rgba(255, 255, 255, 0.10);
+}
+.hypede-launcher-result:selected,
+.hypede-launcher-result:focus {
+  background-color: rgba(255, 255, 255, 0.10);
+}
+.hypede-launcher-result-box {
+  spacing: 14px;
+}
+.hypede-launcher-result-icon StIcon {
+  color: #c4c7c5;
+}
+.hypede-launcher-result-title {
+  font-size: 10.5pt;
+  color: #e3e3e3;
+}
+.hypede-launcher-result-subtitle {
+  font-size: 9pt;
+  color: #c4c7c5;
+}
+
+/* ------------------------------------------------------------------ */
+/* Обзор                                                               */
+/* ------------------------------------------------------------------ */
+
+.workspace-thumbnails .workspace-thumbnail {
+  border-radius: 12px;
+}
+.workspace-thumbnail-indicator {
+  border: 3px solid st-mix(-st-accent-color, #ffffff, 55%);
+  border-radius: 14px;
+}
+.window-caption {
+  color: #e3e3e3;
+  background-color: rgba(48, 49, 52, 0.96);
+  border-radius: 8px;
+}
+
+/* OSD громкости и яркости */
+.osd-window {
+  border-radius: 999px;
+  background-color: rgba(32, 33, 36, 0.97);
+  color: #e3e3e3;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+}

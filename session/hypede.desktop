@@ -1,0 +1,10 @@
+[Desktop Entry]
+Name=HypeDE
+Comment=GNOME in the style of Chrome OS: shelf, launcher and quick settings
+Comment[ru]=GNOME в облике Chrome OS: полка, лаунчер и быстрые настройки
+Exec=/usr/bin/gnome-session --session=hypede
+TryExec=/usr/bin/gnome-session
+Type=Application
+DesktopNames=HypeDE;GNOME;
+X-GDM-SessionRegisters=true
+X-GDM-CanRunHeadless=true

@@ -1,0 +1,119 @@
+/* «Файлы» HypeDE: основа — libadwaita, поверх — скругления и выделение
+   в духе COSMIC Files и Chrome OS. Цвета берутся из переменных libadwaita,
+   поэтому тёмная тема и системный акцент подхватываются сами. */
+
+/* ---------- сетка ---------- */
+.hypede-files gridview.hypede-grid {
+  padding: 12px;
+  background: none;
+}
+.hypede-files gridview.hypede-grid > child {
+  border-radius: 14px;
+  padding: 10px 6px 8px 6px;
+  margin: 2px;
+  transition: background-color 120ms ease-out;
+}
+.hypede-files gridview.hypede-grid > child:hover {
+  background-color: alpha(currentColor, 0.06);
+}
+.hypede-files gridview.hypede-grid > child:selected {
+  background-color: color-mix(in srgb, var(--accent-bg-color) 22%, transparent);
+  color: inherit;
+}
+.hypede-files gridview.hypede-grid > child:selected:focus-within {
+  outline: 2px solid color-mix(in srgb, var(--accent-color) 60%, transparent);
+  outline-offset: -2px;
+}
+.hypede-files gridview.hypede-grid > child:selected .hypede-item-name {
+  color: var(--accent-color);
+  font-weight: 600;
+}
+.hypede-files gridview.hypede-grid .hypede-item-name {
+  font-size: 0.95em;
+}
+.hypede-files gridview.hypede-grid.zoom-small .hypede-item-name {
+  font-size: 0.9em;
+}
+.hypede-files .hypede-item-icon.thumbnail {
+  -gtk-icon-shadow: 0 1px 3px alpha(black, 0.25);
+}
+
+/* Рамка выделения */
+.hypede-files gridview > rubberband,
+.hypede-files columnview > rubberband {
+  border: 1px solid var(--accent-color);
+  border-radius: 6px;
+  background-color: color-mix(in srgb, var(--accent-bg-color) 18%, transparent);
+}
+
+/* ---------- список ---------- */
+.hypede-files columnview.hypede-list {
+  background: none;
+}
+.hypede-files columnview.hypede-list > listview > row {
+  border-radius: 10px;
+  margin: 1px 8px;
+}
+.hypede-files columnview.hypede-list > listview > row:selected {
+  background-color: color-mix(in srgb, var(--accent-bg-color) 22%, transparent);
+  color: inherit;
+}
+.hypede-files columnview.hypede-list > header > button {
+  font-weight: 600;
+  padding: 6px 10px;
+}
+
+/* ---------- боковая панель ---------- */
+.hypede-files .navigation-sidebar > row {
+  border-radius: 10px;
+  min-height: 36px;
+}
+.hypede-files .navigation-sidebar > row:selected {
+  background-color: color-mix(in srgb, var(--accent-bg-color) 20%, transparent);
+  color: var(--accent-color);
+}
+.hypede-files .navigation-sidebar > row:selected image {
+  color: var(--accent-color);
+}
+
+/* ---------- строка пути ---------- */
+.hypede-files .hypede-crumbs-frame {
+  background-color: alpha(currentColor, 0.06);
+  border-radius: 12px;
+  min-height: 34px;
+  padding: 0 4px;
+}
+.hypede-files .hypede-crumb {
+  padding: 2px 8px;
+  min-height: 26px;
+  border-radius: 8px;
+  font-weight: normal;
+}
+.hypede-files .hypede-crumb.current {
+  font-weight: 700;
+}
+.hypede-files .hypede-crumb-sep {
+  margin: 0 1px;
+}
+.hypede-files .hypede-location-entry {
+  border-radius: 12px;
+  min-height: 34px;
+}
+
+/* ---------- плашка выделения ---------- */
+.hypede-files .hypede-floating-bar {
+  padding: 6px 14px;
+  border-radius: 999px;
+  background-color: var(--popover-bg-color);
+  color: var(--popover-fg-color);
+  box-shadow: 0 1px 4px alpha(black, 0.18), 0 0 0 1px alpha(black, 0.05);
+  font-size: 0.92em;
+}
+
+/* ---------- панель сведений ---------- */
+.hypede-files .hypede-details {
+  background-color: var(--sidebar-bg-color);
+}
+.hypede-files .hypede-details-preview.thumbnail {
+  -gtk-icon-shadow: 0 2px 8px alpha(black, 0.25);
+}

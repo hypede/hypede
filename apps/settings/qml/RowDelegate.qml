@@ -1,0 +1,269 @@
+import QtQuick
+import HypeSettings
+
+// Одна строка карточки. Вид выбирается по row.type (см. Catalog.qml).
+Loader {
+    id: loader
+    property var row
+    property bool first: false
+    signal openKcm(string kcm)
+
+    width: parent ? parent.width : 0
+    visible: status === Loader.Ready && item && item.available !== false && conditionMet
+
+    readonly property var settings: row.schema ? GSettingsHub.schema(row.schema) : null
+    readonly property var watched: row.visibleWhen ? GSettingsHub.schema(row.visibleWhen.schema) : null
+    readonly property bool conditionMet: !row.visibleWhen
+        || (watched.revision >= 0 && watched.value(row.visibleWhen.key) === row.visibleWhen.value)
+
+    sourceComponent: {
+        switch (row.type) {
+        case "toggle": return toggleRow
+        case "slider": return sliderRow
+        case "combo": return comboRow
+        case "kcm": return kcmRow
+        case "run": return runRow
+        case "wifi": return wifiRow
+        case "power": return powerRow
+        case "ntp": return ntpRow
+        case "timezone": return timezoneRow
+        case "locale": return localeRow
+        case "clearHistory": return clearHistoryRow
+        case "searchEngine": return searchEngineRow
+        case "wallpaper": return wallpaperBlock
+        case "theme": return themeBlock
+        case "accent": return accentBlock
+        case "inputSources": return inputSourcesBlock
+        case "about": return aboutBlock
+        }
+        return null
+    }
+
+    function current() {
+        return settings && settings.revision >= 0 ? settings.value(row.key) : undefined
+    }
+
+    Component {
+        id: toggleRow
+        SettingRow {
+            readonly property bool available: loader.settings !== null && loader.settings.valid
+                                              && loader.settings.hasKey(loader.row.key)
+            title: loader.row.title
+            subtitle: loader.row.subtitle || ""
+            iconName: loader.row.icon || ""
+            showDivider: !loader.first
+            clickable: true
+            chevron: false
+            onClicked: sw.toggled(!sw.checked)
+            ChromeSwitch {
+                id: sw
+                checked: loader.row.invert ? !loader.current() : !!loader.current()
+                onToggled: value => loader.settings.setValue(loader.row.key, loader.row.invert ? !value : value)
+            }
+        }
+    }
+
+    Component {
+        id: sliderRow
+        SettingRow {
+            readonly property bool available: loader.settings !== null && loader.settings.valid
+                                              && loader.settings.hasKey(loader.row.key)
+            title: loader.row.title
+            iconName: loader.row.icon || ""
+            showDivider: !loader.first
+            subtitle: {
+                const v = Number(loader.current())
+                switch (loader.row.unit) {
+                case "ms": return qsTr("%1 ms").arg(Math.round(v))
+                case "K": return qsTr("%1 K").arg(Math.round(v))
+                case "x": return qsTr("%1%").arg(Math.round(v * 100))
+                default: return ""
+                }
+            }
+            ChromeSlider {
+                width: 220
+                from: loader.row.from
+                to: loader.row.to
+                stepSize: loader.row.step || 0
+                // Для цветовой температуры «теплее» — вправо.
+                value: loader.row.invertSlider ? loader.row.to + loader.row.from - Number(loader.current())
+                                               : Number(loader.current())
+                onMoved: v => {
+                    const real = loader.row.invertSlider ? loader.row.to + loader.row.from - v : v
+                    const integer = ["delay", "repeat-interval", "night-light-temperature"].includes(loader.row.key)
+                    loader.settings.setValue(loader.row.key, integer ? Math.round(real) : real)
+                }
+            }
+        }
+    }
+
+    Component {
+        id: comboRow
+        SettingRow {
+            readonly property bool available: loader.settings !== null && loader.settings.valid
+                                              && loader.settings.hasKey(loader.row.key)
+            title: loader.row.title
+            subtitle: loader.row.subtitle || ""
+            iconName: loader.row.icon || ""
+            showDivider: !loader.first
+            ChromeCombo {
+                options: loader.row.options
+                currentValue: loader.current()
+                onActivated: value => loader.settings.setValue(loader.row.key, value)
+            }
+        }
+    }
+
+    Component {
+        id: kcmRow
+        SettingRow {
+            readonly property bool installed: KcmHost.isAvailable(loader.row.kcm)
+            title: loader.row.title
+            subtitle: installed ? (loader.row.subtitle || "")
+                                : qsTr("Not installed — install the “%1” package").arg(loader.row.package || loader.row.kcm)
+            iconName: loader.row.icon || ""
+            showDivider: !loader.first
+            clickable: installed
+            opacity: installed ? 1 : 0.6
+            onClicked: loader.openKcm(loader.row.kcm)
+        }
+    }
+
+    Component {
+        id: runRow
+        SettingRow {
+            readonly property bool available: System.hasProgram(loader.row.program)
+            title: loader.row.title
+            subtitle: loader.row.subtitle || ""
+            iconName: loader.row.icon || ""
+            showDivider: !loader.first
+            clickable: true
+            external: true
+            onClicked: System.run(loader.row.argv)
+        }
+    }
+
+    Component {
+        id: wifiRow
+        SettingRow {
+            readonly property bool available: System.wifiAvailable
+            title: loader.row.title
+            subtitle: System.wifiEnabled ? qsTr("On") : qsTr("Off")
+            iconName: System.wifiEnabled ? "network-wireless-symbolic" : "network-wireless-disabled-symbolic"
+            showDivider: !loader.first
+            ChromeSwitch {
+                checked: System.wifiEnabled
+                onToggled: value => System.wifiEnabled = value
+            }
+        }
+    }
+
+    Component {
+        id: powerRow
+        SettingRow {
+            readonly property bool available: System.powerProfilesAvailable
+            title: loader.row.title
+            subtitle: qsTr("Power profiles daemon")
+            iconName: "power-profile-" + (System.powerProfile === "power-saver" ? "power-saver"
+                      : System.powerProfile === "performance" ? "performance" : "balanced") + "-symbolic"
+            showDivider: !loader.first
+            ChromeCombo {
+                readonly property var labels: ({ "performance": qsTr("Performance"),
+                                                 "balanced": qsTr("Balanced"),
+                                                 "power-saver": qsTr("Power saver") })
+                options: System.powerProfiles.map(p => ({ value: p, label: labels[p] || p }))
+                currentValue: System.powerProfile
+                onActivated: value => System.powerProfile = value
+            }
+        }
+    }
+
+    Component {
+        id: ntpRow
+        SettingRow {
+            readonly property bool available: System.ntpAvailable
+            title: loader.row.title
+            subtitle: qsTr("Uses network time servers")
+            showDivider: !loader.first
+            ChromeSwitch {
+                checked: System.ntp
+                onToggled: value => System.ntp = value
+            }
+        }
+    }
+
+    Component {
+        id: timezoneRow
+        SettingRow {
+            title: loader.row.title
+            iconName: loader.row.icon || ""
+            subtitle: System.timezone.replace(/_/g, " ")
+            showDivider: !loader.first
+        }
+    }
+
+    Component {
+        id: localeRow
+        SettingRow {
+            id: localeItem
+            readonly property var locale: GSettingsHub.schema("org.gnome.system.locale")
+            readonly property bool available: locale.valid
+            title: loader.row.title
+            iconName: loader.row.icon || ""
+            subtitle: locale.revision >= 0 && locale.value("region")
+                      ? System.formatSample(locale.value("region")) : qsTr("Same as the language")
+            showDivider: !loader.first
+            ChromeCombo {
+                options: [{ value: "", label: qsTr("Same as the language") }].concat(
+                    System.locales().map(code => ({ value: code, label: System.localeName(code) })))
+                currentValue: localeItem.locale.revision >= 0 ? localeItem.locale.value("region") : ""
+                onActivated: value => GSettingsHub.schema("org.gnome.system.locale").setValue("region", value)
+            }
+        }
+    }
+
+    Component {
+        id: clearHistoryRow
+        SettingRow {
+            id: clearRow
+            property bool done: false
+            title: loader.row.title
+            subtitle: done ? qsTr("History cleared") : qsTr("Removes the list shown in the launcher and apps")
+            showDivider: !loader.first
+            ChromeButton {
+                text: qsTr("Clear")
+                danger: true
+                onClicked: clearRow.done = System.clearRecentFiles()
+            }
+        }
+    }
+
+    Component {
+        id: searchEngineRow
+        SettingRow {
+            id: engineItem
+            readonly property var shell: GSettingsHub.schema("dev.hypede.shell")
+            readonly property bool available: shell.valid
+            title: loader.row.title
+            iconName: loader.row.icon || ""
+            showDivider: !loader.first
+            ChromeCombo {
+                options: [
+                    { value: "https://www.google.com/search?q=%s", label: "Google" },
+                    { value: "https://duckduckgo.com/?q=%s", label: "DuckDuckGo" },
+                    { value: "https://yandex.ru/search/?text=%s", label: "Яндекс" },
+                    { value: "https://www.bing.com/search?q=%s", label: "Bing" },
+                    { value: "https://www.startpage.com/do/search?q=%s", label: "Startpage" },
+                ]
+                currentValue: engineItem.shell.revision >= 0 ? engineItem.shell.value("web-search-url") : ""
+                onActivated: value => GSettingsHub.schema("dev.hypede.shell").setValue("web-search-url", value)
+            }
+        }
+    }
+
+    Component { id: wallpaperBlock; WallpaperGrid {} }
+    Component { id: themeBlock; ThemePicker { showDivider: !loader.first } }
+    Component { id: accentBlock; AccentPicker { showDivider: !loader.first } }
+    Component { id: inputSourcesBlock; InputSources { showDivider: !loader.first } }
+    Component { id: aboutBlock; AboutHeader {} }
+}

@@ -1,0 +1,11 @@
+{
+    "parentMode": "user",
+    "stylesheetName": "gnome-shell.css",
+    "colorScheme": "prefer-light",
+    "enabledExtensions": ["hypede-shell@hypede.dev"],
+    "panel": {
+        "left": [],
+        "center": [],
+        "right": ["screenRecording", "screenSharing", "dwellClick", "a11y", "keyboard", "dateMenu", "quickSettings"]
+    }
+}

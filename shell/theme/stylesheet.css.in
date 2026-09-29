@@ -1,0 +1,446 @@
+/*
+ * HypeDE — оформление оболочки в духе Chrome OS.
+ *
+ * Файл-шаблон: tools/gen-shell-css.py подставляет сюда цвета светлой и
+ * тёмной схемы и пишет stylesheet-light.css и stylesheet-dark.css в папку
+ * расширения. GNOME сам выбирает нужный файл по системной схеме.
+ * Правьте этот шаблон, а не сгенерированные файлы.
+ */
+
+/* ------------------------------------------------------------------ */
+/* Полка                                                               */
+/* ------------------------------------------------------------------ */
+
+#panel.hypede-shelf {
+  height: 52px;
+  font-weight: normal;
+  font-size: 10.5pt;
+  color: @fg@;
+  background-color: @shelf_bg@;
+  box-shadow: none;
+  transition-duration: 250ms;
+}
+
+/* В обзоре и на экране блокировки полка остаётся полупрозрачной подложкой */
+#panel.hypede-shelf:overview {
+  background-color: @shelf_bg_overview@;
+}
+
+#panel.hypede-shelf #panelLeft,
+#panel.hypede-shelf #panelRight {
+  spacing: 4px;
+  padding: 0 6px;
+}
+
+#panel.hypede-shelf .panel-button {
+  color: @fg@;
+  font-weight: normal;
+  border: none;
+  border-radius: 999px;
+  margin: 8px 0;
+  box-shadow: none;
+  background-color: transparent;
+  -natural-hpadding: 12px;
+  -minimum-hpadding: 8px;
+}
+#panel.hypede-shelf .panel-button:hover,
+#panel.hypede-shelf .panel-button:focus {
+  box-shadow: none;
+  background-color: @hover@;
+}
+#panel.hypede-shelf .panel-button:active,
+#panel.hypede-shelf .panel-button:checked {
+  box-shadow: none;
+  background-color: @pressed@;
+}
+
+/* Кнопка лаунчера: кольцо, как в Chrome OS */
+#panel.hypede-shelf .panel-button.hypede-launcher-button {
+  margin: 8px 4px 8px 2px;
+  -natural-hpadding: 10px;
+  -minimum-hpadding: 10px;
+}
+.hypede-launcher-ring {
+  width: 14px;
+  height: 14px;
+  border-radius: 999px;
+  border: 2px solid @fg@;
+}
+
+/* Значки приложений */
+.hypede-shelf-apps {
+  spacing: 2px;
+  padding: 0 4px;
+}
+.hypede-shelf-item {
+  width: 44px;
+  height: 44px;
+  border-radius: 999px;
+  transition-duration: 150ms;
+}
+.hypede-shelf-item:hover,
+.hypede-shelf-item:focus {
+  background-color: @hover@;
+}
+.hypede-shelf-item:checked {
+  background-color: @pressed@;
+}
+.hypede-shelf-dot {
+  width: 4px;
+  height: 4px;
+  margin-bottom: 1px;
+  border-radius: 999px;
+  background-color: @dot@;
+  transition-duration: 200ms;
+}
+.hypede-shelf-item:active .hypede-shelf-dot {
+  width: 12px;
+  background-color: @fg@;
+}
+
+.hypede-shelf-tooltip {
+  color: @tooltip_fg@;
+  background-color: @tooltip_bg@;
+  border-radius: 8px;
+  padding: 6px 10px;
+  font-size: 10pt;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* Трей: дата и «пилюля» статуса со временем */
+#panel.hypede-shelf .panel-button.hypede-tray-date-button,
+#panel.hypede-shelf .panel-button.hypede-tray-status {
+  background-color: @tray_bg@;
+  -natural-hpadding: 14px;
+  -minimum-hpadding: 10px;
+}
+#panel.hypede-shelf .panel-button.hypede-tray-date-button:hover,
+#panel.hypede-shelf .panel-button.hypede-tray-status:hover {
+  background-color: @tray_hover@;
+}
+#panel.hypede-shelf .panel-button.hypede-tray-date-button:checked,
+#panel.hypede-shelf .panel-button.hypede-tray-status:checked {
+  background-color: @tray_checked@;
+}
+/* Родная подсветка кнопки даты рисуется на внутренней метке — убираем */
+#panel.hypede-shelf .panel-button.clock-display .clock,
+#panel.hypede-shelf .panel-button.clock-display:hover .clock,
+#panel.hypede-shelf .panel-button.clock-display:checked .clock {
+  box-shadow: none;
+}
+.hypede-tray-date,
+.hypede-tray-clock {
+  font-weight: 500;
+  color: @fg@;
+}
+.hypede-tray-clock {
+  padding-left: 6px;
+}
+#panel.hypede-shelf .panel-button .system-status-icon {
+  icon-size: 16px;
+  padding: 0;
+  margin: 0 2px;
+}
+#panel.hypede-shelf .panel-status-indicators-box {
+  spacing: 6px;
+}
+
+/* ------------------------------------------------------------------ */
+/* Всплывающие «пузыри»: меню, быстрые настройки, календарь            */
+/* ------------------------------------------------------------------ */
+
+.popup-menu-boxpointer {
+  -arrow-rise: 8px;
+  -arrow-base: 0;
+  -arrow-border-radius: 0;
+}
+.popup-menu.panel-menu {
+  margin-bottom: 0;
+  margin-top: 24px;
+}
+.popup-menu {
+  color: @fg@;
+}
+.popup-menu-content {
+  background-color: @bubble_bg@;
+  border: 1px solid @bubble_border@;
+  border-radius: 20px;
+  padding: 8px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+}
+.popup-menu-item {
+  border-radius: 10px;
+  padding: 9px 12px;
+}
+.popup-menu-item:hover,
+.popup-menu-item:focus,
+.popup-menu-item:selected {
+  background-color: @hover@;
+}
+.popup-separator-menu-item .popup-separator-menu-item-separator {
+  background-color: @separator@;
+}
+
+/* Быстрые настройки */
+.quick-settings {
+  padding: 16px;
+  border-radius: 24px;
+}
+.quick-settings-grid {
+  spacing-rows: 8px;
+  spacing-columns: 8px;
+}
+.quick-toggle,
+.quick-toggle-has-menu {
+  border-radius: 20px;
+  min-height: 3.6em;
+}
+.quick-toggle {
+  color: @fg@;
+  background-color: @tile_off@;
+  box-shadow: none;
+}
+.quick-toggle:hover {
+  background-color: @tile_off_hover@;
+}
+.quick-toggle:checked {
+  color: @tile_on_fg@;
+  background-color: @tile_on@;
+}
+.quick-toggle:checked:hover {
+  background-color: @tile_on_hover@;
+}
+.quick-toggle-has-menu .quick-toggle:ltr { border-radius: 20px 0 0 20px; }
+.quick-toggle-has-menu .quick-toggle:rtl { border-radius: 0 20px 20px 0; }
+.quick-toggle-has-menu .quick-toggle:ltr:last-child,
+.quick-toggle-has-menu .quick-toggle:rtl:last-child { border-radius: 20px; }
+.quick-toggle-has-menu .quick-toggle-menu-button:ltr { border-radius: 0 20px 20px 0; }
+.quick-toggle-has-menu .quick-toggle-menu-button:rtl { border-radius: 20px 0 0 20px; }
+.quick-toggle-has-menu .quick-toggle-menu-button {
+  color: @fg@;
+  background-color: @tile_off@;
+}
+.quick-toggle-has-menu .quick-toggle-menu-button:hover {
+  background-color: @tile_off_hover@;
+}
+.quick-toggle-has-menu .quick-toggle-menu-button:checked {
+  color: @tile_on_fg@;
+  background-color: @tile_on@;
+}
+.quick-toggle-menu {
+  border-radius: 20px;
+  background-color: @submenu_bg@;
+}
+.quick-slider .slider {
+  color: @slider@;
+  -slider-height: 6px;
+  -slider-background-color: @slider_track@;
+  -slider-active-background-color: @slider@;
+  -slider-handle-radius: 9px;
+  -barlevel-height: 6px;
+  -barlevel-background-color: @slider_track@;
+  -barlevel-active-background-color: @slider@;
+}
+.quick-settings .icon-button,
+.quick-settings .button {
+  background-color: @tile_off@;
+  color: @fg@;
+}
+.quick-settings .icon-button:hover,
+.quick-settings .button:hover {
+  background-color: @tile_off_hover@;
+}
+
+/* Календарь и центр уведомлений */
+.datemenu-popover,
+#calendarArea {
+  border-radius: 20px;
+}
+.calendar,
+.datemenu-today-button,
+.world-clocks-button,
+.weather-button,
+.events-button,
+.message {
+  border-radius: 16px;
+}
+.calendar-day:selected,
+.calendar-today:selected {
+  color: @tile_on_fg@;
+  background-color: @tile_on@;
+}
+
+/* Баннеры уведомлений — в правом нижнем углу */
+#notification-container {
+  margin: 8px 8px 8px 8px;
+}
+#notification-container .message {
+  background-color: @bubble_bg@;
+  border: 1px solid @bubble_border@;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+}
+
+/* ------------------------------------------------------------------ */
+/* Лаунчер                                                             */
+/* ------------------------------------------------------------------ */
+
+.hypede-launcher-menu .popup-menu-content {
+  padding: 0;
+  border-radius: 24px;
+}
+.hypede-launcher {
+  width: 640px;
+  padding: 16px 12px 12px 12px;
+  spacing: 12px;
+}
+.hypede-launcher-search {
+  min-height: 40px;
+  padding: 0 16px;
+  border-radius: 999px;
+  border: none;
+  font-size: 11pt;
+  color: @fg@;
+  background-color: @search_bg@;
+  selection-background-color: @tile_on@;
+  selected-color: @tile_on_fg@;
+  caret-color: @fg@;
+  box-shadow: none;
+}
+.hypede-launcher-search:focus {
+  background-color: @search_focus_bg@;
+  box-shadow: inset 0 0 0 2px @focus_ring@;
+}
+.hypede-launcher-search StLabel.hint-text {
+  color: @dim@;
+}
+.hypede-launcher-search-icon {
+  icon-size: 18px;
+  color: @dim@;
+  padding-right: 10px;
+}
+
+.hypede-launcher-scroll {
+  padding: 0 4px;
+}
+.hypede-launcher-section {
+  spacing: 2px;
+  padding-bottom: 8px;
+}
+.hypede-launcher-section-title {
+  font-size: 9.5pt;
+  font-weight: 500;
+  color: @dim@;
+  padding: 6px 12px 6px 12px;
+}
+
+/* «Продолжить с того же места» */
+.hypede-launcher-continue {
+  padding: 0 4px 4px 4px;
+}
+.hypede-launcher-chip {
+  border-radius: 14px;
+  padding: 10px 12px;
+  background-color: @chip_bg@;
+}
+.hypede-launcher-chip:hover,
+.hypede-launcher-chip:focus {
+  background-color: @chip_hover@;
+}
+.hypede-launcher-chip-box {
+  spacing: 12px;
+}
+.hypede-launcher-chip-icon {
+  color: @accent_fg_on_surface@;
+}
+.hypede-launcher-chip-title {
+  font-size: 10pt;
+  font-weight: 500;
+}
+.hypede-launcher-chip-subtitle {
+  font-size: 9pt;
+  color: @dim@;
+}
+.hypede-launcher-separator {
+  height: 1px;
+  margin: 8px 12px 12px 12px;
+  background-color: @separator@;
+}
+
+/* Сетка приложений */
+.hypede-launcher-grid {
+  padding: 0 0 8px 0;
+}
+.hypede-launcher-app {
+  width: 112px;
+  padding: 10px 4px 8px 4px;
+  border-radius: 16px;
+  transition-duration: 120ms;
+}
+.hypede-launcher-app:hover {
+  background-color: @hover@;
+}
+.hypede-launcher-app:focus {
+  background-color: @hover@;
+  box-shadow: inset 0 0 0 2px @focus_ring@;
+}
+.hypede-launcher-app-icon {
+  padding-bottom: 8px;
+}
+.hypede-launcher-app-label {
+  font-size: 9.5pt;
+  max-width: 100px;
+  text-align: center;
+  color: @fg@;
+}
+
+/* Результаты поиска */
+.hypede-launcher-result {
+  border-radius: 12px;
+  padding: 8px 12px;
+}
+.hypede-launcher-result:hover {
+  background-color: @hover@;
+}
+.hypede-launcher-result:selected,
+.hypede-launcher-result:focus {
+  background-color: @result_selected@;
+}
+.hypede-launcher-result-box {
+  spacing: 14px;
+}
+.hypede-launcher-result-icon StIcon {
+  color: @dim@;
+}
+.hypede-launcher-result-title {
+  font-size: 10.5pt;
+  color: @fg@;
+}
+.hypede-launcher-result-subtitle {
+  font-size: 9pt;
+  color: @dim@;
+}
+
+/* ------------------------------------------------------------------ */
+/* Обзор                                                               */
+/* ------------------------------------------------------------------ */
+
+.workspace-thumbnails .workspace-thumbnail {
+  border-radius: 12px;
+}
+.workspace-thumbnail-indicator {
+  border: 3px solid @focus_ring@;
+  border-radius: 14px;
+}
+.window-caption {
+  color: @tooltip_fg@;
+  background-color: @tooltip_bg@;
+  border-radius: 8px;
+}
+
+/* OSD громкости и яркости */
+.osd-window {
+  border-radius: 999px;
+  background-color: @bubble_bg@;
+  color: @fg@;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+}

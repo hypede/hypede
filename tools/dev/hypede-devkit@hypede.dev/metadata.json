@@ -1,0 +1,6 @@
+{
+    "uuid": "hypede-devkit@hypede.dev",
+    "name": "HypeDE devkit",
+    "description": "Только для разработки: включает небезопасный режим, чтобы скрипты могли снимать скриншоты и выполнять JS через D-Bus.",
+    "shell-version": ["48", "49", "50"]
+}

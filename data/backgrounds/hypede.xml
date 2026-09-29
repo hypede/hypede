@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">
+<!-- Обои HypeDE — в «Настройках» GNOME тоже видны. -->
+<wallpapers>
+  <wallpaper deleted="false">
+    <name>HypeDE Horizon</name>
+    <filename>/usr/share/hypede/wallpapers/horizon-light.svg</filename>
+    <filename-dark>/usr/share/hypede/wallpapers/horizon-dark.svg</filename-dark>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#dce8fb</pcolor>
+    <scolor>#0d1830</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>HypeDE Bay</name>
+    <filename>/usr/share/hypede/wallpapers/bay.png</filename>
+    <options>zoom</options>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>HypeDE Dawn</name>
+    <filename>/usr/share/hypede/wallpapers/dawn.png</filename>
+    <options>zoom</options>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>HypeDE Forest</name>
+    <filename>/usr/share/hypede/wallpapers/forest.png</filename>
+    <options>zoom</options>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>HypeDE Graphite</name>
+    <filename>/usr/share/hypede/wallpapers/graphite.png</filename>
+    <options>zoom</options>
+  </wallpaper>
+</wallpapers>

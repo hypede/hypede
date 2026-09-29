@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Обои HypeDE «Залив». Оригинальная работа, часть оформления среды. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3840 2160" width="3840" height="2160">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0" stop-color="#1a3a5c"/>
+      <stop offset="0.55" stop-color="#2f6ea8"/>
+      <stop offset="1" stop-color="#7fb4d8"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#9fd0f0" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#9fd0f0" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="3840" height="2160" fill="url(#bg)"/>
+  <ellipse cx="2700" cy="600" rx="1500" ry="1100" fill="url(#glow)"/>
+  <circle cx="900" cy="1700" r="700" fill="#ffffff" opacity="0.06"/>
+  <circle cx="3200" cy="1900" r="900" fill="#0d2238" opacity="0.2"/>
+  <circle cx="500" cy="400" r="380" fill="#ffffff" opacity="0.05"/>
+</svg>

@@ -1,0 +1,36 @@
+[Icon Theme]
+Name=Hicolor
+Comment=Значки приложений HypeDE, встроенные в запасную тему
+Directories=scalable/apps,256x256/apps,128x128/apps,64x64/apps,48x48/apps,32x32/apps
+
+[scalable/apps]
+Size=48
+MinSize=16
+MaxSize=512
+Type=Scalable
+Context=Applications
+
+[256x256/apps]
+Size=256
+Type=Fixed
+Context=Applications
+
+[128x128/apps]
+Size=128
+Type=Fixed
+Context=Applications
+
+[64x64/apps]
+Size=64
+Type=Fixed
+Context=Applications
+
+[48x48/apps]
+Size=48
+Type=Fixed
+Context=Applications
+
+[32x32/apps]
+Size=32
+Type=Fixed
+Context=Applications

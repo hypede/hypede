@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  Логотип HypeDE.
+
+  Знак строится из двух форм: скруглённый квадрат — экран, а внутри него
+  буква H, у которой перекладина сдвинута и превращена в «шов» между двумя
+  окнами. Это прямая отсылка к плиточной раскладке: среда делит экран, а не
+  заваливает его стопкой окон.
+
+  Цвета — фирменный фиолетовый #7c3aed и его светлый оттенок; тот же цвет по
+  умолчанию стоит акцентом в теме.
+-->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256">
+  <defs>
+    <linearGradient id="plate" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#9257ff"/>
+      <stop offset="1" stop-color="#5b21b6"/>
+    </linearGradient>
+    <linearGradient id="glow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.28"/>
+      <stop offset="0.55" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Экран -->
+  <rect x="16" y="16" width="224" height="224" rx="56" fill="url(#plate)"/>
+  <rect x="16" y="16" width="224" height="224" rx="56" fill="url(#glow)"/>
+
+  <!-- Левое окно -->
+  <rect x="62" y="62" width="44" height="132" rx="14" fill="#ffffff"/>
+  <!-- Правое окно, намеренно короче: главное окно и стопка -->
+  <rect x="150" y="62" width="44" height="132" rx="14" fill="#ffffff" opacity="0.82"/>
+  <!-- Перекладина H — шов между окнами -->
+  <rect x="96" y="112" width="64" height="32" rx="12" fill="#ffffff"/>
+</svg>

@@ -1,0 +1,33 @@
+# Значения по умолчанию для сеанса HypeDE.
+#
+# Секции с суффиксом «:HypeDE» действуют только там, где XDG_CURRENT_DESKTOP
+# содержит HypeDE, то есть только в нашем сеансе. Обычный сеанс GNOME на той
+# же машине остаётся нетронутым.
+
+[org.gnome.desktop.interface:HypeDE]
+enable-hot-corners=false
+font-name='Roboto 11'
+document-font-name='Roboto 11'
+clock-show-weekday=false
+clock-show-date=false
+accent-color='blue'
+
+[org.gnome.desktop.wm.preferences:HypeDE]
+button-layout='appmenu:minimize,maximize,close'
+titlebar-font='Roboto Medium 11'
+
+[org.gnome.desktop.background:HypeDE]
+picture-uri='file:///usr/share/hypede/wallpapers/horizon-light.svg'
+picture-uri-dark='file:///usr/share/hypede/wallpapers/horizon-dark.svg'
+picture-options='zoom'
+
+[org.gnome.desktop.screensaver:HypeDE]
+picture-uri='file:///usr/share/hypede/wallpapers/horizon-dark.svg'
+
+[org.gnome.mutter:HypeDE]
+center-new-windows=true
+edge-tiling=true
+dynamic-workspaces=true
+
+[org.gnome.shell:HypeDE]
+favorite-apps=['org.chromium.Chromium.desktop', 'chromium.desktop', 'google-chrome.desktop', 'firefox.desktop', 'dev.hypede.Files.desktop', 'org.gnome.Console.desktop', 'org.gnome.TextEditor.desktop', 'dev.hypede.Settings.desktop']

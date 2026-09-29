@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Обои HypeDE «Лес». Оригинальная работа, часть оформления среды. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 3840 2160" width="3840" height="2160">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0.6" y2="1">
+      <stop offset="0" stop-color="#102b21"/>
+      <stop offset="0.55" stop-color="#1f5c42"/>
+      <stop offset="1" stop-color="#8fc9a6"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#a8e6c4" stop-opacity="0.55"/>
+      <stop offset="1" stop-color="#a8e6c4" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="3840" height="2160" fill="url(#bg)"/>
+  <ellipse cx="2700" cy="600" rx="1500" ry="1100" fill="url(#glow)"/>
+  <circle cx="3000" cy="1800" r="950" fill="#0b1f18" opacity="0.26"/>
+  <circle cx="1000" cy="900" r="520" fill="#ffffff" opacity="0.05"/>
+  <circle cx="2400" cy="1500" r="380" fill="#ffffff" opacity="0.04"/>
+</svg>

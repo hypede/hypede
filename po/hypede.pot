@@ -1,0 +1,757 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"#-#-#-#-#  files.pot (PACKAGE VERSION)  #-#-#-#-#\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-29 07:42+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"#-#-#-#-#  shell.pot (PACKAGE VERSION)  #-#-#-#-#\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-09-29 07:40+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+
+#: apps/files/hypede_files/details.py:59 apps/files/hypede_files/window.py:475
+msgid "Open"
+msgstr ""
+
+#: apps/files/hypede_files/details.py:97
+#: apps/files/hypede_files/folder_view.py:557
+#, python-format
+msgid "%d items selected"
+msgstr ""
+
+#: apps/files/hypede_files/details.py:102
+#, python-format
+msgid "%d folder"
+msgid_plural "%d folders"
+msgstr[0] ""
+msgstr[1] ""
+
+#: apps/files/hypede_files/details.py:104
+#, python-format
+msgid "%d file"
+msgid_plural "%d files"
+msgstr[0] ""
+msgstr[1] ""
+
+#: apps/files/hypede_files/details.py:108
+#: apps/files/hypede_files/details.py:153
+#: apps/files/hypede_files/folder_view.py:370
+#: apps/files/hypede_files/window.py:105
+msgid "Size"
+msgstr ""
+
+#: apps/files/hypede_files/details.py:144
+#: apps/files/hypede_files/details.py:146
+msgid "Contents"
+msgstr ""
+
+#: apps/files/hypede_files/details.py:146
+msgid "Counting…"
+msgstr ""
+
+#: apps/files/hypede_files/details.py:156
+#: apps/files/hypede_files/folder_view.py:372
+msgid "Modified"
+msgstr ""
+
+#: apps/files/hypede_files/details.py:159
+msgid "Created"
+msgstr ""
+
+#: apps/files/hypede_files/details.py:162
+msgid "Original location"
+msgstr ""
+
+#: apps/files/hypede_files/details.py:165
+msgid "Permissions"
+msgstr ""
+
+#: apps/files/hypede_files/details.py:168
+#: apps/files/hypede_files/folder_view.py:368
+msgid "Location"
+msgstr ""
+
+#: apps/files/hypede_files/folder_view.py:57
+msgid "Today, %H:%M"
+msgstr ""
+
+#: apps/files/hypede_files/folder_view.py:58
+msgid "%-d %b %Y, %H:%M"
+msgstr ""
+
+#: apps/files/hypede_files/folder_view.py:367
+msgid "Name"
+msgstr ""
+
+#: apps/files/hypede_files/folder_view.py:371
+#: apps/files/hypede_files/window.py:106
+msgid "Type"
+msgstr ""
+
+#: apps/files/hypede_files/folder_view.py:521
+msgid "Unable to open this folder"
+msgstr ""
+
+#: apps/files/hypede_files/folder_view.py:527
+msgid "No results found"
+msgstr ""
+
+#: apps/files/hypede_files/folder_view.py:528
+msgid "Try a different search"
+msgstr ""
+
+#: apps/files/hypede_files/folder_view.py:531
+msgid "Trash is empty"
+msgstr ""
+
+#: apps/files/hypede_files/folder_view.py:535
+msgid "No recent files"
+msgstr ""
+
+#: apps/files/hypede_files/folder_view.py:539
+msgid "Folder is empty"
+msgstr ""
+
+#: apps/files/hypede_files/folder_view.py:553
+#, python-format
+msgid "“%s” selected"
+msgstr ""
+
+#: apps/files/hypede_files/operations.py:81
+#, python-format
+msgid "Copying %d item"
+msgid_plural "Copying %d items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: apps/files/hypede_files/operations.py:82
+#, python-format
+msgid "Moving %d item"
+msgid_plural "Moving %d items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: apps/files/hypede_files/operations.py:83
+#, python-format
+msgid "Moving %d item to the trash"
+msgid_plural "Moving %d items to the trash"
+msgstr[0] ""
+msgstr[1] ""
+
+#: apps/files/hypede_files/operations.py:84
+#, python-format
+msgid "Deleting %d item"
+msgid_plural "Deleting %d items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: apps/files/hypede_files/operations.py:85
+#, python-format
+msgid "Restoring %d item"
+msgid_plural "Restoring %d items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: apps/files/hypede_files/operations.py:148
+#, python-format
+msgid "Copying “%s”"
+msgstr ""
+
+#: apps/files/hypede_files/operations.py:174
+msgid "Cannot move a folder into itself"
+msgstr ""
+
+#: apps/files/hypede_files/operations.py:176
+#, python-format
+msgid "Moving “%s”"
+msgstr ""
+
+#: apps/files/hypede_files/operations.py:193
+#, python-format
+msgid "Moving “%s” to the trash"
+msgstr ""
+
+#: apps/files/hypede_files/operations.py:201
+#, python-format
+msgid "Deleting “%s”"
+msgstr ""
+
+#: apps/files/hypede_files/pathbar.py:41
+msgid "Enter a location"
+msgstr ""
+
+#: apps/files/hypede_files/pathbar.py:92 apps/files/hypede_files/sidebar.py:139
+#: apps/files/hypede_files/window.py:163 apps/files/hypede_files/window.py:269
+msgid "Trash"
+msgstr ""
+
+#: apps/files/hypede_files/pathbar.py:94 apps/files/hypede_files/sidebar.py:130
+#: apps/files/hypede_files/window.py:271
+msgid "Recent"
+msgstr ""
+
+#: apps/files/hypede_files/pathbar.py:113
+#: apps/files/hypede_files/sidebar.py:131 apps/files/hypede_files/window.py:274
+msgid "Home"
+msgstr ""
+
+#: apps/files/hypede_files/sidebar.py:82 apps/files/hypede_files/sidebar.py:263
+msgid "Eject"
+msgstr ""
+
+#: apps/files/hypede_files/sidebar.py:166 apps/files/hypede_files/window.py:276
+msgid "File System"
+msgstr ""
+
+#: apps/files/hypede_files/sidebar.py:177
+msgid "Bookmarks"
+msgstr ""
+
+#: apps/files/hypede_files/sidebar.py:177
+msgid "Devices"
+msgstr ""
+
+#: apps/files/hypede_files/sidebar.py:253 apps/files/hypede_files/window.py:477
+msgid "Open in New Tab"
+msgstr ""
+
+#: apps/files/hypede_files/sidebar.py:256
+msgid "Remove from Sidebar"
+msgstr ""
+
+#: apps/files/hypede_files/sidebar.py:263
+msgid "Unmount"
+msgstr ""
+
+#: apps/files/hypede_files/util.py:15
+msgid "kB"
+msgstr ""
+
+#: apps/files/hypede_files/util.py:15
+msgid "MB"
+msgstr ""
+
+#: apps/files/hypede_files/util.py:15
+msgid "GB"
+msgstr ""
+
+#: apps/files/hypede_files/util.py:15
+msgid "TB"
+msgstr ""
+
+#: apps/files/hypede_files/util.py:15
+msgid "PB"
+msgstr ""
+
+#: apps/files/hypede_files/util.py:21
+#, python-format
+msgid "%d byte"
+msgid_plural "%d bytes"
+msgstr[0] ""
+msgstr[1] ""
+
+#: apps/files/hypede_files/util.py:32
+#, python-format
+msgid "%d item"
+msgid_plural "%d items"
+msgstr[0] ""
+msgstr[1] ""
+
+#: apps/files/hypede_files/util.py:69
+msgid "The name cannot be empty"
+msgstr ""
+
+#: apps/files/hypede_files/util.py:71
+msgid "The name cannot contain “/”"
+msgstr ""
+
+#: apps/files/hypede_files/util.py:73
+#, python-format
+msgid "“%s” is not a valid name"
+msgstr ""
+
+#: apps/files/hypede_files/util.py:75
+msgid "The name is too long"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:64
+msgid "New Window"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:65 apps/files/hypede_files/window.py:944
+msgid "New Tab"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:68 apps/files/hypede_files/window.py:521
+#: apps/files/hypede_files/window.py:952
+msgid "Show Hidden Files"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:69 apps/files/hypede_files/window.py:952
+msgid "Show Details Pane"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:70
+msgid "Sort Folders Before Files"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:73
+msgid "Keyboard Shortcuts"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:74
+msgid "About Files"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:77 apps/files/hypede_files/window.py:928
+#: apps/files/hypede_files/window.py:946
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:532
+msgid "Files"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:79
+msgid "Main Menu"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:85
+msgid "Show Sidebar"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:90 apps/files/hypede_files/window.py:941
+msgid "Back"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:92 apps/files/hypede_files/window.py:941
+msgid "Forward"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:103
+msgid "A–Z"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:104
+msgid "Last Modified"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:107
+msgid "Sort"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:109
+msgid "Reversed Order"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:120 apps/files/hypede_files/window.py:951
+msgid "Zoom Out"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:122
+msgid "Reset Zoom"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:124 apps/files/hypede_files/window.py:951
+msgid "Zoom In"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:128 apps/files/hypede_files/window.py:950
+msgid "Grid View"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:129 apps/files/hypede_files/window.py:950
+msgid "List View"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:135
+msgid "View Options"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:137 apps/files/hypede_files/window.py:942
+msgid "Search"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:141
+msgid "File Operations"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:152
+msgid "Search files and folders"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:163 apps/files/hypede_files/window.py:511
+msgid "Empty Trash…"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:213 apps/files/hypede_files/window.py:782
+#: apps/files/hypede_files/window.py:797
+msgid "Cancel"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:405
+msgid "Restore the file from the trash to open it"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:434
+#, python-format
+msgid "Could not open “%s”: %s"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:478 apps/files/hypede_files/window.py:519
+msgid "Open in Terminal"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:480
+msgid "Open With…"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:485
+msgid "Restore From Trash"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:486
+msgid "Delete Permanently…"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:490 apps/files/hypede_files/window.py:948
+msgid "Cut"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:491 apps/files/hypede_files/window.py:948
+msgid "Copy"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:493
+msgid "Paste Into Folder"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:496
+msgid "Rename…"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:497 apps/files/hypede_files/window.py:947
+msgid "Move to Trash"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:501
+msgid "Copy Path"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:503 apps/files/hypede_files/window.py:520
+msgid "Add to Bookmarks"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:504
+msgid "Show Details"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:514
+msgid "New Folder…"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:515 apps/files/hypede_files/window.py:948
+msgid "Paste"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:516 apps/files/hypede_files/window.py:949
+msgid "Select All"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:661
+#, python-format
+msgid "%d item cut"
+msgid_plural "%d items cut"
+msgstr[0] ""
+msgstr[1] ""
+
+#: apps/files/hypede_files/window.py:662
+#, python-format
+msgid "%d item copied"
+msgid_plural "%d items copied"
+msgstr[0] ""
+msgstr[1] ""
+
+#: apps/files/hypede_files/window.py:682
+msgid "Nothing to paste"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:695
+#, python-format
+msgid "Copied to “%s”"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:695
+#, python-format
+msgid "Moved to “%s”"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:707
+#, python-format
+msgid "“%s” moved to the trash"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:709
+#, python-format
+msgid "%d item moved to the trash"
+msgid_plural "%d items moved to the trash"
+msgstr[0] ""
+msgstr[1] ""
+
+#: apps/files/hypede_files/window.py:717
+#, python-format
+msgid "%d item restored"
+msgid_plural "%d items restored"
+msgstr[0] ""
+msgstr[1] ""
+
+#: apps/files/hypede_files/window.py:725
+#, python-format
+msgid "Permanently delete “%s”?"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:726
+#, python-format
+msgid "Permanently delete %d item?"
+msgid_plural "Permanently delete %d items?"
+msgstr[0] ""
+msgstr[1] ""
+
+#: apps/files/hypede_files/window.py:727
+msgid "Deleted items cannot be restored."
+msgstr ""
+
+#: apps/files/hypede_files/window.py:727
+msgid "Delete"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:742
+msgid "Empty all items from the trash?"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:742
+msgid "All items in the trash will be permanently deleted."
+msgstr ""
+
+#: apps/files/hypede_files/window.py:743
+msgid "Empty Trash"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:755 apps/files/hypede_files/window.py:862
+msgid "Undo"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:830
+msgid "Untitled Folder"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:842 apps/files/hypede_files/window.py:946
+msgid "New Folder"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:842
+msgid "Create"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:862
+#, python-format
+msgid "Renamed to “%s”"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:873
+msgid "Rename Folder"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:873
+msgid "Rename File"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:874 apps/files/hypede_files/window.py:946
+msgid "Rename"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:880
+msgid "Path copied"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:884
+#, python-format
+msgid "“%s” added to bookmarks"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:886
+msgid "Already in bookmarks"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:891
+msgid "Only local folders can be opened in a terminal"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:895
+msgid "No terminal found"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:934
+msgid ""
+"File manager of the HypeDE desktop: the layout of GNOME Files with tabs and "
+"a details pane inspired by COSMIC Files."
+msgstr ""
+
+#: apps/files/hypede_files/window.py:941
+msgid "Navigation"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:941
+msgid "Parent Folder"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:942
+msgid "Enter Location"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:943
+msgid "Toggle Sidebar"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:944
+msgid "Tabs"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:944
+msgid "Close Tab"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:945
+msgid "Next Tab"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:947
+msgid "Delete Permanently"
+msgstr ""
+
+#: apps/files/hypede_files/window.py:950
+msgid "View"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:41
+msgid "Network"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:43
+msgid "Bluetooth"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:45
+msgid "Device"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:47
+msgid "Personalization"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:49
+msgid "Security and privacy"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:51
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:489
+msgid "Apps"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:53
+msgid "Accessibility"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:55
+msgid "System preferences"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:57
+msgid "About HypeDE"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:69
+msgid "Could not open"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:241
+msgid "Search your device, apps, settings, web…"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:259
+msgid "Continue where you left off"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:465
+msgid "Press Enter to copy the result"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:510
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:515
+msgid "Settings"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:547
+#, javascript-format
+msgid "Search for “%s” in Files"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:548
+msgid "Search in the home folder"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:559
+msgid "Web"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:563
+msgid "Search the web"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:637
+msgid "Launcher"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/recent.js:97
+msgid "You opened today"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/recent.js:99
+msgid "You opened yesterday"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/recent.js:101
+#, javascript-format
+msgid "You opened %d day ago"
+msgid_plural "You opened %d days ago"
+msgstr[0] ""
+msgstr[1] ""
+
+#: shell/extension/hypede-shell@hypede.dev/recent.js:104
+#, javascript-format
+msgid "You opened %s"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/shelf.js:501
+#, javascript-format
+msgid "%b %-d"
+msgstr ""

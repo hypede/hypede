@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="hypede">
+  <schema id="dev.hypede.shell" path="/dev/hypede/shell/">
+    <key name="shelf-alignment" type="s">
+      <choices>
+        <choice value="center"/>
+        <choice value="left"/>
+      </choices>
+      <default>'center'</default>
+      <summary>Расположение значков на полке</summary>
+      <description>center — по центру, как в Chrome OS; left — сразу после кнопки лаунчера.</description>
+    </key>
+
+    <key name="shelf-autohide" type="b">
+      <default>false</default>
+      <summary>Автоматически скрывать полку</summary>
+      <description>Полка уезжает вниз, когда окно касается её, и выезжает при подводе указателя к нижнему краю.</description>
+    </key>
+
+    <key name="show-date" type="b">
+      <default>true</default>
+      <summary>Показывать дату на полке</summary>
+    </key>
+
+    <key name="super-key-action" type="s">
+      <choices>
+        <choice value="launcher"/>
+        <choice value="overview"/>
+      </choices>
+      <default>'launcher'</default>
+      <summary>Что открывает клавиша Super</summary>
+      <description>launcher — лаунчер (как клавиша «Все» в Chrome OS); overview — обзор окон.</description>
+    </key>
+
+    <key name="show-recent-files" type="b">
+      <default>true</default>
+      <summary>Показывать недавние файлы в лаунчере</summary>
+      <description>Раздел «Продолжить с того же места» в лаунчере.</description>
+    </key>
+
+    <key name="launcher-columns" type="i">
+      <range min="4" max="8"/>
+      <default>5</default>
+      <summary>Число колонок в сетке приложений лаунчера</summary>
+    </key>
+
+    <key name="launcher-hidden-apps" type="as">
+      <default>['org.gnome.Settings.desktop', 'systemsettings.desktop', 'kdesystemsettings.desktop']</default>
+      <summary>Приложения, скрытые в лаунчере</summary>
+      <description>По умолчанию скрыты «Настройки» GNOME и «Параметры системы» KDE: в HypeDE их заменяют «Настройки» HypeDE. Запускать их по-прежнему можно командой.</description>
+    </key>
+
+    <key name="web-search-url" type="s">
+      <default>'https://www.google.com/search?q=%s'</default>
+      <summary>Адрес поиска в интернете</summary>
+      <description>%s заменяется поисковым запросом.</description>
+    </key>
+  </schema>
+</schemalist>
