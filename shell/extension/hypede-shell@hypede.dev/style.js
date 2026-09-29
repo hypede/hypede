@@ -44,6 +44,8 @@ export class StyleManager {
         // Сама загрузка нашего файла тоже вызывает «changed» — такие
         // срабатывания пропускаем, иначе стили перезагружались бы по кругу.
         this._context.connectObject('changed', () => {
+            if (this._busy)
+                return;
             if (this._context.get_theme() !== this._theme || !this._isLast())
                 this._queueUpdate();
         }, this);
@@ -109,11 +111,11 @@ export class StyleManager {
         const theme = this._context.get_theme();
         if (!theme)
             return;
-        if (this._file && this._theme === theme)
-            theme.unload_stylesheet(this._file);
-        this._removeFile();
-
+        // Загрузка и выгрузка сами вызывают «changed» — их пропускаем.
+        this._busy = true;
         try {
+            this._unloadOwn(theme);
+            this._removeFile();
             GLib.mkdir_with_parents(this._dir, 0o700);
             const path = GLib.build_filenamev([this._dir, `shell-${this._serial++}.css`]);
             GLib.file_set_contents(path, this._css());
@@ -122,6 +124,17 @@ export class StyleManager {
             theme.load_stylesheet(this._file);
         } catch (e) {
             logError(e, 'HypeDE: не удалось применить стили');
+        } finally {
+            this._busy = false;
+        }
+    }
+
+    // GNOME, пересоздавая тему, переносит в неё все подключённые файлы —
+    // и наши прошлые тоже. Убираем из темы все файлы из нашего каталога.
+    _unloadOwn(theme) {
+        for (const file of theme.get_custom_stylesheets()) {
+            if (file.get_parent()?.get_path() === this._dir)
+                theme.unload_stylesheet(file);
         }
     }
 
@@ -159,8 +172,9 @@ export class StyleManager {
         this._context.disconnectObject(this);
         this._stSettings.disconnectObject(this);
         this._stSettings.slow_down_factor = 1;
-        if (this._file && this._theme === this._context.get_theme())
-            this._theme.unload_stylesheet(this._file);
+        const theme = this._context.get_theme();
+        if (theme)
+            this._unloadOwn(theme);
         this._removeFile();
     }
 }
