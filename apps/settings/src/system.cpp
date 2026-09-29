@@ -5,6 +5,7 @@
 #include <QDBusArgument>
 #include <QDBusConnection>
 #include <QDBusMessage>
+#include <QDBusObjectPath>
 #include <QDBusReply>
 #include <QDBusVariant>
 #include <QDesktopServices>
@@ -13,12 +14,19 @@
 #include <QLocale>
 #include <QProcess>
 #include <QDateTime>
+#include <QDirIterator>
 #include <QFileInfo>
+#include <QFontDatabase>
+#include <QProcessEnvironment>
+#include <QStorageInfo>
 #include <QSet>
 #include <QTimeZone>
 #include <QStandardPaths>
 #include <QSysInfo>
 #include <QUrl>
+
+#include <functional>
+#include <unistd.h>
 
 namespace
 {
@@ -84,6 +92,7 @@ System::System(QObject *parent)
     readWifi();
     readTime();
     readShellVersion();
+    readLanguage();
 }
 
 System *System::instance()
@@ -383,4 +392,392 @@ QString System::formatSample(const QString &code) const
     return QStringLiteral("%1 · %2 · %3").arg(locale.toString(now.date(), QLocale::ShortFormat),
                                              locale.toString(now.time(), QLocale::ShortFormat),
                                              locale.toString(1234567.89, 'f', 2));
+}
+
+// ---------- оформление ----------
+
+namespace
+{
+
+QStringList dataDirs()
+{
+    QStringList dirs;
+    dirs << QDir::homePath() + QStringLiteral("/.icons");
+    for (const QString &base : QStandardPaths::standardLocations(QStandardPaths::GenericDataLocation))
+        dirs << base;
+    return dirs;
+}
+
+// Тема значков — каталог с index.theme, у которого есть не только курсоры.
+QStringList scanThemes(const QString &subdir, const std::function<bool(const QDir &)> &accept)
+{
+    QStringList result;
+    for (const QString &base : dataDirs()) {
+        const QString root = base.endsWith(QLatin1String("/.icons")) ? base : base + QLatin1Char('/') + subdir;
+        QDir dir(root);
+        for (const QString &name : dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name)) {
+            if (result.contains(name) || name == QLatin1String("default") || name == QLatin1String("hicolor"))
+                continue;
+            if (accept(QDir(dir.filePath(name))))
+                result << name;
+        }
+    }
+    std::sort(result.begin(), result.end(), [](const QString &a, const QString &b) {
+        return a.compare(b, Qt::CaseInsensitive) < 0;
+    });
+    return result;
+}
+
+} // namespace
+
+QStringList System::fontFamilies() const
+{
+    QStringList families = QFontDatabase::families();
+    families.removeDuplicates();
+    // Служебные шрифты с точкой в начале имени не показываем.
+    families.erase(std::remove_if(families.begin(), families.end(), [](const QString &f) {
+                       return f.startsWith(QLatin1Char('.'));
+                   }),
+                   families.end());
+    return families;
+}
+
+QStringList System::iconThemes() const
+{
+    return scanThemes(QStringLiteral("icons"), [](const QDir &dir) {
+        if (!dir.exists(QStringLiteral("index.theme")))
+            return false;
+        const QStringList subdirs = dir.entryList(QDir::Dirs | QDir::NoDotAndDotDot);
+        return !(subdirs.size() == 1 && subdirs.constFirst() == QLatin1String("cursors"));
+    });
+}
+
+QStringList System::cursorThemes() const
+{
+    return scanThemes(QStringLiteral("icons"), [](const QDir &dir) {
+        return dir.exists(QStringLiteral("cursors"));
+    });
+}
+
+QStringList System::gtkThemes() const
+{
+    QStringList themes = scanThemes(QStringLiteral("themes"), [](const QDir &dir) {
+        return dir.exists(QStringLiteral("gtk-3.0"));
+    });
+    // Adwaita и HighContrast встроены в GTK 3 и каталога не имеют.
+    for (const QString &builtin : {QStringLiteral("HighContrast"), QStringLiteral("Adwaita")}) {
+        if (!themes.contains(builtin))
+            themes.prepend(builtin);
+    }
+    return themes;
+}
+
+// ---------- хранилище ----------
+
+QVariantList System::storage() const
+{
+    QVariantList result;
+    QSet<QString> devices;
+    const QStringList skipTypes = {QStringLiteral("tmpfs"), QStringLiteral("devtmpfs"), QStringLiteral("overlay"),
+                                   QStringLiteral("squashfs"), QStringLiteral("efivarfs"), QStringLiteral("ramfs")};
+    for (const QStorageInfo &volume : QStorageInfo::mountedVolumes()) {
+        if (!volume.isValid() || !volume.isReady() || volume.bytesTotal() <= 0)
+            continue;
+        if (skipTypes.contains(QString::fromLatin1(volume.fileSystemType())))
+            continue;
+        const QString root = volume.rootPath();
+        if (root.startsWith(QLatin1String("/boot")) || root.startsWith(QLatin1String("/snap")) ||
+            root.startsWith(QLatin1String("/var/lib")) || root.startsWith(QLatin1String("/efi")))
+            continue;
+        const QString device = QString::fromLocal8Bit(volume.device());
+        if (devices.contains(device))
+            continue;
+        devices.insert(device);
+        QString name = volume.displayName();
+        if (root == QLatin1String("/"))
+            name = tr("System");
+        else if (root == QDir::homePath() || root == QLatin1String("/home"))
+            name = tr("Home");
+        result << QVariantMap{
+            {QStringLiteral("name"), name},
+            {QStringLiteral("path"), root},
+            {QStringLiteral("total"), volume.bytesTotal()},
+            {QStringLiteral("free"), volume.bytesAvailable()},
+        };
+    }
+    return result;
+}
+
+QString System::formatSize(qint64 bytes) const
+{
+    return QLocale().formattedDataSize(bytes, 1, QLocale::DataSizeTraditionalFormat);
+}
+
+bool System::emptyTrash() const
+{
+    return QProcess::execute(QStringLiteral("gio"), {QStringLiteral("trash"), QStringLiteral("--empty")}) == 0;
+}
+
+// ---------- приложения и автозапуск ----------
+
+namespace
+{
+
+// Простейший разбор .desktop: секция [Desktop Entry], имена с учётом языка.
+QHash<QString, QString> readDesktopEntry(const QString &path)
+{
+    QHash<QString, QString> entry;
+    QFile file(path);
+    if (!file.open(QIODevice::ReadOnly | QIODevice::Text))
+        return entry;
+    bool inSection = false;
+    while (!file.atEnd()) {
+        const QString line = QString::fromUtf8(file.readLine()).trimmed();
+        if (line.startsWith(QLatin1Char('['))) {
+            inSection = line == QLatin1String("[Desktop Entry]");
+            continue;
+        }
+        if (!inSection || line.startsWith(QLatin1Char('#')))
+            continue;
+        const int eq = line.indexOf(QLatin1Char('='));
+        if (eq > 0)
+            entry.insert(line.left(eq).trimmed(), line.mid(eq + 1).trimmed());
+    }
+    return entry;
+}
+
+QString localized(const QHash<QString, QString> &entry, const QString &key)
+{
+    const QLocale locale;
+    const QString full = locale.name();                     // ru_RU
+    const QString lang = full.section(QLatin1Char('_'), 0, 0); // ru
+    for (const QString &variant : {full, lang}) {
+        const QString value = entry.value(QStringLiteral("%1[%2]").arg(key, variant));
+        if (!value.isEmpty())
+            return value;
+    }
+    return entry.value(key);
+}
+
+bool shownInHypeDE(const QHash<QString, QString> &entry)
+{
+    const QStringList desktops = {QStringLiteral("HypeDE"), QStringLiteral("GNOME")};
+    const QString only = entry.value(QStringLiteral("OnlyShowIn"));
+    if (!only.isEmpty()) {
+        const QStringList list = only.split(QLatin1Char(';'), Qt::SkipEmptyParts);
+        if (std::none_of(desktops.begin(), desktops.end(), [&](const QString &d) { return list.contains(d); }))
+            return false;
+    }
+    const QStringList notIn = entry.value(QStringLiteral("NotShowIn")).split(QLatin1Char(';'), Qt::SkipEmptyParts);
+    return std::none_of(desktops.begin(), desktops.end(), [&](const QString &d) { return notIn.contains(d); });
+}
+
+} // namespace
+
+QVariantList System::installedApps() const
+{
+    QVariantList result;
+    QSet<QString> seen;
+    for (const QString &base : QStandardPaths::standardLocations(QStandardPaths::ApplicationsLocation)) {
+        QDirIterator it(base, {QStringLiteral("*.desktop")}, QDir::Files, QDirIterator::Subdirectories);
+        while (it.hasNext()) {
+            const QString path = it.next();
+            // id: путь относительно каталога, «/» → «-» (как в спецификации)
+            const QString id = QDir(base).relativeFilePath(path).replace(QLatin1Char('/'), QLatin1Char('-'));
+            if (seen.contains(id))
+                continue;
+            seen.insert(id);
+            const auto entry = readDesktopEntry(path);
+            if (entry.value(QStringLiteral("Type")) != QLatin1String("Application") ||
+                entry.value(QStringLiteral("NoDisplay")) == QLatin1String("true") ||
+                entry.value(QStringLiteral("Hidden")) == QLatin1String("true") || !shownInHypeDE(entry))
+                continue;
+            result << QVariantMap{
+                {QStringLiteral("id"), id},
+                {QStringLiteral("name"), localized(entry, QStringLiteral("Name"))},
+                {QStringLiteral("icon"), entry.value(QStringLiteral("Icon"))},
+                {QStringLiteral("comment"), localized(entry, QStringLiteral("Comment"))},
+            };
+        }
+    }
+    std::sort(result.begin(), result.end(), [](const QVariant &a, const QVariant &b) {
+        return a.toMap().value(QStringLiteral("name")).toString().compare(
+                   b.toMap().value(QStringLiteral("name")).toString(), Qt::CaseInsensitive) < 0;
+    });
+    return result;
+}
+
+QVariantList System::autostartEntries() const
+{
+    // Пользовательский каталог важнее системных: одноимённый файл его
+    // перекрывает (спецификация автозапуска XDG).
+    QStringList dirs;
+    dirs << QStandardPaths::writableLocation(QStandardPaths::GenericConfigLocation) + QStringLiteral("/autostart");
+    const QString configDirs = qEnvironmentVariable("XDG_CONFIG_DIRS", QStringLiteral("/etc/xdg"));
+    for (const QString &dir : configDirs.split(QLatin1Char(':'), Qt::SkipEmptyParts))
+        dirs << dir + QStringLiteral("/autostart");
+
+    QVariantList result;
+    QSet<QString> seen;
+    for (int i = 0; i < dirs.size(); ++i) {
+        QDir dir(dirs.at(i));
+        for (const QString &file : dir.entryList({QStringLiteral("*.desktop")}, QDir::Files, QDir::Name)) {
+            const QString id = file.chopped(8);
+            if (seen.contains(id))
+                continue;
+            seen.insert(id);
+            const auto entry = readDesktopEntry(dir.filePath(file));
+            if (entry.value(QStringLiteral("Hidden")) == QLatin1String("true") || !shownInHypeDE(entry))
+                continue;
+            if (entry.value(QStringLiteral("X-GNOME-Autostart-enabled")) == QLatin1String("false"))
+                continue;
+            // Службы, которые под systemd запускает не автозапуск, а юниты.
+            if (entry.value(QStringLiteral("X-GNOME-HiddenUnderSystemd")) == QLatin1String("true"))
+                continue;
+            QString name = localized(entry, QStringLiteral("Name"));
+            result << QVariantMap{
+                {QStringLiteral("id"), id},
+                {QStringLiteral("name"), name.isEmpty() ? id : name},
+                {QStringLiteral("icon"), entry.value(QStringLiteral("Icon"))},
+                {QStringLiteral("comment"), localized(entry, QStringLiteral("Comment"))},
+                {QStringLiteral("system"), i > 0},
+            };
+        }
+    }
+    std::sort(result.begin(), result.end(), [](const QVariant &a, const QVariant &b) {
+        return a.toMap().value(QStringLiteral("name")).toString().compare(
+                   b.toMap().value(QStringLiteral("name")).toString(), Qt::CaseInsensitive) < 0;
+    });
+    return result;
+}
+
+// ---------- язык ----------
+
+void System::readLanguage()
+{
+    QDBusConnection bus = QDBusConnection::systemBus();
+    QDBusMessage message = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.Accounts"),
+                                                          QStringLiteral("/org/freedesktop/Accounts"),
+                                                          QStringLiteral("org.freedesktop.Accounts"),
+                                                          QStringLiteral("FindUserById"));
+    message << qlonglong(getuid());
+    const QDBusMessage reply = bus.call(message, QDBus::Block, 1500);
+    if (reply.type() != QDBusMessage::ReplyMessage || reply.arguments().isEmpty())
+        return;
+    m_userPath = reply.arguments().constFirst().value<QDBusObjectPath>().path();
+    m_language = dbusGet(bus, QStringLiteral("org.freedesktop.Accounts"), m_userPath,
+                         QStringLiteral("org.freedesktop.Accounts.User"), QStringLiteral("Language"))
+                     .toString();
+    Q_EMIT languageChanged();
+}
+
+void System::setLanguage(const QString &language)
+{
+    if (m_userPath.isEmpty() || language == m_language)
+        return;
+    QDBusMessage message = QDBusMessage::createMethodCall(QStringLiteral("org.freedesktop.Accounts"), m_userPath,
+                                                          QStringLiteral("org.freedesktop.Accounts.User"),
+                                                          QStringLiteral("SetLanguage"));
+    message << language;
+    message.setInteractiveAuthorizationAllowed(true);
+    QDBusConnection::systemBus().asyncCall(message);
+    m_language = language;
+    Q_EMIT languageChanged();
+}
+
+// ---------- конфигурация HypeDE ----------
+
+namespace
+{
+
+// Запуск dconf с нужной базой: hypede или обычной базой GNOME.
+bool runDconf(const QStringList &args, bool gnomeProfile, const QByteArray &input = {}, QByteArray *output = nullptr)
+{
+    QProcess process;
+    QProcessEnvironment env = QProcessEnvironment::systemEnvironment();
+    if (gnomeProfile)
+        env.remove(QStringLiteral("DCONF_PROFILE"));
+    else
+        env.insert(QStringLiteral("DCONF_PROFILE"), QStringLiteral("hypede"));
+    process.setProcessEnvironment(env);
+    process.start(QStringLiteral("dconf"), args);
+    if (!process.waitForStarted(2000))
+        return false;
+    if (!input.isEmpty())
+        process.write(input);
+    process.closeWriteChannel();
+    process.waitForFinished(10000);
+    if (output)
+        *output = process.readAllStandardOutput();
+    return process.exitStatus() == QProcess::NormalExit && process.exitCode() == 0;
+}
+
+} // namespace
+
+bool System::inHypeDE() const
+{
+    return qEnvironmentVariable("DCONF_PROFILE") == QLatin1String("hypede");
+}
+
+bool System::importFromGnome() const
+{
+    // Тот же список, что переносит hypede-session при первом входе.
+    const QStringList dirs = {
+        QStringLiteral("/org/gnome/desktop/input-sources/"), QStringLiteral("/org/gnome/desktop/peripherals/"),
+        QStringLiteral("/org/gnome/desktop/a11y/"), QStringLiteral("/org/gnome/desktop/calendar/"),
+        QStringLiteral("/org/gnome/desktop/privacy/"), QStringLiteral("/org/gnome/desktop/notifications/"),
+        QStringLiteral("/org/gnome/desktop/sound/"), QStringLiteral("/org/gnome/desktop/session/"),
+        QStringLiteral("/org/gnome/desktop/wm/keybindings/"),
+        QStringLiteral("/org/gnome/settings-daemon/plugins/media-keys/"),
+        QStringLiteral("/org/gnome/settings-daemon/plugins/power/"),
+        QStringLiteral("/org/gnome/settings-daemon/plugins/color/"), QStringLiteral("/org/gnome/system/locale/"),
+        QStringLiteral("/org/gnome/system/location/"),
+    };
+    bool ok = true;
+    for (const QString &dir : dirs) {
+        QByteArray dump;
+        if (!runDconf({QStringLiteral("dump"), dir}, true, {}, &dump))
+            continue;
+        if (!dump.trimmed().isEmpty())
+            ok = runDconf({QStringLiteral("load"), dir}, false, dump) && ok;
+    }
+    return ok;
+}
+
+QString System::defaultExportPath() const
+{
+    const QString docs = QStandardPaths::writableLocation(QStandardPaths::DocumentsLocation);
+    return QStringLiteral("%1/hypede-settings-%2.ini")
+        .arg(docs.isEmpty() ? QDir::homePath() : docs,
+             QDateTime::currentDateTime().toString(QStringLiteral("yyyy-MM-dd")));
+}
+
+bool System::exportConfig(const QUrl &file) const
+{
+    QByteArray dump;
+    if (!runDconf({QStringLiteral("dump"), QStringLiteral("/")}, false, {}, &dump))
+        return false;
+    QFile out(file.isLocalFile() ? file.toLocalFile() : file.toString());
+    QDir().mkpath(QFileInfo(out).absolutePath());
+    if (!out.open(QIODevice::WriteOnly | QIODevice::Truncate))
+        return false;
+    out.write("# Настройки HypeDE (dconf dump /). Загрузить: «Настройки → Система → Конфигурация HypeDE».\n");
+    out.write(dump);
+    return true;
+}
+
+bool System::importConfig(const QUrl &file) const
+{
+    QFile in(file.isLocalFile() ? file.toLocalFile() : file.toString());
+    if (!in.open(QIODevice::ReadOnly))
+        return false;
+    return runDconf({QStringLiteral("load"), QStringLiteral("/")}, false, in.readAll());
+}
+
+bool System::resetConfig() const
+{
+    // Только база HypeDE: обычные настройки GNOME не трогаем.
+    if (!inHypeDE())
+        return false;
+    return runDconf({QStringLiteral("reset"), QStringLiteral("-f"), QStringLiteral("/")}, false);
 }

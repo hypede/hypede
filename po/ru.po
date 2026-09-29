@@ -232,27 +232,27 @@ msgstr "Убрать с боковой панели"
 msgid "Unmount"
 msgstr "Отключить"
 
-#: apps/files/hypede_files/util.py:15
+#: apps/files/hypede_files/util.py:16
 msgid "kB"
 msgstr "кБ"
 
-#: apps/files/hypede_files/util.py:15
+#: apps/files/hypede_files/util.py:16
 msgid "MB"
 msgstr "МБ"
 
-#: apps/files/hypede_files/util.py:15
+#: apps/files/hypede_files/util.py:16
 msgid "GB"
 msgstr "ГБ"
 
-#: apps/files/hypede_files/util.py:15
+#: apps/files/hypede_files/util.py:16
 msgid "TB"
 msgstr "ТБ"
 
-#: apps/files/hypede_files/util.py:15
+#: apps/files/hypede_files/util.py:16
 msgid "PB"
 msgstr "ПБ"
 
-#: apps/files/hypede_files/util.py:21
+#: apps/files/hypede_files/util.py:22
 #, python-format
 msgid "%d byte"
 msgid_plural "%d bytes"
@@ -260,7 +260,7 @@ msgstr[0] "%d байт"
 msgstr[1] "%d байта"
 msgstr[2] "%d байт"
 
-#: apps/files/hypede_files/util.py:32
+#: apps/files/hypede_files/util.py:33
 #, python-format
 msgid "%d item"
 msgid_plural "%d items"
@@ -268,20 +268,20 @@ msgstr[0] "%d объект"
 msgstr[1] "%d объекта"
 msgstr[2] "%d объектов"
 
-#: apps/files/hypede_files/util.py:69
+#: apps/files/hypede_files/util.py:70
 msgid "The name cannot be empty"
 msgstr "Имя не может быть пустым"
 
-#: apps/files/hypede_files/util.py:71
+#: apps/files/hypede_files/util.py:72
 msgid "The name cannot contain “/”"
 msgstr "Имя не может содержать «/»"
 
-#: apps/files/hypede_files/util.py:73
+#: apps/files/hypede_files/util.py:74
 #, python-format
 msgid "“%s” is not a valid name"
 msgstr "«%s» — недопустимое имя"
 
-#: apps/files/hypede_files/util.py:75
+#: apps/files/hypede_files/util.py:76
 msgid "The name is too long"
 msgstr "Слишком длинное имя"
 
@@ -316,7 +316,7 @@ msgstr "О программе"
 
 #: apps/files/hypede_files/window.py:77 apps/files/hypede_files/window.py:928
 #: apps/files/hypede_files/window.py:946
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:532
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:652
 msgid "Files"
 msgstr "Файлы"
 
@@ -644,84 +644,150 @@ msgstr "Удалить навсегда"
 msgid "View"
 msgstr "Вид"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:41
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:53
 msgid "Network"
 msgstr "Сеть"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:43
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:55
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:45
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:57
 msgid "Device"
 msgstr "Устройство"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:47
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:59
 msgid "Personalization"
 msgstr "Персонализация"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:49
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:61
+msgid "Shelf and launcher"
+msgstr "Полка и лаунчер"
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:63
+msgid "Lock screen"
+msgstr "Экран блокировки"
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:65
 msgid "Security and privacy"
 msgstr "Безопасность и конфиденциальность"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:51
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:489
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:67
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:607
 msgid "Apps"
 msgstr "Приложения"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:53
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:69
 msgid "Accessibility"
 msgstr "Специальные возможности"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:55
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:71
 msgid "System preferences"
 msgstr "Системные настройки"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:57
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:73
 msgid "About HypeDE"
 msgstr "О HypeDE"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:69
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:85
 msgid "Could not open"
 msgstr "Не удалось открыть"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:241
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:273
 msgid "Search your device, apps, settings, web…"
 msgstr "Поиск по устройству, приложениям, настройкам, интернету…"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:259
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:296
 msgid "Continue where you left off"
 msgstr "Продолжить с того же места"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:465
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:584
 msgid "Press Enter to copy the result"
 msgstr "Нажмите Enter, чтобы скопировать результат"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:510
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:515
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:629
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:634
 msgid "Settings"
 msgstr "Настройки"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:547
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:667
 #, javascript-format
 msgid "Search for “%s” in Files"
 msgstr "Найти «%s» в «Файлах»"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:548
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:668
 msgid "Search in the home folder"
 msgstr "Поиск в домашней папке"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:559
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:679
 msgid "Web"
 msgstr "Интернет"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:563
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:683
 msgid "Search the web"
 msgstr "Поиск в интернете"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:637
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:755
 msgid "Launcher"
 msgstr "Лаунчер"
+
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:221
+msgid "%A, %B %-d"
+msgstr "%A, %-d %B"
+
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:329
+msgid "System"
+msgstr "Система"
+
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:330
+msgid "Processor"
+msgstr "Процессор"
+
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:331
+msgid "Memory"
+msgstr "Память"
+
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:358
+#, javascript-format
+msgid "%s / %s GB"
+msgstr "%s / %s ГБ"
+
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:367
+#, javascript-format
+msgid "Up for %d h %d min"
+msgstr "Работает %d ч %d мин"
+
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:375
+msgid "Battery"
+msgstr "Батарея"
+
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:384
+msgid "Today"
+msgstr "Сегодня"
+
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:416
+msgid "Charging"
+msgstr "Заряжается"
+
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:417
+msgid "Fully charged"
+msgstr "Полностью заряжена"
+
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:418
+msgid "On battery"
+msgstr "От батареи"
+
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:419
+msgid "Plugged in"
+msgstr "От сети"
+
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:428
+msgid "%B, %A"
+msgstr "%B, %A"
+
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:469
+msgid "Press any key or click to unlock"
+msgstr "Нажмите любую клавишу или щёлкните, чтобы разблокировать"
 
 #: shell/extension/hypede-shell@hypede.dev/recent.js:97
 msgid "You opened today"
@@ -744,7 +810,19 @@ msgstr[2] "Открыто %d дней назад"
 msgid "You opened %s"
 msgstr "Открыто %s"
 
-#: shell/extension/hypede-shell@hypede.dev/shelf.js:501
+#: shell/extension/hypede-shell@hypede.dev/shelf.js:731
+msgid "Shut down"
+msgstr "Выключить"
+
+#: shell/extension/hypede-shell@hypede.dev/shelf.js:733
+msgid "Restart"
+msgstr "Перезагрузить"
+
+#: shell/extension/hypede-shell@hypede.dev/shelf.js:828
+msgid "Shelf"
+msgstr "Полка"
+
+#: shell/extension/hypede-shell@hypede.dev/shelf.js:1133
 #, javascript-format
 msgid "%b %-d"
 msgstr "%-d %b"

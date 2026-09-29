@@ -7,7 +7,7 @@
 # (GDM, SDDM, greetd…) появится «HypeDE».
 
 pkgname=hypede-git
-pkgver=1.0.0
+pkgver=2.0.0
 pkgrel=1
 pkgdesc="HypeDE — GNOME в облике Chrome OS: полка, лаунчер, «Файлы» и «Настройки» на модулях KDE"
 arch=('x86_64' 'aarch64')
@@ -19,9 +19,9 @@ depends=(
   'gnome-shell>=48' 'gnome-session' 'gnome-settings-daemon' 'mutter'
   'xdg-desktop-portal-gnome' 'ttf-roboto'
   # «Файлы»
-  'python' 'python-gobject' 'gtk4' 'libadwaita>=1.7' 'gvfs' 'gnome-desktop-4'
+  'dconf' 'python' 'python-gobject' 'gtk4' 'libadwaita>=1.7' 'gvfs' 'gnome-desktop-4'
   # «Настройки»
-  'qt6-base' 'qt6-declarative' 'kcmutils' 'kcolorscheme' 'kconfig' 'kcoreaddons'
+  'qt6-base' 'qt6-declarative' 'qt6-svg' 'kcmutils' 'kcolorscheme' 'kconfig' 'kcoreaddons'
   'kirigami' 'qqc2-desktop-style' 'breeze' 'breeze-icons'
 )
 makedepends=('cmake' 'extra-cmake-modules' 'qt6-tools' 'gettext')

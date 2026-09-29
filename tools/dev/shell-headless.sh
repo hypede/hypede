@@ -27,6 +27,10 @@ start)
     head -1 "$STATE/dbus.out" > "$STATE/bus"
     export DBUS_SESSION_BUS_ADDRESS=$(cat "$STATE/bus")
     export XDG_CURRENT_DESKTOP=HypeDE:GNOME XDG_SESSION_TYPE=wayland
+    # Как в настоящем сеансе (см. session/hypede-session.in): своя база
+    # настроек и каталог оболочки HypeDE.
+    export DCONF_PROFILE=hypede HYPEDE_SESSION=1
+    export XDG_DATA_DIRS=/usr/share/hypede/shell:/usr/local/share:/usr/share
     nohup gnome-shell --headless --wayland --no-x11 --virtual-monitor "$size" \
         --mode="${HYPEDE_MODE:-hypede-dev}" > "$STATE/shell.log" 2>&1 &
     echo $! > "$STATE/shell.pid"
@@ -43,9 +47,15 @@ start)
     exit 1
     ;;
 shot)
-    bus gdbus call --session --dest org.gnome.Shell.Screenshot \
-        --object-path /org/gnome/Shell/Screenshot \
-        --method org.gnome.Shell.Screenshot.Screenshot false false "$2"
+    # Снимок через Eval: D-Bus-метод Screenshot запрещён на экране блокировки.
+    bus gdbus call --session --dest org.gnome.Shell --object-path /org/gnome/Shell \
+        --method org.gnome.Shell.Eval "(async () => {
+            const file = imports.gi.Gio.File.new_for_path('$2');
+            const stream = file.replace(null, false, 0, null);
+            await new imports.gi.Shell.Screenshot().screenshot(false, stream);
+            stream.close(null);
+        })(); '$2'"
+    sleep 0.3
     ;;
 eval)
     bus gdbus call --session --dest org.gnome.Shell --object-path /org/gnome/Shell \
@@ -55,6 +65,7 @@ run)
     shift
     export DBUS_SESSION_BUS_ADDRESS=$(cat "$STATE/bus") WAYLAND_DISPLAY=wayland-0
     export XDG_CURRENT_DESKTOP=HypeDE:GNOME XDG_SESSION_TYPE=wayland GDK_BACKEND=wayland QT_QPA_PLATFORM=wayland
+    export DCONF_PROFILE=hypede HYPEDE_SESSION=1
     nohup "$@" > "$STATE/app-$(basename "$1").log" 2>&1 &
     ;;
 stop)

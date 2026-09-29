@@ -9,6 +9,13 @@ Flickable {
 
     contentHeight: column.implicitHeight + 48
     clip: true
+
+    // При смене страницы карточки появляются «волной» сверху вниз.
+    property int revision: 0
+    onPageChanged: {
+        contentY = 0
+        revision++
+    }
     boundsBehavior: Flickable.StopAtBounds
     QQC2.ScrollBar.vertical: QQC2.ScrollBar {}
 
@@ -33,7 +40,29 @@ Flickable {
             delegate: Column {
                 id: section
                 required property var modelData
+                required property int index
                 width: column.width
+                opacity: 0
+                transform: Translate { id: shift; y: 14 }
+
+                function enter() {
+                    enterAnimation.restart()
+                }
+                Component.onCompleted: enter()
+                Connections {
+                    target: view
+                    function onRevisionChanged() { section.enter() }
+                }
+                SequentialAnimation {
+                    id: enterAnimation
+                    PropertyAction { target: section; property: "opacity"; value: 0 }
+                    PropertyAction { target: shift; property: "y"; value: 14 }
+                    PauseAnimation { duration: Math.min(section.index, 6) * 45 }
+                    ParallelAnimation {
+                        NumberAnimation { target: section; property: "opacity"; to: 1; duration: 260; easing.type: Easing.OutCubic }
+                        NumberAnimation { target: shift; property: "y"; to: 0; duration: 320; easing.type: Easing.OutCubic }
+                    }
+                }
                 SectionTitle {
                     visible: !!section.modelData.title
                     text: section.modelData.title || ""

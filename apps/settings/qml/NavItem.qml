@@ -18,7 +18,9 @@ Item {
         radius: height / 2
         topLeftRadius: 0
         bottomLeftRadius: 0
-        color: item.selected ? Theme.accentContainer : (mouse.containsMouse ? Theme.hover : "transparent")
+        // Выбранный пункт подсвечивает «пилюля» списка (Main.qml).
+        color: !item.selected && mouse.containsMouse ? Theme.hover : "transparent"
+        Behavior on color { ColorAnimation { duration: 120 } }
         border.width: item.activeFocus ? 2 : 0
         border.color: Theme.accent
     }
@@ -40,6 +42,7 @@ Item {
         anchors.verticalCenter: parent.verticalCenter
         text: item.title
         color: item.selected ? Theme.onAccentContainer : Theme.text
+        Behavior on color { ColorAnimation { duration: 180 } }
         font.pixelSize: 14
         font.weight: item.selected ? Font.Medium : Font.Normal
         wrapMode: Text.Wrap

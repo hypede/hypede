@@ -21,6 +21,7 @@ Item {
     Rectangle {
         anchors.fill: parent
         color: mouse.containsMouse && row.clickable ? Theme.hover : "transparent"
+        Behavior on color { ColorAnimation { duration: 120 } }
     }
     Rectangle {
         visible: row.showDivider

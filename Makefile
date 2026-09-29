@@ -25,9 +25,19 @@ JOBS ?= $(shell awk -v cpus="$$(nproc 2>/dev/null || echo 1)" \
 DATADIR   := $(PREFIX)/share
 BINDIR    := $(PREFIX)/bin
 LIBDIR    := $(PREFIX)/lib
+LIBEXECDIR := $(LIBDIR)/hypede
 UUID      := hypede-shell@hypede.dev
-EXTDIR    := $(DATADIR)/gnome-shell/extensions/$(UUID)
+# Оболочка HypeDE лежит в собственном каталоге данных: hypede-session
+# добавляет его в XDG_DATA_DIRS только для сеанса HypeDE, поэтому обычный
+# GNOME не видит ни режима hypede, ни компонентов оболочки.
+SHELLDATADIR := $(DATADIR)/hypede/shell
+EXTDIR    := $(SHELLDATADIR)/gnome-shell/extensions/$(UUID)
+MODESDIR  := $(SHELLDATADIR)/gnome-shell/modes
 FILESDIR  := $(DATADIR)/hypede/files
+SYSTEMDUSERDIR := $(LIBDIR)/systemd/user
+
+# Подстановка путей в файлы сеанса
+SUBST = sed -e 's|@LIBEXECDIR@|$(LIBEXECDIR)|g' -e 's|@SHELLDATADIR@|$(SHELLDATADIR)|g'
 
 INSTALL      ?= install
 INSTALL_DATA := $(INSTALL) -m644
@@ -71,6 +81,7 @@ check:
 	python3 -m unittest discover -s apps/files/tests -t apps/files
 	node shell/tests/calculator.test.mjs
 	glib-compile-schemas --strict --dry-run data/schemas
+	sh -n session/hypede-session.in && sh -n session/hypede-session-cleanup.in && sh -n session/hypede-autostart-filter
 	msgfmt --check -o /dev/null po/ru.po
 
 # ---------- установка ----------
@@ -80,13 +91,26 @@ install: install-shell install-session install-data install-files install-settin
 install-shell:
 	$(INSTALL) -d '$(DESTDIR)$(EXTDIR)'
 	$(INSTALL_DATA) $(EXT_FILES) '$(DESTDIR)$(EXTDIR)'/
-	$(INSTALL) -Dm644 shell/modes/hypede.json '$(DESTDIR)$(DATADIR)'/gnome-shell/modes/hypede.json
+	$(INSTALL) -Dm644 shell/modes/hypede.json '$(DESTDIR)$(MODESDIR)'/hypede.json
 
 install-session:
-	$(INSTALL) -Dm644 session/hypede.desktop '$(DESTDIR)$(DATADIR)'/wayland-sessions/hypede.desktop
+	mkdir -p '$(BUILD)/session'
+	$(SUBST) session/hypede.desktop > '$(BUILD)/session/hypede.desktop'
+	$(SUBST) session/hypede-session.in > '$(BUILD)/session/hypede-session'
+	$(SUBST) session/hypede-session-cleanup.in > '$(BUILD)/session/hypede-session-cleanup'
+	$(SUBST) session/systemd/hypede-session.service > '$(BUILD)/session/hypede-session.service'
+	$(SUBST) session/systemd/autostart-filter.conf > '$(BUILD)/session/autostart-filter.conf'
+	$(INSTALL) -Dm644 '$(BUILD)/session/hypede.desktop' '$(DESTDIR)$(DATADIR)'/wayland-sessions/hypede.desktop
 	$(INSTALL) -Dm644 session/hypede.session '$(DESTDIR)$(DATADIR)'/gnome-session/sessions/hypede.session
-	$(INSTALL) -Dm644 session/gnome-session@hypede.target.d/hypede.session.conf \
-		'$(DESTDIR)$(LIBDIR)'/systemd/user/gnome-session@hypede.target.d/hypede.session.conf
+	$(INSTALL) -Dm755 '$(BUILD)/session/hypede-session' '$(DESTDIR)$(LIBEXECDIR)'/hypede-session
+	$(INSTALL) -Dm755 '$(BUILD)/session/hypede-session-cleanup' '$(DESTDIR)$(LIBEXECDIR)'/hypede-session-cleanup
+	$(INSTALL) -Dm755 session/hypede-autostart-filter '$(DESTDIR)$(LIBEXECDIR)'/hypede-autostart-filter
+	$(INSTALL) -Dm644 session/dconf-profile '$(DESTDIR)$(DATADIR)'/dconf/profile/hypede
+	$(INSTALL) -Dm644 session/systemd/hypede.session.conf \
+		'$(DESTDIR)$(SYSTEMDUSERDIR)'/gnome-session@hypede.target.d/hypede.session.conf
+	$(INSTALL) -Dm644 '$(BUILD)/session/hypede-session.service' '$(DESTDIR)$(SYSTEMDUSERDIR)'/hypede-session.service
+	$(INSTALL) -Dm644 '$(BUILD)/session/autostart-filter.conf' \
+		'$(DESTDIR)$(SYSTEMDUSERDIR)'/app-.service.d/hypede-autostart-filter.conf
 
 install-data: mo
 	$(INSTALL) -Dm644 data/schemas/dev.hypede.shell.gschema.xml \

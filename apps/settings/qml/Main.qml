@@ -82,7 +82,7 @@ Rectangle {
     ListView {
         id: nav
         anchors.top: titleBar.bottom
-        anchors.bottom: parent.bottom
+        anchors.bottom: supportCard.top
         anchors.left: parent.left
         width: root.width > 960 ? Theme.navWidth : 232
         topMargin: 4
@@ -90,6 +90,19 @@ Rectangle {
         clip: true
         model: Catalog.pages
         boundsBehavior: Flickable.StopAtBounds
+        // Выделение — «пилюля», которая плавно переезжает к выбранному пункту.
+        currentIndex: root.searching ? -1 : Catalog.pages.findIndex(p => p.id === root.currentPage)
+        highlightFollowsCurrentItem: true
+        highlightMoveDuration: 240
+        highlightMoveVelocity: -1
+        highlightResizeDuration: 0
+        highlight: Rectangle {
+            width: nav.width - 12
+            radius: height / 2
+            topLeftRadius: 0
+            bottomLeftRadius: 0
+            color: Theme.accentContainer
+        }
         delegate: NavItem {
             required property var modelData
             width: ListView.view.width
@@ -103,6 +116,15 @@ Rectangle {
         }
     }
 
+    // Карточка «Support Me!» под меню разделов.
+    SupportCard {
+        id: supportCard
+        anchors.left: parent.left
+        anchors.bottom: parent.bottom
+        anchors.bottomMargin: 8
+        width: nav.width
+    }
+
     Item {
         id: content
         anchors.top: titleBar.bottom
@@ -110,16 +132,24 @@ Rectangle {
         anchors.left: nav.right
         anchors.right: parent.right
 
+        // Страницы сменяют друг друга плавно: уходящая гаснет, новая
+        // проявляется и чуть поднимается.
         PageView {
+            readonly property bool shown: !root.searching && !root.activeKcm
             anchors.fill: parent
-            visible: !root.searching && !root.activeKcm
+            opacity: shown ? 1 : 0
+            visible: opacity > 0
+            Behavior on opacity { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
             page: root.page
             onOpenKcm: kcm => root.openKcm(kcm)
         }
 
         KcmView {
+            readonly property bool shown: root.activeKcm !== ""
             anchors.fill: parent
-            visible: root.activeKcm !== ""
+            opacity: shown ? 1 : 0
+            visible: shown || opacity > 0
+            Behavior on opacity { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
             kcm: root.activeKcm
             canGoBack: root.openedKcm !== ""
             obscured: root.pendingNavigation !== null
@@ -128,8 +158,11 @@ Rectangle {
 
         SearchResults {
             id: results
+            readonly property bool shown: root.searching
             anchors.fill: parent
-            visible: root.searching
+            opacity: shown ? 1 : 0
+            visible: opacity > 0
+            Behavior on opacity { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
             query: titleBar.searchText
             onActivated: (page, kcm) => {
                 titleBar.searchText = ""
@@ -156,12 +189,16 @@ Rectangle {
 
     Rectangle {
         anchors.fill: parent
-        visible: root.pendingNavigation !== null
+        opacity: root.pendingNavigation !== null ? 1 : 0
+        visible: opacity > 0
+        Behavior on opacity { NumberAnimation { duration: 160 } }
         color: Qt.rgba(0, 0, 0, 0.35)
         MouseArea { anchors.fill: parent }
 
         Rectangle {
             anchors.centerIn: parent
+            scale: root.pendingNavigation !== null ? 1 : 0.92
+            Behavior on scale { NumberAnimation { duration: 220; easing.type: Easing.OutBack } }
             width: 420
             height: dialogColumn.implicitHeight + 48
             radius: 24

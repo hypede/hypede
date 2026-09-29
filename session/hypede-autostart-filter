@@ -1,0 +1,19 @@
+#!/bin/sh
+# ExecCondition для программ автозапуска: код 1 — не запускать.
+# Аргумент — имя юнита без суффикса, например app-baloo_file@autostart.
+case ":$XDG_CURRENT_DESKTOP:" in
+    *:HypeDE:*) ;;
+    *) exit 0 ;;
+esac
+case $1 in
+    app-*@autostart) ;;
+    *) exit 0 ;;
+esac
+name=${1#app-}
+name=${name%@autostart}
+id=$(systemd-escape --unescape -- "$name" 2>/dev/null) || id=$name
+blocked=$(gsettings get dev.hypede.session disabled-autostart 2>/dev/null) || exit 0
+case $blocked in
+    *"'$id'"*) exit 1 ;;
+esac
+exit 0

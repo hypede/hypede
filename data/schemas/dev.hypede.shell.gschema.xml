@@ -1,27 +1,185 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <schemalist gettext-domain="hypede">
+
+  <!-- ================================================================ -->
+  <!-- Оболочка: полка, лаунчер, анимации, экран блокировки              -->
+  <!-- ================================================================ -->
   <schema id="dev.hypede.shell" path="/dev/hypede/shell/">
+
+    <!-- Полка -->
+    <key name="shelf-position" type="s">
+      <choices>
+        <choice value="bottom"/>
+        <choice value="left"/>
+        <choice value="right"/>
+        <choice value="top"/>
+      </choices>
+      <default>'bottom'</default>
+      <summary>Край экрана, у которого стоит полка</summary>
+    </key>
+
     <key name="shelf-alignment" type="s">
       <choices>
         <choice value="center"/>
-        <choice value="left"/>
+        <choice value="start"/>
       </choices>
       <default>'center'</default>
       <summary>Расположение значков на полке</summary>
-      <description>center — по центру, как в Chrome OS; left — сразу после кнопки лаунчера.</description>
+      <description>center — по центру, как в Chrome OS; start — сразу после кнопки лаунчера.</description>
+    </key>
+
+    <key name="shelf-size" type="i">
+      <range min="36" max="96"/>
+      <default>52</default>
+      <summary>Толщина полки в пикселях</summary>
+    </key>
+
+    <key name="shelf-icon-size" type="i">
+      <range min="20" max="72"/>
+      <default>36</default>
+      <summary>Размер значков приложений на полке</summary>
+    </key>
+
+    <key name="shelf-style" type="s">
+      <choices>
+        <choice value="full"/>
+        <choice value="floating"/>
+      </choices>
+      <default>'full'</default>
+      <summary>Вид полки</summary>
+      <description>full — во всю ширину края; floating — «островок» со скруглёнными углами и отступом от края.</description>
+    </key>
+
+    <key name="shelf-opacity" type="i">
+      <range min="0" max="100"/>
+      <default>80</default>
+      <summary>Непрозрачность фона полки, %</summary>
+    </key>
+
+    <key name="shelf-blur" type="b">
+      <default>true</default>
+      <summary>Размывать то, что под полкой</summary>
     </key>
 
     <key name="shelf-autohide" type="b">
       <default>false</default>
       <summary>Автоматически скрывать полку</summary>
-      <description>Полка уезжает вниз, когда окно касается её, и выезжает при подводе указателя к нижнему краю.</description>
+      <description>Полка уезжает за край, когда окно касается её, и выезжает при подводе указателя к краю.</description>
+    </key>
+
+    <key name="shelf-running-indicator" type="s">
+      <choices>
+        <choice value="dot"/>
+        <choice value="line"/>
+        <choice value="none"/>
+      </choices>
+      <default>'dot'</default>
+      <summary>Как отмечать запущенные приложения</summary>
+    </key>
+
+    <key name="shelf-show-pinned" type="b">
+      <default>true</default>
+      <summary>Показывать закреплённые приложения</summary>
+      <description>Если выключено, на полке остаются только запущенные приложения.</description>
+    </key>
+
+    <key name="shelf-hover-zoom" type="b">
+      <default>false</default>
+      <summary>Увеличивать значок под указателем</summary>
+    </key>
+
+    <key name="shelf-tooltips" type="b">
+      <default>true</default>
+      <summary>Подсказки с названиями приложений</summary>
     </key>
 
     <key name="show-date" type="b">
       <default>true</default>
       <summary>Показывать дату на полке</summary>
+      <description>На вертикальной полке дата не показывается — для неё там нет места.</description>
     </key>
 
+    <key name="minimize-to-shelf" type="b">
+      <default>true</default>
+      <summary>Сворачивать окна в значок на полке</summary>
+      <description>Окно при сворачивании «улетает» в значок своего приложения.</description>
+    </key>
+
+    <!-- Лаунчер -->
+    <key name="launcher-style" type="s">
+      <choices>
+        <choice value="bubble"/>
+        <choice value="fullscreen"/>
+      </choices>
+      <default>'bubble'</default>
+      <summary>Вид лаунчера</summary>
+      <description>bubble — «пузырь» у угла полки; fullscreen — на весь экран поверх окон.</description>
+    </key>
+
+    <key name="launcher-columns" type="i">
+      <range min="3" max="10"/>
+      <default>5</default>
+      <summary>Число колонок в сетке приложений лаунчера</summary>
+      <description>В полноэкранном лаунчере колонок больше — столько, сколько помещается.</description>
+    </key>
+
+    <key name="launcher-icon-size" type="i">
+      <range min="32" max="96"/>
+      <default>48</default>
+      <summary>Размер значков в лаунчере</summary>
+    </key>
+
+    <key name="launcher-show-labels" type="b">
+      <default>true</default>
+      <summary>Подписи под значками в лаунчере</summary>
+    </key>
+
+    <key name="launcher-sort" type="s">
+      <choices>
+        <choice value="alphabetical"/>
+        <choice value="usage"/>
+      </choices>
+      <default>'alphabetical'</default>
+      <summary>Порядок приложений в лаунчере</summary>
+      <description>alphabetical — по алфавиту; usage — сначала те, что запускаются чаще.</description>
+    </key>
+
+    <key name="show-recent-files" type="b">
+      <default>true</default>
+      <summary>Показывать недавние файлы в лаунчере</summary>
+      <description>Раздел «Продолжить с того же места» в лаунчере.</description>
+    </key>
+
+    <key name="launcher-search-providers" type="as">
+      <default>['calculator', 'apps', 'settings', 'files', 'web']</default>
+      <summary>Что искать в лаунчере</summary>
+      <description>Возможные значения: calculator, apps, settings, files, web.</description>
+    </key>
+
+    <key name="launcher-hidden-apps" type="as">
+      <default>['org.gnome.Settings.desktop', 'systemsettings.desktop', 'kdesystemsettings.desktop', 'org.gnome.Extensions.desktop', 'com.mattjakeman.ExtensionManager.desktop']</default>
+      <summary>Приложения, скрытые в лаунчере</summary>
+      <description>По умолчанию скрыты «Настройки» GNOME, «Параметры системы» KDE и менеджеры расширений GNOME: в HypeDE их заменяют «Настройки» HypeDE. Запускать их по-прежнему можно командой.</description>
+    </key>
+
+    <key name="launcher-opacity" type="i">
+      <range min="40" max="100"/>
+      <default>96</default>
+      <summary>Непрозрачность фона лаунчера и меню, %</summary>
+    </key>
+
+    <key name="launcher-blur" type="b">
+      <default>true</default>
+      <summary>Размывать фон под лаунчером</summary>
+    </key>
+
+    <key name="web-search-url" type="s">
+      <default>'https://www.google.com/search?q=%s'</default>
+      <summary>Адрес поиска в интернете</summary>
+      <description>%s заменяется поисковым запросом.</description>
+    </key>
+
+    <!-- Поведение и оформление -->
     <key name="super-key-action" type="s">
       <choices>
         <choice value="launcher"/>
@@ -32,28 +190,115 @@
       <description>launcher — лаунчер (как клавиша «Все» в Chrome OS); overview — обзор окон.</description>
     </key>
 
-    <key name="show-recent-files" type="b">
+    <key name="window-animations" type="s">
+      <choices>
+        <choice value="hypede"/>
+        <choice value="gnome"/>
+      </choices>
+      <default>'hypede'</default>
+      <summary>Анимации окон</summary>
+      <description>hypede — окна мягко вырастают и тают, как в Chrome OS; gnome — стандартные анимации GNOME.</description>
+    </key>
+
+    <key name="animation-speed" type="d">
+      <range min="0.25" max="3.0"/>
+      <default>1.0</default>
+      <summary>Скорость анимаций</summary>
+      <description>Множитель скорости: 2 — вдвое быстрее, 0.5 — вдвое медленнее. Полностью анимации выключает ключ enable-animations в org.gnome.desktop.interface.</description>
+    </key>
+
+    <key name="corner-radius" type="i">
+      <range min="0" max="32"/>
+      <default>20</default>
+      <summary>Скругление углов лаунчера, меню и уведомлений</summary>
+    </key>
+
+    <key name="notification-position" type="s">
+      <choices>
+        <choice value="bottom-right"/>
+        <choice value="top-right"/>
+        <choice value="top-center"/>
+      </choices>
+      <default>'bottom-right'</default>
+      <summary>Где появляются всплывающие уведомления</summary>
+    </key>
+
+    <!-- Экран блокировки -->
+    <key name="lock-style" type="s">
+      <choices>
+        <choice value="hypede"/>
+        <choice value="gnome"/>
+      </choices>
+      <default>'hypede'</default>
+      <summary>Экран блокировки</summary>
+      <description>hypede — свой экран блокировки с большими часами и анимациями; gnome — стандартный.</description>
+    </key>
+
+    <key name="lock-clock-style" type="s">
+      <choices>
+        <choice value="digital"/>
+        <choice value="stacked"/>
+        <choice value="analog"/>
+      </choices>
+      <default>'digital'</default>
+      <summary>Часы на экране блокировки</summary>
+    </key>
+
+    <key name="lock-intro-animation" type="b">
       <default>true</default>
-      <summary>Показывать недавние файлы в лаунчере</summary>
-      <description>Раздел «Продолжить с того же места» в лаунчере.</description>
+      <summary>Волны при блокировке</summary>
+      <description>Цветные волны прокатываются по экрану в момент блокировки.</description>
     </key>
 
-    <key name="launcher-columns" type="i">
-      <range min="4" max="8"/>
-      <default>5</default>
-      <summary>Число колонок в сетке приложений лаунчера</summary>
+    <key name="lock-show-cards" type="b">
+      <default>true</default>
+      <summary>Карточки на экране блокировки</summary>
+      <description>Заряд, музыка и загрузка системы рядом с полем пароля.</description>
     </key>
 
-    <key name="launcher-hidden-apps" type="as">
-      <default>['org.gnome.Settings.desktop', 'systemsettings.desktop', 'kdesystemsettings.desktop']</default>
-      <summary>Приложения, скрытые в лаунчере</summary>
-      <description>По умолчанию скрыты «Настройки» GNOME и «Параметры системы» KDE: в HypeDE их заменяют «Настройки» HypeDE. Запускать их по-прежнему можно командой.</description>
+    <key name="lock-blur" type="i">
+      <range min="0" max="100"/>
+      <default>60</default>
+      <summary>Размытие обоев на экране блокировки, %</summary>
+    </key>
+  </schema>
+
+  <!-- ================================================================ -->
+  <!-- Сеанс: службы, автозапуск, расширения GNOME                        -->
+  <!-- ================================================================ -->
+  <schema id="dev.hypede.session" path="/dev/hypede/session/">
+    <key name="optional-services" type="as">
+      <default>['print-notifications', 'disk-health']</default>
+      <summary>Необязательные службы GNOME, которые запускаются в HypeDE</summary>
+      <description>Возможные значения: file-indexer, software-updates, calendar-alarms, remote-desktop, smartcard, usb-protection, mobile-broadband, disk-health, print-notifications. Изменения вступают в силу при следующем входе.</description>
     </key>
 
-    <key name="web-search-url" type="s">
-      <default>'https://www.google.com/search?q=%s'</default>
-      <summary>Адрес поиска в интернете</summary>
-      <description>%s заменяется поисковым запросом.</description>
+    <key name="disabled-autostart" type="as">
+      <default>['baloo_file', 'org.gnome.Evolution-alarm-notify', 'localsearch-3', 'geoclue-demo-agent', 'org.gnome.Software', 'gnome-software-service']</default>
+      <summary>Программы автозапуска, которые не запускаются в HypeDE</summary>
+      <description>Имена .desktop-файлов из каталогов автозапуска без расширения. В обычном GNOME они запускаются как прежде.</description>
+    </key>
+
+    <key name="allow-gnome-extensions" type="b">
+      <default>false</default>
+      <summary>Разрешить расширения GNOME</summary>
+      <description>По умолчанию в сеансе HypeDE работают только его собственные компоненты: расширения, включённые для обычного GNOME, сюда не попадают.</description>
+    </key>
+
+    <key name="imported-from-gnome" type="b">
+      <default>false</default>
+      <summary>Настройки GNOME уже перенесены</summary>
+      <description>При первом входе HypeDE переносит из обычного GNOME раскладки, настройки мыши, клавиатуры и специальных возможностей.</description>
+    </key>
+  </schema>
+
+  <!-- ================================================================ -->
+  <!-- «Настройки» HypeDE                                               -->
+  <!-- ================================================================ -->
+  <schema id="dev.hypede.settings" path="/dev/hypede/settings/">
+    <key name="show-support-card" type="b">
+      <default>true</default>
+      <summary>Показывать карточку поддержки проекта</summary>
     </key>
   </schema>
 </schemalist>

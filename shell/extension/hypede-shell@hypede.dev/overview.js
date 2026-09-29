@@ -63,6 +63,8 @@ export class OverviewTweaks {
     }
 
     _onOverlayKey() {
+        if (Main.sessionMode.isLocked)
+            return;
         if (this._settings.get_string('super-key-action') === 'overview') {
             this._launcher.close();
             Main.overview.toggle();

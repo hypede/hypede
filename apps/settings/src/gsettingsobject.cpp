@@ -74,7 +74,7 @@ GVariant *fromVariant(const QVariant &value, const GVariantType *type)
 
 } // namespace
 
-GSettingsObject::GSettingsObject(const QString &schemaId, QObject *parent)
+GSettingsObject::GSettingsObject(const QString &schemaId, const QString &path, QObject *parent)
     : QObject(parent)
     , m_schemaId(schemaId)
 {
@@ -85,7 +85,15 @@ GSettingsObject::GSettingsObject(const QString &schemaId, QObject *parent)
     m_schema = g_settings_schema_source_lookup(source, schemaId.toUtf8().constData(), TRUE);
     if (!m_schema)
         return;
-    m_settings = g_settings_new_full(m_schema, nullptr, nullptr);
+    const QByteArray pathBytes = path.toUtf8();
+    const char *schemaPath = g_settings_schema_get_path(m_schema);
+    // У перемещаемой схемы без пути g_settings_new_full() тоже завершает процесс.
+    if (!schemaPath && path.isEmpty()) {
+        g_settings_schema_unref(m_schema);
+        m_schema = nullptr;
+        return;
+    }
+    m_settings = g_settings_new_full(m_schema, nullptr, path.isEmpty() ? nullptr : pathBytes.constData());
     g_signal_connect(m_settings, "changed", G_CALLBACK(&GSettingsObject::onChanged), this);
 }
 
@@ -228,9 +236,21 @@ GSettingsObject *GSettingsHub::schema(const QString &schemaId)
     auto it = m_cache.constFind(schemaId);
     if (it != m_cache.constEnd())
         return it.value();
-    auto *object = new GSettingsObject(schemaId, this);
+    auto *object = new GSettingsObject(schemaId, QString(), this);
     QQmlEngine::setObjectOwnership(object, QQmlEngine::CppOwnership);
     m_cache.insert(schemaId, object);
+    return object;
+}
+
+GSettingsObject *GSettingsHub::schemaAt(const QString &schemaId, const QString &path)
+{
+    const QString cacheKey = schemaId + QLatin1Char('@') + path;
+    auto it = m_cache.constFind(cacheKey);
+    if (it != m_cache.constEnd())
+        return it.value();
+    auto *object = new GSettingsObject(schemaId, path, this);
+    QQmlEngine::setObjectOwnership(object, QQmlEngine::CppOwnership);
+    m_cache.insert(cacheKey, object);
     return object;
 }
 

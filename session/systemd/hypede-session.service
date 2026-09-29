@@ -1,0 +1,13 @@
+# Сопровождает сеанс HypeDE. При выходе убирает из окружения systemd то, что
+# добавил hypede-session: иначе следующий вход в обычный GNOME (если systemd
+# пользователя не перезапускался) унаследовал бы настройки HypeDE.
+[Unit]
+Description=HypeDE session
+PartOf=gnome-session@hypede.target
+After=gnome-session@hypede.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/true
+ExecStop=@LIBEXECDIR@/hypede-session-cleanup

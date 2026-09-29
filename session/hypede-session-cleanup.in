@@ -1,0 +1,13 @@
+#!/bin/sh
+# Вызывается при выходе из сеанса HypeDE (hypede-session.service).
+# Убирает из окружения systemd пользователя переменные, выставленные
+# hypede-session, и каталог оболочки HypeDE из XDG_DATA_DIRS.
+data_dirs=$(systemctl --user show-environment 2>/dev/null | sed -n 's/^XDG_DATA_DIRS=//p')
+cleaned=$(printf '%s' "$data_dirs" | tr ':' '\n' | grep -vxF '@SHELLDATADIR@' | paste -sd: -)
+systemctl --user unset-environment DCONF_PROFILE HYPEDE_SESSION
+if [ -n "$cleaned" ]; then
+    systemctl --user set-environment "XDG_DATA_DIRS=$cleaned"
+else
+    systemctl --user unset-environment XDG_DATA_DIRS
+fi
+exit 0

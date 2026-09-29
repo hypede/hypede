@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.22)
-project(hypede-settings VERSION 1.0.0 LANGUAGES CXX)
+project(hypede-settings VERSION 2.0.0 LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -25,6 +25,7 @@ qt_add_executable(hypede-settings
     src/kcmhost.cpp src/kcmhost.h
     src/gsettingsobject.cpp src/gsettingsobject.h
     src/system.cpp src/system.h
+    src/displays.cpp src/displays.h
 )
 
 set_source_files_properties(qml/Theme.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
@@ -57,10 +58,17 @@ qt_add_qml_module(hypede-settings
         qml/AccentPicker.qml
         qml/InputSources.qml
         qml/AboutHeader.qml
+        qml/DisplaysBlock.qml
+        qml/StorageBlock.qml
+        qml/AppListBlock.qml
+        qml/AutostartBlock.qml
+        qml/ConfigBlock.qml
+        qml/SupportCard.qml
     SOURCES
         src/kcmhost.h
         src/gsettingsobject.h
         src/system.h
+        src/displays.h
 )
 
 # QML компилируется только в байт-код, без перевода в C++ (AOT): иначе на

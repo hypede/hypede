@@ -2,9 +2,17 @@
     "uuid": "hypede-shell@hypede.dev",
     "name": "HypeDE Shell",
     "description": "Turns GNOME Shell into a Chrome OS-like desktop: bottom shelf, bubble launcher, status tray and quick settings.",
-    "shell-version": ["48", "49", "50"],
+    "shell-version": [
+        "48",
+        "49",
+        "50"
+    ],
     "settings-schema": "dev.hypede.shell",
     "gettext-domain": "hypede",
     "url": "https://github.com/hypede/hypede",
-    "version": 1
+    "version": 2,
+    "session-modes": [
+        "user",
+        "unlock-dialog"
+    ]
 }

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">
-<!-- Обои HypeDE — в «Настройках» GNOME тоже видны. -->
+<!-- Обои HypeDE. Файл создан tools/gen-wallpapers.py. -->
 <wallpapers>
   <wallpaper deleted="false">
     <name>HypeDE Horizon</name>
@@ -12,23 +12,48 @@
     <scolor>#0d1830</scolor>
   </wallpaper>
   <wallpaper deleted="false">
-    <name>HypeDE Bay</name>
-    <filename>/usr/share/hypede/wallpapers/bay.png</filename>
+    <name>HypeDE Lagoon</name>
+    <filename>/usr/share/hypede/wallpapers/lagoon-light.svg</filename>
+    <filename-dark>/usr/share/hypede/wallpapers/lagoon-dark.svg</filename-dark>
     <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#d8f1ef</pcolor>
+    <scolor>#062326</scolor>
   </wallpaper>
   <wallpaper deleted="false">
-    <name>HypeDE Dawn</name>
-    <filename>/usr/share/hypede/wallpapers/dawn.png</filename>
+    <name>HypeDE Ember</name>
+    <filename>/usr/share/hypede/wallpapers/ember-light.svg</filename>
+    <filename-dark>/usr/share/hypede/wallpapers/ember-dark.svg</filename-dark>
     <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#fde2cf</pcolor>
+    <scolor>#2a1220</scolor>
   </wallpaper>
   <wallpaper deleted="false">
-    <name>HypeDE Forest</name>
-    <filename>/usr/share/hypede/wallpapers/forest.png</filename>
+    <name>HypeDE Aurora</name>
+    <filename>/usr/share/hypede/wallpapers/aurora-light.svg</filename>
+    <filename-dark>/usr/share/hypede/wallpapers/aurora-dark.svg</filename-dark>
     <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#e6e4fb</pcolor>
+    <scolor>#0b0b24</scolor>
   </wallpaper>
   <wallpaper deleted="false">
-    <name>HypeDE Graphite</name>
-    <filename>/usr/share/hypede/wallpapers/graphite.png</filename>
+    <name>HypeDE Peaks</name>
+    <filename>/usr/share/hypede/wallpapers/peaks-light.svg</filename>
+    <filename-dark>/usr/share/hypede/wallpapers/peaks-dark.svg</filename-dark>
     <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#e3ebf3</pcolor>
+    <scolor>#0e141c</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>HypeDE Bloom</name>
+    <filename>/usr/share/hypede/wallpapers/bloom-light.svg</filename>
+    <filename-dark>/usr/share/hypede/wallpapers/bloom-dark.svg</filename-dark>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#fbe3ee</pcolor>
+    <scolor>#22101f</scolor>
   </wallpaper>
 </wallpapers>

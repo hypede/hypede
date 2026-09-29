@@ -1,9 +1,11 @@
-// Лаунчер в духе Chrome OS: «пузырь» над левым углом полки.
+// Лаунчер в духе Chrome OS.
 //
-// Сверху — строка поиска, под ней «Продолжить с того же места» (недавние
-// файлы) и сетка всех приложений по алфавиту. Как только в строке появляется
-// текст, сетка сменяется списком результатов: приложения, разделы настроек,
-// недавние файлы, калькулятор и поиск в интернете.
+// Два вида: «пузырь» у угла полки (как в новых Chrome OS) и полноэкранный
+// (как в старых). Сверху — строка поиска, под ней «Продолжить с того же
+// места» (недавние файлы) и сетка приложений. Как только в строке появляется
+// текст, сетка сменяется результатами: калькулятор, приложения, разделы
+// настроек, файлы, поиск в интернете — что именно и в каком порядке,
+// выбирается в настройках.
 
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
@@ -13,6 +15,7 @@ import Pango from 'gi://Pango';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
+import * as DND from 'resource:///org/gnome/shell/ui/dnd.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
 import * as BoxPointer from 'resource:///org/gnome/shell/ui/boxpointer.js';
@@ -23,16 +26,25 @@ import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js'
 
 import {evaluate as calculate, looksLikeMath} from './calculator.js';
 import {loadRecentFiles, describeWhen} from './recent.js';
+import {addSecondaryClick} from './util.js';
 
-const APP_ICON_SIZE = 48;
 const RESULT_ICON_SIZE = 32;
 const MAX_APP_RESULTS = 6;
 const MAX_FILE_RESULTS = 4;
 const MAX_SETTINGS_RESULTS = 3;
 const MAX_CONTINUE_ITEMS = 4;
+const BUBBLE_MAX_HEIGHT = 688;
+const STAGGER_LIMIT = 30;
 
 const SETTINGS_APP_ID = 'dev.hypede.Settings.desktop';
 const FILES_APP_ID = 'dev.hypede.Files.desktop';
+
+const MENU_SIDE = {
+    bottom: St.Side.BOTTOM,
+    top: St.Side.TOP,
+    left: St.Side.LEFT,
+    right: St.Side.RIGHT,
+};
 
 // Разделы «Настроек» HypeDE, которые можно найти прямо из лаунчера.
 // id совпадает с аргументом hypede-settings --page.
@@ -42,17 +54,21 @@ const SETTINGS_PAGES = [
     {id: 'bluetooth', icon: 'bluetooth-active-symbolic',
         name: () => _('Bluetooth'), keywords: 'bluetooth headphones mouse наушники блютуз'},
     {id: 'devices', icon: 'input-mouse-symbolic',
-        name: () => _('Device'), keywords: 'device mouse touchpad keyboard display sound printer устройство мышь клавиатура экран звук принтер'},
+        name: () => _('Device'), keywords: 'device mouse touchpad keyboard display monitor resolution scale sound printer устройство мышь клавиатура экран монитор разрешение масштаб звук принтер'},
     {id: 'personalization', icon: 'preferences-desktop-wallpaper-symbolic',
-        name: () => _('Personalization'), keywords: 'wallpaper theme dark light accent shelf обои тема тёмная светлая полка персонализация'},
+        name: () => _('Personalization'), keywords: 'wallpaper theme dark light accent font icons cursor обои тема тёмная светлая акцент шрифт значки курсор персонализация'},
+    {id: 'shelf', icon: 'view-app-grid-symbolic',
+        name: () => _('Shelf and launcher'), keywords: 'shelf panel taskbar dock launcher position autohide полка панель задач лаунчер положение скрывать'},
+    {id: 'lockscreen', icon: 'system-lock-screen-symbolic',
+        name: () => _('Lock screen'), keywords: 'lock screen clock password блокировка экран часы пароль'},
     {id: 'privacy', icon: 'security-high-symbolic',
         name: () => _('Security and privacy'), keywords: 'privacy security lock screen firewall приватность безопасность блокировка'},
     {id: 'apps', icon: 'view-app-grid-symbolic',
-        name: () => _('Apps'), keywords: 'apps default applications autostart flatpak приложения по умолчанию автозапуск'},
+        name: () => _('Apps'), keywords: 'apps default applications autostart flatpak notifications приложения по умолчанию автозапуск уведомления'},
     {id: 'accessibility', icon: 'org.gnome.Settings-accessibility-symbolic',
         name: () => _('Accessibility'), keywords: 'accessibility zoom contrast screen reader большой текст контраст доступность'},
     {id: 'system', icon: 'preferences-system-symbolic',
-        name: () => _('System preferences'), keywords: 'system date time language power users система дата время язык питание пользователи'},
+        name: () => _('System preferences'), keywords: 'system date time language power users storage services startup система дата время язык питание пользователи хранилище службы автозапуск'},
     {id: 'about', icon: 'help-about-symbolic',
         name: () => _('About HypeDE'), keywords: 'about version system info о системе версия'},
 ];
@@ -76,10 +92,11 @@ function _spawnApp(appId, args) {
     Util.spawn([exe ?? appId.replace(/\.desktop$/, ''), ...args]);
 }
 
-// Одна плитка приложения в сетке.
+// Одна плитка приложения в сетке. Плитку можно перетащить на полку —
+// приложение закрепится.
 const AppTile = GObject.registerClass(
 class AppTile extends St.Button {
-    _init(app, launcher) {
+    _init(app, launcher, iconSize, showLabel) {
         super._init({
             style_class: 'hypede-launcher-app',
             can_focus: true,
@@ -89,28 +106,46 @@ class AppTile extends St.Button {
         });
         this.app = app;
         this._launcher = launcher;
+        this._iconSize = iconSize;
+        this._delegate = this;
 
         const box = new St.BoxLayout({
             orientation: Clutter.Orientation.VERTICAL,
             x_align: Clutter.ActorAlign.CENTER,
         });
-        box.add_child(new St.Bin({
+        this._icon = new St.Bin({
             style_class: 'hypede-launcher-app-icon',
-            child: app.create_icon_texture(APP_ICON_SIZE),
-            x_align: Clutter.ActorAlign.CENTER,
-        }));
-        const label = new St.Label({
-            text: app.get_name(),
-            style_class: 'hypede-launcher-app-label',
+            child: app.create_icon_texture(iconSize),
             x_align: Clutter.ActorAlign.CENTER,
         });
-        label.clutter_text.ellipsize = Pango.EllipsizeMode.END;
-        box.add_child(label);
+        box.add_child(this._icon);
+        if (showLabel) {
+            const label = new St.Label({
+                text: app.get_name(),
+                style_class: 'hypede-launcher-app-label',
+                x_align: Clutter.ActorAlign.CENTER,
+            });
+            label.clutter_text.ellipsize = Pango.EllipsizeMode.END;
+            box.add_child(label);
+        } else {
+            this.add_style_class_name('no-label');
+        }
         this.set_child(box);
+
+        this._draggable = DND.makeDraggable(this, {timeoutThreshold: 200});
+        this._draggable.connect('drag-begin', () => this._launcher.close());
 
         this.connect('clicked', (_b, button) => this._activate(button));
         this.connect('popup-menu', () => this._popupMenu());
-        _addSecondaryClick(this, () => this._popupMenu());
+        addSecondaryClick(this, () => this._popupMenu());
+    }
+
+    getDragActor() {
+        return this.app.create_icon_texture(this._iconSize);
+    }
+
+    getDragActorSource() {
+        return this._icon;
     }
 
     _activate(button) {
@@ -200,27 +235,23 @@ function _section(title) {
     return box;
 }
 
-function _addSecondaryClick(actor, callback) {
-    // Clutter.ClickGesture есть с GNOME 48; на всякий случай оставлен и
-    // запасной путь через событие нажатия.
-    if (Clutter.ClickGesture) {
-        const gesture = new Clutter.ClickGesture({
-            required_button: Clutter.BUTTON_SECONDARY,
-            recognize_on_press: true,
+// Плавное появление набора актёров «волной» — один за другим.
+function _stagger(actors, {dy = 12, step = 12, duration = 260} = {}) {
+    actors.slice(0, STAGGER_LIMIT).forEach((actor, i) => {
+        actor.remove_all_transitions();
+        actor.opacity = 0;
+        actor.translation_y = dy;
+        actor.ease({
+            opacity: 255,
+            translation_y: 0,
+            delay: i * step,
+            duration,
+            mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
         });
-        gesture.connect('recognize', () => callback());
-        actor.add_action(gesture);
-    } else {
-        actor.connect('button-press-event', (_a, event) => {
-            if (event.get_button() !== Clutter.BUTTON_SECONDARY)
-                return Clutter.EVENT_PROPAGATE;
-            callback();
-            return Clutter.EVENT_STOP;
-        });
-    }
+    });
 }
 
-// Содержимое пузыря лаунчера.
+// Содержимое лаунчера.
 const LauncherView = GObject.registerClass(
 class LauncherView extends St.BoxLayout {
     _init(launcher, settings) {
@@ -234,6 +265,7 @@ class LauncherView extends St.BoxLayout {
         this._appsDirty = true;
         this._results = [];
         this._selected = -1;
+        this._fullscreen = false;
 
         // Строка поиска
         this._entry = new St.Entry({
@@ -249,7 +281,12 @@ class LauncherView extends St.BoxLayout {
         this._entry.clutter_text.connect('text-changed', () => this._onTextChanged());
         this._entry.clutter_text.connect('key-press-event', this._onEntryKeyPress.bind(this));
         this._entry.clutter_text.connect('activate', () => this._activateSelected());
-        this.add_child(this._entry);
+        this._entryBin = new St.Bin({
+            style_class: 'hypede-launcher-search-bin',
+            child: this._entry,
+            x_expand: true,
+        });
+        this.add_child(this._entryBin);
 
         // Домашняя страница: «Продолжить» + сетка приложений
         this._home = new St.BoxLayout({
@@ -309,10 +346,9 @@ class LauncherView extends St.BoxLayout {
 
         this._appSystem.connectObject('installed-changed',
             () => (this._appsDirty = true), this);
-        this._settings.connectObject(
-            'changed::launcher-columns', () => (this._appsDirty = true),
-            'changed::launcher-hidden-apps', () => (this._appsDirty = true),
-            this);
+        for (const key of ['launcher-columns', 'launcher-hidden-apps', 'launcher-icon-size',
+            'launcher-show-labels', 'launcher-sort', 'launcher-style'])
+            this._settings.connectObject(`changed::${key}`, () => (this._appsDirty = true), this);
     }
 
     get entry() {
@@ -320,19 +356,59 @@ class LauncherView extends St.BoxLayout {
     }
 
     onOpen() {
+        this._fullscreen = this._settings.get_string('launcher-style') === 'fullscreen';
+        if (this._fullscreen)
+            this.add_style_class_name('fullscreen');
+        else
+            this.remove_style_class_name('fullscreen');
+
         this._updateSize();
-        if (this._appsDirty)
+        if (this._appsDirty || this._layoutFullscreen !== this._fullscreen ||
+            this._settings.get_string('launcher-sort') === 'usage')
             this._rebuildGrid();
         this._rebuildContinue();
+        this._layoutForStyle();
         this._homeScroll.vadjustment.value = 0;
+        this._animateIn();
     }
 
     onClosed() {
         this._entry.text = '';
     }
 
+    // В полноэкранном виде строка поиска и сетка стоят по центру экрана.
+    _layoutForStyle() {
+        const full = this._fullscreen;
+        this._layoutFullscreen = full;
+        const align = full ? Clutter.ActorAlign.CENTER : Clutter.ActorAlign.FILL;
+        this._entry.x_expand = !full;
+        this._entry.x_align = align;
+        this._home.x_expand = !full;
+        this._home.x_align = align;
+        this._resultsBox.x_expand = !full;
+        this._resultsBox.x_align = align;
+        if (full) {
+            const [, gridWidth] = this._grid.get_preferred_width(-1);
+            this._continueGrid.width = gridWidth;
+            this._resultsBox.width = Math.max(gridWidth, 600);
+        } else {
+            this._continueGrid.width = -1;
+            this._resultsBox.width = -1;
+        }
+    }
+
     focusEntry() {
         global.stage.set_key_focus(this._entry);
+    }
+
+    // Появление: плитки поднимаются «волной» одна за другой.
+    _animateIn() {
+        const tiles = [
+            ...this._continueGrid.get_children(),
+            ...this._grid.get_children(),
+        ];
+        _stagger([this._entryBin], {dy: 8, duration: 220});
+        _stagger(tiles, {dy: this._fullscreen ? 24 : 14, step: this._fullscreen ? 10 : 8});
     }
 
     _updateSize() {
@@ -341,9 +417,14 @@ class LauncherView extends St.BoxLayout {
             return;
         const workArea = Main.layoutManager.getWorkAreaForMonitor(monitor.index);
         const scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        // Chrome OS держит пузырь не выше ~688 px и оставляет зазор сверху.
-        const height = Math.min(688 * scale, workArea.height - 48 * scale);
-        this.height = height;
+        if (this._fullscreen) {
+            // На весь рабочий стол, кроме полки.
+            this.set_size(workArea.width, workArea.height);
+        } else {
+            // Chrome OS держит пузырь не выше ~688 px и оставляет зазор сверху.
+            this.set_width(-1);
+            this.height = Math.min(BUBBLE_MAX_HEIGHT * scale, workArea.height - 48 * scale);
+        }
     }
 
     // ---------- Сетка приложений ----------
@@ -365,17 +446,36 @@ class LauncherView extends St.BoxLayout {
             apps.push(app);
         }
         const collator = new Intl.Collator(undefined, {sensitivity: 'base', numeric: true});
-        apps.sort((a, b) => collator.compare(a.get_name(), b.get_name()));
+        const byName = (a, b) => collator.compare(a.get_name(), b.get_name());
+        if (this._settings.get_string('launcher-sort') === 'usage') {
+            const usage = Shell.AppUsage.get_default();
+            apps.sort((a, b) => usage.compare(a.get_id(), b.get_id()) || byName(a, b));
+        } else {
+            apps.sort(byName);
+        }
         return apps;
+    }
+
+    _columns() {
+        const columns = this._settings.get_int('launcher-columns');
+        if (!this._fullscreen)
+            return columns;
+        // В полноэкранном виде — столько колонок, сколько поместится.
+        const scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        const tile = (this._settings.get_int('launcher-icon-size') + 80) * scale;
+        const fit = Math.floor((this.width * 0.8) / tile);
+        return Math.max(columns, Math.min(fit, 10));
     }
 
     _rebuildGrid() {
         this._appsDirty = false;
         this._grid.destroy_all_children();
         const layout = this._grid.layout_manager;
-        const columns = this._settings.get_int('launcher-columns');
+        const columns = this._columns();
+        const iconSize = this._settings.get_int('launcher-icon-size');
+        const showLabels = this._settings.get_boolean('launcher-show-labels');
         this._allApps().forEach((app, i) => {
-            const tile = new AppTile(app, this._launcher);
+            const tile = new AppTile(app, this._launcher, iconSize, showLabels);
             layout.attach(tile, i % columns, Math.floor(i / columns), 1, 1);
         });
     }
@@ -390,6 +490,7 @@ class LauncherView extends St.BoxLayout {
         this._separator.visible = files.length > 0;
 
         const layout = this._continueGrid.layout_manager;
+        const perRow = this._fullscreen ? 4 : 2;
         files.forEach((file, i) => {
             const chip = new St.Button({
                 style_class: 'hypede-launcher-chip',
@@ -427,7 +528,7 @@ class LauncherView extends St.BoxLayout {
                 this._launcher.close();
                 _launchUri(file.uri);
             });
-            layout.attach(chip, i % 2, Math.floor(i / 2), 1, 1);
+            layout.attach(chip, i % perRow, Math.floor(i / perRow), 1, 1);
         });
     }
 
@@ -436,12 +537,20 @@ class LauncherView extends St.BoxLayout {
     _onTextChanged() {
         const text = this._entry.text.trim();
         const searching = text.length > 0;
+        const wasSearching = this._resultsScroll.visible;
         this._homeScroll.visible = !searching;
         this._resultsScroll.visible = searching;
         if (searching)
             this._search(text);
         else
             this._clearResults();
+
+        // Смена страницы — лёгкий «наплыв».
+        if (searching !== wasSearching) {
+            const page = searching ? this._resultsScroll : this._homeScroll;
+            page.opacity = 0;
+            page.ease({opacity: 255, duration: 160, mode: Clutter.AnimationMode.EASE_OUT_QUAD});
+        }
     }
 
     _clearResults() {
@@ -452,28 +561,36 @@ class LauncherView extends St.BoxLayout {
 
     _search(text) {
         this._clearResults();
-        const query = _normalize(text);
-
-        // Калькулятор — самым первым, как в Chrome OS.
-        if (looksLikeMath(text)) {
-            const value = calculate(text);
-            if (value !== null) {
-                const section = _section(null);
-                section.add_child(this._addResult({
-                    iconName: 'accessories-calculator-symbolic',
-                    title: `= ${value}`,
-                    subtitle: _('Press Enter to copy the result'),
-                    activate: () => {
-                        St.Clipboard.get_default().set_text(
-                            St.ClipboardType.CLIPBOARD, `${value}`);
-                        this._launcher.close();
-                    },
-                }));
+        const providers = this._settings.get_strv('launcher-search-providers');
+        for (const provider of providers) {
+            const section = this[`_search_${provider}`]?.(text, _normalize(text));
+            if (section)
                 this._resultsBox.add_child(section);
-            }
         }
+        this._select(0);
+    }
 
-        // Приложения
+    // Калькулятор — первым, как в Chrome OS.
+    _search_calculator(text) {
+        if (!looksLikeMath(text))
+            return null;
+        const value = calculate(text);
+        if (value === null)
+            return null;
+        const section = _section(null);
+        section.add_child(this._addResult({
+            iconName: 'accessories-calculator-symbolic',
+            title: `= ${value}`,
+            subtitle: _('Press Enter to copy the result'),
+            activate: () => {
+                St.Clipboard.get_default().set_text(St.ClipboardType.CLIPBOARD, `${value}`);
+                this._launcher.close();
+            },
+        }));
+        return section;
+    }
+
+    _search_apps(text) {
         const apps = [];
         const seen = new Set();
         for (const group of Shell.AppSystem.search(text)) {
@@ -485,79 +602,82 @@ class LauncherView extends St.BoxLayout {
                 apps.push(app);
             }
         }
-        if (apps.length > 0) {
-            const section = _section(_('Apps'));
-            apps.slice(0, MAX_APP_RESULTS).forEach(app => {
-                section.add_child(this._addResult({
-                    icon: app.create_icon_texture(RESULT_ICON_SIZE),
-                    title: app.get_name(),
-                    subtitle: app.get_description() ?? '',
-                    activate: () => {
-                        app.activate();
-                        this._launcher.close();
-                    },
-                }));
-            });
-            this._resultsBox.add_child(section);
-        }
+        if (apps.length === 0)
+            return null;
+        const section = _section(_('Apps'));
+        apps.slice(0, MAX_APP_RESULTS).forEach(app => {
+            section.add_child(this._addResult({
+                icon: app.create_icon_texture(RESULT_ICON_SIZE),
+                title: app.get_name(),
+                subtitle: app.get_description() ?? '',
+                activate: () => {
+                    app.activate();
+                    this._launcher.close();
+                },
+            }));
+        });
+        return section;
+    }
 
-        // Разделы настроек
-        const settingsApp = this._appSystem.lookup_app(SETTINGS_APP_ID);
-        if (settingsApp) {
-            const pages = SETTINGS_PAGES.filter(page =>
-                _normalize(`${page.name()} ${page.keywords}`).includes(query));
-            if (pages.length > 0) {
-                const section = _section(_('Settings'));
-                pages.slice(0, MAX_SETTINGS_RESULTS).forEach(page => {
-                    section.add_child(this._addResult({
-                        iconName: page.icon,
-                        title: page.name(),
-                        subtitle: _('Settings'),
-                        activate: () => {
-                            this._launcher.close();
-                            _spawnApp(SETTINGS_APP_ID, ['--page', page.id]);
-                        },
-                    }));
-                });
-                this._resultsBox.add_child(section);
-            }
-        }
+    _search_settings(_text, query) {
+        if (!this._appSystem.lookup_app(SETTINGS_APP_ID))
+            return null;
+        const pages = SETTINGS_PAGES.filter(page =>
+            _normalize(`${page.name()} ${page.keywords}`).includes(query));
+        if (pages.length === 0)
+            return null;
+        const section = _section(_('Settings'));
+        pages.slice(0, MAX_SETTINGS_RESULTS).forEach(page => {
+            section.add_child(this._addResult({
+                iconName: page.icon,
+                title: page.name(),
+                subtitle: _('Settings'),
+                activate: () => {
+                    this._launcher.close();
+                    _spawnApp(SETTINGS_APP_ID, ['--page', page.id]);
+                },
+            }));
+        });
+        return section;
+    }
 
-        // Файлы: совпадения среди недавних и поиск в «Файлах»
+    // Файлы: совпадения среди недавних и поиск в «Файлах».
+    _search_files(text, query) {
         const recent = loadRecentFiles(200)
             .filter(file => _normalize(file.name).includes(query))
             .slice(0, MAX_FILE_RESULTS);
         const filesApp = this._appSystem.lookup_app(FILES_APP_ID);
-        if (recent.length > 0 || filesApp) {
-            const section = _section(_('Files'));
-            recent.forEach(file => {
-                section.add_child(this._addResult({
-                    gicon: file.icon,
-                    title: file.name,
-                    subtitle: file.parentPath,
-                    activate: () => {
-                        this._launcher.close();
-                        _launchUri(file.uri);
-                    },
-                }));
-            });
-            if (filesApp) {
-                section.add_child(this._addResult({
-                    gicon: filesApp.get_icon(),
-                    title: _('Search for “%s” in Files').format(text),
-                    subtitle: _('Search in the home folder'),
-                    activate: () => {
-                        this._launcher.close();
-                        _spawnApp(FILES_APP_ID, ['--search', text]);
-                    },
-                }));
-            }
-            this._resultsBox.add_child(section);
+        if (recent.length === 0 && !filesApp)
+            return null;
+        const section = _section(_('Files'));
+        recent.forEach(file => {
+            section.add_child(this._addResult({
+                gicon: file.icon,
+                title: file.name,
+                subtitle: file.parentPath,
+                activate: () => {
+                    this._launcher.close();
+                    _launchUri(file.uri);
+                },
+            }));
+        });
+        if (filesApp) {
+            section.add_child(this._addResult({
+                gicon: filesApp.get_icon(),
+                title: _('Search for “%s” in Files').format(text),
+                subtitle: _('Search in the home folder'),
+                activate: () => {
+                    this._launcher.close();
+                    _spawnApp(FILES_APP_ID, ['--search', text]);
+                },
+            }));
         }
+        return section;
+    }
 
-        // Интернет
-        const webSection = _section(_('Web'));
-        webSection.add_child(this._addResult({
+    _search_web(text) {
+        const section = _section(_('Web'));
+        section.add_child(this._addResult({
             iconName: 'web-browser-symbolic',
             title: text,
             subtitle: _('Search the web'),
@@ -567,9 +687,7 @@ class LauncherView extends St.BoxLayout {
                 _launchUri(template.replace('%s', encodeURIComponent(text)));
             },
         }));
-        this._resultsBox.add_child(webSection);
-
-        this._select(0);
+        return section;
     }
 
     _addResult(params) {
@@ -630,32 +748,40 @@ class LauncherView extends St.BoxLayout {
     }
 });
 
-// Кнопка-кольцо в левом углу полки. Её меню — это и есть пузырь лаунчера.
+// Кнопка-кольцо в углу полки. Её меню — это и есть лаунчер.
 const LauncherButton = GObject.registerClass(
 class LauncherButton extends PanelMenu.Button {
     _init(launcher, settings) {
         super._init(0.0, _('Launcher'), false);
         this._launcher = launcher;
+        this._settings = settings;
         this.add_style_class_name('hypede-launcher-button');
-        this.add_child(new St.Widget({
+        this._ring = new St.Widget({
             style_class: 'hypede-launcher-ring',
             y_align: Clutter.ActorAlign.CENTER,
             x_align: Clutter.ActorAlign.CENTER,
-        }));
+        });
+        this.add_child(new St.Bin({style_class: 'hypede-launcher-ring-bin', child: this._ring}));
 
         this.menu.actor.add_style_class_name('hypede-launcher-menu');
-        this.menu._arrowSide = St.Side.BOTTOM;
-        this.menu._boxPointer.updateArrowSide(St.Side.BOTTOM);
         this.menu._boxPointer.setSourceAlignment(0.0);
 
         this.view = new LauncherView(launcher, settings);
         this.menu.box.add_child(this.view);
 
+        this._blur = new Shell.BlurEffect({mode: Shell.BlurMode.BACKGROUND, radius: 40, brightness: 0.9});
+
         this.menu.connect('open-state-changed', (_menu, open) => {
+            // Кольцо «сжимается», пока лаунчер открыт.
+            this._ring.set_pivot_point(0.5, 0.5);
+            this._ring.ease({
+                scale_x: open ? 0.8 : 1,
+                scale_y: open ? 0.8 : 1,
+                duration: 200,
+                mode: Clutter.AnimationMode.EASE_OUT_BACK,
+            });
             if (open) {
-                // Пузырь привязан не к кнопке, а к левому краю всей полки:
-                // так он стоит ровно над её углом, как в Chrome OS.
-                this.menu._boxPointer.setPosition(Main.panel, 0.0);
+                this._prepareOpen();
                 this.view.onOpen();
                 // Фокус в строку поиска — после того, как меню заберёт ввод.
                 GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {
@@ -666,6 +792,34 @@ class LauncherButton extends PanelMenu.Button {
                 this.view.onClosed();
             }
         });
+    }
+
+    setShelf(shelf) {
+        this._shelf = shelf;
+        const side = MENU_SIDE[shelf.position] ?? St.Side.BOTTOM;
+        this.menu._arrowSide = side;
+        this.menu._boxPointer.updateArrowSide(side);
+    }
+
+    _prepareOpen() {
+        const boxPointer = this.menu._boxPointer;
+        // Лаунчер привязан не к кнопке, а к краю всей полки: так пузырь
+        // стоит ровно у её угла, как в Chrome OS.
+        if (this._shelf?.actor)
+            boxPointer.setPosition(this._shelf.actor, 0.0);
+
+        const fullscreen = this._settings.get_string('launcher-style') === 'fullscreen';
+        if (fullscreen)
+            this.menu.actor.add_style_class_name('fullscreen');
+        else
+            this.menu.actor.remove_style_class_name('fullscreen');
+
+        const blur = this._settings.get_boolean('launcher-blur');
+        const target = boxPointer.bin;
+        if (blur && !target.get_effect('hypede-blur'))
+            target.add_effect_with_name('hypede-blur', this._blur);
+        else if (!blur && target.get_effect('hypede-blur'))
+            target.remove_effect(this._blur);
     }
 });
 
@@ -685,13 +839,20 @@ export class Launcher {
         }, this);
     }
 
+    onShelfChanged(shelf) {
+        this.close();
+        this.button.setShelf(shelf);
+    }
+
     get isOpen() {
         return this.button.menu.isOpen;
     }
 
     open(initialText = '') {
+        if (Main.sessionMode.isLocked)
+            return;
         if (!this.button.menu.isOpen)
-            this.button.menu.open();
+            this.button.menu.open(BoxPointer.PopupAnimation.FULL);
         if (initialText) {
             this.button.view.entry.text = initialText;
             this.button.view.entry.clutter_text.set_cursor_position(-1);
@@ -701,7 +862,7 @@ export class Launcher {
     close() {
         this._appMenu?.close();
         if (this.button.menu.isOpen)
-            this.button.menu.close();
+            this.button.menu.close(BoxPointer.PopupAnimation.FULL);
     }
 
     toggle() {
@@ -727,6 +888,7 @@ export class Launcher {
 
     destroy() {
         global.display.disconnectObject(this);
+        this._settings.disconnectObject?.(this);
         this._appMenu?.destroy();
         this._appMenu = null;
         this.button.destroy();

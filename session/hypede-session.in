@@ -1,0 +1,95 @@
+#!/bin/sh
+# Запуск сеанса HypeDE. Экран входа вызывает этот скрипт, а он — gnome-session.
+#
+# Что здесь происходит:
+#
+# * DCONF_PROFILE=hypede — у HypeDE своя база настроек (~/.config/dconf/hypede).
+#   Обои, тема, шрифты, полка, расширения… не смешиваются с обычным GNOME.
+#   При первом входе в неё переносятся раскладки клавиатуры, настройки мыши,
+#   тачпада, специальных возможностей и сочетания клавиш.
+#
+# * Каталог @SHELLDATADIR@ добавляется в XDG_DATA_DIRS: там лежат режим
+#   оболочки hypede и её компоненты. Обычный GNOME их не видит.
+#
+# * Необязательные службы GNOME (индексатор файлов, центр обновлений…)
+#   подключаются по списку dev.hypede.session optional-services.
+#
+# Переменные окружения уходят в systemd вместе со всем окружением сеанса;
+# при выходе служба hypede-session.service убирает их обратно.
+
+export DCONF_PROFILE=hypede
+export HYPEDE_SESSION=1
+export XDG_DATA_DIRS="@SHELLDATADIR@:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
+
+config_home=${XDG_CONFIG_HOME:-$HOME/.config}
+
+# ---------- Первый вход: перенос настроек из обычного GNOME ----------
+
+import_from_gnome() {
+    for dir in \
+        /org/gnome/desktop/input-sources/ \
+        /org/gnome/desktop/peripherals/ \
+        /org/gnome/desktop/a11y/ \
+        /org/gnome/desktop/calendar/ \
+        /org/gnome/desktop/privacy/ \
+        /org/gnome/desktop/notifications/ \
+        /org/gnome/desktop/sound/ \
+        /org/gnome/desktop/session/ \
+        /org/gnome/desktop/wm/keybindings/ \
+        /org/gnome/settings-daemon/plugins/media-keys/ \
+        /org/gnome/settings-daemon/plugins/power/ \
+        /org/gnome/settings-daemon/plugins/color/ \
+        /org/gnome/system/locale/ \
+        /org/gnome/system/location/
+    do
+        env -u DCONF_PROFILE dconf dump "$dir" 2>/dev/null | dconf load "$dir" 2>/dev/null
+    done
+    # Крупный шрифт и курсор — тоже специальные возможности.
+    for key in text-scaling-factor cursor-size cursor-theme clock-format; do
+        value=$(env -u DCONF_PROFILE dconf read "/org/gnome/desktop/interface/$key" 2>/dev/null)
+        [ -n "$value" ] && dconf write "/org/gnome/desktop/interface/$key" "$value" 2>/dev/null
+    done
+    gsettings set dev.hypede.session imported-from-gnome true 2>/dev/null
+}
+
+if command -v dconf >/dev/null 2>&1 &&
+   [ "$(gsettings get dev.hypede.session imported-from-gnome 2>/dev/null)" != "true" ]; then
+    import_from_gnome
+fi
+
+# ---------- Необязательные службы GNOME ----------
+
+unit_for() {
+    case $1 in
+        file-indexer)        echo localsearch-3.service ;;
+        software-updates)    echo gnome-software.service ;;
+        calendar-alarms)     echo evolution-alarm-notify.service ;;
+        remote-desktop)      echo org.gnome.SettingsDaemon.Sharing.target ;;
+        smartcard)           echo org.gnome.SettingsDaemon.Smartcard.target ;;
+        usb-protection)      echo org.gnome.SettingsDaemon.UsbProtection.target ;;
+        mobile-broadband)    echo org.gnome.SettingsDaemon.Wwan.target ;;
+        disk-health)         echo gnome-disk-utility-notify.service ;;
+        print-notifications) echo org.gnome.SettingsDaemon.PrintNotifications.target ;;
+    esac
+}
+
+if [ -n "$XDG_RUNTIME_DIR" ]; then
+    services=$(gsettings get dev.hypede.session optional-services 2>/dev/null |
+        sed -e "s/^@as //" -e "s/[][',]/ /g")
+    dropin_dir="$XDG_RUNTIME_DIR/systemd/user/gnome-session@hypede.target.d"
+    dropin="$dropin_dir/optional-services.conf"
+    content="# Создано hypede-session по настройке dev.hypede.session optional-services
+[Unit]"
+    for service in $services; do
+        unit=$(unit_for "$service")
+        [ -n "$unit" ] && content="$content
+Wants=$unit"
+    done
+    if [ "$(cat "$dropin" 2>/dev/null)" != "$content" ]; then
+        mkdir -p "$dropin_dir"
+        printf '%s\n' "$content" > "$dropin"
+        systemctl --user daemon-reload 2>/dev/null
+    fi
+fi
+
+exec gnome-session --session=hypede "$@"

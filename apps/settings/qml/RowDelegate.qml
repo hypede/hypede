@@ -19,7 +19,17 @@ Loader {
     sourceComponent: {
         switch (row.type) {
         case "toggle": return toggleRow
+        case "strvToggle": return strvToggleRow
         case "slider": return sliderRow
+        case "font": return fontRow
+        case "themeList": return themeListRow
+        case "note": return noteRow
+        case "language": return languageRow
+        case "displays": return displaysBlock
+        case "storage": return storageBlock
+        case "appList": return appListBlock
+        case "autostart": return autostartBlock
+        case "configActions": return configBlock
         case "combo": return comboRow
         case "kcm": return kcmRow
         case "run": return runRow
@@ -77,7 +87,11 @@ Loader {
                 case "ms": return qsTr("%1 ms").arg(Math.round(v))
                 case "K": return qsTr("%1 K").arg(Math.round(v))
                 case "x": return qsTr("%1%").arg(Math.round(v * 100))
-                default: return ""
+                case "%": return qsTr("%1%").arg(Math.round(v))
+                case "px": return qsTr("%1 px").arg(Math.round(v))
+                case "count": return String(Math.round(v))
+                case "speed": return v === 1 ? qsTr("Normal") : qsTr("×%1").arg(v.toFixed(1))
+                default: return loader.row.subtitle || ""
                 }
             }
             ChromeSlider {
@@ -90,8 +104,7 @@ Loader {
                                                : Number(loader.current())
                 onMoved: v => {
                     const real = loader.row.invertSlider ? loader.row.to + loader.row.from - v : v
-                    const integer = ["delay", "repeat-interval", "night-light-temperature"].includes(loader.row.key)
-                    loader.settings.setValue(loader.row.key, integer ? Math.round(real) : real)
+                    loader.settings.setValue(loader.row.key, loader.row.integer ? Math.round(real) : real)
                 }
             }
         }
@@ -260,6 +273,132 @@ Loader {
             }
         }
     }
+
+
+    // Есть ли элемент в списке строк (as). invert — включено, когда элемента нет.
+    Component {
+        id: strvToggleRow
+        SettingRow {
+            id: strvItem
+            readonly property bool available: loader.settings !== null && loader.settings.valid
+                                              && loader.settings.hasKey(loader.row.key)
+            readonly property var list: loader.current() || []
+            readonly property bool present: list.indexOf(loader.row.item) >= 0
+            title: loader.row.title
+            subtitle: loader.row.subtitle || ""
+            iconName: loader.row.icon || ""
+            showDivider: !loader.first
+            clickable: true
+            chevron: false
+            onClicked: sw.toggled(!sw.checked)
+            ChromeSwitch {
+                id: sw
+                checked: loader.row.invert ? !strvItem.present : strvItem.present
+                onToggled: value => {
+                    const want = loader.row.invert ? !value : value
+                    let items = (loader.current() || []).filter(i => i !== loader.row.item)
+                    if (want)
+                        items.push(loader.row.item)
+                    loader.settings.setValue(loader.row.key, items)
+                }
+            }
+        }
+    }
+
+    // Шрифт в GSettings хранится строкой «Семейство Размер».
+    Component {
+        id: fontRow
+        SettingRow {
+            id: fontItem
+            readonly property bool available: loader.settings !== null && loader.settings.valid
+                                              && loader.settings.hasKey(loader.row.key)
+            readonly property string value: String(loader.current() || "")
+            readonly property string family: value.replace(/\s+[\d.]+$/, "")
+            readonly property int size: Number((value.match(/([\d.]+)$/) || [0, 11])[1])
+            title: loader.row.title
+            subtitle: value
+            iconName: loader.row.icon || ""
+            showDivider: !loader.first
+            function write(family, size) {
+                loader.settings.setValue(loader.row.key, family + " " + size)
+            }
+            ChromeCombo {
+                width: 200
+                options: System.fontFamilies().map(f => ({ value: f, label: f }))
+                currentValue: fontItem.family
+                onActivated: value => fontItem.write(value, fontItem.size)
+            }
+            ChromeCombo {
+                implicitWidth: 80
+                options: [8, 9, 10, 10.5, 11, 12, 13, 14, 16, 18, 20].map(n => ({ value: n, label: String(n) }))
+                currentValue: fontItem.size
+                onActivated: value => fontItem.write(fontItem.family, value)
+            }
+        }
+    }
+
+    // Тема из установленных в системе (значки, курсоры, GTK 3).
+    Component {
+        id: themeListRow
+        SettingRow {
+            id: themeItem
+            readonly property var themes: System[loader.row.source]()
+            readonly property bool available: loader.settings !== null && loader.settings.valid
+                                              && loader.settings.hasKey(loader.row.key) && themes.length > 0
+            title: loader.row.title
+            subtitle: loader.row.subtitle || ""
+            iconName: loader.row.icon || ""
+            showDivider: !loader.first
+            ChromeCombo {
+                width: 220
+                options: themeItem.themes.map(t => ({ value: t, label: t }))
+                currentValue: loader.current()
+                onActivated: value => loader.settings.setValue(loader.row.key, value)
+            }
+        }
+    }
+
+    // Поясняющий текст внутри карточки.
+    Component {
+        id: noteRow
+        Item {
+            width: parent ? parent.width : 0
+            implicitHeight: noteText.implicitHeight + 28
+            Text {
+                id: noteText
+                x: 20
+                width: parent.width - 40
+                anchors.verticalCenter: parent.verticalCenter
+                text: loader.row.title
+                color: Theme.subtext
+                font.pixelSize: 13
+                wrapMode: Text.Wrap
+            }
+        }
+    }
+
+    // Язык интерфейса (AccountsService).
+    Component {
+        id: languageRow
+        SettingRow {
+            title: loader.row.title
+            subtitle: loader.row.subtitle || ""
+            iconName: loader.row.icon || ""
+            showDivider: !loader.first
+            ChromeCombo {
+                width: 240
+                options: System.locales().map(code => ({ value: code, label: System.localeName(code) }))
+                currentValue: System.language
+                onActivated: value => System.language = value
+            }
+        }
+    }
+
+    Component { id: displaysBlock; DisplaysBlock { showDivider: !loader.first } }
+    Component { id: storageBlock; StorageBlock { showDivider: !loader.first } }
+    Component { id: appListBlock; AppListBlock { mode: loader.row.mode; title: loader.row.title } }
+    Component { id: autostartBlock; AutostartBlock {} }
+    Component { id: configBlock; ConfigBlock {} }
 
     Component { id: wallpaperBlock; WallpaperGrid {} }
     Component { id: themeBlock; ThemePicker { showDivider: !loader.first } }

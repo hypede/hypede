@@ -28,7 +28,9 @@ class GSettingsObject : public QObject
     Q_PROPERTY(int revision READ revision NOTIFY revisionChanged)
 
 public:
-    explicit GSettingsObject(const QString &schemaId, QObject *parent = nullptr);
+    // path — для перемещаемых схем (например, настройки уведомлений
+    // отдельного приложения), для обычных схем пусто.
+    explicit GSettingsObject(const QString &schemaId, const QString &path = QString(), QObject *parent = nullptr);
     ~GSettingsObject() override;
 
     bool valid() const { return m_settings != nullptr; }
@@ -69,6 +71,7 @@ public:
     static GSettingsHub *instance();
 
     Q_INVOKABLE GSettingsObject *schema(const QString &schemaId);
+    Q_INVOKABLE GSettingsObject *schemaAt(const QString &schemaId, const QString &path);
     Q_INVOKABLE bool hasSchema(const QString &schemaId) const;
 
 private:

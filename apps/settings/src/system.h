@@ -8,6 +8,7 @@
 #include <QObject>
 #include <QQmlEngine>
 #include <QStringList>
+#include <QUrl>
 #include <QVariantMap>
 
 class System : public QObject
@@ -31,6 +32,9 @@ class System : public QObject
 
     Q_PROPERTY(bool wifiAvailable READ wifiAvailable NOTIFY wifiChanged)
     Q_PROPERTY(bool wifiEnabled READ wifiEnabled WRITE setWifiEnabled NOTIFY wifiChanged)
+
+    Q_PROPERTY(bool inHypeDE READ inHypeDE CONSTANT)
+    Q_PROPERTY(QString language READ language WRITE setLanguage NOTIFY languageChanged)
 
     Q_PROPERTY(QString timezone READ timezone NOTIFY timeChanged)
     Q_PROPERTY(bool ntpAvailable READ ntpAvailable NOTIFY timeChanged)
@@ -72,11 +76,39 @@ public:
     Q_INVOKABLE QString localeName(const QString &code) const;
     Q_INVOKABLE QString formatSample(const QString &code) const;
 
+    // Оформление: что установлено в системе.
+    Q_INVOKABLE QStringList fontFamilies() const;
+    Q_INVOKABLE QStringList iconThemes() const;
+    Q_INVOKABLE QStringList cursorThemes() const;
+    Q_INVOKABLE QStringList gtkThemes() const;
+
+    // Хранилище: [{name, path, total, free}]
+    Q_INVOKABLE QVariantList storage() const;
+    Q_INVOKABLE QString formatSize(qint64 bytes) const;
+    Q_INVOKABLE bool emptyTrash() const;
+
+    // Приложения и автозапуск: [{id, name, icon, comment, system}]
+    Q_INVOKABLE QVariantList installedApps() const;
+    Q_INVOKABLE QVariantList autostartEntries() const;
+
+    // Язык интерфейса (AccountsService) — применяется при следующем входе.
+    QString language() const { return m_language; }
+    void setLanguage(const QString &language);
+
+    // Конфигурация HypeDE: своя база dconf (~/.config/dconf/hypede).
+    bool inHypeDE() const;
+    Q_INVOKABLE bool importFromGnome() const;
+    Q_INVOKABLE bool exportConfig(const QUrl &file) const;
+    Q_INVOKABLE bool importConfig(const QUrl &file) const;
+    Q_INVOKABLE bool resetConfig() const;
+    Q_INVOKABLE QString defaultExportPath() const;
+
 Q_SIGNALS:
     void shellVersionChanged();
     void powerChanged();
     void wifiChanged();
     void timeChanged();
+    void languageChanged();
 
 private Q_SLOTS:
     void onPropertiesChanged(const QString &interface, const QVariantMap &changed, const QStringList &invalidated);
@@ -87,6 +119,7 @@ private:
     void readWifi();
     void readTime();
     void readShellVersion();
+    void readLanguage();
 
     QString m_shellVersion;
     QString m_powerService;
@@ -98,4 +131,6 @@ private:
     QString m_timezone;
     bool m_ntpAvailable = false;
     bool m_ntp = false;
+    QString m_userPath;
+    QString m_language;
 };

@@ -151,6 +151,26 @@ RU = {
     "You opened %s": "Открыто %s",
     # дата на полке: «29 сент»
     "%b %-d": "%-d %b",
+    # Версия 2
+    'Shelf and launcher': 'Полка и лаунчер',
+    'Lock screen': 'Экран блокировки',
+    '%A, %B %-d': '%A, %-d %B',
+    'System': 'Система',
+    'Processor': 'Процессор',
+    'Memory': 'Память',
+    '%s / %s GB': '%s / %s ГБ',
+    'Up for %d h %d min': 'Работает %d ч %d мин',
+    'Battery': 'Батарея',
+    'Today': 'Сегодня',
+    'Charging': 'Заряжается',
+    'Fully charged': 'Полностью заряжена',
+    'On battery': 'От батареи',
+    'Plugged in': 'От сети',
+    '%B, %A': '%B, %A',
+    'Press any key or click to unlock': 'Нажмите любую клавишу или щёлкните, чтобы разблокировать',
+    'Shut down': 'Выключить',
+    'Restart': 'Перезагрузить',
+    'Shelf': 'Полка',
 }
 
 PLURALS = {

@@ -28,9 +28,10 @@ regular GNOME session on the same machine stays exactly as it was.
 
 | Part | Built with | What it does |
 |---|---|---|
-| **Shell** | GNOME Shell 48–50 + a custom session mode and the `hypede-shell` extension | bottom shelf, launcher ring, pinned and running apps with a running dot, “date + status + clock” tray, quick settings and calendar opening upwards, notifications in the bottom-right corner, shelf autohide, Super opens the launcher |
-| **Launcher** | part of the extension | search across apps, settings pages and recent files, a calculator (`12*(3+4)` → 84), web search, “Continue where you left off”, a grid of all apps |
-| **Settings** | Qt 6 / QML + **KDE settings modules (KCM)** via KCMUtils | the Chrome OS Settings layout; network, Bluetooth, sound, printers, users, default apps, autostart and Flatpak permissions are real KDE modules embedded in the page; mouse, keyboard, night light, power, wallpaper, theme, accent and shelf are backed by GSettings |
+| **Shell** | GNOME Shell 48–50 + a custom session mode and HypeDE's shell components | a shelf at any screen edge (bottom, left, right, top; full width or floating), launcher ring, pinned and running apps you can drag to reorder, “date + status + clock” tray, quick settings and calendar opening away from the edge, notifications in a corner of your choice, autohide, soft window animations, windows minimizing into their shelf icon, Super opens the launcher |
+| **Launcher** | part of the shell | bubble or full-screen; search across apps, settings pages and recent files, a calculator (`12*(3+4)` → 84), web search, “Continue where you left off”, a grid of all apps with configurable columns, icon size, order and hidden apps |
+| **Lock screen** | part of the shell, on top of GNOME's unlock dialog | colour waves when locking, blurred wallpaper, a big digital, stacked or analog clock, a password field that pops up, battery and system cards, a folding unlock animation |
+| **Settings** | Qt 6 / QML + **KDE settings modules (KCM)** via KCMUtils | the Chrome OS Settings layout; network, Bluetooth, sound, printers, users, default apps, autostart and Flatpak permissions are real KDE modules embedded in the page; displays (resolution, refresh rate, scale, rotation), mouse, keyboard, fonts, icons, cursor, windows, animations, shelf, launcher, lock screen, storage, GNOME services, startup apps and backups of the whole configuration are HypeDE's own pages |
 | **Files** | Python + GTK 4 + libadwaita | the GNOME Files layout (sidebar, path bar, search, selection bar) plus tabs and a details pane inspired by COSMIC Files; grid with thumbnails and list view, rubber-band selection, drag and drop, background copy/move with progress and undo, trash with restore |
 
 All wallpapers, icons and texts are **original**. The look follows the layout
@@ -45,6 +46,10 @@ fonts are proprietary. HypeDE is not affiliated with Google.
   <img src="docs/images/settings-kcm-dark.png" alt="A KDE module inside Settings, dark theme" width="760">
   <img src="docs/images/launcher-calc-light.png" alt="Calculator in the launcher" width="760">
   <img src="docs/images/quick-settings-dark.png" alt="Quick settings, dark theme" width="760">
+  <img src="docs/images/shelf-left-dark.png" alt="The shelf on the left edge" width="760">
+  <img src="docs/images/launcher-fullscreen-light.png" alt="The full-screen launcher" width="760">
+  <img src="docs/images/lock-prompt-dark.png" alt="Lock screen with the password field and cards" width="760">
+  <img src="docs/images/settings-shelf-light.png" alt="Settings: shelf and launcher" width="760">
 </p>
 
 The screenshots were taken in a real GNOME Shell 50.5 session with KDE
@@ -116,14 +121,24 @@ apps/files/                    Files: Python, GTK 4, libadwaita
 po/, tools/i18n/               translations
 ```
 
-* **The shelf is GNOME's own top bar**, moved to the bottom edge and given new
-  content. Struts, fullscreen hiding, keyboard navigation and every system
-  indicator (network, sound, Bluetooth, power, screen recording) keep working,
-  and third-party indicator extensions need no changes.
-* **Session-only defaults.** The session runs with
-  `XDG_CURRENT_DESKTOP=HypeDE:GNOME`, and `90_hypede.gschema.override` uses
-  `:HypeDE` sections, so fonts, window buttons and wallpaper change only inside
-  HypeDE.
+* **The shelf holds GNOME's own panel boxes.** HypeDE moves them into its
+  shelf container, which lays them out along any screen edge. Struts,
+  fullscreen hiding, keyboard navigation and every system indicator (network,
+  sound, Bluetooth, power, screen recording) keep working.
+* **Its own configuration.** The login screen starts `hypede-session`, which
+  sets `DCONF_PROFILE=hypede`: every GSettings value — wallpaper, theme,
+  fonts, shelf, even the list of enabled GNOME extensions — lives in
+  `~/.config/dconf/hypede`, apart from regular GNOME. Keyboard layouts,
+  peripherals, accessibility and shortcuts are copied over on first login.
+  Settings → System can back the whole configuration up, restore or reset it.
+* **Only HypeDE's shell components run in HypeDE.** GNOME extensions enabled
+  for regular GNOME are not loaded (Settings → System can allow them), and
+  HypeDE's shell lives in its own data directory, so regular GNOME doesn't see
+  it either.
+* **Only the GNOME services it needs.** The session target pulls in the
+  essential settings daemons; file indexing, GNOME Software, calendar
+  reminders, remote desktop, smart cards and the like are optional, and
+  autostart entries such as Baloo can be switched off for HypeDE only.
 * **KDE modules are loaded with `KCModuleLoader`** — the same function
   `kcmshell6` uses — so both QML modules and older widget-based ones (like
   plasma-nm's Connections) are embedded. A KDE colour scheme matching the
@@ -141,8 +156,9 @@ More detail (in Russian) is in [docs/ru](docs/ru).
   BlueZ, PipeWire, CUPS, AccountsService, `mimeapps.list`, XDG autostart,
   Flatpak). Modules that configure KWin, KScreen or PowerDevil would do nothing
   under GNOME, so those pages are implemented on GSettings instead.
-* Monitor arrangement still opens GNOME Settings (`gnome-control-center
-  display`): Mutter uses its own protocol that the KDE module doesn't speak.
+* Resolution, refresh rate, scale and rotation are set in HypeDE Settings
+  through Mutter; arranging several monitors side by side still opens GNOME
+  Settings (`gnome-control-center display`).
 * Pairing Bluetooth devices that need a PIN relies on the bluedevil agent.
 * Supports GNOME 48–50; tested on 50.5.
 
@@ -156,6 +172,11 @@ tools/dev/screenshots.sh out/     # regenerate all documentation screenshots
 
 See [docs/ru/building.md](docs/ru/building.md) for the headless workflow and
 translation tooling.
+
+## Support
+
+If you like HypeDE, you can support its development on
+[Ko-fi](https://ko-fi.com/pycodder).
 
 ## License
 
