@@ -21,6 +21,15 @@ export DCONF_PROFILE=hypede
 export HYPEDE_SESSION=1
 export XDG_DATA_DIRS="@SHELLDATADIR@:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
 
+# Приложения Qt без декораций Adwaita рисуют заголовок в стиле Windows 95.
+# Если пакет qadwaitadecorations стоит — заголовок как у GTK-приложений.
+for dir in /usr/lib/qt6/plugins /usr/lib64/qt6/plugins; do
+    if [ -e "$dir/wayland-decoration-client/libqadwaitadecorations.so" ]; then
+        export QT_WAYLAND_DECORATION=adwaita
+        break
+    fi
+done
+
 config_home=${XDG_CONFIG_HOME:-$HOME/.config}
 
 # ---------- Первый вход: перенос настроек из обычного GNOME ----------
@@ -91,5 +100,20 @@ Wants=$unit"
         systemctl --user daemon-reload 2>/dev/null
     fi
 fi
+
+# ---------- Службы, запущенные до входа ----------
+#
+# systemd пользователя переживает выход из сеанса на несколько секунд, а
+# порталы запускаются по первому запросу. Если они остались от обычного
+# GNOME, то читают его базу настроек: приложения GTK получают от них кнопки
+# заголовка («только закрыть»), тему и шрифты GNOME, а не HypeDE. Передаём
+# им окружение HypeDE и останавливаем: при первом запросе они запустятся
+# заново, уже с настройками HypeDE.
+
+hypede_env="DCONF_PROFILE HYPEDE_SESSION XDG_DATA_DIRS XDG_CURRENT_DESKTOP"
+systemctl --user import-environment $hypede_env 2>/dev/null
+dbus-update-activation-environment $hypede_env 2>/dev/null
+systemctl --user stop xdg-desktop-portal.service \
+    xdg-desktop-portal-gnome.service xdg-desktop-portal-gtk.service 2>/dev/null
 
 exec gnome-session --session=hypede "$@"

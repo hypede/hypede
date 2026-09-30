@@ -190,6 +190,16 @@
       <description>launcher — лаунчер (как клавиша «Все» в Chrome OS); overview — обзор окон.</description>
     </key>
 
+    <key name="window-corners" type="b">
+      <default>true</default>
+      <summary>Скруглять углы окон</summary>
+      <description>Окнам, которые не рисуют скругления и тень сами (Qt, Firefox, окна без рамки), HypeDE скругляет углы и добавляет тень.</description>
+    </key>
+    <key name="window-corner-radius" type="i">
+      <range min="0" max="24"/>
+      <default>12</default>
+      <summary>Радиус скругления окон</summary>
+    </key>
     <key name="window-animations" type="s">
       <choices>
         <choice value="hypede"/>

@@ -22,6 +22,7 @@ import {Launcher} from './launcher.js';
 import {OverviewTweaks} from './overview.js';
 import {NotificationTweaks} from './notifications.js';
 import {WindowAnimations} from './windows.js';
+import {WindowCorners} from './corners.js';
 import {LockScreen} from './lockscreen.js';
 import {setupLocker} from './locker.js';
 
@@ -47,13 +48,14 @@ export default class HypeDEShellExtension extends Extension {
         this._overview = new OverviewTweaks(this._settings, this._launcher);
         this._notifications = new NotificationTweaks(this._settings);
         this._windows = new WindowAnimations(this._settings);
+        this._corners = new WindowCorners(this._settings);
         this._lock = new LockScreen(this._settings, this._shelf);
     }
 
     disable() {
         // Порядок обратный: полка держит кнопку лаунчера, поэтому уходит
         // раньше самого лаунчера.
-        for (const part of ['_lock', '_windows', '_notifications', '_overview',
+        for (const part of ['_lock', '_corners', '_windows', '_notifications', '_overview',
             '_shelf', '_launcher', '_style', '_guard']) {
             this[part]?.destroy();
             this[part] = null;
