@@ -7,9 +7,9 @@
 // раскрываются карточки с зарядом и загрузкой системы. После ввода пароля
 // экран «сворачивается» и тает.
 //
-// Проверку пароля, уведомления, медиаплеер и выбор пользователя по-прежнему
-// делает родной экран блокировки GNOME — HypeDE только меняет его облик и
-// анимации.
+// Уведомления, медиаплеер и выбор пользователя по-прежнему показывает родной
+// экран блокировки GNOME — HypeDE только меняет его облик и анимации.
+// Пароль проверяет GDM, а без него — hypede-auth (см. locker.js).
 
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
@@ -20,6 +20,8 @@ import St from 'gi://St';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as MessageTray from 'resource:///org/gnome/shell/ui/messageTray.js';
 import {InjectionManager, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
+
+import {getShield} from './locker.js';
 
 const INTRO_TIME = 1100;
 const REVEAL_TIME = 420;
@@ -684,7 +686,7 @@ class HypeLockDecoration {
 export class LockScreen {
     constructor(settings) {
         this._settings = settings;
-        this._shield = Main.screenShield;
+        this._shield = getShield();
         this._injections = new InjectionManager();
         if (!this._shield)
             return;

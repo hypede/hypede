@@ -1,0 +1,3 @@
+#%PAM-1.0
+# Разблокировка экрана HypeDE без GDM (см. /usr/lib/hypede/hypede-auth).
+auth      include   login

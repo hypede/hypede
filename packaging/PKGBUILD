@@ -10,6 +10,7 @@ pkgname=hypede-git
 pkgver=2.0.0
 pkgrel=1
 pkgdesc="HypeDE — GNOME в облике Chrome OS: полка, лаунчер, «Файлы» и «Настройки» на модулях KDE"
+backup=('etc/pam.d/hypede')
 arch=('x86_64' 'aarch64')
 url="https://github.com/hypede/hypede"
 license=('GPL-3.0-or-later')

@@ -1,6 +1,6 @@
 # HypeDE — сборка и установка.
 #
-#   make                 собрать «Настройки» (C++/Qt) и переводы
+#   make                 собрать «Настройки» (C++/Qt), hypede-auth и переводы
 #   sudo make install    установить всё в /usr
 #   make install-user    поставить только оболочку в ~/.local (для пробы
 #                        в обычном сеансе GNOME, без sudo)
@@ -21,6 +21,10 @@ BUILD   ?= build
 JOBS ?= $(shell awk -v cpus="$$(nproc 2>/dev/null || echo 1)" \
 	'/^MemAvailable:/ { j = int($$2 / 700000); if (j > cpus) j = cpus; if (j < 1) j = 1; print j }' \
 	/proc/meminfo 2>/dev/null || echo 1)
+
+SYSCONFDIR ?= /etc
+CC      ?= cc
+CFLAGS  ?= -O2
 
 DATADIR   := $(PREFIX)/share
 BINDIR    := $(PREFIX)/bin
@@ -48,10 +52,10 @@ EXT_FILES := $(wildcard shell/extension/$(UUID)/*.js) \
 FILES_PY  := $(wildcard apps/files/hypede_files/*.py) apps/files/hypede_files/style.css
 WALLPAPERS := $(wildcard assets/wallpapers/*.svg) $(wildcard assets/wallpapers/*.png)
 
-.PHONY: all settings mo css pot check install install-shell install-session install-data \
+.PHONY: all settings auth mo css pot check install install-shell install-session install-data \
         install-files install-settings install-user uninstall-user clean
 
-all: settings mo
+all: settings auth mo
 
 # ---------- сборка ----------
 
@@ -59,6 +63,13 @@ settings:
 	cmake -S apps/settings -B '$(BUILD)/settings' -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX='$(PREFIX)'
 	@echo "Сборка «Настроек», одновременных заданий: $(JOBS)"
 	cmake --build '$(BUILD)/settings' --parallel $(JOBS)
+
+# Проверка пароля для экрана блокировки без GDM (см. session/hypede-auth.c).
+auth: $(BUILD)/hypede-auth
+
+$(BUILD)/hypede-auth: session/hypede-auth.c
+	mkdir -p '$(BUILD)'
+	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) -Wall -o '$@' session/hypede-auth.c -lpam
 
 mo:
 	mkdir -p '$(BUILD)/locale/ru/LC_MESSAGES'
@@ -93,7 +104,7 @@ install-shell:
 	$(INSTALL_DATA) $(EXT_FILES) '$(DESTDIR)$(EXTDIR)'/
 	$(INSTALL) -Dm644 shell/modes/hypede.json '$(DESTDIR)$(MODESDIR)'/hypede.json
 
-install-session:
+install-session: auth
 	mkdir -p '$(BUILD)/session'
 	$(SUBST) session/hypede.desktop > '$(BUILD)/session/hypede.desktop'
 	$(SUBST) session/hypede-session.in > '$(BUILD)/session/hypede-session'
@@ -105,6 +116,8 @@ install-session:
 	$(INSTALL) -Dm755 '$(BUILD)/session/hypede-session' '$(DESTDIR)$(LIBEXECDIR)'/hypede-session
 	$(INSTALL) -Dm755 '$(BUILD)/session/hypede-session-cleanup' '$(DESTDIR)$(LIBEXECDIR)'/hypede-session-cleanup
 	$(INSTALL) -Dm755 session/hypede-autostart-filter '$(DESTDIR)$(LIBEXECDIR)'/hypede-autostart-filter
+	$(INSTALL) -Dm755 '$(BUILD)/hypede-auth' '$(DESTDIR)$(LIBEXECDIR)'/hypede-auth
+	$(INSTALL) -Dm644 session/pam-hypede '$(DESTDIR)$(SYSCONFDIR)'/pam.d/hypede
 	$(INSTALL) -Dm644 session/dconf-profile '$(DESTDIR)$(DATADIR)'/dconf/profile/hypede
 	$(INSTALL) -Dm644 session/systemd/hypede.session.conf \
 		'$(DESTDIR)$(SYSTEMDUSERDIR)'/gnome-session@hypede.target.d/hypede.session.conf

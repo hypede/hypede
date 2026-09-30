@@ -23,6 +23,7 @@ import {OverviewTweaks} from './overview.js';
 import {NotificationTweaks} from './notifications.js';
 import {WindowAnimations} from './windows.js';
 import {LockScreen} from './lockscreen.js';
+import {setupLocker} from './locker.js';
 
 // Запущены ли мы в сеансе HypeDE (а не включены вручную в обычном GNOME).
 function inHypeDESession() {
@@ -34,8 +35,11 @@ export default class HypeDEShellExtension extends Extension {
     enable() {
         this._settings = this.getSettings();
 
-        if (inHypeDESession())
+        if (inHypeDESession()) {
             this._guard = new ExtensionGuard(this.uuid, this.getSettings('dev.hypede.session'));
+            // Без GDM у GNOME нет экрана блокировки — HypeDE создаёт его сам.
+            setupLocker();
+        }
 
         this._style = new StyleManager(this._settings);
         this._launcher = new Launcher(this._settings);
