@@ -83,7 +83,7 @@ Item {
                     SymbolIcon {
                         anchors.centerIn: parent
                         source: "object-select-symbolic"
-                        tint: Theme.onAccent
+                        tint: Theme.accentText
                         width: 14; height: 14
                     }
                 }

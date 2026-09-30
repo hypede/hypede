@@ -1,0 +1,13 @@
+[Icon Theme]
+Name=HypeDE
+Comment=Material Symbols for HypeDE, on top of Adwaita
+Inherits=Adwaita,breeze,hicolor
+Hidden=false
+Directories=symbolic
+
+[symbolic]
+Context=Actions
+Size=16
+MinSize=8
+MaxSize=512
+Type=Scalable

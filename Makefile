@@ -137,6 +137,9 @@ install-data: mo
 	$(INSTALL) -Dm644 data/applications/dev.hypede.Settings.desktop '$(DESTDIR)$(DATADIR)'/applications/dev.hypede.Settings.desktop
 	cd assets/icons && find hicolor -type f \( -name '*.svg' -o -name '*.png' \) ! -name 'dev.hypede.Launcher*' -exec \
 		$(INSTALL) -Dm644 '{}' '$(DESTDIR)$(DATADIR)/icons/{}' ';'
+	$(INSTALL) -d '$(DESTDIR)$(DATADIR)'/icons/HypeDE/symbolic
+	$(INSTALL_DATA) data/icons/HypeDE/index.theme data/icons/HypeDE/LICENSE '$(DESTDIR)$(DATADIR)'/icons/HypeDE/
+	$(INSTALL_DATA) data/icons/HypeDE/symbolic/*.svg '$(DESTDIR)$(DATADIR)'/icons/HypeDE/symbolic/
 	$(INSTALL) -Dm644 branding/hypede-logo.svg '$(DESTDIR)$(DATADIR)'/icons/hicolor/scalable/apps/hypede.svg
 	$(INSTALL) -Dm644 branding/hypede-symbolic.svg '$(DESTDIR)$(DATADIR)'/icons/hicolor/symbolic/apps/hypede-symbolic.svg
 	$(INSTALL) -Dm644 '$(BUILD)/locale/ru/LC_MESSAGES/hypede.mo' '$(DESTDIR)$(DATADIR)'/locale/ru/LC_MESSAGES/hypede.mo

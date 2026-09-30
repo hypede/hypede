@@ -1,23 +1,39 @@
 import QtQuick
 
-// Кнопка: «filled» — акцентная, иначе тональная с обводкой.
+// Кнопка-«пилюля». filled — основное действие (залита акцентом), иначе
+// тональная; flat — только текст (например, «Отмена» в диалоге).
 Rectangle {
     id: button
     property alias text: label.text
     property bool filled: false
+    property bool flat: false
     property bool danger: false
     property string iconName: ""
     signal clicked()
 
     implicitHeight: 36
-    implicitWidth: row.implicitWidth + 32
+    implicitWidth: row.implicitWidth + (iconName ? 36 : 40)
     radius: height / 2
-    color: filled ? (mouse.containsMouse ? Qt.darker(Theme.accent, 1.08) : Theme.accent)
-                  : (mouse.containsMouse ? Theme.hover : "transparent")
-    border.width: filled ? 0 : 1
-    border.color: Theme.dark ? "#5f6368" : "#c4c7c5"
-    opacity: enabled ? 1 : 0.5
+    color: filled ? Theme.accent : (flat ? "transparent" : Theme.tonal)
+    opacity: enabled ? 1 : 0.38
     activeFocusOnTab: true
+
+    // Слой состояния: наведение и нажатие чуть меняют тон кнопки.
+    Rectangle {
+        anchors.fill: parent
+        radius: parent.radius
+        color: button.filled ? Theme.accentText : (button.danger ? Theme.danger : Theme.tonalText)
+        opacity: mouse.pressed ? 0.12 : (mouse.containsMouse ? 0.08 : 0)
+        Behavior on opacity { NumberAnimation { duration: Theme.fast } }
+    }
+    Rectangle {
+        anchors.fill: parent
+        anchors.margins: -3
+        radius: height / 2
+        color: "transparent"
+        border.width: button.activeFocus ? 2 : 0
+        border.color: Theme.accent
+    }
 
     Row {
         id: row
@@ -32,7 +48,8 @@ Rectangle {
         }
         Text {
             id: label
-            color: button.filled ? Theme.onAccent : (button.danger ? Theme.danger : Theme.accent)
+            color: button.filled ? Theme.accentText
+                                 : (button.danger ? Theme.danger : (button.flat ? Theme.accent : Theme.tonalText))
             font.pixelSize: 14
             font.weight: Font.Medium
             anchors.verticalCenter: parent.verticalCenter

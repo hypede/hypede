@@ -251,7 +251,7 @@ QtObject {
             ]
         },
         {
-            id: "shelf", title: qsTr("Shelf and launcher"), icon: "view-app-grid-symbolic",
+            id: "shelf", title: qsTr("Shelf and launcher"), icon: "hypede-shelf-symbolic",
             keywords: "shelf panel taskbar dock launcher полка панель задач док лаунчер",
             sections: [
                 { title: qsTr("Shelf"), rows: [

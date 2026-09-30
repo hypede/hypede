@@ -7,12 +7,16 @@
 #include "gsettingsobject.h"
 #include "mainwindow.h"
 
+#include <gio/gio.h>
+
 #include <QApplication>
 #include <QCommandLineParser>
 #include <QDBusConnection>
 #include <QDBusConnectionInterface>
 #include <QDBusMessage>
 #include <QDir>
+#include <QFont>
+#include <QFontDatabase>
 #include <QIcon>
 #include <QLibraryInfo>
 #include <QLocale>
@@ -80,6 +84,12 @@ void setupStyleAndIcons()
 
 int main(int argc, char **argv)
 {
+    // В сеансе HypeDE своя база настроек (см. session/hypede-session.in).
+    // Обычно переменная приходит от оболочки, но если «Настройки» запустил
+    // кто-то со старым окружением, изменения ушли бы в базу обычного GNOME.
+    if (qEnvironmentVariable("XDG_CURRENT_DESKTOP").split(QLatin1Char(':')).contains(QLatin1String("HypeDE")))
+        qputenv("DCONF_PROFILE", "hypede");
+
     QApplication::setDesktopFileName(QStringLiteral("dev.hypede.Settings"));
     QApplication app(argc, argv);
     app.setApplicationName(QStringLiteral("hypede-settings"));
@@ -114,6 +124,17 @@ int main(int argc, char **argv)
     }
 
     setupStyleAndIcons();
+
+    // Шрифт интерфейса как в Chrome OS: Google Sans, если он есть, иначе
+    // Roboto (зависимость пакета). Размер — из настроек GNOME.
+    for (const QString family : {QStringLiteral("Google Sans Text"), QStringLiteral("Google Sans"), QStringLiteral("Roboto")}) {
+        if (QFontDatabase::hasFamily(family)) {
+            QFont font(family);
+            font.setPointSizeF(10.5);
+            QGuiApplication::setFont(font);
+            break;
+        }
+    }
     auto *iface = GSettingsHub::instance()->schema(QStringLiteral("org.gnome.desktop.interface"));
     auto syncScheme = [iface] {
         applyKdeColorScheme(iface->valid() && iface->value(QStringLiteral("color-scheme")).toString() ==
@@ -137,7 +158,11 @@ int main(int argc, char **argv)
         QTimer::singleShot(qEnvironmentVariableIntValue("HYPEDE_SETTINGS_GRAB_DELAY") ?: 3000, &window,
                            [&window, grabPath] { window.grab().save(grabPath); });
     }
-    return app.exec();
+    // GSettings пишет в dconf асинхронно: без этого изменение, сделанное
+    // перед самым закрытием окна, могло не успеть сохраниться.
+    const int status = app.exec();
+    g_settings_sync();
+    return status;
 }
 
 #include "main.moc"

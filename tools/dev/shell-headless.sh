@@ -65,6 +65,8 @@ run)
     shift
     export DBUS_SESSION_BUS_ADDRESS=$(cat "$STATE/bus") WAYLAND_DISPLAY=wayland-0
     export XDG_CURRENT_DESKTOP=HypeDE:GNOME XDG_SESSION_TYPE=wayland GDK_BACKEND=wayland QT_QPA_PLATFORM=wayland
+    # Предупреждения Qt — в журнал приложения, а не в journald.
+    export QT_FORCE_STDERR_LOGGING=1
     export DCONF_PROFILE=hypede HYPEDE_SESSION=1
     nohup "$@" > "$STATE/app-$(basename "$1").log" 2>&1 &
     ;;

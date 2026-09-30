@@ -17,6 +17,7 @@
 #include <QDirIterator>
 #include <QFileInfo>
 #include <QFontDatabase>
+#include <QHash>
 #include <QProcessEnvironment>
 #include <QStorageInfo>
 #include <QSet>
@@ -282,6 +283,19 @@ void System::onPropertiesChanged(const QString &interface, const QVariantMap &ch
 }
 
 // ---------- разное ----------
+
+QString System::iconSource(const QString &name) const
+{
+    static QHash<QString, QString> cache;
+    auto it = cache.constFind(name);
+    if (it != cache.constEnd())
+        return *it;
+    const QString path = QStandardPaths::locate(QStandardPaths::GenericDataLocation,
+                                                QStringLiteral("icons/HypeDE/symbolic/%1.svg").arg(name));
+    const QString source = path.isEmpty() ? name : QUrl::fromLocalFile(path).toString();
+    cache.insert(name, source);
+    return source;
+}
 
 bool System::hasProgram(const QString &name) const
 {

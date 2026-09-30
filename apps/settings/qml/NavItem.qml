@@ -1,6 +1,7 @@
 import QtQuick
 
-// Пункт левого меню: «пилюля» во всю ширину, как в Chrome OS.
+// Пункт левого меню. Выбранный подсвечивает «пилюля» списка (Main.qml),
+// прижатая к левому краю, как в Chrome OS.
 Item {
     id: item
     property string title
@@ -13,21 +14,20 @@ Item {
 
     Rectangle {
         anchors.fill: parent
-        anchors.leftMargin: 0
         anchors.rightMargin: 12
-        radius: height / 2
         topLeftRadius: 0
         bottomLeftRadius: 0
-        // Выбранный пункт подсвечивает «пилюля» списка (Main.qml).
+        topRightRadius: height / 2
+        bottomRightRadius: height / 2
         color: !item.selected && mouse.containsMouse ? Theme.hover : "transparent"
-        Behavior on color { ColorAnimation { duration: 120 } }
+        Behavior on color { ColorAnimation { duration: Theme.fast } }
         border.width: item.activeFocus ? 2 : 0
         border.color: Theme.accent
     }
     SymbolIcon {
         id: icon
         source: item.iconName
-        tint: item.selected ? Theme.onAccentContainer : Theme.subtext
+        tint: item.selected ? Theme.accentContainerText : Theme.subtext
         width: 20; height: 20
         anchors.left: parent.left
         anchors.leftMargin: 24
@@ -36,13 +36,12 @@ Item {
     Text {
         id: label
         anchors.left: icon.right
-        anchors.leftMargin: 18
+        anchors.leftMargin: 20
         anchors.right: parent.right
-        anchors.rightMargin: 20
+        anchors.rightMargin: 24
         anchors.verticalCenter: parent.verticalCenter
         text: item.title
-        color: item.selected ? Theme.onAccentContainer : Theme.text
-        Behavior on color { ColorAnimation { duration: 180 } }
+        color: item.selected ? Theme.accentContainerText : Theme.text
         font.pixelSize: 14
         font.weight: item.selected ? Font.Medium : Font.Normal
         wrapMode: Text.Wrap
@@ -52,6 +51,7 @@ Item {
     MouseArea {
         id: mouse
         anchors.fill: parent
+        anchors.rightMargin: 12
         hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
         onClicked: item.clicked()

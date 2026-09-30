@@ -39,7 +39,7 @@ Item {
 
     SearchField {
         id: search
-        width: Math.min(560, bar.width - 2 * 260)
+        width: Math.min(560, bar.width - 2 * 240)
         anchors.centerIn: parent
         visible: width > 160
         onAccepted: bar.searchAccepted()
@@ -48,46 +48,26 @@ Item {
     Row {
         visible: appWindow.frameless
         anchors.right: parent.right
-        anchors.rightMargin: 12
+        anchors.rightMargin: 14
         anchors.verticalCenter: parent.verticalCenter
-        spacing: 4
-        // Кнопки окна рисуются фигурами, а не значками темы: у разных тем
-        // «свернуть» бывает и чертой, и стрелкой.
+        spacing: 2
         Repeater {
             model: ["minimize", "maximize", "close"]
             delegate: Rectangle {
                 id: windowButton
                 required property string modelData
-                width: 32; height: 32
-                radius: 16
-                color: buttonMouse.containsMouse ? Theme.hover : "transparent"
+                width: 36; height: 36
+                radius: 18
+                color: buttonMouse.pressed ? Theme.pressed : (buttonMouse.containsMouse ? Theme.hover : "transparent")
+                Behavior on color { ColorAnimation { duration: Theme.fast } }
 
-                Rectangle {
-                    visible: windowButton.modelData === "minimize"
+                SymbolIcon {
                     anchors.centerIn: parent
-                    anchors.verticalCenterOffset: 4
-                    width: 11; height: 1.5
-                    color: Theme.text
-                }
-                Rectangle {
-                    visible: windowButton.modelData === "maximize"
-                    anchors.centerIn: parent
-                    width: appWindow.maximized ? 9 : 11
-                    height: width
-                    radius: 2
-                    color: "transparent"
-                    border.width: 1.5
-                    border.color: Theme.text
-                }
-                Repeater {
-                    model: windowButton.modelData === "close" ? [45, -45] : []
-                    delegate: Rectangle {
-                        required property int modelData
-                        anchors.centerIn: parent
-                        width: 14; height: 1.5
-                        rotation: modelData
-                        color: Theme.text
-                    }
+                    width: 20; height: 20
+                    tint: Theme.text
+                    source: windowButton.modelData === "minimize" ? "window-minimize-symbolic"
+                          : windowButton.modelData === "close" ? "window-close-symbolic"
+                          : appWindow.maximized ? "window-restore-symbolic" : "window-maximize-symbolic"
                 }
                 MouseArea {
                     id: buttonMouse

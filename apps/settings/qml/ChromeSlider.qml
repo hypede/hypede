@@ -1,6 +1,7 @@
 import QtQuick
 
-// Ползунок Chrome OS: акцентная дорожка и круглая ручка.
+// Ползунок Chrome OS: залитая дорожка до ручки, светлая — после, круглая
+// ручка с ореолом при наведении.
 Item {
     id: control
     property real from: 0
@@ -10,10 +11,10 @@ Item {
     signal moved(real value)
 
     implicitWidth: 220
-    implicitHeight: 28
+    implicitHeight: 32
     activeFocusOnTab: true
 
-    readonly property real position: to > from ? (value - from) / (to - from) : 0
+    readonly property real position: to > from ? Math.max(0, Math.min(1, (value - from) / (to - from))) : 0
 
     function setFromX(x) {
         let v = from + Math.max(0, Math.min(1, x / track.width)) * (to - from)
@@ -30,7 +31,7 @@ Item {
         width: parent.width
         height: 4
         radius: 2
-        color: Theme.switchTrackOff
+        color: Theme.accentContainer
         Rectangle {
             width: parent.width * control.position
             height: parent.height
@@ -39,17 +40,24 @@ Item {
         }
     }
     Rectangle {
-        width: 16
-        height: 16
-        radius: 8
+        width: 32; height: 32; radius: 16
         anchors.verticalCenter: parent.verticalCenter
-        x: control.position * (track.width) - width / 2
+        x: handle.x + handle.width / 2 - width / 2
         color: Theme.accent
-        border.width: control.activeFocus ? 3 : 0
-        border.color: Qt.rgba(Theme.accent.r, Theme.accent.g, Theme.accent.b, 0.35)
+        opacity: drag.pressed ? 0.16 : (drag.containsMouse || control.activeFocus ? 0.10 : 0)
+        Behavior on opacity { NumberAnimation { duration: Theme.fast } }
+    }
+    Rectangle {
+        id: handle
+        width: 16; height: 16; radius: 8
+        anchors.verticalCenter: parent.verticalCenter
+        x: control.position * track.width - width / 2
+        color: Theme.accent
     }
     MouseArea {
+        id: drag
         anchors.fill: parent
+        hoverEnabled: true
         cursorShape: Qt.PointingHandCursor
         onPressed: mouse => { control.forceActiveFocus(); control.setFromX(mouse.x) }
         onPositionChanged: mouse => { if (pressed) control.setFromX(mouse.x) }

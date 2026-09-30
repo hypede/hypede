@@ -11,6 +11,8 @@ document-font-name='Roboto 11'
 clock-show-weekday=false
 clock-show-date=false
 accent-color='blue'
+# Значки в стиле Chrome OS (Material Symbols), остальное — из Adwaita.
+icon-theme='HypeDE'
 
 [org.gnome.desktop.wm.preferences:HypeDE]
 button-layout='appmenu:minimize,maximize,close'

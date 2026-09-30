@@ -1,4 +1,5 @@
 import QtQuick
+import QtQuick.Controls as QQC2
 import HypeSettings
 
 // Окно «Настроек» целиком:
@@ -26,7 +27,9 @@ Rectangle {
     readonly property bool searching: titleBar.searchText.trim().length > 0
 
     color: Theme.window
-    border.width: appWindow.frameless && !appWindow.maximized ? 1 : 0
+    // В HypeDE углы и тень окну рисует оболочка; в других средах окно без
+    // рамки обводится тонкой линией.
+    border.width: appWindow.frameless && !appWindow.maximized && !System.inHypeDE ? 1 : 0
     border.color: Theme.dark ? "#3c3d42" : "#d5dae3"
 
     Component.onCompleted: {
@@ -90,17 +93,19 @@ Rectangle {
         clip: true
         model: Catalog.pages
         boundsBehavior: Flickable.StopAtBounds
+        QQC2.ScrollBar.vertical: ThinScrollBar {}
         // Выделение — «пилюля», которая плавно переезжает к выбранному пункту.
         currentIndex: root.searching ? -1 : Catalog.pages.findIndex(p => p.id === root.currentPage)
         highlightFollowsCurrentItem: true
-        highlightMoveDuration: 240
+        highlightMoveDuration: Theme.normal
         highlightMoveVelocity: -1
         highlightResizeDuration: 0
         highlight: Rectangle {
             width: nav.width - 12
-            radius: height / 2
             topLeftRadius: 0
             bottomLeftRadius: 0
+            topRightRadius: height / 2
+            bottomRightRadius: height / 2
             color: Theme.accentContainer
         }
         delegate: NavItem {
@@ -139,7 +144,7 @@ Rectangle {
             anchors.fill: parent
             opacity: shown ? 1 : 0
             visible: opacity > 0
-            Behavior on opacity { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
+            Behavior on opacity { NumberAnimation { duration: Theme.normal; easing.type: Easing.OutCubic } }
             page: root.page
             onOpenKcm: kcm => root.openKcm(kcm)
         }
@@ -149,7 +154,7 @@ Rectangle {
             anchors.fill: parent
             opacity: shown ? 1 : 0
             visible: shown || opacity > 0
-            Behavior on opacity { NumberAnimation { duration: 180; easing.type: Easing.OutCubic } }
+            Behavior on opacity { NumberAnimation { duration: Theme.normal; easing.type: Easing.OutCubic } }
             kcm: root.activeKcm
             canGoBack: root.openedKcm !== ""
             obscured: root.pendingNavigation !== null
@@ -162,7 +167,7 @@ Rectangle {
             anchors.fill: parent
             opacity: shown ? 1 : 0
             visible: opacity > 0
-            Behavior on opacity { NumberAnimation { duration: 150; easing.type: Easing.OutCubic } }
+            Behavior on opacity { NumberAnimation { duration: Theme.fast; easing.type: Easing.OutCubic } }
             query: titleBar.searchText
             onActivated: (page, kcm) => {
                 titleBar.searchText = ""
@@ -202,7 +207,7 @@ Rectangle {
             width: 420
             height: dialogColumn.implicitHeight + 48
             radius: 24
-            color: Theme.surface
+            color: Theme.popup
 
             Column {
                 id: dialogColumn
@@ -228,10 +233,12 @@ Rectangle {
                     topPadding: 12
                     ChromeButton {
                         text: qsTr("Cancel")
+                        flat: true
                         onClicked: root.pendingNavigation = null
                     }
                     ChromeButton {
                         text: qsTr("Discard")
+                        flat: true
                         danger: true
                         onClicked: {
                             const target = root.pendingNavigation

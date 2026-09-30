@@ -9,6 +9,11 @@ import sys
 
 import gi
 
+# В сеансе HypeDE своя база настроек (см. session/hypede-session.in) — до
+# первого обращения к GSettings.
+if "HypeDE" in os.environ.get("XDG_CURRENT_DESKTOP", "").split(":"):
+    os.environ["DCONF_PROFILE"] = "hypede"
+
 gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 gi.require_version("Gdk", "4.0")

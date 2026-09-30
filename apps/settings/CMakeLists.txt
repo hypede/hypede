@@ -64,6 +64,7 @@ qt_add_qml_module(hypede-settings
         qml/AutostartBlock.qml
         qml/ConfigBlock.qml
         qml/SupportCard.qml
+        qml/ThinScrollBar.qml
     SOURCES
         src/kcmhost.h
         src/gsettingsobject.h

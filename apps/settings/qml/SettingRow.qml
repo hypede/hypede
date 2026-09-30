@@ -14,36 +14,40 @@ Item {
     default property alias trailing: trailingRow.data
     signal clicked()
 
-    implicitHeight: Math.max(Theme.rowHeight, texts.implicitHeight + 24)
+    implicitHeight: Math.max(Theme.rowHeight, texts.implicitHeight + 28)
     width: parent ? parent.width : implicitWidth
     activeFocusOnTab: clickable
 
     Rectangle {
         anchors.fill: parent
-        color: mouse.containsMouse && row.clickable ? Theme.hover : "transparent"
-        Behavior on color { ColorAnimation { duration: 120 } }
+        color: row.clickable ? (mouse.pressed ? Theme.pressed : (mouse.containsMouse ? Theme.hover : "transparent"))
+                             : "transparent"
+        Behavior on color { ColorAnimation { duration: Theme.fast } }
     }
     Rectangle {
         visible: row.showDivider
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
-        anchors.leftMargin: row.iconName ? 56 : 20
+        anchors.leftMargin: icon.visible ? 60 : 20
+        anchors.rightMargin: 20
         height: 1
         color: Theme.divider
     }
     Rectangle {
         anchors.fill: parent
-        anchors.margins: 2
-        radius: 8
+        anchors.margins: 3
+        radius: 12
         color: "transparent"
         border.width: row.activeFocus ? 2 : 0
         border.color: Theme.accent
     }
 
+    // Значок — только у строк-ссылок: у строк с переключателями и списками
+    // текст выровнен по одной линии, как в Chrome OS.
     SymbolIcon {
         id: icon
-        visible: row.iconName !== ""
+        visible: row.iconName !== "" && row.chevron
         source: row.iconName
         width: 20; height: 20
         anchors.left: parent.left
@@ -54,7 +58,7 @@ Item {
     Column {
         id: texts
         anchors.left: icon.visible ? icon.right : parent.left
-        anchors.leftMargin: icon.visible ? 16 : 20
+        anchors.leftMargin: icon.visible ? 20 : 20
         anchors.right: trailingRow.left
         anchors.rightMargin: 16
         anchors.verticalCenter: parent.verticalCenter
@@ -64,6 +68,8 @@ Item {
             text: row.title
             color: Theme.text
             font.pixelSize: 14
+            wrapMode: Text.Wrap
+            maximumLineCount: 2
             elide: Text.ElideRight
         }
         Text {
@@ -72,6 +78,7 @@ Item {
             text: row.subtitle
             color: Theme.subtext
             font.pixelSize: 13
+            lineHeight: 1.1
             wrapMode: Text.Wrap
             maximumLineCount: 3
             elide: Text.ElideRight
@@ -89,10 +96,9 @@ Item {
         id: arrow
         visible: row.chevron
         source: row.external ? "adw-external-link-symbolic" : "go-next-symbolic"
-        fallback: "go-next-symbolic"
-        width: 18; height: 18
+        width: 20; height: 20
         anchors.right: parent.right
-        anchors.rightMargin: 20
+        anchors.rightMargin: 18
         anchors.verticalCenter: parent.verticalCenter
     }
 

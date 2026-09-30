@@ -44,6 +44,10 @@ public:
     static System *create(QQmlEngine *, QJSEngine *);
     static System *instance();
 
+    // Символьный значок из темы HypeDE (Material Symbols) — файл, если он
+    // есть, иначе имя для обычной темы значков.
+    Q_INVOKABLE QString iconSource(const QString &name) const;
+
     QString appVersion() const;
     QString osName() const;
     QString osLogo() const;
