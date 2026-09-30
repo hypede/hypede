@@ -79,6 +79,7 @@ Rectangle {
         anchors.top: parent.top
         anchors.left: parent.left
         anchors.right: parent.right
+        pageTitle: root.page ? root.page.title : ""
         onSearchAccepted: results.activateFirst()
     }
 

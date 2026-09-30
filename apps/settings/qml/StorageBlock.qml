@@ -35,7 +35,7 @@ Item {
 
                 SymbolIcon {
                     id: icon
-                    source: volume.modelData.path === "/" ? "drive-harddisk-system-symbolic" : "drive-harddisk-symbolic"
+                    source: volume.modelData.path === "/" ? "hypede-storage-symbolic" : "hypede-storage-symbolic"
                     width: 20; height: 20
                     x: 20
                     anchors.verticalCenter: parent.verticalCenter
@@ -88,7 +88,7 @@ Item {
             property bool done: false
             title: qsTr("Trash")
             subtitle: done ? qsTr("Trash emptied") : qsTr("Permanently delete files in the trash")
-            iconName: "user-trash-symbolic"
+            iconName: "hypede-trash-symbolic"
             ChromeButton {
                 text: qsTr("Empty trash")
                 danger: true

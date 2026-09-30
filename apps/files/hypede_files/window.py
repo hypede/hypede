@@ -27,6 +27,17 @@ from .sidebar import Sidebar, add_bookmark
 from .util import _, ngettext, split_extension, terminal_command, unique_name, validate_filename
 
 
+
+_PROVIDER_NAMES = {"claude": "Claude", "gemini": "Gemini", "mistral": "Mistral",
+                   "chatgpt": "ChatGPT", "grok": "Grok", "deepseek": "DeepSeek"}
+
+
+def _assistant_settings() -> Gio.Settings | None:
+    source = Gio.SettingsSchemaSource.get_default()
+    if source and source.lookup("dev.hypede.assistant", True):
+        return Gio.Settings(schema_id="dev.hypede.assistant")
+    return None
+
 class Window(Adw.ApplicationWindow):
     __gtype_name__ = "HypeFilesWindow"
 
@@ -136,6 +147,16 @@ class Window(Adw.ApplicationWindow):
         self.header.pack_end(self.view_toggle)
         self.search_button = Gtk.ToggleButton(icon_name="system-search-symbolic", tooltip_text=_("Search"))
         self.header.pack_end(self.search_button)
+
+        # «Спросить Claude» — о выбранных файлах или о текущей папке. Кнопка
+        # есть, только если ИИ-помощник включён в «Настройках».
+        self.ask_button = Gtk.Button(icon_name="hypede-assistant-symbolic", visible=False)
+        self.ask_button.connect("clicked", lambda *_: self._ask_assistant())
+        self.header.pack_end(self.ask_button)
+        self._assistant_settings = _assistant_settings()
+        if self._assistant_settings:
+            self._assistant_settings.connect("changed", lambda *_: self._sync_ask_button())
+        self._sync_ask_button()
 
         self.ops_button = Gtk.MenuButton(icon_name="folder-download-symbolic", visible=False,
                                          tooltip_text=_("File Operations"), popover=self._build_ops_popover())
@@ -321,6 +342,42 @@ class Window(Adw.ApplicationWindow):
     # ================================================================
     # Синхронизация заголовка и панелей
     # ================================================================
+
+    def _sync_ask_button(self) -> None:
+        settings = self._assistant_settings
+        enabled = bool(settings and settings.get_boolean("enabled") and GLib.find_program_in_path("hypede-assistant"))
+        self.ask_button.set_visible(enabled)
+        if settings:
+            name = _PROVIDER_NAMES.get(settings.get_string("provider"), "Claude")
+            self.ask_button.set_tooltip_text(_("Ask %s about the selected files") % name)
+
+    def _ask_assistant(self) -> None:
+        """Передать помощнику выбранные файлы или, без выбора, список папки."""
+        selected = [f for f in self.view.selected_files() if f.get_path()]
+        files = [f.get_path() for f in selected if not is_dir(f)]
+        folders = [f for f in selected if is_dir(f)]
+        argv = ["hypede-assistant"]
+        if files:
+            argv += ["--prompt", ngettext("Question about this file: ", "Question about these files: ", len(files))]
+            for path in files[:10]:
+                argv += ["--file", path]
+        else:
+            folder = folders[0] if folders else self.view.location
+            names = []
+            try:
+                enumerator = folder.enumerate_children("standard::name", Gio.FileQueryInfoFlags.NONE, None)
+                for info in enumerator:
+                    names.append(info.get_name())
+                    if len(names) >= 200:
+                        break
+            except GLib.Error:
+                pass
+            listing = "\n".join(sorted(names))
+            argv += ["--prompt", _("Folder “%s” contains:\n%s\n\nQuestion: ") % (folder.get_basename(), listing)]
+        try:
+            Gio.Subprocess.new(argv, Gio.SubprocessFlags.NONE)
+        except GLib.Error as error:
+            self.show_toast(str(error.message))
 
     def _sync_header(self) -> None:
         view = self.view

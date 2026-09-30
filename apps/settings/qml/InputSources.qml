@@ -59,7 +59,7 @@ Item {
                     color: removeMouse.containsMouse ? Theme.hover : "transparent"
                     SymbolIcon {
                         anchors.centerIn: parent
-                        source: "user-trash-symbolic"
+                        source: "hypede-trash-symbolic"
                         width: 16; height: 16
                     }
                     MouseArea {

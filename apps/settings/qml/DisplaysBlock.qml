@@ -80,7 +80,7 @@ Item {
                     title: monitorItem.modelData.name
                     subtitle: (monitorItem.modelData.builtin ? qsTr("Built-in display") : monitorItem.modelData.connector)
                               + (monitorItem.modelData.primary && Displays.monitors.length > 1 ? " · " + qsTr("Main display") : "")
-                    iconName: monitorItem.modelData.builtin ? "computer-symbolic" : "video-display-symbolic"
+                    iconName: monitorItem.modelData.builtin ? "hypede-device-symbolic" : "video-display-symbolic"
                     showDivider: monitorItem.index > 0
                     ChromeButton {
                         visible: Displays.monitors.length > 1 && !monitorItem.modelData.primary

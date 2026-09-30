@@ -38,6 +38,7 @@ SHELLDATADIR := $(DATADIR)/hypede/shell
 EXTDIR    := $(SHELLDATADIR)/gnome-shell/extensions/$(UUID)
 MODESDIR  := $(SHELLDATADIR)/gnome-shell/modes
 FILESDIR  := $(DATADIR)/hypede/files
+ASSISTANTDIR := $(DATADIR)/hypede/assistant
 SYSTEMDUSERDIR := $(LIBDIR)/systemd/user
 
 # Подстановка путей в файлы сеанса
@@ -50,10 +51,11 @@ EXT_FILES := $(wildcard shell/extension/$(UUID)/*.js) \
              $(wildcard shell/extension/$(UUID)/*.css) \
              shell/extension/$(UUID)/metadata.json
 FILES_PY  := $(wildcard apps/files/hypede_files/*.py) apps/files/hypede_files/style.css
+ASSISTANT_PY := $(wildcard apps/assistant/hypede_assistant/*.py)
 WALLPAPERS := $(wildcard assets/wallpapers/*.svg) $(wildcard assets/wallpapers/*.png)
 
 .PHONY: all settings auth mo css pot check install install-shell install-session install-data \
-        install-files install-settings install-user uninstall-user clean
+        install-files install-assistant install-settings install-user uninstall-user clean
 
 all: settings auth mo
 
@@ -81,14 +83,14 @@ css:
 	python3 tools/gen-shell-css.py
 
 pot:
-	xgettext --from-code=UTF-8 -L Python -k_ -kngettext:1,2 -o '$(BUILD)/files.pot' apps/files/hypede_files/*.py
+	xgettext --from-code=UTF-8 -L Python -k_ -kngettext:1,2 -o '$(BUILD)/files.pot' apps/files/hypede_files/*.py apps/assistant/hypede_assistant/*.py
 	xgettext --from-code=UTF-8 -L JavaScript -k_ -kngettext:1,2 -o '$(BUILD)/shell.pot' shell/extension/$(UUID)/*.js
 	msgcat '$(BUILD)/files.pot' '$(BUILD)/shell.pot' -o po/hypede.pot
 	python3 tools/i18n/make-po.py
 
 check:
 	for f in shell/extension/$(UUID)/*.js; do node --check --input-type=module < $$f || exit 1; done
-	python3 -m py_compile apps/files/hypede_files/*.py
+	python3 -m py_compile apps/files/hypede_files/*.py apps/assistant/hypede_assistant/*.py
 	python3 -m unittest discover -s apps/files/tests -t apps/files
 	node shell/tests/calculator.test.mjs
 	glib-compile-schemas --strict --dry-run data/schemas
@@ -97,7 +99,7 @@ check:
 
 # ---------- установка ----------
 
-install: install-shell install-session install-data install-files install-settings
+install: install-shell install-session install-data install-files install-assistant install-settings
 
 install-shell:
 	$(INSTALL) -d '$(DESTDIR)$(EXTDIR)'
@@ -155,6 +157,20 @@ install-files:
 		'from hypede_files.application import main' \
 		'sys.exit(main())' > '$(BUILD)/hypede-files'
 	$(INSTALL) -Dm755 '$(BUILD)/hypede-files' '$(DESTDIR)$(BINDIR)'/hypede-files
+
+# ИИ-помощник: встроенный браузер (WebKitGTK) с чатом провайдера.
+install-assistant:
+	$(INSTALL) -d '$(DESTDIR)$(ASSISTANTDIR)'/hypede_assistant
+	$(INSTALL_DATA) $(ASSISTANT_PY) '$(DESTDIR)$(ASSISTANTDIR)'/hypede_assistant/
+	mkdir -p '$(BUILD)'
+	printf '%s\n' '#!/usr/bin/env python3' \
+		'# ИИ-помощник HypeDE' \
+		'import sys' \
+		'sys.path.insert(0, "$(ASSISTANTDIR)")' \
+		'from hypede_assistant.app import main' \
+		'sys.exit(main())' > '$(BUILD)/hypede-assistant'
+	$(INSTALL) -Dm755 '$(BUILD)/hypede-assistant' '$(DESTDIR)$(BINDIR)'/hypede-assistant
+	$(INSTALL) -Dm644 data/applications/dev.hypede.Assistant.desktop '$(DESTDIR)$(DATADIR)'/applications/dev.hypede.Assistant.desktop
 
 install-settings:
 	DESTDIR='$(DESTDIR)' cmake --install '$(BUILD)/settings'

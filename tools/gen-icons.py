@@ -171,32 +171,11 @@ ICONS = {
     "input-keyboard": "keyboard",
     "input-mouse": "mouse",
     "input-touchpad": "touchpad_mouse",
-    "input-gaming": "sports_esports",
-    "input-tablet": "draw",
-    "printer": "print",
-    "drive-harddisk": "hard_drive",
-    "drive-removable-media": "usb",
-    "media-optical": "album",
     "media-eject": "eject",
-    "computer": "computer",
-    "phone": "mobile",
-    "camera-photo": "photo_camera",
-    "camera-web": "videocam",
     "screenshot-recorded": "screenshot_region",
     "media-record": "radio_button_checked",
     # Файлы и папки
-    "folder": "folder",
-    "folder-open": "folder_open",
-    "user-home": "home",
     "go-home": "home",
-    "folder-documents": "description",
-    "folder-download": "download",
-    "folder-pictures": "image",
-    "folder-music": "music_note",
-    "folder-videos": "movie",
-    "folder-remote": "cloud",
-    "user-trash": "delete",
-    "user-trash-full": "delete",
     "document-open-recent": "history",
     "document-save": "save",
     "document-open": "folder_open",
@@ -247,8 +226,13 @@ ICONS = {
     "media-skip-backward": "skip_previous",
     "adw-external-link": "open_in_new",
     "external-link": "open_in_new",
-    # Свои значки HypeDE
+    # Свои значки HypeDE. Устройства — под своими именами, чтобы не
+    # подменять цветные значки мест и дисков в приложениях.
     "hypede-shelf": "dock_to_bottom",
+    "hypede-device": "computer",
+    "hypede-printer": "print",
+    "hypede-storage": "hard_drive",
+    "hypede-trash": "delete",
 }
 
 # Значки, которых нет в Material Symbols, — нарисованы здесь.
@@ -274,6 +258,9 @@ for level, name in LEVELS.items():
     ICONS[f"battery-level-{level}"] = f"{name}-fill"
 for level, name in CHARGING.items():
     ICONS[f"battery-level-{level}-charging"] = f"{name}-fill"
+
+# Места, устройства и типы файлов сюда не входят: GTK 4 ищет значок сначала
+# по всей теме HypeDE, и символьная папка заменила бы цветную в «Файлах».
 
 INDEX = """[Icon Theme]
 Name=HypeDE

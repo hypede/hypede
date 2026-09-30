@@ -415,6 +415,17 @@
   icon-size: 16px;
 }
 
+/* Кнопка ИИ-помощника в строке поиска лаунчера */
+.hypede-launcher-ask {
+  icon-size: 20px;
+  padding: 6px;
+  border-radius: 999px;
+  color: st-mix(-st-accent-color, #ffffff, 55%);
+}
+.hypede-launcher-ask:hover {
+  background-color: rgba(255, 255, 255, 0.12);
+}
+
 /* Календарь и центр уведомлений */
 .datemenu-popover,
 #calendarArea {

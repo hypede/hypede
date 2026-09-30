@@ -30,6 +30,7 @@ Loader {
         case "appList": return appListBlock
         case "autostart": return autostartBlock
         case "configActions": return configBlock
+        case "assistant": return assistantBlock
         case "combo": return comboRow
         case "kcm": return kcmRow
         case "run": return runRow
@@ -399,6 +400,7 @@ Loader {
     Component { id: appListBlock; AppListBlock { mode: loader.row.mode; title: loader.row.title } }
     Component { id: autostartBlock; AutostartBlock {} }
     Component { id: configBlock; ConfigBlock {} }
+    Component { id: assistantBlock; AssistantBlock {} }
 
     Component { id: wallpaperBlock; WallpaperGrid {} }
     Component { id: themeBlock; ThemePicker { showDivider: !loader.first } }

@@ -24,6 +24,7 @@ import {NotificationTweaks} from './notifications.js';
 import {WindowAnimations} from './windows.js';
 import {WindowCorners} from './corners.js';
 import {ChromeQuickSettings} from './quicksettings.js';
+import {Assistant} from './assistant.js';
 import {LockScreen} from './lockscreen.js';
 import {setupLocker} from './locker.js';
 
@@ -44,6 +45,8 @@ export default class HypeDEShellExtension extends Extension {
         }
 
         this._style = new StyleManager(this._settings);
+        // Помощник — раньше лаунчера: лаунчер спрашивает, включён ли он.
+        this._assistant = new Assistant();
         this._launcher = new Launcher(this._settings);
         this._shelf = new Shelf(this._settings, this._launcher);
         this._overview = new OverviewTweaks(this._settings, this._launcher);
@@ -58,7 +61,7 @@ export default class HypeDEShellExtension extends Extension {
         // Порядок обратный: полка держит кнопку лаунчера, поэтому уходит
         // раньше самого лаунчера.
         for (const part of ['_lock', '_quickSettings', '_corners', '_windows', '_notifications', '_overview',
-            '_shelf', '_launcher', '_style', '_guard']) {
+            '_shelf', '_launcher', '_assistant', '_style', '_guard']) {
             this[part]?.destroy();
             this[part] = null;
         }

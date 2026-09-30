@@ -28,6 +28,7 @@ import {evaluate as calculate, looksLikeMath} from './calculator.js';
 import {loadRecentFiles, describeWhen} from './recent.js';
 import {getFileIndex, destroyFileIndex, normalize as normalizeName} from './filesearch.js';
 import {addSecondaryClick} from './util.js';
+import {getAssistant} from './assistant.js';
 
 const RESULT_ICON_SIZE = 32;
 const MAX_APP_RESULTS = 6;
@@ -65,6 +66,8 @@ const SETTINGS_PAGES = [
         name: () => _('Security and privacy'), keywords: 'privacy security lock screen firewall приватность безопасность блокировка'},
     {id: 'apps', icon: 'view-app-grid-symbolic',
         name: () => _('Apps'), keywords: 'apps default applications autostart flatpak notifications приложения по умолчанию автозапуск уведомления'},
+    {id: 'assistant', icon: 'hypede-assistant-symbolic',
+        name: () => _('AI assistant'), keywords: 'ai assistant chat claude gemini chatgpt mistral grok deepseek ии помощник нейросеть'},
     {id: 'accessibility', icon: 'org.gnome.Settings-accessibility-symbolic',
         name: () => _('Accessibility'), keywords: 'accessibility zoom contrast screen reader большой текст контраст доступность'},
     {id: 'system', icon: 'preferences-system-symbolic',
@@ -262,6 +265,15 @@ class LauncherView extends St.BoxLayout {
                 style_class: 'hypede-launcher-search-icon',
             }),
         });
+        // Кнопка ИИ-помощника справа в строке поиска — если он включён.
+        this._askIcon = new St.Icon({
+            icon_name: 'hypede-assistant-symbolic',
+            style_class: 'hypede-launcher-ask',
+            reactive: true,
+            track_hover: true,
+        });
+        this._entry.connect('secondary-icon-clicked', () => this._ask(this._entry.text));
+        this._syncAssistant();
         this._entry.clutter_text.connect('text-changed', () => this._onTextChanged());
         this._entry.clutter_text.connect('key-press-event', this._onEntryKeyPress.bind(this));
         this._entry.clutter_text.connect('activate', () => this._activateSelected());
@@ -383,6 +395,20 @@ class LauncherView extends St.BoxLayout {
 
     focusEntry() {
         global.stage.set_key_focus(this._entry);
+    }
+
+    // «Спросить Claude»: подпись и видимость — по настройкам помощника.
+    _syncAssistant() {
+        const assistant = getAssistant();
+        const enabled = !!assistant?.enabled;
+        this._entry.secondary_icon = enabled ? this._askIcon : null;
+        if (enabled)
+            this._askIcon.accessible_name = _('Ask %s').format(assistant.providerName);
+    }
+
+    _ask(text) {
+        this._launcher.close();
+        getAssistant()?.ask(text.trim());
     }
 
     // Появление вместе с пузырём: содержимое видно сразу и только чуть
@@ -554,6 +580,7 @@ class LauncherView extends St.BoxLayout {
     _search(text) {
         this._clearResults();
         const providers = this._settings.get_strv('launcher-search-providers');
+        providers.push('assistant');
         const sections = new Map();
         for (const provider of providers) {
             const section = this[`_search_${provider}`]?.(text, _normalize(text));
@@ -567,6 +594,7 @@ class LauncherView extends St.BoxLayout {
         if (sections.has('web') && !sections.has('apps') && !sections.has('settings') &&
             !sections.get('files')?._matches)
             order = ['calculator', 'web', ...order.filter(p => p !== 'calculator' && p !== 'web')];
+
         this._results = [];
         for (const provider of order) {
             const section = sections.get(provider);
@@ -595,6 +623,22 @@ class LauncherView extends St.BoxLayout {
                 St.Clipboard.get_default().set_text(St.ClipboardType.CLIPBOARD, `${value}`);
                 this._launcher.close();
             },
+        }));
+        return section;
+    }
+
+    // Вопрос ИИ-помощнику — последней строкой: Enter по-прежнему открывает
+    // найденное или ищет в интернете.
+    _search_assistant(text) {
+        const assistant = getAssistant();
+        if (!assistant?.enabled)
+            return null;
+        const section = _section(null);
+        section.add_child(this._addResult({
+            iconName: 'hypede-assistant-symbolic',
+            title: text,
+            subtitle: _('Ask %s').format(assistant.providerName),
+            activate: () => this._ask(text),
         }));
         return section;
     }
@@ -827,6 +871,7 @@ class LauncherButton extends PanelMenu.Button {
                 if (this._settings.get_strv('launcher-search-providers').includes('files'))
                     getFileIndex().refresh();
                 this._prepareOpen();
+                this.view._syncAssistant();
                 this.view.onOpen();
                 // Фокус в строку поиска — после того, как меню заберёт ввод.
                 GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {

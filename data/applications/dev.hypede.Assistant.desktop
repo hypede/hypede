@@ -1,0 +1,18 @@
+[Desktop Entry]
+Type=Application
+Name=AI Assistant
+Name[ru]=ИИ-помощник
+Comment=Chat with Claude, Gemini, Mistral, ChatGPT, Grok or DeepSeek
+Comment[ru]=Чат с Claude, Gemini, Mistral, ChatGPT, Grok или DeepSeek
+Exec=hypede-assistant
+Icon=dev.hypede.Assistant
+Terminal=false
+Categories=GTK;Utility;
+Keywords=ai;assistant;chat;claude;gemini;chatgpt;mistral;grok;deepseek;
+Keywords[ru]=ии;помощник;ассистент;чат;нейросеть;
+StartupNotify=true
+StartupWMClass=dev.hypede.Assistant
+# Кнопки «Спросить…» появляются, только когда помощник включён в «Настройках»;
+# в списке приложений он не показывается.
+NoDisplay=true
+OnlyShowIn=HypeDE;GNOME;

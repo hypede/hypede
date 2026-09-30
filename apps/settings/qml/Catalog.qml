@@ -67,7 +67,7 @@ QtObject {
             keywords: "bluetooth headphones mouse keyboard наушники блютуз"
         },
         {
-            id: "devices", title: qsTr("Device"), icon: "computer-symbolic",
+            id: "devices", title: qsTr("Device"), icon: "hypede-device-symbolic",
             keywords: "device mouse touchpad keyboard display sound printer power storage устройство",
             sections: [
                 { title: qsTr("Displays"), rows: [
@@ -141,7 +141,7 @@ QtObject {
                     { type: "toggle", schema: sound, key: "event-sounds", title: qsTr("System sounds"),
                       keywords: "event sounds звуки системы" },
                     { type: "kcm", kcm: "kcm_printer_manager", package: "print-manager", title: qsTr("Printers"),
-                      icon: "printer-symbolic", keywords: "printer cups принтер печать" },
+                      icon: "hypede-printer-symbolic", keywords: "printer cups принтер печать" },
                 ] },
                 { title: qsTr("Power"), rows: [
                     { type: "power", title: qsTr("Power mode"), icon: "power-profile-balanced-symbolic",
@@ -164,7 +164,7 @@ QtObject {
                                  { value: "hibernate", label: qsTr("Hibernate") }, { value: "nothing", label: qsTr("Do nothing") } ] },
                 ] },
                 { title: qsTr("Storage"), rows: [
-                    { type: "storage", title: qsTr("Storage"), icon: "drive-harddisk-symbolic",
+                    { type: "storage", title: qsTr("Storage"), icon: "hypede-storage-symbolic",
                       keywords: "storage disk space trash хранилище диск место корзина" },
                 ] },
             ]
@@ -446,6 +446,14 @@ QtObject {
             ]
         },
         {
+            id: "assistant", title: qsTr("AI assistant"), icon: "hypede-assistant-symbolic",
+            keywords: "ai assistant chat claude gemini mistral chatgpt grok deepseek ии помощник ассистент нейросеть чат",
+            sections: [
+                { rows: [ { type: "assistant", title: qsTr("AI assistant"),
+                            keywords: "ai assistant provider sign in ии помощник провайдер вход" } ] },
+            ]
+        },
+        {
             id: "accessibility", title: qsTr("Accessibility"), icon: "preferences-desktop-accessibility-symbolic",
             keywords: "accessibility zoom contrast screen reader специальные возможности",
             sections: [
@@ -515,9 +523,9 @@ QtObject {
                       title: qsTr("Sharing and remote desktop"), icon: "preferences-desktop-remote-desktop-symbolic",
                       keywords: "remote rdp vnc sharing удалённый" },
                     { type: "strvToggle", schema: session, key: "optional-services", item: "print-notifications",
-                      title: qsTr("Printer notifications"), icon: "printer-symbolic" },
+                      title: qsTr("Printer notifications"), icon: "hypede-printer-symbolic" },
                     { type: "strvToggle", schema: session, key: "optional-services", item: "disk-health",
-                      title: qsTr("Disk health warnings"), icon: "drive-harddisk-symbolic", keywords: "smart" },
+                      title: qsTr("Disk health warnings"), icon: "hypede-storage-symbolic", keywords: "smart" },
                     { type: "strvToggle", schema: session, key: "optional-services", item: "smartcard",
                       title: qsTr("Smart cards"), icon: "auth-smartcard-symbolic" },
                     { type: "strvToggle", schema: session, key: "optional-services", item: "usb-protection",
@@ -545,11 +553,11 @@ QtObject {
                 { rows: [ { type: "about", title: qsTr("About HypeDE") } ] },
                 { title: qsTr("System information"), rows: [
                     { type: "kcm", kcm: "kcm_about-distro", package: "kinfocenter", title: qsTr("Detailed system information"),
-                      icon: "computer-symbolic", keywords: "cpu memory hardware железо" },
+                      icon: "hypede-device-symbolic", keywords: "cpu memory hardware железо" },
                     { type: "kcm", kcm: "kcm_energyinfo", package: "kinfocenter", title: qsTr("Battery"),
                       icon: "battery-symbolic", keywords: "battery energy батарея" },
                     { type: "kcm", kcm: "kcm_block_devices", package: "kinfocenter", title: qsTr("Storage devices"),
-                      icon: "drive-harddisk-symbolic", keywords: "disk ssd диск" },
+                      icon: "hypede-storage-symbolic", keywords: "disk ssd диск" },
                     { type: "kcm", kcm: "kcm_usb", package: "kinfocenter", title: qsTr("USB devices"),
                       icon: "drive-removable-media-symbolic" },
                     { type: "kcm", kcm: "kcm_vulkan", package: "kinfocenter", title: qsTr("Graphics (Vulkan)"),

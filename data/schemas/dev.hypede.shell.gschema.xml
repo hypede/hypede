@@ -311,4 +311,31 @@
       <summary>Показывать карточку поддержки проекта</summary>
     </key>
   </schema>
+
+  <!-- ИИ-помощник (apps/assistant). Выключен, пока его не включат в
+       «Настройках»: без этого нигде нет кнопок «Спросить…». -->
+  <schema id="dev.hypede.assistant" path="/dev/hypede/assistant/">
+    <key name="enabled" type="b">
+      <default>false</default>
+      <summary>ИИ-помощник включён</summary>
+    </key>
+    <key name="provider" type="s">
+      <choices>
+        <choice value="claude"/>
+        <choice value="gemini"/>
+        <choice value="mistral"/>
+        <choice value="chatgpt"/>
+        <choice value="grok"/>
+        <choice value="deepseek"/>
+      </choices>
+      <default>'claude'</default>
+      <summary>Провайдер</summary>
+      <description>Чей чат открывает помощник. Вход — в собственную учётную запись на сайте провайдера.</description>
+    </key>
+    <key name="panel-width" type="i">
+      <range min="320" max="900"/>
+      <default>440</default>
+      <summary>Ширина панели помощника</summary>
+    </key>
+  </schema>
 </schemalist>

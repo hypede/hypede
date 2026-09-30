@@ -1,11 +1,24 @@
 import QtQuick
+import HypeSettings
 
 // Заголовок окна: название, поиск по центру и кнопки окна справа.
 // Пустое место заголовка перетаскивает окно, двойной клик — разворачивает.
 Item {
     id: bar
     property alias searchText: search.text
+    // Раздел, о котором спрашивать ИИ-помощника.
+    property string pageTitle: ""
     signal searchAccepted()
+
+    readonly property var assistant: GSettingsHub.schema("dev.hypede.assistant")
+    readonly property bool assistantOn: assistant.valid && assistant.revision >= 0
+                                        && assistant.value("enabled") === true
+                                        && System.hasProgram("hypede-assistant")
+    readonly property string assistantName: {
+        const names = { claude: "Claude", gemini: "Gemini", mistral: "Mistral",
+                        chatgpt: "ChatGPT", grok: "Grok", deepseek: "DeepSeek" }
+        return assistant.revision >= 0 ? (names[assistant.value("provider")] || "Claude") : "Claude"
+    }
     function focusSearch() { search.focusField() }
 
     implicitHeight: 64
@@ -39,13 +52,27 @@ Item {
 
     SearchField {
         id: search
-        width: Math.min(560, bar.width - 2 * 240)
+        width: Math.min(560, bar.width - 2 * (askButton.visible ? 380 : 240))
         anchors.centerIn: parent
         visible: width > 160
         onAccepted: bar.searchAccepted()
     }
 
+    // «Спросить Claude» — вопрос о текущем разделе настроек.
+    ChromeButton {
+        id: askButton
+        visible: bar.assistantOn
+        anchors.right: windowButtons.visible ? windowButtons.left : parent.right
+        anchors.rightMargin: 12
+        anchors.verticalCenter: parent.verticalCenter
+        iconName: "hypede-assistant-symbolic"
+        text: qsTr("Ask %1").arg(bar.assistantName)
+        onClicked: System.run(["hypede-assistant", "--prompt",
+                               qsTr("Question about HypeDE settings, section “%1”: ").arg(bar.pageTitle)])
+    }
+
     Row {
+        id: windowButtons
         visible: appWindow.frameless
         anchors.right: parent.right
         anchors.rightMargin: 14

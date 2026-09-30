@@ -40,7 +40,8 @@ optdepends=(
   'power-profiles-daemon: переключатель режима питания'
   'gnome-control-center: настройка мониторов (расположение и масштаб)'
   'ptyxis: терминал для «Открыть в терминале»'
-  'qadwaitadecorations-qt6: заголовок окна «Настроек» как у GTK-приложений'
+  'qadwaitadecorations-qt6: заголовки окон приложений Qt как у GTK-приложений'
+  'webkitgtk-6.0: ИИ-помощник (чат Claude, Gemini, Mistral, ChatGPT, Grok, DeepSeek)'
 )
 # LTO и отладочные символы только раздувают память при сборке, а выигрыша
 # для окна настроек не дают. Число заданий Makefile считает сам по свободной
