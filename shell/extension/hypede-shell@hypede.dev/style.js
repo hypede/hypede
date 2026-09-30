@@ -83,22 +83,25 @@ export class StyleManager {
         const launcherIcon = s.get_int('launcher-icon-size');
         const tile = launcherIcon + 64;
         const floatRadius = Math.min(radius, Math.round(shelfSize / 2));
+        const speed = s.get_double('animation-speed');
+        const transitionSpeed = Math.max(100, Math.round(250 * speed));
+        const fastTransition = Math.max(50, Math.round(150 * speed));
 
         return `
-#panel.hypede-shelf { background-color: ${rgba(base.shelf, s.get_int('shelf-opacity'))}; }
-#panel.hypede-shelf.floating { border-radius: ${floatRadius}px; }
-.hypede-shelf-item { width: ${item}px; height: ${item}px; }
-.popup-menu-content { background-color: ${rgba(base.bubble, s.get_int('launcher-opacity'))}; border-radius: ${radius}px; }
-.hypede-launcher-menu .popup-menu-content { border-radius: ${radius + 4}px; }
-.quick-settings { border-radius: ${radius + 4}px; }
-.quick-toggle-menu, .datemenu-popover, #calendarArea { border-radius: ${radius}px; }
-.popup-menu-item { border-radius: ${Math.max(0, radius - 10)}px; }
-#notification-container .message, .message { border-radius: ${Math.max(0, radius - 4)}px; }
-.calendar, .events-button, .world-clocks-button, .weather-button, .datemenu-today-button { border-radius: ${Math.max(0, radius - 4)}px; }
-.hypede-launcher-app { width: ${tile}px; border-radius: ${Math.max(0, radius - 4)}px; }
+#panel.hypede-shelf { background-color: ${rgba(base.shelf, s.get_int('shelf-opacity'))}; transition: background-color 300ms ease, opacity 300ms ease; }
+#panel.hypede-shelf.floating { border-radius: ${floatRadius}px; transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1); }
+.hypede-shelf-item { width: ${item}px; height: ${item}px; transition: all ${fastTransition}ms cubic-bezier(0.4, 0, 0.2, 1); }
+.popup-menu-content { background-color: ${rgba(base.bubble, s.get_int('launcher-opacity'))}; border-radius: ${radius}px; transition: opacity ${transitionSpeed}ms ease, transform ${transitionSpeed}ms ease; }
+.hypede-launcher-menu .popup-menu-content { border-radius: ${radius + 4}px; transition: all ${transitionSpeed}ms cubic-bezier(0.4, 0, 0.2, 1); }
+.quick-settings { border-radius: ${radius + 4}px; transition: opacity ${transitionSpeed}ms ease; }
+.quick-toggle-menu, .datemenu-popover, #calendarArea { border-radius: ${radius}px; transition: opacity ${transitionSpeed}ms ease; }
+.popup-menu-item { border-radius: ${Math.max(0, radius - 10)}px; transition: all ${fastTransition}ms cubic-bezier(0.4, 0, 0.2, 1); }
+#notification-container .message, .message { border-radius: ${Math.max(0, radius - 4)}px; transition: all ${transitionSpeed}ms cubic-bezier(0.4, 0, 0.2, 1); }
+.calendar, .events-button, .world-clocks-button, .weather-button, .datemenu-today-button { border-radius: ${Math.max(0, radius - 4)}px; transition: all ${fastTransition}ms ease; }
+.hypede-launcher-app { width: ${tile}px; border-radius: ${Math.max(0, radius - 4)}px; transition: all ${transitionSpeed}ms cubic-bezier(0.4, 0, 0.2, 1); }
 .hypede-launcher-app-label { max-width: ${tile - 12}px; }
-.hypede-launcher-chip, .hypede-launcher-result { border-radius: ${Math.max(0, radius - 6)}px; }
-.hypede-lock-card { border-radius: ${radius + 4}px; }
+.hypede-launcher-chip, .hypede-launcher-result { border-radius: ${Math.max(0, radius - 6)}px; transition: all ${fastTransition}ms ease; }
+.hypede-lock-card { border-radius: ${radius + 4}px; transition: all ${transitionSpeed}ms cubic-bezier(0.4, 0, 0.2, 1); }
 `;
     }
 

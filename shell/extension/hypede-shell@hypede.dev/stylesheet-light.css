@@ -20,12 +20,13 @@
   color: #1f1f1f;
   background-color: rgba(242, 244, 248, 0.80);
   box-shadow: none;
-  transition-duration: 250ms;
+  transition: background-color 300ms cubic-bezier(0.4, 0, 0.2, 1), opacity 300ms ease;
 }
 
 /* В обзоре и на экране блокировки полка остаётся полупрозрачной подложкой */
 #panel.hypede-shelf:overview {
   background-color: rgba(242, 244, 248, 0.50);
+  transition: background-color 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 #panel.hypede-shelf #panelLeft,
@@ -38,6 +39,7 @@
 #panel.hypede-shelf.floating {
   margin: 8px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.22);
+  transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* На экране блокировки у полки нет фона — только кнопки и трей */
@@ -84,16 +86,19 @@
   background-color: transparent;
   -natural-hpadding: 12px;
   -minimum-hpadding: 8px;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 #panel.hypede-shelf .panel-button:hover,
 #panel.hypede-shelf .panel-button:focus {
   box-shadow: none;
   background-color: rgba(0, 0, 0, 0.06);
+  transform: scale(1.02);
 }
 #panel.hypede-shelf .panel-button:active,
 #panel.hypede-shelf .panel-button:checked {
   box-shadow: none;
   background-color: rgba(0, 0, 0, 0.10);
+  transform: scale(0.98);
 }
 
 /* Кнопка лаунчера: кольцо, как в Chrome OS */
@@ -116,14 +121,16 @@
 }
 .hypede-shelf-item {
   border-radius: 999px;
-  transition-duration: 150ms;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .hypede-shelf-item:hover,
 .hypede-shelf-item:focus {
   background-color: rgba(0, 0, 0, 0.06);
+  transform: scale(1.05);
 }
 .hypede-shelf-item:checked {
   background-color: rgba(0, 0, 0, 0.10);
+  transform: scale(0.95);
 }
 .hypede-shelf-dot {
   width: 4px;
@@ -131,7 +138,7 @@
   margin-bottom: 1px;
   border-radius: 999px;
   background-color: rgba(31, 31, 31, 0.45);
-  transition-duration: 200ms;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .hypede-shelf-item:active .hypede-shelf-dot {
   width: 12px;
@@ -183,11 +190,12 @@
   padding: 8px 14px;
   color: #1f1f1f;
   background-color: rgba(0, 0, 0, 0.05);
-  transition-duration: 150ms;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .hypede-shelf-lock-action:hover,
 .hypede-shelf-lock-action:focus {
   background-color: rgba(0, 0, 0, 0.09);
+  transform: translateY(-1px);
 }
 .hypede-shelf-lock-action-box {
   spacing: 8px;
@@ -206,6 +214,13 @@
   padding: 6px 10px;
   font-size: 10pt;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  transform: translateY(4px);
+  transition: opacity 150ms ease, transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hypede-shelf-tooltip:visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Трей: дата и «пилюля» статуса со временем */
@@ -268,15 +283,20 @@
   border-radius: 20px;
   padding: 8px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 200ms ease, transform 200ms cubic-bezier(0.4, 0, 0.2, 1), background-color 300ms ease;
 }
 .popup-menu-item {
   border-radius: 10px;
   padding: 9px 12px;
+  transition: all 100ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .popup-menu-item:hover,
 .popup-menu-item:focus,
 .popup-menu-item:selected {
   background-color: rgba(0, 0, 0, 0.06);
+  transform: translateX(4px);
 }
 .popup-separator-menu-item .popup-separator-menu-item-separator {
   background-color: rgba(0, 0, 0, 0.10);
@@ -300,16 +320,20 @@
   color: #1f1f1f;
   background-color: rgba(0, 0, 0, 0.06);
   box-shadow: none;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .quick-toggle:hover {
   background-color: rgba(0, 0, 0, 0.10);
+  transform: scale(1.02);
 }
 .quick-toggle:checked {
   color: #ffffff;
   background-color: st-mix(-st-accent-color, #000000, 80%);
+  transform: scale(1.02);
 }
 .quick-toggle:checked:hover {
   background-color: st-mix(-st-accent-color, #000000, 72%);
+  transform: scale(1.04);
 }
 .quick-toggle-has-menu .quick-toggle:ltr { border-radius: 20px 0 0 20px; }
 .quick-toggle-has-menu .quick-toggle:rtl { border-radius: 0 20px 20px 0; }
@@ -320,17 +344,27 @@
 .quick-toggle-has-menu .quick-toggle-menu-button {
   color: #1f1f1f;
   background-color: rgba(0, 0, 0, 0.06);
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .quick-toggle-has-menu .quick-toggle-menu-button:hover {
   background-color: rgba(0, 0, 0, 0.10);
+  transform: scale(1.02);
 }
 .quick-toggle-has-menu .quick-toggle-menu-button:checked {
   color: #ffffff;
   background-color: st-mix(-st-accent-color, #000000, 80%);
+  transform: scale(1.02);
 }
 .quick-toggle-menu {
   border-radius: 20px;
   background-color: rgba(0, 0, 0, 0.04);
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 150ms ease, transform 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.quick-toggle-menu:visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 .quick-slider .slider {
   color: st-mix(-st-accent-color, #000000, 80%);
@@ -341,15 +375,21 @@
   -barlevel-height: 6px;
   -barlevel-background-color: rgba(0, 0, 0, 0.12);
   -barlevel-active-background-color: st-mix(-st-accent-color, #000000, 80%);
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.quick-slider .slider:active {
+  transform: scale(1.05);
 }
 .quick-settings .icon-button,
 .quick-settings .button {
   background-color: rgba(0, 0, 0, 0.06);
   color: #1f1f1f;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .quick-settings .icon-button:hover,
 .quick-settings .button:hover {
   background-color: rgba(0, 0, 0, 0.10);
+  transform: scale(1.02);
 }
 
 /* Плитки в духе Chrome OS (quicksettings.js): круг со значком, подпись
@@ -378,20 +418,23 @@
   border-radius: 999px;
   background-color: rgba(0, 0, 0, 0.06);
   color: #1f1f1f;
-  transition-duration: 150ms;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .quick-settings .hypede-tile .quick-toggle:hover .quick-toggle-icon,
 .quick-settings .hypede-tile.quick-toggle:hover .quick-toggle-icon {
   background-color: rgba(0, 0, 0, 0.10);
+  transform: scale(1.05);
 }
 .quick-settings .hypede-tile .quick-toggle:checked .quick-toggle-icon,
 .quick-settings .hypede-tile.quick-toggle:checked .quick-toggle-icon {
   background-color: st-mix(-st-accent-color, #000000, 80%);
   color: #ffffff;
+  transform: scale(1.05);
 }
 .quick-settings .hypede-tile .quick-toggle:checked:hover .quick-toggle-icon,
 .quick-settings .hypede-tile.quick-toggle:checked:hover .quick-toggle-icon {
   background-color: st-mix(-st-accent-color, #000000, 72%);
+  transform: scale(1.08);
 }
 .quick-settings .hypede-tile .quick-toggle-title {
   font-size: 9.5pt;
@@ -421,9 +464,11 @@
   padding: 6px;
   border-radius: 999px;
   color: st-mix(-st-accent-color, #000000, 80%);
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .hypede-launcher-ask:hover {
   background-color: rgba(0, 0, 0, 0.08);
+  transform: scale(1.1);
 }
 
 /* Календарь и центр уведомлений */
@@ -453,6 +498,13 @@
   background-color: rgba(248, 250, 253, 0.98);
   border: 1px solid rgba(0, 0, 0, 0.06);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 200ms ease, transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+#notification-container .message:visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ------------------------------------------------------------------ */
@@ -501,10 +553,12 @@
   selected-color: #ffffff;
   caret-color: #1f1f1f;
   box-shadow: none;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .hypede-launcher-search:focus {
   background-color: rgba(0, 0, 0, 0.04);
   box-shadow: inset 0 0 0 2px st-mix(-st-accent-color, #000000, 80%);
+  transform: scale(1.01);
 }
 .hypede-launcher-search StLabel.hint-text {
   color: #444746;
@@ -537,10 +591,12 @@
   border-radius: 14px;
   padding: 10px 12px;
   background-color: rgba(0, 0, 0, 0.04);
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .hypede-launcher-chip:hover,
 .hypede-launcher-chip:focus {
   background-color: rgba(0, 0, 0, 0.08);
+  transform: translateX(4px);
 }
 .hypede-launcher-chip-box {
   spacing: 12px;
@@ -570,14 +626,16 @@
   width: 112px;
   padding: 10px 4px 8px 4px;
   border-radius: 16px;
-  transition-duration: 120ms;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .hypede-launcher-app:hover {
   background-color: rgba(0, 0, 0, 0.06);
+  transform: scale(1.03);
 }
 .hypede-launcher-app:focus {
   background-color: rgba(0, 0, 0, 0.06);
   box-shadow: inset 0 0 0 2px st-mix(-st-accent-color, #000000, 80%);
+  transform: scale(1.03);
 }
 .hypede-launcher-app-icon {
   padding-bottom: 8px;
@@ -599,13 +657,16 @@
 .hypede-launcher-result {
   border-radius: 12px;
   padding: 8px 12px;
+  transition: all 100ms cubic-bezier(0.4, 0, 0.2, 1);
 }
 .hypede-launcher-result:hover {
   background-color: rgba(0, 0, 0, 0.06);
+  transform: translateX(4px);
 }
 .hypede-launcher-result:selected,
 .hypede-launcher-result:focus {
   background-color: rgba(0, 0, 0, 0.07);
+  transform: translateX(4px);
 }
 .hypede-launcher-result-box {
   spacing: 14px;
@@ -645,6 +706,13 @@
   background-color: rgba(248, 250, 253, 0.98);
   color: #1f1f1f;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 200ms ease, transform 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.osd-window:visible {
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* ------------------------------------------------------------------ */
@@ -668,6 +736,15 @@
   color: #ffffff;
   text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
   font-feature-settings: "tnum";
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 400ms ease, transform 400ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+.hypede-lock-clock:visible .hypede-lock-hours,
+.hypede-lock-clock:visible .hypede-lock-minutes,
+.hypede-lock-clock:visible .hypede-lock-colon {
+  opacity: 1;
+  transform: translateY(0);
 }
 .hypede-lock-colon {
   padding: 0 6px 22px 6px;
