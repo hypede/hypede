@@ -35,7 +35,6 @@ const MAX_FILE_RESULTS = 5;
 const MAX_SETTINGS_RESULTS = 3;
 const MAX_CONTINUE_ITEMS = 4;
 const BUBBLE_MAX_HEIGHT = 688;
-const STAGGER_LIMIT = 30;
 
 const SETTINGS_APP_ID = 'dev.hypede.Settings.desktop';
 const FILES_APP_ID = 'dev.hypede.Files.desktop';
@@ -236,22 +235,6 @@ function _section(title) {
     return box;
 }
 
-// Плавное появление набора актёров «волной» — один за другим.
-function _stagger(actors, {dy = 12, step = 12, duration = 260} = {}) {
-    actors.slice(0, STAGGER_LIMIT).forEach((actor, i) => {
-        actor.remove_all_transitions();
-        actor.opacity = 0;
-        actor.translation_y = dy;
-        actor.ease({
-            opacity: 255,
-            translation_y: 0,
-            delay: i * step,
-            duration,
-            mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
-        });
-    });
-}
-
 // Содержимое лаунчера.
 const LauncherView = GObject.registerClass(
 class LauncherView extends St.BoxLayout {
@@ -402,14 +385,22 @@ class LauncherView extends St.BoxLayout {
         global.stage.set_key_focus(this._entry);
     }
 
-    // Появление: плитки поднимаются «волной» одна за другой.
+    // Появление вместе с пузырём: содержимое видно сразу и только чуть
+    // поднимается — без пустого кадра и «волны» плиток. Полноэкранный
+    // лаунчер выезжает снизу, как в Chrome OS.
     _animateIn() {
-        const tiles = [
-            ...this._continueGrid.get_children(),
-            ...this._grid.get_children(),
-        ];
-        _stagger([this._entryBin], {dy: 8, duration: 220});
-        _stagger(tiles, {dy: this._fullscreen ? 24 : 14, step: this._fullscreen ? 10 : 8});
+        const rise = this._fullscreen ? 48 : 12;
+        for (const actor of [this._entryBin, this._homeScroll, this._resultsScroll]) {
+            actor.remove_all_transitions();
+            actor.opacity = 255;
+        }
+        this.remove_all_transitions();
+        this.translation_y = rise;
+        this.ease({
+            translation_y: 0,
+            duration: this._fullscreen ? 280 : 220,
+            mode: Clutter.AnimationMode.EASE_OUT_QUINT,
+        });
     }
 
     _updateSize() {

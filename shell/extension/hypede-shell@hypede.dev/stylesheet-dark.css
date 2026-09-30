@@ -352,6 +352,69 @@
   background-color: rgba(255, 255, 255, 0.14);
 }
 
+/* Плитки в духе Chrome OS (quicksettings.js): круг со значком, подпись
+   под ним, три колонки. */
+.quick-settings.hypede-chrome .quick-settings-grid {
+  spacing-rows: 14px;
+  spacing-columns: 4px;
+}
+.quick-settings .hypede-tile.quick-toggle,
+.quick-settings .hypede-tile.quick-toggle-has-menu,
+.quick-settings .hypede-tile .quick-toggle,
+.quick-settings .hypede-tile .quick-toggle:hover,
+.quick-settings .hypede-tile .quick-toggle:checked,
+.quick-settings .hypede-tile.quick-toggle:hover,
+.quick-settings .hypede-tile.quick-toggle:checked {
+  background-color: transparent;
+  color: #e3e3e3;
+  border-radius: 16px;
+  min-height: 0;
+  padding: 2px 0;
+}
+.quick-settings .hypede-tile .quick-toggle-icon {
+  icon-size: 20px;
+  padding: 14px;
+  margin-bottom: 6px;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.08);
+  color: #e3e3e3;
+  transition-duration: 150ms;
+}
+.quick-settings .hypede-tile .quick-toggle:hover .quick-toggle-icon,
+.quick-settings .hypede-tile.quick-toggle:hover .quick-toggle-icon {
+  background-color: rgba(255, 255, 255, 0.14);
+}
+.quick-settings .hypede-tile .quick-toggle:checked .quick-toggle-icon,
+.quick-settings .hypede-tile.quick-toggle:checked .quick-toggle-icon {
+  background-color: st-mix(-st-accent-color, #ffffff, 45%);
+  color: st-mix(-st-accent-color, #000000, 30%);
+}
+.quick-settings .hypede-tile .quick-toggle:checked:hover .quick-toggle-icon,
+.quick-settings .hypede-tile.quick-toggle:checked:hover .quick-toggle-icon {
+  background-color: st-mix(-st-accent-color, #ffffff, 38%);
+}
+.quick-settings .hypede-tile .quick-toggle-title {
+  font-size: 9.5pt;
+  font-weight: normal;
+}
+.quick-settings .hypede-tile .quick-toggle-subtitle {
+  font-size: 8.5pt;
+  color: #c4c7c5;
+}
+.quick-settings .hypede-tile .hypede-tile-menu-button,
+.quick-settings .hypede-tile .hypede-tile-menu-button:hover,
+.quick-settings .hypede-tile .hypede-tile-menu-button:checked {
+  background-color: transparent;
+  color: #e3e3e3;
+  padding: 0 0 0 2px;
+  min-width: 0;
+  min-height: 0;
+  border-radius: 999px;
+}
+.quick-settings .hypede-tile .hypede-tile-menu-button StIcon {
+  icon-size: 16px;
+}
+
 /* Календарь и центр уведомлений */
 .datemenu-popover,
 #calendarArea {

@@ -31,6 +31,9 @@ start)
     # настроек и каталог оболочки HypeDE.
     export DCONF_PROFILE=hypede HYPEDE_SESSION=1
     export XDG_DATA_DIRS=/usr/share/hypede/shell:/usr/local/share:/usr/share
+    # Как делает hypede-session: службы шины (порталы) получают окружение
+    # HypeDE, иначе приложения GTK берут настройки обычного GNOME.
+    dbus-update-activation-environment DCONF_PROFILE HYPEDE_SESSION XDG_CURRENT_DESKTOP XDG_DATA_DIRS
     nohup gnome-shell --headless --wayland --no-x11 --virtual-monitor "$size" \
         --mode="${HYPEDE_MODE:-hypede-dev}" > "$STATE/shell.log" 2>&1 &
     echo $! > "$STATE/shell.pid"
@@ -55,7 +58,7 @@ shot)
             await new imports.gi.Shell.Screenshot().screenshot(false, stream);
             stream.close(null);
         })(); '$2'"
-    sleep 0.3
+    sleep 1
     ;;
 eval)
     bus gdbus call --session --dest org.gnome.Shell --object-path /org/gnome/Shell \
