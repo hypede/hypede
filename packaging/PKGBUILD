@@ -7,9 +7,9 @@
 # (GDM, SDDM, greetd…) появится «HypeDE».
 
 pkgname=hypede-git
-pkgver=2.0.0
+pkgver=2.1.0
 pkgrel=1
-pkgdesc="HypeDE — GNOME в облике Chrome OS: полка, лаунчер, «Файлы» и «Настройки» на модулях KDE"
+pkgdesc="HypeDE — рабочий стол в стиле Chrome OS на основе GNOME Shell"
 backup=('etc/pam.d/hypede')
 arch=('x86_64' 'aarch64')
 url="https://github.com/hypede/hypede"
