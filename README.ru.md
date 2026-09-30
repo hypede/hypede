@@ -41,6 +41,7 @@ GNOME не меняются: после установки на экране в�
 
 <p align="center">
   <img src="docs/images/settings-light.png" alt="Настройки" width="760">
+  <img src="docs/images/settings-assistant-dark.png" alt="ИИ-помощник в Настройках" width="760">
   <img src="docs/images/quick-settings-dark.png" alt="Быстрые настройки" width="760">
   <img src="docs/images/files-light.png" alt="Файлы" width="760">
   <img src="docs/images/lock-prompt-dark.png" alt="Экран блокировки" width="760">

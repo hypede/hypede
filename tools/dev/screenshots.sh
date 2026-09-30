@@ -51,12 +51,20 @@ for scheme in default prefer-dark; do
     ev "$(launcher).menu.close()"
     gs launcher-style bubble
 
-    # Экран блокировки: часы, затем поле пароля с карточками
-    if [ "$(ev_out 'String(!!Main.screenShield)')" = "true" ]; then
-        ev 'Main.screenShield.lock(true)'; shot "lock-$suffix" 2.5
-        ev 'Main.screenShield._dialog._showPrompt()'; shot "lock-prompt-$suffix" 2
-        ev 'Main.screenShield.deactivate(false)'; sleep 1
-    fi
+    # Экран блокировки: часы, затем поле пароля с карточками. Через D-Bus —
+    # так работает и с GDM, и без него (экран блокировки HypeDE).
+    ss() { DBUS_SESSION_BUS_ADDRESS=$(cat "${HYPEDE_DEV_STATE:-/tmp/hypede-dev}/bus") \
+        gdbus call --session --dest org.gnome.ScreenSaver --object-path /org/gnome/ScreenSaver \
+        --method "org.gnome.ScreenSaver.$1" "${@:2}" >/dev/null; }
+    dialog='Main.layoutManager.screenShieldGroup.get_children().find(c => c.name === "lockDialogGroup").get_first_child()'
+    ss Lock; shot "lock-$suffix" 2.5
+    ev "$dialog._showPrompt()"; shot "lock-prompt-$suffix" 2
+    ss SetActive false; sleep 1
+
+    # Раздел ИИ-помощника
+    gsettings set dev.hypede.assistant enabled true
+    "$H" run env LANG="${LANG:-ru_RU.UTF-8}" hypede-settings --page assistant; shot "settings-assistant-$suffix" 7
+    kill_apps
 done
 gsettings set org.gnome.desktop.interface color-scheme default
 echo "скриншоты: $OUT"

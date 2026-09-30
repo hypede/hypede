@@ -41,6 +41,7 @@ GNOME session keeps working as before.
 
 <p align="center">
   <img src="docs/images/settings-light.png" alt="Settings" width="760">
+  <img src="docs/images/settings-assistant-dark.png" alt="AI assistant in Settings" width="760">
   <img src="docs/images/quick-settings-dark.png" alt="Quick settings" width="760">
   <img src="docs/images/files-light.png" alt="Files" width="760">
   <img src="docs/images/lock-prompt-dark.png" alt="Lock screen" width="760">
