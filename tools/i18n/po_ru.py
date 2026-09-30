@@ -173,6 +173,46 @@ RU = {
     'Shelf': 'Полка',
 }
 
+# Версия 2.1: вычитанные формулировки и новые строки. Более поздние значения
+# заменяют прежние.
+RU.update({
+    "Continue where you left off": "Недавние файлы",
+    "Press any key or click to unlock": "Нажмите любую клавишу, чтобы разблокировать",
+    "Up for %d h %d min": "Без перезагрузки %d ч %d мин",
+    "Move to Trash": "Переместить в корзину",
+    "“%s” moved to the trash": "«%s» — в корзине",
+    "“%s” added to bookmarks": "Закладка «%s» добавлена",
+    "“%s” selected": "Выбрано: «%s»",
+    "Search your device, apps, settings, web…": "Поиск по устройству, настройкам и в интернете…",
+    # ИИ-помощник
+    "Ask %s about the selected files": "Спросить %s о выбранных файлах",
+    "Folder “%s” contains:\n%s\n\nQuestion: ": "В папке «%s» лежит:\n%s\n\nВопрос: ",
+    "New chat": "Новый чат",
+    "Open in browser": "Открыть в браузере",
+    "Sign in again": "Войти заново",
+    "Sign out": "Выйти из учётной записи",
+    "Assistant settings": "Настройки помощника",
+    "The AI assistant is off": "ИИ-помощник выключен",
+    "Turn it on and choose a provider in Settings.": "Включите его и выберите провайдера в «Настройках».",
+    "Open Settings": "Открыть «Настройки»",
+    "AI assistant": "ИИ-помощник",
+    "Could not reach the chat box — sign in first": "Не нашлось поле ввода — сначала войдите в учётную запись",
+    "If the files did not attach, drag them from the bar above into the chat": "Если файлы не прикрепились, перетащите их в чат с панели сверху",
+    "Drag into the chat": "Перетащите в чат",
+    "Ask %s": "Спросить %s",
+    "Search with %s": "Искать в %s",
+    # приветствие
+    "Welcome to HypeDE": "Добро пожаловать в HypeDE",
+    "Good night, %s": "Доброй ночи, %s",
+    "Good morning, %s": "Доброе утро, %s",
+    "Good afternoon, %s": "Добрый день, %s",
+    "Good evening, %s": "Добрый вечер, %s",
+    "Press any key to continue": "Нажмите любую клавишу, чтобы продолжить",
+    # экран блокировки без GDM
+    "Password": "Пароль",
+    "Sorry, that didn’t work. Please try again.": "Неверный пароль. Попробуйте ещё раз.",
+})
+
 PLURALS = {
     "%d folder": ("%d папка", "%d папки", "%d папок"),
     "%d file": ("%d файл", "%d файла", "%d файлов"),
@@ -192,4 +232,5 @@ PLURALS = {
     "Permanently delete %d item?": ("Удалить %d объект навсегда?", "Удалить %d объекта навсегда?",
                                     "Удалить %d объектов навсегда?"),
     "You opened %d day ago": ("Открыто %d день назад", "Открыто %d дня назад", "Открыто %d дней назад"),
+    "Question about this file: ": ("Вопрос об этом файле: ", "Вопрос об этих файлах: ", "Вопрос об этих файлах: "),
 }
