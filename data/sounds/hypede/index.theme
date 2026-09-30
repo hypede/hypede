@@ -1,0 +1,8 @@
+[Sound Theme]
+Name=HypeDE
+Comment=Soft system sounds for HypeDE
+Inherits=freedesktop
+Directories=stereo
+
+[stereo]
+OutputProfile=stereo

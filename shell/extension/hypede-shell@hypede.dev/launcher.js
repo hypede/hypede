@@ -904,7 +904,7 @@ class LauncherButton extends PanelMenu.Button {
         else
             this.menu.actor.remove_style_class_name('fullscreen');
 
-        const blur = this._settings.get_boolean('launcher-blur');
+        const blur = this._settings.get_boolean('launcher-blur') && !this._settings.get_boolean('lite-mode');
         const target = boxPointer.bin;
         if (blur && !target.get_effect('hypede-blur'))
             target.add_effect_with_name('hypede-blur', this._blur);

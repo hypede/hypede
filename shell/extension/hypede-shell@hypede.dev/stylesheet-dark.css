@@ -774,3 +774,23 @@
   font-weight: 600;
   color: #ffffff;
 }
+
+/* ------------------------------------------------------------------ */
+/* Приветствие при входе (greeting.js)                                 */
+/* ------------------------------------------------------------------ */
+
+.hypede-greeting {
+  color: #ffffff;
+  padding-bottom: 48px;
+}
+.hypede-greeting-title {
+  font-size: 44pt;
+  font-weight: 300;
+}
+.hypede-greeting-subtitle {
+  font-size: 15pt;
+  margin-top: 14px;
+}
+.hypede-greeting-hint {
+  font-size: 10.5pt;
+}

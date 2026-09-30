@@ -632,6 +632,10 @@ class ShelfApps extends St.BoxLayout {
                     icon.scale_x = icon.scale_y = 0.4;
                     icon.ease({
                         opacity: 255,
+                        duration: 200,
+                        mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
+                    });
+                    icon.ease({
                         scale_x: 1,
                         scale_y: 1,
                         duration: 260,
@@ -863,6 +867,7 @@ export class Shelf {
             'changed::shelf-alignment', () => this._syncAlignment(),
             'changed::shelf-style', () => this._syncStyle(),
             'changed::shelf-blur', () => this._syncStyle(),
+            'changed::lite-mode', () => this._syncStyle(),
             'changed::shelf-running-indicator', () => this._syncStyle(),
             'changed::show-date', () => this._syncDate(),
             'changed::shelf-autohide', () => this._syncAutohide(),
@@ -981,7 +986,8 @@ export class Shelf {
 
         // Размытие прямоугольное, поэтому у «островка» со скруглёнными
         // углами его нет — иначе углы выдали бы себя.
-        const blur = this.settings.get_boolean('shelf-blur') && !floating;
+        const blur = this.settings.get_boolean('shelf-blur') && !floating &&
+            !this.settings.get_boolean('lite-mode');
         if (blur && !this.actor.get_effect('hypede-blur'))
             this.actor.add_effect_with_name('hypede-blur', this._blur);
         else if (!blur && this.actor.get_effect('hypede-blur'))

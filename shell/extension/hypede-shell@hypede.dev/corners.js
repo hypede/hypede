@@ -224,6 +224,7 @@ export class WindowCorners {
 
         this._settings.connectObject(
             'changed::window-corners', () => this._reset(),
+            'changed::lite-mode', () => this._reset(),
             'changed::window-corner-radius', () => this._syncAll(),
             this);
         global.display.connectObject(
@@ -241,7 +242,7 @@ export class WindowCorners {
         for (const rounded of this._windows.values())
             rounded.destroy();
         this._windows.clear();
-        if (!this._settings.get_boolean('window-corners'))
+        if (!this._settings.get_boolean('window-corners') || this._settings.get_boolean('lite-mode'))
             return;
         for (const actor of global.get_window_actors())
             this._track(actor);
@@ -260,7 +261,7 @@ export class WindowCorners {
 
     _track(actor) {
         const window = actor.meta_window;
-        if (!this._settings.get_boolean('window-corners') || !window ||
+        if (!this._settings.get_boolean('window-corners') || this._settings.get_boolean('lite-mode') || !window ||
             this._windows.has(actor) || !needsCorners(window))
             return;
         this._windows.set(actor, new RoundedWindow(actor, this));

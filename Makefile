@@ -142,6 +142,9 @@ install-data: mo
 	$(INSTALL) -d '$(DESTDIR)$(DATADIR)'/icons/HypeDE/symbolic
 	$(INSTALL_DATA) data/icons/HypeDE/index.theme data/icons/HypeDE/LICENSE '$(DESTDIR)$(DATADIR)'/icons/HypeDE/
 	$(INSTALL_DATA) data/icons/HypeDE/symbolic/*.svg '$(DESTDIR)$(DATADIR)'/icons/HypeDE/symbolic/
+	$(INSTALL) -d '$(DESTDIR)$(DATADIR)'/sounds/hypede/stereo
+	$(INSTALL_DATA) data/sounds/hypede/index.theme '$(DESTDIR)$(DATADIR)'/sounds/hypede/
+	$(INSTALL_DATA) data/sounds/hypede/stereo/*.oga '$(DESTDIR)$(DATADIR)'/sounds/hypede/stereo/
 	$(INSTALL) -Dm644 branding/hypede-logo.svg '$(DESTDIR)$(DATADIR)'/icons/hicolor/scalable/apps/hypede.svg
 	$(INSTALL) -Dm644 branding/hypede-symbolic.svg '$(DESTDIR)$(DATADIR)'/icons/hicolor/symbolic/apps/hypede-symbolic.svg
 	$(INSTALL) -Dm644 '$(BUILD)/locale/ru/LC_MESSAGES/hypede.mo' '$(DESTDIR)$(DATADIR)'/locale/ru/LC_MESSAGES/hypede.mo

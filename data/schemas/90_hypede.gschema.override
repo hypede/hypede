@@ -23,6 +23,10 @@ picture-uri='file:///usr/share/hypede/wallpapers/horizon-light.svg'
 picture-uri-dark='file:///usr/share/hypede/wallpapers/horizon-dark.svg'
 picture-options='zoom'
 
+[org.gnome.desktop.sound:HypeDE]
+theme-name='hypede'
+event-sounds=true
+
 [org.gnome.desktop.screensaver:HypeDE]
 picture-uri='file:///usr/share/hypede/wallpapers/horizon-dark.svg'
 

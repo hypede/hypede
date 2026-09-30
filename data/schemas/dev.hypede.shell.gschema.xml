@@ -190,6 +190,25 @@
       <description>launcher — лаунчер (как клавиша «Все» в Chrome OS); overview — обзор окон.</description>
     </key>
 
+    <key name="lite-mode" type="b">
+      <default>false</default>
+      <summary>Лёгкий режим</summary>
+      <description>Для слабых компьютеров: без размытия под полкой и лаунчером, без скругления окон шейдером, без волн на экране блокировки и приветствия.</description>
+    </key>
+    <key name="greeting" type="s">
+      <choices>
+        <choice value="always"/>
+        <choice value="first"/>
+        <choice value="never"/>
+      </choices>
+      <default>'always'</default>
+      <summary>Приветствие при входе</summary>
+      <description>always — при каждом входе; first — только при первом; never — не показывать.</description>
+    </key>
+    <key name="greeting-shown" type="b">
+      <default>false</default>
+      <summary>Приветствие уже показывалось</summary>
+    </key>
     <key name="window-corners" type="b">
       <default>true</default>
       <summary>Скруглять углы окон</summary>
