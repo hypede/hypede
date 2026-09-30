@@ -26,11 +26,12 @@ import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js'
 
 import {evaluate as calculate, looksLikeMath} from './calculator.js';
 import {loadRecentFiles, describeWhen} from './recent.js';
+import {getFileIndex, destroyFileIndex, normalize as normalizeName} from './filesearch.js';
 import {addSecondaryClick} from './util.js';
 
 const RESULT_ICON_SIZE = 32;
 const MAX_APP_RESULTS = 6;
-const MAX_FILE_RESULTS = 4;
+const MAX_FILE_RESULTS = 5;
 const MAX_SETTINGS_RESULTS = 3;
 const MAX_CONTINUE_ITEMS = 4;
 const BUBBLE_MAX_HEIGHT = 688;
@@ -562,10 +563,27 @@ class LauncherView extends St.BoxLayout {
     _search(text) {
         this._clearResults();
         const providers = this._settings.get_strv('launcher-search-providers');
+        const sections = new Map();
         for (const provider of providers) {
             const section = this[`_search_${provider}`]?.(text, _normalize(text));
             if (section)
-                this._resultsBox.add_child(section);
+                sections.set(provider, section);
+        }
+        // Если ни приложений, ни разделов настроек, ни файлов не нашлось,
+        // поиск в интернете поднимается наверх: тогда Enter ищет в
+        // интернете, а не открывает «Файлы».
+        let order = [...sections.keys()];
+        if (sections.has('web') && !sections.has('apps') && !sections.has('settings') &&
+            !sections.get('files')?._matches)
+            order = ['calculator', 'web', ...order.filter(p => p !== 'calculator' && p !== 'web')];
+        this._results = [];
+        for (const provider of order) {
+            const section = sections.get(provider);
+            if (!section)
+                continue;
+            this._resultsBox.add_child(section);
+            // Порядок строк для стрелок и Enter — как на экране.
+            this._results.push(...section.get_children().filter(c => c instanceof ResultRow));
         }
         this._select(0);
     }
@@ -641,26 +659,49 @@ class LauncherView extends St.BoxLayout {
         return section;
     }
 
-    // Файлы: совпадения среди недавних и поиск в «Файлах».
+    // Файлы: недавние и найденные в домашней папке, плюс поиск в «Файлах».
     _search_files(text, query) {
-        const recent = loadRecentFiles(200)
-            .filter(file => _normalize(file.name).includes(query))
-            .slice(0, MAX_FILE_RESULTS);
+        const seen = new Set();
+        const found = [];
+        for (const file of loadRecentFiles(200)) {
+            if (found.length >= MAX_FILE_RESULTS)
+                break;
+            if (normalizeName(file.name).includes(query) && !seen.has(file.path)) {
+                seen.add(file.path);
+                found.push({path: file.path, name: file.name, parent: file.parentPath, gicon: file.icon});
+            }
+        }
+        for (const {path, isDir} of getFileIndex().search(query, MAX_FILE_RESULTS * 2)) {
+            if (found.length >= MAX_FILE_RESULTS)
+                break;
+            if (seen.has(path))
+                continue;
+            seen.add(path);
+            const name = GLib.path_get_basename(path);
+            const type = isDir ? 'inode/directory' : Gio.content_type_guess(name, null)[0];
+            found.push({path, name, parent: GLib.path_get_dirname(path),
+                gicon: Gio.content_type_get_symbolic_icon(type)});
+        }
+
         const filesApp = this._appSystem.lookup_app(FILES_APP_ID);
-        if (recent.length === 0 && !filesApp)
+        if (found.length === 0 && !filesApp)
             return null;
+        const home = GLib.get_home_dir();
         const section = _section(_('Files'));
-        recent.forEach(file => {
+        section._matches = found.length;
+        for (const file of found) {
+            const parent = file.parent === home ? '~'
+                : file.parent.startsWith(`${home}/`) ? `~${file.parent.slice(home.length)}` : file.parent;
             section.add_child(this._addResult({
-                gicon: file.icon,
+                gicon: file.gicon,
                 title: file.name,
-                subtitle: file.parentPath,
+                subtitle: parent,
                 activate: () => {
                     this._launcher.close();
-                    _launchUri(file.uri);
+                    _launchUri(Gio.File.new_for_path(file.path).get_uri());
                 },
             }));
-        });
+        }
         if (filesApp) {
             section.add_child(this._addResult({
                 gicon: filesApp.get_icon(),
@@ -676,24 +717,35 @@ class LauncherView extends St.BoxLayout {
     }
 
     _search_web(text) {
+        const template = this._settings.get_string('web-search-url');
+        const url = template.replace('%s', encodeURIComponent(text));
+        const browser = Gio.AppInfo.get_default_for_uri_scheme('https');
+        // «Google», «Duckduckgo», «Yandex» — из адреса поисковика.
+        let engine = '';
+        try {
+            engine = GLib.Uri.parse(url, GLib.UriFlags.NONE).get_host() ?? '';
+        } catch {
+            // адрес без хоста — подпись будет общей
+        }
+        engine = engine.replace(/^www\./, '').replace(/\.[a-z]+$/, '');
+        engine = engine.charAt(0).toUpperCase() + engine.slice(1);
         const section = _section(_('Web'));
         section.add_child(this._addResult({
+            gicon: browser?.get_icon() ?? null,
             iconName: 'web-browser-symbolic',
             title: text,
-            subtitle: _('Search the web'),
+            // Translators: "Search with Google".
+            subtitle: engine ? _('Search with %s').format(engine) : _('Search the web'),
             activate: () => {
                 this._launcher.close();
-                const template = this._settings.get_string('web-search-url');
-                _launchUri(template.replace('%s', encodeURIComponent(text)));
+                _launchUri(url);
             },
         }));
         return section;
     }
 
     _addResult(params) {
-        const row = new ResultRow(params);
-        this._results.push(row);
-        return row;
+        return new ResultRow(params);
     }
 
     _select(index) {
@@ -781,6 +833,8 @@ class LauncherButton extends PanelMenu.Button {
                 mode: Clutter.AnimationMode.EASE_OUT_BACK,
             });
             if (open) {
+                if (this._settings.get_strv('launcher-search-providers').includes('files'))
+                    getFileIndex().refresh();
                 this._prepareOpen();
                 this.view.onOpen();
                 // Фокус в строку поиска — после того, как меню заберёт ввод.
@@ -887,6 +941,7 @@ export class Launcher {
     }
 
     destroy() {
+        destroyFileIndex();
         global.display.disconnectObject(this);
         this._settings.disconnectObject?.(this);
         this._appMenu?.destroy();
