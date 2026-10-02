@@ -21,7 +21,7 @@ msgstr ""
 "#-#-#-#-#  shell.pot (PACKAGE VERSION)  #-#-#-#-#\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-02 06:46+0000\n"
+"POT-Creation-Date: 2026-10-02 16:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -780,6 +780,35 @@ msgstr ""
 
 #: apps/desktop/hypede_desktop/view.py:620
 msgid "Allow and Run"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/extras.js:48
+msgid "Clipboard"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/extras.js:51
+msgid "Copy something — it will show up here"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/extras.js:68
+msgid "Clear"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/extras.js:72
+msgid "Close"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/extras.js:150
+#, javascript-format
+msgid "Reopened %s"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/extras.js:159
+#, javascript-format
+msgid ""
+"Explain this:\n"
+"\n"
+"%s"
 msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/greeting.js:109

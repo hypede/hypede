@@ -33,9 +33,27 @@ Item {
                     font.weight: Font.Medium
                 }
                 Text {
+                    id: version
+                    property int taps: 0
                     text: qsTr("Version %1").arg(System.appVersion)
                     color: Theme.subtext
                     font.pixelSize: 14
+                    scale: tapArea.pressed ? 0.94 : 1
+                    Behavior on scale { NumberAnimation { duration: 90 } }
+                    MouseArea {
+                        id: tapArea
+                        anchors.fill: parent
+                        onClicked: {
+                            version.taps++
+                            tapReset.restart()
+                            if (version.taps >= 15) {
+                                version.taps = 0
+                                egg.open()
+                            }
+                        }
+                    }
+                    Timer { id: tapReset; interval: 3000; onTriggered: version.taps = 0 }
+                    EasterEgg { id: egg }
                 }
                 Text {
                     text: qsTr("GNOME in the style of Chrome OS, with KDE settings modules")

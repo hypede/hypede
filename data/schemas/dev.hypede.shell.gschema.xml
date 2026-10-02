@@ -104,6 +104,22 @@
       <summary>Скорость встроенных живых обоев</summary>
     </key>
 
+    <key name="clipboard-history" type="as">
+      <default>['&lt;Super&gt;v']</default>
+      <summary>История буфера обмена</summary>
+    </key>
+    <key name="float-window" type="as">
+      <default>['&lt;Super&gt;z']</default>
+      <summary>Плавающее окно поверх остальных</summary>
+    </key>
+    <key name="reopen-window" type="as">
+      <default>['&lt;Super&gt;&lt;Shift&gt;t']</default>
+      <summary>Вернуть закрытое окно</summary>
+    </key>
+    <key name="ask-selection" type="as">
+      <default>['&lt;Super&gt;a']</default>
+      <summary>Спросить ИИ о выделенном тексте</summary>
+    </key>
     <key name="shelf-opacity" type="i">
       <range min="0" max="100"/>
       <default>80</default>

@@ -4,52 +4,52 @@
 <context>
     <name>AboutHeader</name>
     <message>
-        <location filename="../qml/AboutHeader.qml" line="36" />
+        <location filename="../qml/AboutHeader.qml" line="38" />
         <source>Version %1</source>
         <translation>Версия %1</translation>
     </message>
     <message>
-        <location filename="../qml/AboutHeader.qml" line="41" />
+        <location filename="../qml/AboutHeader.qml" line="59" />
         <source>GNOME in the style of Chrome OS, with KDE settings modules</source>
         <translation>GNOME в облике Chrome OS с модулями настроек KDE</translation>
     </message>
     <message>
-        <location filename="../qml/AboutHeader.qml" line="55" />
+        <location filename="../qml/AboutHeader.qml" line="73" />
         <source>Operating system</source>
         <translation>Операционная система</translation>
     </message>
     <message>
-        <location filename="../qml/AboutHeader.qml" line="56" />
+        <location filename="../qml/AboutHeader.qml" line="74" />
         <source>GNOME Shell</source>
         <translation>GNOME Shell</translation>
     </message>
     <message>
-        <location filename="../qml/AboutHeader.qml" line="57" />
+        <location filename="../qml/AboutHeader.qml" line="75" />
         <source>KDE Frameworks</source>
         <translation>KDE Frameworks</translation>
     </message>
     <message>
-        <location filename="../qml/AboutHeader.qml" line="58" />
+        <location filename="../qml/AboutHeader.qml" line="76" />
         <source>Qt</source>
         <translation>Qt</translation>
     </message>
     <message>
-        <location filename="../qml/AboutHeader.qml" line="59" />
+        <location filename="../qml/AboutHeader.qml" line="77" />
         <source>Kernel</source>
         <translation>Ядро</translation>
     </message>
     <message>
-        <location filename="../qml/AboutHeader.qml" line="60" />
+        <location filename="../qml/AboutHeader.qml" line="78" />
         <source>Device name</source>
         <translation>Имя устройства</translation>
     </message>
     <message>
-        <location filename="../qml/AboutHeader.qml" line="75" />
+        <location filename="../qml/AboutHeader.qml" line="93" />
         <source>Project page</source>
         <translation>Страница проекта</translation>
     </message>
     <message>
-        <location filename="../qml/AboutHeader.qml" line="80" />
+        <location filename="../qml/AboutHeader.qml" line="98" />
         <source>Report a problem</source>
         <translation>Сообщить о проблеме</translation>
     </message>
@@ -142,6 +142,34 @@
         <location filename="../qml/AssistantBlock.qml" line="165" />
         <source>Only chat. It cannot run commands or read your files: it sees just the text and files you send with an “Ask” button.</source>
         <translation>Только отвечать в чате. Он не выполняет команды и не читает файлы — видит лишь то, что вы отправили кнопкой «Спросить».</translation>
+    </message>
+</context>
+<context>
+    <name>AsteroidsGame</name>
+    <message>
+        <location filename="../qml/AsteroidsGame.qml" line="9" />
+        <source>HypeDE Asteroids</source>
+        <translation>Астероиды HypeDE</translation>
+    </message>
+    <message>
+        <location filename="../qml/AsteroidsGame.qml" line="144" />
+        <source>Score: %1</source>
+        <translation>Очки: %1</translation>
+    </message>
+    <message>
+        <location filename="../qml/AsteroidsGame.qml" line="148" />
+        <source>Game over</source>
+        <translation>Игра окончена</translation>
+    </message>
+    <message>
+        <location filename="../qml/AsteroidsGame.qml" line="150" />
+        <source>Best: %1 · Enter — play again</source>
+        <translation>Рекорд: %1 · Enter — ещё раз</translation>
+    </message>
+    <message>
+        <location filename="../qml/AsteroidsGame.qml" line="154" />
+        <source>← → turn · ↑ thrust · Space fire · Esc quit</source>
+        <translation>← → поворот · ↑ газ · Пробел — огонь · Esc — выход</translation>
     </message>
 </context>
 <context>
@@ -2044,6 +2072,19 @@
         <location filename="../qml/DisplaysBlock.qml" line="133" />
         <source>270°</source>
         <translation>270°</translation>
+    </message>
+</context>
+<context>
+    <name>EasterEgg</name>
+    <message>
+        <location filename="../qml/EasterEgg.qml" line="25" />
+        <source>Congratulations! You found the easter egg!</source>
+        <translation>Поздравляем! Вы нашли пасхалку!</translation>
+    </message>
+    <message>
+        <location filename="../qml/EasterEgg.qml" line="32" />
+        <source>Start game</source>
+        <translation>Начать игру</translation>
     </message>
 </context>
 <context>

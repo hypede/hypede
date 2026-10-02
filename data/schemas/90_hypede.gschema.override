@@ -37,3 +37,7 @@ dynamic-workspaces=true
 
 [org.gnome.shell:HypeDE]
 favorite-apps=['org.chromium.Chromium.desktop', 'chromium.desktop', 'google-chrome.desktop', 'firefox.desktop', 'dev.hypede.Files.desktop', 'org.gnome.Console.desktop', 'org.gnome.TextEditor.desktop', 'dev.hypede.Settings.desktop']
+
+[org.gnome.shell.keybindings:HypeDE]
+toggle-message-tray=['<Super>m']
+toggle-application-view=[]

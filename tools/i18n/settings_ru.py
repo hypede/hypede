@@ -553,3 +553,9 @@ RU.update({
     "Hardware and updates": "Оборудование и обновления", "Software updates": "Обновления программ",
     "Game controllers": "Игровые контроллеры", "Thunderbolt": "Thunderbolt",
 })
+RU.update({
+    "Congratulations! You found the easter egg!": "Поздравляем! Вы нашли пасхалку!", "Start game": "Начать игру",
+    "HypeDE Asteroids": "Астероиды HypeDE", "Score: %1": "Очки: %1", "Game over": "Игра окончена",
+    "Best: %1 · Enter — play again": "Рекорд: %1 · Enter — ещё раз",
+    "← → turn · ↑ thrust · Space fire · Esc quit": "← → поворот · ↑ газ · Пробел — огонь · Esc — выход",
+})

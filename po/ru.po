@@ -769,6 +769,32 @@ msgstr "Этот ярлык приложения ещё не проверен. �
 msgid "Allow and Run"
 msgstr "Разрешить и запустить"
 
+#: shell/extension/hypede-shell@hypede.dev/extras.js:48
+msgid "Clipboard"
+msgstr "Буфер обмена"
+
+#: shell/extension/hypede-shell@hypede.dev/extras.js:51
+msgid "Copy something — it will show up here"
+msgstr "Скопируйте что-нибудь — оно появится здесь"
+
+#: shell/extension/hypede-shell@hypede.dev/extras.js:68
+msgid "Clear"
+msgstr "Очистить"
+
+#: shell/extension/hypede-shell@hypede.dev/extras.js:72
+msgid "Close"
+msgstr "Закрыть"
+
+#: shell/extension/hypede-shell@hypede.dev/extras.js:150
+#, javascript-format
+msgid "Reopened %s"
+msgstr "Снова открыто: %s"
+
+#: shell/extension/hypede-shell@hypede.dev/extras.js:159
+#, javascript-format
+msgid "Explain this:\n\n%s"
+msgstr "Объясни это:\n\n%s"
+
 #: shell/extension/hypede-shell@hypede.dev/greeting.js:109
 msgid "Welcome to HypeDE"
 msgstr "Добро пожаловать в HypeDE"

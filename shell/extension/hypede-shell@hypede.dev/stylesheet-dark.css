@@ -820,3 +820,12 @@
   color: rgba(255, 255, 255, 0.80);
   text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
 }
+
+/* История буфера обмена */
+.hypede-clipboard .modal-dialog-content-box { padding: 20px 20px 8px 20px; spacing: 12px; }
+.hypede-clipboard-title { font-size: 14pt; font-weight: 500; }
+.hypede-clipboard-empty { color: #c4c7c5; padding: 12px 0; }
+.hypede-clipboard-scroll { max-height: 420px; width: 460px; }
+.hypede-clipboard-list { spacing: 4px; }
+.hypede-clipboard-item { padding: 10px 14px; border-radius: 12px; background-color: rgba(255, 255, 255, 0.06); text-align: left; }
+.hypede-clipboard-item:hover, .hypede-clipboard-item:focus { background-color: rgba(255, 255, 255, 0.12); }

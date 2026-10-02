@@ -260,3 +260,7 @@ RU.update({
     "Cancel": "Отмена",
     "Allow and Run": "Разрешить и запустить",
 })
+RU.update({
+    "Clipboard": "Буфер обмена", "Copy something — it will show up here": "Скопируйте что-нибудь — оно появится здесь",
+    "Clear": "Очистить", "Close": "Закрыть", "Reopened %s": "Снова открыто: %s", "Explain this:\n\n%s": "Объясни это:\n\n%s",
+})
