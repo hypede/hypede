@@ -257,7 +257,7 @@ export class LiveWallpaper {
             const now = GLib.get_monotonic_time();
             const dt = (now - last) / 1e6;
             last = now;
-            this._time += Math.min(dt, 0.1) * this._settings.get_double('wallpaper-live-speed');
+            this._time += Math.min(dt, 0.1) * this._settings.get_double('wallpaper-live-speed') / St.Settings.get().slow_down_factor;
             sinceDraw += dt;
             if (sinceDraw < 1 / FPS - 0.002)
                 return;
