@@ -514,3 +514,21 @@ RU.update({
     "Shown under the date": "Под датой",
     "For example, your name": "Например, ваше имя",
 })
+RU.update({
+    "Live wallpaper": "Живые обои",
+    "Waves": "Волны",
+    "Aurora": "Северное сияние",
+    "Bokeh": "Боке",
+    "Gradient": "Градиент",
+    "Video or GIF…": "Видео или GIF…",
+    "Videos and GIFs (*.mp4 *.webm *.mkv *.mov *.gif)": "Видео и GIF (*.mp4 *.webm *.mkv *.mov *.gif)",
+    "Animation speed": "Скорость анимации",
+    "Pause under maximized windows": "Пауза под развёрнутыми окнами",
+    "Saves battery: the wallpaper stops when nobody sees it": "Бережёт батарею: обои замирают, когда их не видно",
+    "Desktop": "Рабочий стол",
+    "Icons on the desktop": "Значки на рабочем столе",
+    "Files from the Desktop folder. Drag them to apps and back": "Файлы из папки «Рабочий стол». Их можно перетаскивать в приложения и обратно",
+    "Home folder": "Домашняя папка",
+    "Trash": "Корзина",
+})
+

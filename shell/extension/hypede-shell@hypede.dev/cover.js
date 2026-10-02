@@ -6,6 +6,8 @@ import Meta from 'gi://Meta';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
+import {isDesktopWindow} from './util.js';
+
 export class CoverWatcher {
     // callback(covered: boolean[]) — по индексу монитора.
     constructor(callback) {
@@ -74,7 +76,7 @@ export class CoverWatcher {
                 const win = actor.meta_window;
                 if (!win || win.minimized || !win.located_on_workspace(workspace) || win.is_hidden())
                     continue;
-                if (win.window_type !== Meta.WindowType.NORMAL)
+                if (win.window_type !== Meta.WindowType.NORMAL || isDesktopWindow(win))
                     continue;
                 const full = win.fullscreen || (win.maximized_horizontally && win.maximized_vertically);
                 if (full && win.get_monitor() >= 0)

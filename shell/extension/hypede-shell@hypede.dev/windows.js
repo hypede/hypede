@@ -21,6 +21,7 @@ import Meta from 'gi://Meta';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import {InjectionManager} from 'resource:///org/gnome/shell/extensions/extension.js';
+import {isDesktopWindow} from './util.js';
 
 const OPEN_TIME = 260;
 const CLOSE_TIME = 200;
@@ -54,7 +55,7 @@ function tweakNextEase(actor, adjust, call) {
 }
 
 function isNormal(actor) {
-    return actor.meta_window?.get_window_type() === Meta.WindowType.NORMAL;
+    return actor.meta_window?.get_window_type() === Meta.WindowType.NORMAL && !isDesktopWindow(actor.meta_window);
 }
 
 export class WindowAnimations {

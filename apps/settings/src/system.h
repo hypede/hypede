@@ -77,6 +77,8 @@ public:
     Q_INVOKABLE QVariantMap runSync(const QStringList &argv) const;
     Q_INVOKABLE bool openUrl(const QString &url) const;
     Q_INVOKABLE QStringList wallpapers() const;
+    // Файл из данных HypeDE (/usr/share/hypede/…) как адрес file://, если есть.
+    Q_INVOKABLE QString dataUrl(const QString &relative) const;
     Q_INVOKABLE bool clearRecentFiles() const;
     Q_INVOKABLE QStringList locales() const;
     Q_INVOKABLE QString localeName(const QString &code) const;

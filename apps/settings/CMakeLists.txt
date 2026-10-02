@@ -67,6 +67,7 @@ qt_add_qml_module(hypede-settings
         qml/ThinScrollBar.qml
         qml/AssistantBlock.qml
         qml/ThemesBlock.qml
+        qml/LiveWallpaperBlock.qml
         qml/ColorRow.qml
         qml/TextRow.qml
         qml/PictureRow.qml

@@ -16,6 +16,8 @@ import Meta from 'gi://Meta';
 import Shell from 'gi://Shell';
 import St from 'gi://St';
 
+import {isDesktopWindow} from './util.js';
+
 const DECLARATIONS = `
 uniform vec2 hd_size;
 uniform float hd_radius;
@@ -120,6 +122,8 @@ class WindowShadow extends St.DrawingArea {
 
 // Окно без собственной тени и скруглений?
 function needsCorners(window) {
+    if (isDesktopWindow(window))
+        return false;
     const type = window.get_window_type();
     if (type !== Meta.WindowType.NORMAL && type !== Meta.WindowType.DIALOG &&
         type !== Meta.WindowType.MODAL_DIALOG)

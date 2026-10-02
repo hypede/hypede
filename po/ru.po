@@ -12,6 +12,7 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
 #: apps/files/hypede_files/details.py:59 apps/files/hypede_files/window.py:532
+#: apps/desktop/hypede_desktop/view.py:554
 msgid "Open"
 msgstr "Открыть"
 
@@ -191,6 +192,7 @@ msgstr "Введите адрес"
 
 #: apps/files/hypede_files/pathbar.py:92 apps/files/hypede_files/sidebar.py:139
 #: apps/files/hypede_files/window.py:184 apps/files/hypede_files/window.py:290
+#: apps/desktop/hypede_desktop/items.py:54
 msgid "Trash"
 msgstr "Корзина"
 
@@ -201,6 +203,7 @@ msgstr "Недавние"
 
 #: apps/files/hypede_files/pathbar.py:113
 #: apps/files/hypede_files/sidebar.py:131 apps/files/hypede_files/window.py:295
+#: apps/desktop/hypede_desktop/items.py:52
 msgid "Home"
 msgstr "Домашняя папка"
 
@@ -394,6 +397,7 @@ msgstr "Очистить корзину…"
 
 #: apps/files/hypede_files/window.py:234 apps/files/hypede_files/window.py:839
 #: apps/files/hypede_files/window.py:854
+#: apps/desktop/hypede_desktop/view.py:620
 msgid "Cancel"
 msgstr "Отмена"
 
@@ -440,10 +444,12 @@ msgid "Delete Permanently…"
 msgstr "Удалить навсегда…"
 
 #: apps/files/hypede_files/window.py:547 apps/files/hypede_files/window.py:1005
+#: apps/desktop/hypede_desktop/view.py:560
 msgid "Cut"
 msgstr "Вырезать"
 
 #: apps/files/hypede_files/window.py:548 apps/files/hypede_files/window.py:1005
+#: apps/desktop/hypede_desktop/view.py:561
 msgid "Copy"
 msgstr "Копировать"
 
@@ -452,12 +458,14 @@ msgid "Paste Into Folder"
 msgstr "Вставить в папку"
 
 #: apps/files/hypede_files/window.py:553
+#: apps/desktop/hypede_desktop/view.py:563
 msgid "Rename…"
 msgstr "Переименовать…"
 
 #: apps/files/hypede_files/window.py:554 apps/files/hypede_files/window.py:1004
+#: apps/desktop/hypede_desktop/view.py:568
 msgid "Move to Trash"
-msgstr "Переместить в корзину"
+msgstr "Удалить в корзину"
 
 #: apps/files/hypede_files/window.py:558
 msgid "Copy Path"
@@ -476,10 +484,12 @@ msgid "New Folder…"
 msgstr "Новая папка…"
 
 #: apps/files/hypede_files/window.py:572 apps/files/hypede_files/window.py:1005
+#: apps/desktop/hypede_desktop/view.py:582
 msgid "Paste"
 msgstr "Вставить"
 
 #: apps/files/hypede_files/window.py:573 apps/files/hypede_files/window.py:1006
+#: apps/desktop/hypede_desktop/view.py:586
 msgid "Select All"
 msgstr "Выделить всё"
 
@@ -564,6 +574,7 @@ msgid "All items in the trash will be permanently deleted."
 msgstr "Всё содержимое корзины будет удалено навсегда."
 
 #: apps/files/hypede_files/window.py:800
+#: apps/desktop/hypede_desktop/view.py:572
 msgid "Empty Trash"
 msgstr "Очистить корзину"
 
@@ -576,6 +587,8 @@ msgid "Untitled Folder"
 msgstr "Новая папка"
 
 #: apps/files/hypede_files/window.py:899 apps/files/hypede_files/window.py:1003
+#: apps/desktop/hypede_desktop/view.py:580
+#: apps/desktop/hypede_desktop/view.py:704
 msgid "New Folder"
 msgstr "Новая папка"
 
@@ -710,36 +723,82 @@ msgstr "Если файлы не прикрепились, перетащите 
 msgid "Drag into the chat"
 msgstr "Перетащите в чат"
 
-#: shell/extension/hypede-shell@hypede.dev/greeting.js:113
+#: apps/desktop/hypede_desktop/view.py:556
+msgid "Show in Files"
+msgstr "Показать в «Файлах»"
+
+#: apps/desktop/hypede_desktop/view.py:565
+msgid "Allow Launching"
+msgstr "Разрешить запуск"
+
+#: apps/desktop/hypede_desktop/view.py:581
+#: apps/desktop/hypede_desktop/view.py:704
+msgid "New Text File"
+msgstr "Новый текстовый файл"
+
+#: apps/desktop/hypede_desktop/view.py:585
+msgid "Arrange Icons"
+msgstr "Упорядочить значки"
+
+#: apps/desktop/hypede_desktop/view.py:589
+msgid "Open Desktop in Files"
+msgstr "Открыть рабочий стол в «Файлах»"
+
+#: apps/desktop/hypede_desktop/view.py:591
+msgid "Open Terminal Here"
+msgstr "Открыть терминал здесь"
+
+#: apps/desktop/hypede_desktop/view.py:594
+msgid "Change Wallpaper…"
+msgstr "Сменить обои…"
+
+#: apps/desktop/hypede_desktop/view.py:595
+msgid "Display Settings"
+msgstr "Настройки экрана"
+
+#: apps/desktop/hypede_desktop/view.py:618
+#, python-format
+msgid "Allow “%s” to run?"
+msgstr "Разрешить запуск «%s»?"
+
+#: apps/desktop/hypede_desktop/view.py:619
+msgid "This app launcher is not trusted yet. Run it only if you know where it came from."
+msgstr "Этот ярлык приложения ещё не проверен. Запускайте его, только если знаете, откуда он."
+
+#: apps/desktop/hypede_desktop/view.py:620
+msgid "Allow and Run"
+msgstr "Разрешить и запустить"
+
+#: shell/extension/hypede-shell@hypede.dev/greeting.js:109
 msgid "Welcome to HypeDE"
 msgstr "Добро пожаловать в HypeDE"
 
-#: shell/extension/hypede-shell@hypede.dev/greeting.js:116
+#: shell/extension/hypede-shell@hypede.dev/greeting.js:112
 #, javascript-format
 msgid "Good night, %s"
 msgstr "Доброй ночи, %s"
 
-#: shell/extension/hypede-shell@hypede.dev/greeting.js:118
+#: shell/extension/hypede-shell@hypede.dev/greeting.js:114
 #, javascript-format
 msgid "Good morning, %s"
 msgstr "Доброе утро, %s"
 
-#: shell/extension/hypede-shell@hypede.dev/greeting.js:120
+#: shell/extension/hypede-shell@hypede.dev/greeting.js:116
 #, javascript-format
 msgid "Good afternoon, %s"
 msgstr "Добрый день, %s"
 
-#: shell/extension/hypede-shell@hypede.dev/greeting.js:121
+#: shell/extension/hypede-shell@hypede.dev/greeting.js:117
 #, javascript-format
 msgid "Good evening, %s"
 msgstr "Добрый вечер, %s"
 
-#: shell/extension/hypede-shell@hypede.dev/greeting.js:172
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:223
+#: shell/extension/hypede-shell@hypede.dev/greeting.js:167
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:228
 msgid "%A, %B %-d"
 msgstr "%A, %-d %B"
 
-#: shell/extension/hypede-shell@hypede.dev/greeting.js:181
+#: shell/extension/hypede-shell@hypede.dev/greeting.js:176
 msgid "Press any key to continue"
 msgstr "Нажмите любую клавишу, чтобы продолжить"
 
@@ -849,57 +908,57 @@ msgstr "Пароль"
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Неверный пароль. Попробуйте ещё раз."
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:331
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:336
 msgid "System"
 msgstr "Система"
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:332
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:337
 msgid "Processor"
 msgstr "Процессор"
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:333
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:338
 msgid "Memory"
 msgstr "Память"
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:360
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:365
 #, javascript-format
 msgid "%s / %s GB"
 msgstr "%s / %s ГБ"
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:369
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:374
 #, javascript-format
 msgid "Up for %d h %d min"
 msgstr "Без перезагрузки %d ч %d мин"
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:377
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:382
 msgid "Battery"
 msgstr "Батарея"
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:386
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:391
 msgid "Today"
 msgstr "Сегодня"
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:418
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:423
 msgid "Charging"
 msgstr "Заряжается"
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:419
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:424
 msgid "Fully charged"
 msgstr "Полностью заряжена"
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:420
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:425
 msgid "On battery"
 msgstr "От батареи"
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:421
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:426
 msgid "Plugged in"
 msgstr "От сети"
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:430
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:435
 msgid "%B, %A"
 msgstr "%B, %A"
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:471
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:491
 msgid "Press any key or click to unlock"
 msgstr "Нажмите любую клавишу, чтобы разблокировать"
 

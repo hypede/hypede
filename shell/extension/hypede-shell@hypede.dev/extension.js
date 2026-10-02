@@ -24,6 +24,7 @@ import {NotificationTweaks} from './notifications.js';
 import {WindowAnimations} from './windows.js';
 import {WindowCorners} from './corners.js';
 import {LiveWallpaper} from './livewallpaper.js';
+import {Desktop} from './desktop.js';
 import {ChromeQuickSettings} from './quicksettings.js';
 import {Assistant} from './assistant.js';
 import {Greeting} from './greeting.js';
@@ -56,6 +57,7 @@ export default class HypeDEShellExtension extends Extension {
         this._windows = new WindowAnimations(this._settings);
         this._corners = new WindowCorners(this._settings);
         this._live = new LiveWallpaper(this._settings);
+        this._desktop = new Desktop(this._settings);
         this._quickSettings = new ChromeQuickSettings();
         this._lock = new LockScreen(this._settings, this._shelf);
         if (inHypeDESession())
@@ -65,7 +67,7 @@ export default class HypeDEShellExtension extends Extension {
     disable() {
         // Порядок обратный: полка держит кнопку лаунчера, поэтому уходит
         // раньше самого лаунчера.
-        for (const part of ['_greeting', '_lock', '_quickSettings', '_live', '_corners', '_windows', '_notifications', '_overview',
+        for (const part of ['_greeting', '_lock', '_quickSettings', '_desktop', '_live', '_corners', '_windows', '_notifications', '_overview',
             '_shelf', '_launcher', '_assistant', '_style', '_guard']) {
             this[part]?.destroy();
             this[part] = null;

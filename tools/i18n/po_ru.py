@@ -85,7 +85,6 @@ RU = {
     "Copy": "Копировать",
     "Paste Into Folder": "Вставить в папку",
     "Rename…": "Переименовать…",
-    "Move to Trash": "Удалить в корзину",
     "Copy Path": "Скопировать путь",
     "Add to Bookmarks": "Добавить в закладки",
     "Show Details": "Показать сведения",
@@ -234,3 +233,30 @@ PLURALS = {
     "You opened %d day ago": ("Открыто %d день назад", "Открыто %d дня назад", "Открыто %d дней назад"),
     "Question about this file: ": ("Вопрос об этом файле: ", "Вопрос об этих файлах: ", "Вопрос об этих файлах: "),
 }
+
+# Рабочий стол (apps/desktop)
+RU.update({
+    "Home": "Домашняя папка",
+    "Trash": "Корзина",
+    "Show in Files": "Показать в «Файлах»",
+    "Cut": "Вырезать",
+    "Copy": "Копировать",
+    "Paste": "Вставить",
+    "Rename…": "Переименовать…",
+    "Allow Launching": "Разрешить запуск",
+    "Move to Trash": "Удалить в корзину",
+    "Empty Trash": "Очистить корзину",
+    "New Folder": "Новая папка",
+    "New Text File": "Новый текстовый файл",
+    "Arrange Icons": "Упорядочить значки",
+    "Select All": "Выделить всё",
+    "Open Desktop in Files": "Открыть рабочий стол в «Файлах»",
+    "Open Terminal Here": "Открыть терминал здесь",
+    "Change Wallpaper…": "Сменить обои…",
+    "Display Settings": "Настройки экрана",
+    "Allow “%s” to run?": "Разрешить запуск «%s»?",
+    "This app launcher is not trusted yet. Run it only if you know where it came from.":
+        "Этот ярлык приложения ещё не проверен. Запускайте его, только если знаете, откуда он.",
+    "Cancel": "Отмена",
+    "Allow and Run": "Разрешить и запустить",
+})

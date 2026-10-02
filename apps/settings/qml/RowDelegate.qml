@@ -47,6 +47,7 @@ Loader {
         case "inputSources": return inputSourcesBlock
         case "about": return aboutBlock
         case "themes": return themesBlock
+        case "liveWallpaper": return liveWallpaperBlock
         case "color": return colorRow
         case "text": return textRow
         case "picture": return pictureRow
@@ -408,6 +409,7 @@ Loader {
 
     Component { id: wallpaperBlock; WallpaperGrid {} }
     Component { id: themesBlock; ThemesBlock {} }
+    Component { id: liveWallpaperBlock; LiveWallpaperBlock {} }
     Component {
         id: colorRow
         ColorRow {

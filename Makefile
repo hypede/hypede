@@ -40,6 +40,7 @@ MODESDIR  := $(SHELLDATADIR)/gnome-shell/modes
 FILESDIR  := $(DATADIR)/hypede/files
 ASSISTANTDIR := $(DATADIR)/hypede/assistant
 THEMEDIR  := $(DATADIR)/hypede/theme
+DESKTOPDIR := $(DATADIR)/hypede/desktop
 SYSTEMDUSERDIR := $(LIBDIR)/systemd/user
 
 # Подстановка путей в файлы сеанса
@@ -53,10 +54,11 @@ EXT_FILES := $(wildcard shell/extension/$(UUID)/*.js) \
              shell/extension/$(UUID)/metadata.json
 FILES_PY  := $(wildcard apps/files/hypede_files/*.py) apps/files/hypede_files/style.css
 ASSISTANT_PY := $(wildcard apps/assistant/hypede_assistant/*.py)
+DESKTOP_PY := $(wildcard apps/desktop/hypede_desktop/*.py)
 WALLPAPERS := $(wildcard assets/wallpapers/*.svg) $(wildcard assets/wallpapers/*.png)
 
 .PHONY: all settings auth mo css pot check install install-shell install-session install-data \
-        install-files install-assistant install-theme install-settings install-user uninstall-user clean
+        install-files install-assistant install-theme install-desktop install-settings install-user uninstall-user clean
 
 all: settings auth mo
 
@@ -84,14 +86,14 @@ css:
 	python3 tools/gen-shell-css.py
 
 pot:
-	xgettext --from-code=UTF-8 -L Python -k_ -kngettext:1,2 -o '$(BUILD)/files.pot' apps/files/hypede_files/*.py apps/assistant/hypede_assistant/*.py
+	xgettext --from-code=UTF-8 -L Python -k_ -kngettext:1,2 -o '$(BUILD)/files.pot' apps/files/hypede_files/*.py apps/assistant/hypede_assistant/*.py apps/desktop/hypede_desktop/*.py
 	xgettext --from-code=UTF-8 -L JavaScript -k_ -kngettext:1,2 -o '$(BUILD)/shell.pot' shell/extension/$(UUID)/*.js
 	msgcat '$(BUILD)/files.pot' '$(BUILD)/shell.pot' -o po/hypede.pot
 	python3 tools/i18n/make-po.py
 
 check:
 	for f in shell/extension/$(UUID)/*.js; do node --check --input-type=module < $$f || exit 1; done
-	python3 -m py_compile apps/files/hypede_files/*.py apps/assistant/hypede_assistant/*.py apps/theme/hypede_theme.py
+	python3 -m py_compile apps/files/hypede_files/*.py apps/assistant/hypede_assistant/*.py apps/theme/hypede_theme.py apps/desktop/hypede_desktop/*.py
 	python3 -m unittest discover -s apps/theme/tests -t apps/theme
 	python3 -m unittest discover -s apps/files/tests -t apps/files
 	node shell/tests/calculator.test.mjs
@@ -101,7 +103,7 @@ check:
 
 # ---------- установка ----------
 
-install: install-shell install-session install-data install-files install-assistant install-theme install-settings
+install: install-shell install-session install-data install-files install-assistant install-theme install-desktop install-settings
 
 install-shell:
 	$(INSTALL) -d '$(DESTDIR)$(EXTDIR)'
@@ -136,6 +138,8 @@ install-data: mo
 		'$(DESTDIR)$(DATADIR)'/glib-2.0/schemas/90_hypede.gschema.override
 	$(INSTALL) -d '$(DESTDIR)$(DATADIR)'/hypede/wallpapers
 	$(INSTALL_DATA) $(WALLPAPERS) '$(DESTDIR)$(DATADIR)'/hypede/wallpapers/
+	$(INSTALL) -d '$(DESTDIR)$(DATADIR)'/hypede/live
+	$(INSTALL_DATA) data/live/*.jpg '$(DESTDIR)$(DATADIR)'/hypede/live/
 	$(INSTALL) -Dm644 data/backgrounds/hypede.xml '$(DESTDIR)$(DATADIR)'/gnome-background-properties/hypede.xml
 	$(INSTALL) -Dm644 data/applications/dev.hypede.Files.desktop '$(DESTDIR)$(DATADIR)'/applications/dev.hypede.Files.desktop
 	$(INSTALL) -Dm644 data/applications/dev.hypede.Settings.desktop '$(DESTDIR)$(DATADIR)'/applications/dev.hypede.Settings.desktop
@@ -190,6 +194,19 @@ install-theme:
 		'from hypede_theme import main' \
 		'sys.exit(main())' > '$(BUILD)/hypede-theme'
 	$(INSTALL) -Dm755 '$(BUILD)/hypede-theme' '$(DESTDIR)$(BINDIR)'/hypede-theme
+
+# Рабочий стол: значки и живые обои из файла. Пользуется модулями «Файлов».
+install-desktop:
+	$(INSTALL) -d '$(DESTDIR)$(DESKTOPDIR)'/hypede_desktop
+	$(INSTALL_DATA) $(DESKTOP_PY) '$(DESTDIR)$(DESKTOPDIR)'/hypede_desktop/
+	mkdir -p '$(BUILD)'
+	printf '%s\n' '#!/usr/bin/env python3' \
+		'# Рабочий стол HypeDE' \
+		'import sys' \
+		'sys.path[:0] = ["$(DESKTOPDIR)", "$(FILESDIR)"]' \
+		'from hypede_desktop.app import main' \
+		'sys.exit(main())' > '$(BUILD)/hypede-desktop'
+	$(INSTALL) -Dm755 '$(BUILD)/hypede-desktop' '$(DESTDIR)$(BINDIR)'/hypede-desktop
 
 install-settings:
 	DESTDIR='$(DESTDIR)' cmake --install '$(BUILD)/settings'

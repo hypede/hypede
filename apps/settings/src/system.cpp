@@ -333,6 +333,12 @@ bool System::openUrl(const QString &url) const
     return QDesktopServices::openUrl(QUrl(url));
 }
 
+QString System::dataUrl(const QString &relative) const
+{
+    const QString path = QStringLiteral(HYPEDE_DATADIR "/") + relative;
+    return QFileInfo::exists(path) ? QUrl::fromLocalFile(path).toString() : QString();
+}
+
 QStringList System::wallpapers() const
 {
     QStringList dirs;

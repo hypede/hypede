@@ -94,3 +94,9 @@ export function accentHex(shellSettings, interfaceSettings) {
     const name = interfaceSettings?.get_string('accent-color');
     return GNOME_ACCENTS[name] ?? GNOME_ACCENTS.blue;
 }
+
+// Окно рабочего стола HypeDE (hypede-desktop): его не скругляют, не
+// анимируют и не считают обычным окном.
+export function isDesktopWindow(win) {
+    return win?.get_wm_class?.() === 'dev.hypede.Desktop' || /^hypede-desktop-\d+$/.test(win?.get_title?.() ?? '');
+}
