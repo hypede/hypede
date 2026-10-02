@@ -19,12 +19,13 @@
   color: @fg@;
   background-color: @shelf_bg@;
   box-shadow: none;
-  transition-duration: 250ms;
+  transition-duration: 300ms;
 }
 
 /* В обзоре и на экране блокировки полка остаётся полупрозрачной подложкой */
 #panel.hypede-shelf:overview {
   background-color: @shelf_bg_overview@;
+  transition-duration: 300ms;
 }
 
 #panel.hypede-shelf #panelLeft,
@@ -37,6 +38,7 @@
 #panel.hypede-shelf.floating {
   margin: 8px;
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.22);
+  transition-duration: 300ms;
 }
 
 /* На экране блокировки у полки нет фона — только кнопки и трей */
@@ -83,6 +85,7 @@
   background-color: transparent;
   -natural-hpadding: 12px;
   -minimum-hpadding: 8px;
+  transition-duration: 150ms;
 }
 #panel.hypede-shelf .panel-button:hover,
 #panel.hypede-shelf .panel-button:focus {
@@ -205,6 +208,7 @@
   padding: 6px 10px;
   font-size: 10pt;
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
+  transition-duration: 150ms;
 }
 
 /* Трей: дата и «пилюля» статуса со временем */
@@ -213,6 +217,7 @@
   background-color: @tray_bg@;
   -natural-hpadding: 14px;
   -minimum-hpadding: 10px;
+  transition-duration: 150ms;
 }
 #panel.hypede-shelf .panel-button.hypede-tray-date-button:hover,
 #panel.hypede-shelf .panel-button.hypede-tray-status:hover {
@@ -267,10 +272,12 @@
   border-radius: 20px;
   padding: 8px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+  transition-duration: 200ms;
 }
 .popup-menu-item {
   border-radius: 10px;
   padding: 9px 12px;
+  transition-duration: 100ms;
 }
 .popup-menu-item:hover,
 .popup-menu-item:focus,
@@ -299,6 +306,7 @@
   color: @fg@;
   background-color: @tile_off@;
   box-shadow: none;
+  transition-duration: 200ms;
 }
 .quick-toggle:hover {
   background-color: @tile_off_hover@;
@@ -319,6 +327,7 @@
 .quick-toggle-has-menu .quick-toggle-menu-button {
   color: @fg@;
   background-color: @tile_off@;
+  transition-duration: 200ms;
 }
 .quick-toggle-has-menu .quick-toggle-menu-button:hover {
   background-color: @tile_off_hover@;
@@ -330,6 +339,7 @@
 .quick-toggle-menu {
   border-radius: 20px;
   background-color: @submenu_bg@;
+  transition-duration: 150ms;
 }
 .quick-slider .slider {
   color: @slider@;
@@ -340,11 +350,13 @@
   -barlevel-height: 6px;
   -barlevel-background-color: @slider_track@;
   -barlevel-active-background-color: @slider@;
+  transition-duration: 200ms;
 }
 .quick-settings .icon-button,
 .quick-settings .button {
   background-color: @tile_off@;
   color: @fg@;
+  transition-duration: 150ms;
 }
 .quick-settings .icon-button:hover,
 .quick-settings .button:hover {
@@ -420,6 +432,7 @@
   padding: 6px;
   border-radius: 999px;
   color: @accent_fg_on_surface@;
+  transition-duration: 150ms;
 }
 .hypede-launcher-ask:hover {
   background-color: @chip_hover@;
@@ -452,6 +465,7 @@
   background-color: @bubble_bg@;
   border: 1px solid @bubble_border@;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+  transition-duration: 200ms;
 }
 
 /* ------------------------------------------------------------------ */
@@ -500,6 +514,7 @@
   selected-color: @tile_on_fg@;
   caret-color: @fg@;
   box-shadow: none;
+  transition-duration: 200ms;
 }
 .hypede-launcher-search:focus {
   background-color: @search_focus_bg@;
@@ -536,6 +551,7 @@
   border-radius: 14px;
   padding: 10px 12px;
   background-color: @chip_bg@;
+  transition-duration: 150ms;
 }
 .hypede-launcher-chip:hover,
 .hypede-launcher-chip:focus {
@@ -569,7 +585,7 @@
   width: 112px;
   padding: 10px 4px 8px 4px;
   border-radius: 16px;
-  transition-duration: 120ms;
+  transition-duration: 150ms;
 }
 .hypede-launcher-app:hover {
   background-color: @hover@;
@@ -598,6 +614,7 @@
 .hypede-launcher-result {
   border-radius: 12px;
   padding: 8px 12px;
+  transition-duration: 100ms;
 }
 .hypede-launcher-result:hover {
   background-color: @hover@;
@@ -644,6 +661,7 @@
   background-color: @bubble_bg@;
   color: @fg@;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.28);
+  transition-duration: 200ms;
 }
 
 /* ------------------------------------------------------------------ */
@@ -667,6 +685,7 @@
   color: #ffffff;
   text-shadow: 0 2px 18px rgba(0, 0, 0, 0.35);
   font-feature-settings: "tnum";
+  transition-duration: 400ms;
 }
 .hypede-lock-colon {
   padding: 0 6px 22px 6px;
@@ -792,4 +811,11 @@
 }
 .hypede-greeting-hint {
   font-size: 10.5pt;
+}
+
+.hypede-lock-message {
+  margin-top: 10px;
+  font-size: 13pt;
+  color: rgba(255, 255, 255, 0.80);
+  text-shadow: 0 1px 8px rgba(0, 0, 0, 0.35);
 }

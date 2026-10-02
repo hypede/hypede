@@ -50,6 +50,26 @@
       <description>full — во всю ширину края; floating — «островок» со скруглёнными углами и отступом от края.</description>
     </key>
 
+    <!-- Цвета (темы). Пустая строка — цвет по умолчанию для светлой или
+         тёмной схемы. Формат: #rrggbb. -->
+    <key name="accent-custom" type="s">
+      <default>''</default>
+      <summary>Свой цвет акцента</summary>
+      <description>Любой цвет вместо девяти акцентов GNOME. Оболочка, «Файлы» и «Настройки» берут его как есть, остальные приложения — ближайший акцент GNOME.</description>
+    </key>
+    <key name="shelf-color" type="s">
+      <default>''</default>
+      <summary>Цвет фона полки</summary>
+    </key>
+    <key name="launcher-color" type="s">
+      <default>''</default>
+      <summary>Цвет фона лаунчера, быстрых настроек и меню</summary>
+    </key>
+    <key name="theme-name" type="s">
+      <default>''</default>
+      <summary>Название последней применённой темы</summary>
+    </key>
+
     <key name="shelf-opacity" type="i">
       <range min="0" max="100"/>
       <default>80</default>
@@ -289,6 +309,30 @@
       <range min="0" max="100"/>
       <default>60</default>
       <summary>Размытие обоев на экране блокировки, %</summary>
+    </key>
+
+    <key name="lock-wallpaper" type="s">
+      <default>''</default>
+      <summary>Обои экрана блокировки</summary>
+      <description>URI картинки. Пустая строка — те же обои, что на рабочем столе.</description>
+    </key>
+    <key name="lock-clock-color" type="s">
+      <default>''</default>
+      <summary>Цвет часов на экране блокировки (#rrggbb, пусто — белый)</summary>
+    </key>
+    <key name="lock-clock-size" type="i">
+      <range min="50" max="160"/>
+      <default>100</default>
+      <summary>Размер часов на экране блокировки, %</summary>
+    </key>
+    <key name="lock-message" type="s">
+      <default>''</default>
+      <summary>Надпись под датой на экране блокировки</summary>
+    </key>
+    <key name="lock-dim" type="i">
+      <range min="0" max="90"/>
+      <default>35</default>
+      <summary>Затемнение обоев на экране блокировки, %</summary>
     </key>
   </schema>
 

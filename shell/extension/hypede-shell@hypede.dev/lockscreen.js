@@ -15,6 +15,7 @@ import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
+import Shell from 'gi://Shell';
 import St from 'gi://St';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
@@ -22,6 +23,7 @@ import * as MessageTray from 'resource:///org/gnome/shell/ui/messageTray.js';
 import {InjectionManager, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
 import {getShield} from './locker.js';
+import {accentHex} from './util.js';
 
 const INTRO_TIME = 1100;
 const REVEAL_TIME = 420;
@@ -29,12 +31,6 @@ const UNLOCK_TIME = 380;
 const STATS_INTERVAL = 2000;
 
 // Акцентные цвета GNOME (org.gnome.desktop.interface accent-color).
-const ACCENTS = {
-    blue: '#3584e4', teal: '#2190a4', green: '#3a944a', yellow: '#c88800',
-    orange: '#ed5b00', red: '#e62d42', pink: '#d56199', purple: '#9141ac',
-    slate: '#6f8396',
-};
-
 function _hexToRgb(hex) {
     const n = parseInt(hex.slice(1), 16);
     return [(n >> 16) & 255, (n >> 8) & 255, n & 255].map(v => v / 255);
@@ -148,7 +144,7 @@ class WaveCurtain extends St.DrawingArea {
 
 const LockClock = GObject.registerClass(
 class LockClock extends St.BoxLayout {
-    _init(style) {
+    _init(style, message = '') {
         super._init({
             style_class: `hypede-lock-clock ${style}`,
             orientation: Clutter.Orientation.VERTICAL,
@@ -189,6 +185,15 @@ class LockClock extends St.BoxLayout {
 
         this._date = new St.Label({style_class: 'hypede-lock-date', x_align: Clutter.ActorAlign.CENTER});
         this.add_child(this._date);
+
+        // Своя надпись под датой («Не трогать — идёт рендер», имя, девиз).
+        if (message.trim()) {
+            this.add_child(new St.Label({
+                style_class: 'hypede-lock-message',
+                text: message.trim(),
+                x_align: Clutter.ActorAlign.CENTER,
+            }));
+        }
 
         this._update();
         this._timerId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 1000, () => {
@@ -443,8 +448,7 @@ class HypeLockDecoration {
         this._reveal = 0;
 
         const interfaceSettings = new Gio.Settings({schema_id: 'org.gnome.desktop.interface'});
-        const accentName = interfaceSettings.get_string('accent-color');
-        this._accent = _hexToRgb(ACCENTS[accentName] ?? ACCENTS.blue);
+        this._accent = _hexToRgb(accentHex(settings, interfaceSettings));
 
         dialog.add_style_class_name('hypede-lock-dialog');
 
@@ -455,6 +459,22 @@ class HypeLockDecoration {
         }));
         dialog.insert_child_above(this._dim, dialog._backgroundGroup);
 
+        // Свои обои экрана блокировки — поверх обоев рабочего стола.
+        const wallpaper = Gio.File.new_for_uri(settings.get_string('lock-wallpaper') || 'file:///nonexistent');
+        if (settings.get_string('lock-wallpaper') && wallpaper.query_exists(null)) {
+            this._wallpaper = new St.Widget({
+                style: `background-image: url("${wallpaper.get_uri()}"); background-size: cover; background-position: center;`,
+            });
+            this._wallpaper.add_constraint(new Clutter.BindConstraint({
+                source: dialog, coordinate: Clutter.BindCoordinate.SIZE,
+            }));
+            this._wallpaper.add_effect_with_name('blur', new Shell.BlurEffect({
+                mode: Shell.BlurMode.ACTOR, radius: 0, brightness: 1,
+            }));
+            dialog.insert_child_below(this._wallpaper, this._dim);
+        }
+        this._dimBase = settings.get_int('lock-dim') / 100;
+
         // Слой HypeDE: часы, подсказка, карточки. На основном мониторе.
         this._layer = new St.Widget({style_class: 'hypede-lock-layer'});
         const monitor = Main.layoutManager.primaryMonitor;
@@ -462,7 +482,7 @@ class HypeLockDecoration {
         this._layer.set_size(monitor.width, monitor.height);
         dialog.insert_child_above(this._layer, this._dim);
 
-        this._clock = new LockClock(settings.get_string('lock-clock-style'));
+        this._clock = new LockClock(settings.get_string('lock-clock-style'), settings.get_string('lock-message'));
         this._clock.accent = this._accent;
         this._layer.add_child(this._clock);
 
@@ -505,7 +525,7 @@ class HypeLockDecoration {
         const strength = this._settings.get_int('lock-blur') / 100;
         const radius = Math.round(strength * (prompt ? 140 : 100) * scale);
         const brightness = prompt ? 0.62 : 0.78;
-        for (const widget of this._dialog._backgroundGroup) {
+        for (const widget of [...this._dialog._backgroundGroup, this._wallpaper].filter(Boolean)) {
             const effect = widget.get_effect('blur');
             if (!effect)
                 continue;
@@ -575,7 +595,7 @@ class HypeLockDecoration {
             const s = 0.82 + 0.18 * easeOutBack(progress, 1.7);
             box.set_scale(s, s);
         }
-        this._dim.opacity = Math.round(255 * (0.3 + 0.25 * progress));
+        this._dim.opacity = Math.round(255 * Math.min(0.95, this._dimBase + 0.25 * progress));
         this._layout();
 
         if (progress > 0 && was === 0) {

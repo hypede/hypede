@@ -5,7 +5,8 @@
 // размеры значков), собирается здесь в небольшой CSS-файл и подключается
 // поверх основных стилей. Файл пересобирается при каждом изменении.
 //
-// Здесь же — скорость анимаций: общий множитель длительности St.
+// Здесь же — свой цвет акцента, цвета полки и меню, часы экрана блокировки
+// и скорость анимаций (общий множитель длительности St).
 
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
@@ -13,9 +14,12 @@ import St from 'gi://St';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
+import {isLight, nearestGnomeAccent, parseHex, toHex} from './util.js';
+
 const KEYS = [
     'shelf-opacity', 'shelf-icon-size', 'shelf-size', 'corner-radius',
     'launcher-opacity', 'launcher-icon-size', 'animation-speed',
+    'accent-custom', 'shelf-color', 'launcher-color', 'lock-clock-color', 'lock-clock-size',
 ];
 
 const BASE = {
@@ -27,18 +31,65 @@ function rgba([r, g, b], percent) {
     return `rgba(${r}, ${g}, ${b}, ${(percent / 100).toFixed(2)})`;
 }
 
+// Правила CSS без комментариев: [[селектор, объявления], …]. В стилях
+// оболочки нет вложенных блоков, поэтому хватает простого разбора.
+function parseRules(text) {
+    const rules = [];
+    const clean = text.replace(/\/\*[\s\S]*?\*\//g, '');
+    for (const m of clean.matchAll(/([^{}]+)\{([^{}]*)\}/g))
+        rules.push([m[1].trim(), m[2]]);
+    return rules;
+}
+
+function readText(file) {
+    try {
+        const [, bytes] = file.load_contents(null);
+        return new TextDecoder().decode(bytes);
+    } catch {
+        return '';
+    }
+}
+
+// Правило из нашего файла должно побеждать такое же из основных стилей,
+// но при равной специфичности St не обещает, что выиграет файл, подключённый
+// позже. Повтор класса (.a.a) добавляет специфичности, не меняя смысла.
+function boost(selector) {
+    return selector.split(',').map(part => {
+        part = part.trim();
+        const start = Math.max(part.lastIndexOf(' '), part.lastIndexOf('>')) + 1;
+        const last = part.slice(start);
+        const m = /\.[\w-]+/.exec(last) ?? /#[\w-]+/.exec(last);
+        if (!m)
+            return part;
+        const at = start + m.index + m[0].length;
+        return part.slice(0, at) + m[0] + part.slice(at);
+    }).join(', ');
+}
+
+// То же для готового CSS: каждое правило — с усиленным селектором.
+function boostCss(css) {
+    return parseRules(css).map(([selector, body]) => `${boost(selector)} {${body}}`).join('\n');
+}
+
+const SHELF_SELECTOR = /#panel|hypede-shelf|hypede-tray/;
+const OWN_ONLY = /hypede-lock|hypede-greeting/;
+
 export class StyleManager {
     constructor(settings) {
         this._settings = settings;
+        this._interface = new Gio.Settings({schema_id: 'org.gnome.desktop.interface'});
         this._stSettings = St.Settings.get();
         this._context = St.ThemeContext.get_for_stage(global.stage);
         this._dir = GLib.build_filenamev([GLib.get_user_runtime_dir(), 'hypede']);
+        this._extDir = Gio.File.new_for_uri(import.meta.url).get_parent();
+        this._sheetCache = new Map();
         this._serial = 0;
         this._file = null;
         this._theme = null;
 
         for (const key of KEYS)
             this._settings.connectObject(`changed::${key}`, () => this._queueUpdate(), this);
+        this._settings.connectObject('changed::accent-custom', () => this._syncGnomeAccent(), this);
         // Смена темы или светлой/тёмной схемы: GNOME создаёт новую тему,
         // и наши стили нужно подключить к ней заново.
         // Сама загрузка нашего файла тоже вызывает «changed» — такие
@@ -51,7 +102,19 @@ export class StyleManager {
         }, this);
         this._stSettings.connectObject('notify::color-scheme', () => this._queueUpdate(), this);
 
+        this._syncGnomeAccent();
         this._update();
+    }
+
+    // Свой акцент приложения GTK не понимают — им достаётся ближайший из
+    // акцентов GNOME, чтобы переключатели в окнах были того же оттенка.
+    _syncGnomeAccent() {
+        const custom = parseHex(this._settings.get_string('accent-custom'));
+        if (!custom || !this._interface.settings_schema.has_key('accent-color'))
+            return;
+        const name = nearestGnomeAccent(custom);
+        if (this._interface.get_string('accent-color') !== name)
+            this._interface.set_string('accent-color', name);
     }
 
     // Наш файл должен идти последним: при смене схемы GNOME перезагружает
@@ -72,10 +135,73 @@ export class StyleManager {
         });
     }
 
+    // Разобранные правила файла (кэшируются: файлы не меняются за сеанс).
+    _rules(key, file) {
+        if (!this._sheetCache.has(key))
+            this._sheetCache.set(key, file ? parseRules(readText(file)) : []);
+        return this._sheetCache.get(key);
+    }
+
+    _ownRules(variant) {
+        return this._rules(`own-${variant}`, this._extDir.get_child(`stylesheet-${variant}.css`));
+    }
+
+    // Свой акцент: все правила темы GNOME и HypeDE, где встречается
+    // -st-accent-color, повторяем с подставленным цветом. Наш файл
+    // подключён последним, поэтому эти правила побеждают.
+    _accentCss(variant, accent) {
+        const fg = isLight(accent) ? 'rgba(0, 0, 0, 0.80)' : '#ffffff';
+        const hex = toHex(accent);
+        const gnome = this._context.get_theme()?.application_stylesheet;
+        const sources = [
+            this._rules(`gnome-${gnome?.get_uri()}`, gnome),
+            this._ownRules(variant),
+        ];
+        const out = [];
+        for (const rules of sources) {
+            for (const [selector, body] of rules) {
+                if (!body.includes('-st-accent'))
+                    continue;
+                const decls = body.split(';')
+                    .filter(d => d.includes('-st-accent'))
+                    .map(d => d.trim()
+                        .replaceAll('-st-accent-fg-color', fg)
+                        .replaceAll('-st-accent-color', hex));
+                out.push(`${boost(selector)} { ${decls.join('; ')}; }`);
+            }
+        }
+        return out.join('\n');
+    }
+
+    // Фон, слишком светлый для тёмной схемы (или наоборот): берём правила
+    // нужной части из стилей другой схемы, чтобы текст и значки читались.
+    _contrastCss(variant, color, shelf) {
+        const want = isLight(color) ? 'light' : 'dark';
+        if (want === variant)
+            return '';
+        return this._ownRules(want)
+            .filter(([selector]) => !OWN_ONLY.test(selector) && SHELF_SELECTOR.test(selector) === shelf)
+            .map(([selector, body]) => `${boost(selector)} {${body}}`)
+            .join('\n');
+    }
+
     _css() {
         const s = this._settings;
         const variant = Main.getStyleVariant?.() === 'dark' ? 'dark' : 'light';
         const base = BASE[variant];
+        const shelfColor = parseHex(s.get_string('shelf-color')) ?? base.shelf;
+        const bubbleColor = parseHex(s.get_string('launcher-color')) ?? base.bubble;
+        const accent = parseHex(s.get_string('accent-custom'));
+
+        return `
+${accent ? this._accentCss(variant, accent) : ''}
+${parseHex(s.get_string('shelf-color')) ? this._contrastCss(variant, shelfColor, true) : ''}
+${parseHex(s.get_string('launcher-color')) ? this._contrastCss(variant, bubbleColor, false) : ''}
+${boostCss(this._baseCss(s, shelfColor, bubbleColor))}`;
+    }
+
+    // Настройки пользователя: прозрачность, скругления, размеры, часы.
+    _baseCss(s, shelfColor, bubbleColor) {
         const radius = s.get_int('corner-radius');
         const shelfSize = s.get_int('shelf-size');
         const icon = s.get_int('shelf-icon-size');
@@ -83,25 +209,28 @@ export class StyleManager {
         const launcherIcon = s.get_int('launcher-icon-size');
         const tile = launcherIcon + 64;
         const floatRadius = Math.min(radius, Math.round(shelfSize / 2));
-        const speed = s.get_double('animation-speed');
-        const transitionSpeed = Math.max(100, Math.round(250 * speed));
-        const fastTransition = Math.max(50, Math.round(150 * speed));
-
+        const clockScale = s.get_int('lock-clock-size') / 100;
+        const clockColor = parseHex(s.get_string('lock-clock-color'));
+        const px = v => `${Math.round(v * clockScale)}px`;
         return `
-#panel.hypede-shelf { background-color: ${rgba(base.shelf, s.get_int('shelf-opacity'))}; transition: background-color 300ms ease, opacity 300ms ease; }
-#panel.hypede-shelf.floating { border-radius: ${floatRadius}px; transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1); }
-.hypede-shelf-item { width: ${item}px; height: ${item}px; transition: all ${fastTransition}ms cubic-bezier(0.4, 0, 0.2, 1); }
-.popup-menu-content { background-color: ${rgba(base.bubble, s.get_int('launcher-opacity'))}; border-radius: ${radius}px; transition: opacity ${transitionSpeed}ms ease, transform ${transitionSpeed}ms ease; }
-.hypede-launcher-menu .popup-menu-content { border-radius: ${radius + 4}px; transition: all ${transitionSpeed}ms cubic-bezier(0.4, 0, 0.2, 1); }
-.quick-settings { border-radius: ${radius + 4}px; transition: opacity ${transitionSpeed}ms ease; }
-.quick-toggle-menu, .datemenu-popover, #calendarArea { border-radius: ${radius}px; transition: opacity ${transitionSpeed}ms ease; }
-.popup-menu-item { border-radius: ${Math.max(0, radius - 10)}px; transition: all ${fastTransition}ms cubic-bezier(0.4, 0, 0.2, 1); }
-#notification-container .message, .message { border-radius: ${Math.max(0, radius - 4)}px; transition: all ${transitionSpeed}ms cubic-bezier(0.4, 0, 0.2, 1); }
-.calendar, .events-button, .world-clocks-button, .weather-button, .datemenu-today-button { border-radius: ${Math.max(0, radius - 4)}px; transition: all ${fastTransition}ms ease; }
-.hypede-launcher-app { width: ${tile}px; border-radius: ${Math.max(0, radius - 4)}px; transition: all ${transitionSpeed}ms cubic-bezier(0.4, 0, 0.2, 1); }
+#panel.hypede-shelf { background-color: ${rgba(shelfColor, s.get_int('shelf-opacity'))}; transition-duration: 300ms; }
+#panel.hypede-shelf.floating { border-radius: ${floatRadius}px; }
+.hypede-shelf-item { width: ${item}px; height: ${item}px; }
+.popup-menu-content { background-color: ${rgba(bubbleColor, s.get_int('launcher-opacity'))}; border-radius: ${radius}px; }
+.hypede-launcher-menu .popup-menu-content { border-radius: ${radius + 4}px; }
+.quick-settings { border-radius: ${radius + 4}px; }
+.quick-toggle-menu, .datemenu-popover, #calendarArea { border-radius: ${radius}px; }
+.popup-menu-item { border-radius: ${Math.max(0, radius - 10)}px; }
+#notification-container .message, .message { border-radius: ${Math.max(0, radius - 4)}px; }
+.calendar, .events-button, .world-clocks-button, .weather-button, .datemenu-today-button { border-radius: ${Math.max(0, radius - 4)}px; }
+.hypede-launcher-app { width: ${tile}px; border-radius: ${Math.max(0, radius - 4)}px; }
 .hypede-launcher-app-label { max-width: ${tile - 12}px; }
-.hypede-launcher-chip, .hypede-launcher-result { border-radius: ${Math.max(0, radius - 6)}px; transition: all ${fastTransition}ms ease; }
-.hypede-lock-card { border-radius: ${radius + 4}px; transition: all ${transitionSpeed}ms cubic-bezier(0.4, 0, 0.2, 1); }
+.hypede-launcher-chip, .hypede-launcher-result { border-radius: ${Math.max(0, radius - 6)}px; }
+.hypede-lock-card { border-radius: ${radius + 4}px; }
+.hypede-lock-hours, .hypede-lock-minutes, .hypede-lock-colon { font-size: ${px(150)};${clockColor ? ` color: ${toHex(clockColor)};` : ''} }
+.hypede-lock-clock.stacked .hypede-lock-hours, .hypede-lock-clock.stacked .hypede-lock-minutes { font-size: ${px(118)}; }
+.hypede-lock-analog { width: ${px(300)}; height: ${px(300)}; }
+.hypede-lock-date { font-size: ${(20 * clockScale).toFixed(1)}pt; }
 `;
     }
 

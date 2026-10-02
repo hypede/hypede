@@ -16,16 +16,12 @@ import St from 'gi://St';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
+import {accentHex} from './util.js';
+
 const WIPE_TIME = 1000;
 const LETTER_STEP = 55;
 const HOLD_TIME = 1100;
 const REVEAL_TIME = 750;
-
-const ACCENTS = {
-    blue: '#3584e4', teal: '#2190a4', green: '#3a944a', yellow: '#c88800',
-    orange: '#ed5b00', red: '#e62d42', pink: '#d56199', purple: '#9141ac',
-    slate: '#6f8396',
-};
 
 function rgb(hex) {
     const n = parseInt(hex.slice(1), 16);
@@ -128,8 +124,7 @@ export class Greeting {
             return;
         this._settings.set_boolean('greeting-shown', true);
 
-        const accentName = new Gio.Settings({schema_id: 'org.gnome.desktop.interface'}).get_string('accent-color');
-        const accent = rgb(ACCENTS[accentName] ?? ACCENTS.blue);
+        const accent = rgb(accentHex(this._settings, new Gio.Settings({schema_id: 'org.gnome.desktop.interface'})));
         const base = mix([0.07, 0.075, 0.09], accent, 0.08);
         const colors = [mix(base, [0, 0, 0], 0.3), mix(base, accent, 0.4), accent,
             mix(accent, [1, 1, 1], 0.45), base];
