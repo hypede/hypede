@@ -1,0 +1,26 @@
+{
+  "hypede-theme": 1,
+  "name": "Lagoon",
+  "author": "HypeDE",
+  "description": "Fresh teal on a light lagoon.",
+  "colors": {
+    "scheme": "default",
+    "gnome-accent": "teal",
+    "accent": "#0f9d8f",
+    "shelf": "#e3f4f2",
+    "menus": "#f4fbfa"
+  },
+  "wallpaper": {
+    "light": "file:///usr/share/hypede/wallpapers/lagoon-light.svg",
+    "dark": "file:///usr/share/hypede/wallpapers/lagoon-dark.svg",
+    "fit": "zoom"
+  },
+  "lockscreen": {
+    "clock": "digital",
+    "waves": true
+  },
+  "shelf": {
+    "style": "full",
+    "opacity": 85
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "hypede-theme": 1,
+  "name": "Midnight",
+  "author": "HypeDE",
+  "description": "Deep blue night with a floating shelf.",
+  "colors": {
+    "scheme": "prefer-dark",
+    "gnome-accent": "blue",
+    "accent": "#8ab4f8",
+    "shelf": "#0f1420",
+    "menus": "#161c2b"
+  },
+  "wallpaper": {
+    "light": "file:///usr/share/hypede/wallpapers/aurora-light.svg",
+    "dark": "file:///usr/share/hypede/wallpapers/aurora-dark.svg",
+    "fit": "zoom"
+  },
+  "lockscreen": {
+    "clock": "stacked",
+    "waves": true,
+    "clock-color": "#e8f0ff"
+  },
+  "shelf": {
+    "style": "floating",
+    "opacity": 72
+  },
+  "launcher": {
+    "opacity": 92
+  },
+  "windows": {
+    "corner-radius": 24
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "hypede-theme": 1,
+  "name": "Ember",
+  "author": "HypeDE",
+  "description": "Warm dark orange.",
+  "colors": {
+    "scheme": "prefer-dark",
+    "gnome-accent": "orange",
+    "accent": "#ff7a45",
+    "shelf": "#1d1414",
+    "menus": "#261a1a"
+  },
+  "wallpaper": {
+    "light": "file:///usr/share/hypede/wallpapers/ember-light.svg",
+    "dark": "file:///usr/share/hypede/wallpapers/ember-dark.svg",
+    "fit": "zoom"
+  },
+  "lockscreen": {
+    "clock": "stacked",
+    "waves": true,
+    "clock-color": "#ffd2bd"
+  },
+  "shelf": {
+    "style": "full",
+    "opacity": 82
+  },
+  "launcher": {
+    "opacity": 95
+  }
+}

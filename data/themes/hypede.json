@@ -1,0 +1,29 @@
+{
+  "hypede-theme": 1,
+  "name": "HypeDE",
+  "author": "HypeDE",
+  "description": "The default look: Chrome OS blue, light or dark with the system.",
+  "colors": {
+    "scheme": "default",
+    "gnome-accent": "blue"
+  },
+  "wallpaper": {
+    "light": "file:///usr/share/hypede/wallpapers/horizon-light.svg",
+    "dark": "file:///usr/share/hypede/wallpapers/horizon-dark.svg",
+    "fit": "zoom"
+  },
+  "lockscreen": {
+    "clock": "digital",
+    "waves": true
+  },
+  "shelf": {
+    "style": "full",
+    "opacity": 80
+  },
+  "launcher": {
+    "opacity": 96
+  },
+  "windows": {
+    "corner-radius": 20
+  }
+}

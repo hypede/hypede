@@ -39,6 +39,7 @@ EXTDIR    := $(SHELLDATADIR)/gnome-shell/extensions/$(UUID)
 MODESDIR  := $(SHELLDATADIR)/gnome-shell/modes
 FILESDIR  := $(DATADIR)/hypede/files
 ASSISTANTDIR := $(DATADIR)/hypede/assistant
+THEMEDIR  := $(DATADIR)/hypede/theme
 SYSTEMDUSERDIR := $(LIBDIR)/systemd/user
 
 # Подстановка путей в файлы сеанса
@@ -55,7 +56,7 @@ ASSISTANT_PY := $(wildcard apps/assistant/hypede_assistant/*.py)
 WALLPAPERS := $(wildcard assets/wallpapers/*.svg) $(wildcard assets/wallpapers/*.png)
 
 .PHONY: all settings auth mo css pot check install install-shell install-session install-data \
-        install-files install-assistant install-settings install-user uninstall-user clean
+        install-files install-assistant install-theme install-settings install-user uninstall-user clean
 
 all: settings auth mo
 
@@ -90,7 +91,8 @@ pot:
 
 check:
 	for f in shell/extension/$(UUID)/*.js; do node --check --input-type=module < $$f || exit 1; done
-	python3 -m py_compile apps/files/hypede_files/*.py apps/assistant/hypede_assistant/*.py
+	python3 -m py_compile apps/files/hypede_files/*.py apps/assistant/hypede_assistant/*.py apps/theme/hypede_theme.py
+	python3 -m unittest discover -s apps/theme/tests -t apps/theme
 	python3 -m unittest discover -s apps/files/tests -t apps/files
 	node shell/tests/calculator.test.mjs
 	glib-compile-schemas --strict --dry-run data/schemas
@@ -99,7 +101,7 @@ check:
 
 # ---------- установка ----------
 
-install: install-shell install-session install-data install-files install-assistant install-settings
+install: install-shell install-session install-data install-files install-assistant install-theme install-settings
 
 install-shell:
 	$(INSTALL) -d '$(DESTDIR)$(EXTDIR)'
@@ -174,6 +176,20 @@ install-assistant:
 		'sys.exit(main())' > '$(BUILD)/hypede-assistant'
 	$(INSTALL) -Dm755 '$(BUILD)/hypede-assistant' '$(DESTDIR)$(BINDIR)'/hypede-assistant
 	$(INSTALL) -Dm644 data/applications/dev.hypede.Assistant.desktop '$(DESTDIR)$(DATADIR)'/applications/dev.hypede.Assistant.desktop
+
+# Темы: hypede-theme (применить, сохранить, импорт и экспорт) и встроенные темы.
+install-theme:
+	$(INSTALL) -Dm644 apps/theme/hypede_theme.py '$(DESTDIR)$(THEMEDIR)'/hypede_theme.py
+	$(INSTALL) -d '$(DESTDIR)$(DATADIR)'/hypede/themes
+	$(INSTALL_DATA) data/themes/*.json '$(DESTDIR)$(DATADIR)'/hypede/themes/
+	mkdir -p '$(BUILD)'
+	printf '%s\n' '#!/usr/bin/env python3' \
+		'# Темы HypeDE' \
+		'import sys' \
+		'sys.path.insert(0, "$(THEMEDIR)")' \
+		'from hypede_theme import main' \
+		'sys.exit(main())' > '$(BUILD)/hypede-theme'
+	$(INSTALL) -Dm755 '$(BUILD)/hypede-theme' '$(DESTDIR)$(BINDIR)'/hypede-theme
 
 install-settings:
 	DESTDIR='$(DESTDIR)' cmake --install '$(BUILD)/settings'

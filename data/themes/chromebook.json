@@ -1,0 +1,32 @@
+{
+  "hypede-theme": 1,
+  "name": "Chromebook",
+  "author": "HypeDE",
+  "description": "As close to a Chromebook as it gets.",
+  "colors": {
+    "scheme": "default",
+    "gnome-accent": "blue",
+    "accent": "#0b57d0"
+  },
+  "wallpaper": {
+    "light": "file:///usr/share/hypede/wallpapers/peaks-light.svg",
+    "dark": "file:///usr/share/hypede/wallpapers/peaks-dark.svg",
+    "fit": "zoom"
+  },
+  "lockscreen": {
+    "clock": "digital",
+    "waves": true
+  },
+  "shelf": {
+    "style": "full",
+    "position": "bottom",
+    "alignment": "center",
+    "opacity": 85
+  },
+  "launcher": {
+    "style": "bubble"
+  },
+  "windows": {
+    "corner-radius": 16
+  }
+}

@@ -1,0 +1,33 @@
+{
+  "hypede-theme": 1,
+  "name": "Sakura",
+  "author": "HypeDE",
+  "description": "Soft pink, light and rounded.",
+  "colors": {
+    "scheme": "default",
+    "gnome-accent": "pink",
+    "accent": "#d6337a",
+    "shelf": "#fbe7f0",
+    "menus": "#fff6fa"
+  },
+  "wallpaper": {
+    "light": "file:///usr/share/hypede/wallpapers/bloom-light.svg",
+    "dark": "file:///usr/share/hypede/wallpapers/bloom-dark.svg",
+    "fit": "zoom"
+  },
+  "lockscreen": {
+    "clock": "digital",
+    "waves": true,
+    "clock-color": "#ffe3ef"
+  },
+  "shelf": {
+    "style": "floating",
+    "opacity": 88
+  },
+  "launcher": {
+    "opacity": 97
+  },
+  "windows": {
+    "corner-radius": 26
+  }
+}

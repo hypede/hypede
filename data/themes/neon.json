@@ -1,0 +1,34 @@
+{
+  "hypede-theme": 1,
+  "name": "Neon",
+  "author": "HypeDE",
+  "description": "Purple glow and a full-screen launcher.",
+  "colors": {
+    "scheme": "prefer-dark",
+    "gnome-accent": "purple",
+    "accent": "#b388ff",
+    "shelf": "#140b26",
+    "menus": "#1c1233"
+  },
+  "wallpaper": {
+    "light": "file:///usr/share/hypede/wallpapers/aurora-light.svg",
+    "dark": "file:///usr/share/hypede/wallpapers/aurora-dark.svg",
+    "fit": "zoom"
+  },
+  "lockscreen": {
+    "clock": "stacked",
+    "waves": true,
+    "clock-color": "#e4d4ff"
+  },
+  "shelf": {
+    "style": "floating",
+    "opacity": 75
+  },
+  "launcher": {
+    "style": "fullscreen",
+    "opacity": 88
+  },
+  "windows": {
+    "corner-radius": 28
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "hypede-theme": 1,
+  "name": "Graphite",
+  "author": "HypeDE",
+  "description": "Calm monochrome for long work sessions.",
+  "colors": {
+    "scheme": "prefer-dark",
+    "gnome-accent": "slate",
+    "accent": "#a8b0b8",
+    "shelf": "#1b1c1e",
+    "menus": "#232427"
+  },
+  "wallpaper": {
+    "light": "file:///usr/share/hypede/wallpapers/peaks-light.svg",
+    "dark": "file:///usr/share/hypede/wallpapers/peaks-dark.svg",
+    "fit": "zoom"
+  },
+  "lockscreen": {
+    "clock": "analog",
+    "waves": true
+  },
+  "shelf": {
+    "style": "floating",
+    "opacity": 90
+  },
+  "windows": {
+    "corner-radius": 14
+  }
+}
