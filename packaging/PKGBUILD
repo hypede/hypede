@@ -41,6 +41,8 @@ optdepends=(
   'gnome-control-center: настройка мониторов (расположение и масштаб)'
   'ptyxis: терминал для «Открыть в терминале»'
   'qadwaitadecorations-qt6: заголовки окон приложений Qt как у GTK-приложений'
+  'gst-plugins-good: живые обои из видео (WebM, MP4 без H.264)'
+  'gst-libav: живые обои из видео H.264'
   'webkitgtk-6.0: ИИ-помощник (чат Claude, Gemini, Mistral, ChatGPT, Grok, DeepSeek)'
 )
 # LTO и отладочные символы только раздувают память при сборке, а выигрыша
