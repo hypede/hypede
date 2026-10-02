@@ -1,0 +1,131 @@
+# Заставка загрузки HypeDE.
+#
+# Логотип проявляется в центре, под ним бежит волна из точек цвета акцента
+# HypeDE. Для зашифрованного диска — поле пароля в стиле экрана блокировки.
+
+Window.SetBackgroundTopColor(0.043, 0.063, 0.125);
+Window.SetBackgroundBottomColor(0.078, 0.110, 0.200);
+
+W = Window.GetWidth();
+H = Window.GetHeight();
+X = Window.GetX();
+Y = Window.GetY();
+
+logo.image = Image("logo.png");
+logo.sprite = Sprite(logo.image);
+logo.sprite.SetX(X + W / 2 - logo.image.GetWidth() / 2);
+logo.sprite.SetY(Y + H / 2 - logo.image.GetHeight() / 2 - 40);
+logo.sprite.SetOpacity(0);
+
+DOTS = 9;
+dot_image = Image("dot.png");
+for (i = 0; i < DOTS; i++) {
+    dots[i] = Sprite(dot_image);
+    dots[i].SetOpacity(0);
+}
+
+time = 0;
+mode = "boot";
+
+fun place_dots(alpha) {
+    spacing = 18;
+    left = X + W / 2 - (DOTS - 1) * spacing / 2 - dot_image.GetWidth() / 2;
+    base = Y + H / 2 + logo.image.GetHeight() / 2 + 10;
+    for (i = 0; i < DOTS; i++) {
+        phase = time * 0.16 - i * 0.55;
+        lift = Math.Sin(phase);
+        dots[i].SetX(left + i * spacing);
+        dots[i].SetY(base - lift * 9);
+        dots[i].SetOpacity(alpha * (0.35 + 0.65 * (lift + 1) / 2));
+    }
+}
+
+fun refresh() {
+    time++;
+    # Логотип проявляется за первую секунду.
+    fade = Math.Min(time / 50, 1);
+    logo.sprite.SetOpacity(fade);
+    if (mode == "boot")
+        place_dots(fade);
+    else
+        place_dots(0);
+}
+Plymouth.SetRefreshFunction(refresh);
+
+# ------------------------------------------------------------------ пароль
+
+prompt.entry = Image("entry.png");
+prompt.lock = Image("lock.png");
+prompt.bullet = Image("bullet.png");
+
+fun hide_prompt() {
+    if (prompt.entry_sprite) {
+        prompt.entry_sprite.SetOpacity(0);
+        prompt.lock_sprite.SetOpacity(0);
+        prompt.label_sprite.SetOpacity(0);
+    }
+    for (i = 0; bullets[i]; i++)
+        bullets[i].SetOpacity(0);
+}
+
+fun show_prompt(text, count) {
+    mode = "prompt";
+    ex = X + W / 2 - prompt.entry.GetWidth() / 2;
+    ey = Y + H / 2 + logo.image.GetHeight() / 2 + 20;
+    if (!prompt.entry_sprite) {
+        prompt.entry_sprite = Sprite(prompt.entry);
+        prompt.lock_sprite = Sprite(prompt.lock);
+        prompt.label_sprite = Sprite();
+    }
+    prompt.entry_sprite.SetPosition(ex, ey, 10);
+    prompt.entry_sprite.SetOpacity(1);
+    prompt.lock_sprite.SetPosition(ex + 18, ey + prompt.entry.GetHeight() / 2 - prompt.lock.GetHeight() / 2, 11);
+    prompt.lock_sprite.SetOpacity(0.85);
+    label = Image.Text(text, 1, 1, 1, 0.8, "Sans 11");
+    prompt.label_sprite.SetImage(label);
+    prompt.label_sprite.SetPosition(X + W / 2 - label.GetWidth() / 2, ey - label.GetHeight() - 14, 11);
+    prompt.label_sprite.SetOpacity(1);
+    for (i = 0; bullets[i]; i++)
+        bullets[i].SetOpacity(0);
+    shown = Math.Min(count, 24);
+    for (i = 0; i < shown; i++) {
+        if (!bullets[i])
+            bullets[i] = Sprite(prompt.bullet);
+        bullets[i].SetPosition(ex + 54 + i * 13, ey + prompt.entry.GetHeight() / 2 - prompt.bullet.GetHeight() / 2, 12);
+        bullets[i].SetOpacity(1);
+    }
+}
+
+fun display_password(prompt_text, count) {
+    if (prompt_text == "")
+        prompt_text = "Disk password";
+    show_prompt(prompt_text, count);
+}
+Plymouth.SetDisplayPasswordFunction(display_password);
+
+fun display_question(prompt_text, entry_text) {
+    show_prompt(prompt_text, 0);
+}
+Plymouth.SetDisplayQuestionFunction(display_question);
+
+fun display_normal() {
+    mode = "boot";
+    hide_prompt();
+}
+Plymouth.SetDisplayNormalFunction(display_normal);
+
+# ------------------------------------------------------------------ сообщения
+
+message_sprite = Sprite();
+fun show_message(text) {
+    image = Image.Text(text, 1, 1, 1, 0.7, "Sans 10");
+    message_sprite.SetImage(image);
+    message_sprite.SetPosition(X + W / 2 - image.GetWidth() / 2, Y + H - image.GetHeight() - 40, 20);
+}
+Plymouth.SetMessageFunction(show_message);
+
+fun quit() {
+    hide_prompt();
+    place_dots(0);
+}
+Plymouth.SetQuitFunction(quit);

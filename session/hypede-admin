@@ -1,0 +1,42 @@
+#!/bin/sh
+set -eu
+case "${1:-}" in
+plymouth)
+    theme="${2:-}"
+    printf '%s' "$theme" | grep -Eq '^[A-Za-z0-9_-]+$' || exit 2
+    [ -f "/usr/share/plymouth/themes/$theme/$theme.plymouth" ] || exit 2
+    exec plymouth-set-default-theme -R "$theme"
+    ;;
+autologin)
+    user="${2:-}"
+    [ "$user" = off ] || { printf '%s' "$user" | grep -Eq '^[a-z_][a-z0-9_-]*$' && id "$user" >/dev/null; } || exit 2
+    dm=$(basename "$(readlink -f /etc/systemd/system/display-manager.service 2>/dev/null)" .service)
+    case "$dm" in
+    gdm)
+        exec python3 - "$user" <<'PY'
+import configparser, sys
+p = "/etc/gdm/custom.conf"
+c = configparser.ConfigParser(strict=False, interpolation=None)
+c.optionxform = str
+c.read(p)
+if not c.has_section("daemon"):
+    c.add_section("daemon")
+if sys.argv[1] == "off":
+    c.set("daemon", "AutomaticLoginEnable", "False")
+else:
+    c.set("daemon", "AutomaticLoginEnable", "True")
+    c.set("daemon", "AutomaticLogin", sys.argv[1])
+with open(p, "w") as f:
+    c.write(f)
+PY
+        ;;
+    sddm)
+        mkdir -p /etc/sddm.conf.d
+        f=/etc/sddm.conf.d/hypede-autologin.conf
+        if [ "$user" = off ]; then rm -f "$f"; else printf '[Autologin]\nUser=%s\nSession=hypede\n' "$user" > "$f"; fi
+        ;;
+    *) exit 3 ;;
+    esac
+    ;;
+*) exit 2 ;;
+esac

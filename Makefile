@@ -98,7 +98,7 @@ check:
 	python3 -m unittest discover -s apps/files/tests -t apps/files
 	node shell/tests/calculator.test.mjs
 	glib-compile-schemas --strict --dry-run data/schemas
-	sh -n session/hypede-session.in && sh -n session/hypede-session-cleanup.in && sh -n session/hypede-autostart-filter
+	sh -n session/hypede-session.in && sh -n session/hypede-session-cleanup.in && sh -n session/hypede-autostart-filter && sh -n session/hypede-admin
 	msgfmt --check -o /dev/null po/ru.po
 
 # ---------- установка ----------
@@ -123,6 +123,8 @@ install-session: auth
 	$(INSTALL) -Dm755 '$(BUILD)/session/hypede-session-cleanup' '$(DESTDIR)$(LIBEXECDIR)'/hypede-session-cleanup
 	$(INSTALL) -Dm755 session/hypede-autostart-filter '$(DESTDIR)$(LIBEXECDIR)'/hypede-autostart-filter
 	$(INSTALL) -Dm755 '$(BUILD)/hypede-auth' '$(DESTDIR)$(LIBEXECDIR)'/hypede-auth
+	$(INSTALL) -Dm755 session/hypede-admin '$(DESTDIR)$(LIBEXECDIR)'/hypede-admin
+	$(INSTALL) -Dm644 session/dev.hypede.admin.policy '$(DESTDIR)$(DATADIR)'/polkit-1/actions/dev.hypede.admin.policy
 	$(INSTALL) -Dm644 session/pam-hypede '$(DESTDIR)$(SYSCONFDIR)'/pam.d/hypede
 	$(INSTALL) -Dm644 session/dconf-profile '$(DESTDIR)$(DATADIR)'/dconf/profile/hypede
 	$(INSTALL) -Dm644 session/systemd/hypede.session.conf \
@@ -140,6 +142,8 @@ install-data: mo
 	$(INSTALL_DATA) $(WALLPAPERS) '$(DESTDIR)$(DATADIR)'/hypede/wallpapers/
 	$(INSTALL) -d '$(DESTDIR)$(DATADIR)'/hypede/live
 	$(INSTALL_DATA) data/live/*.jpg '$(DESTDIR)$(DATADIR)'/hypede/live/
+	$(INSTALL) -d '$(DESTDIR)$(DATADIR)'/plymouth/themes/hypede
+	$(INSTALL_DATA) data/plymouth/hypede/* '$(DESTDIR)$(DATADIR)'/plymouth/themes/hypede/
 	$(INSTALL) -Dm644 data/backgrounds/hypede.xml '$(DESTDIR)$(DATADIR)'/gnome-background-properties/hypede.xml
 	$(INSTALL) -Dm644 data/applications/dev.hypede.Files.desktop '$(DESTDIR)$(DATADIR)'/applications/dev.hypede.Files.desktop
 	$(INSTALL) -Dm644 data/applications/dev.hypede.Settings.desktop '$(DESTDIR)$(DATADIR)'/applications/dev.hypede.Settings.desktop

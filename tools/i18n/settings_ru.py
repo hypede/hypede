@@ -532,3 +532,24 @@ RU.update({
     "Trash": "Корзина",
 })
 
+RU.update({
+    "Saved": "Сохранено", "Not changed": "Не изменено", "Boot splash": "Заставка загрузки",
+    "Rebuilding the boot image, this takes a minute…": "Пересборка образа загрузки, это займёт около минуты…",
+    "Shown while the computer starts": "Показывается при включении компьютера",
+    "Sign in automatically": "Входить автоматически", "Skip the login screen for %1": "Без экрана входа для %1",
+    "Disabled": "Выключено", "Press keys…": "Нажмите клавиши…", "Reset": "Сбросить",
+    "Close window": "Закрыть окно", "Maximize window": "Развернуть окно", "Minimize window": "Свернуть окно",
+    "Full screen": "Во весь экран", "Switch apps": "Переключение приложений", "Switch windows": "Переключение окон",
+    "Show desktop": "Показать рабочий стол", "Previous desk": "Предыдущий стол", "Next desk": "Следующий стол",
+    "Move window to previous desk": "Перенести окно на предыдущий стол",
+    "Move window to next desk": "Перенести окно на следующий стол", "Screenshot": "Снимок экрана",
+    "Notifications": "Уведомления", "Quick settings": "Быстрые настройки", "Lock screen": "Экран блокировки",
+    "Home folder": "Домашняя папка", "Terminal": "Терминал", "Web browser": "Браузер", "Calculator": "Калькулятор",
+    "My shortcut": "Моё сочетание", "Name": "Название", "Command": "Команда", "Delete": "Удалить",
+    "Add your own shortcut": "Своё сочетание клавиш", "Run any command with a key combination": "Запуск любой команды сочетанием клавиш",
+    "Add": "Добавить", "Keyboard shortcuts": "Сочетания клавиш", "Sound theme": "Звуковая тема",
+    "Boot and sign-in": "Загрузка и вход", "Login screen (SDDM)": "Экран входа (SDDM)",
+    "Theme and background of the login screen": "Тема и фон экрана входа",
+    "Hardware and updates": "Оборудование и обновления", "Software updates": "Обновления программ",
+    "Game controllers": "Игровые контроллеры", "Thunderbolt": "Thunderbolt",
+})

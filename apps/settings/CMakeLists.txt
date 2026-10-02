@@ -68,6 +68,9 @@ qt_add_qml_module(hypede-settings
         qml/AssistantBlock.qml
         qml/ThemesBlock.qml
         qml/LiveWallpaperBlock.qml
+        qml/BootBlock.qml
+        qml/ShortcutRow.qml
+        qml/ShortcutsBlock.qml
         qml/ColorRow.qml
         qml/TextRow.qml
         qml/PictureRow.qml
@@ -108,6 +111,7 @@ target_include_directories(hypede-settings PRIVATE src)
 target_compile_definitions(hypede-settings PRIVATE
     HYPEDE_VERSION="${PROJECT_VERSION}"
     HYPEDE_DATADIR="${CMAKE_INSTALL_FULL_DATADIR}/hypede"
+    HYPEDE_LIBEXECDIR="${CMAKE_INSTALL_PREFIX}/lib/hypede"
     QT_NO_KEYWORDS
 )
 

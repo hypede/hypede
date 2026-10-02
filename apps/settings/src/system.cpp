@@ -491,6 +491,82 @@ QStringList System::iconThemes() const
     });
 }
 
+QStringList System::soundThemes() const
+{
+    return scanThemes(QStringLiteral("sounds"), [](const QDir &dir) {
+        return dir.exists(QStringLiteral("index.theme"));
+    });
+}
+
+QStringList System::plymouthThemes() const
+{
+    QStringList out;
+    const QDir root(QStringLiteral("/usr/share/plymouth/themes"));
+    for (const QString &name : root.entryList(QDir::Dirs | QDir::NoDotAndDotDot, QDir::Name)) {
+        if (root.exists(name + QLatin1Char('/') + name + QStringLiteral(".plymouth")) && name != QLatin1String("details")
+            && name != QLatin1String("text"))
+            out << name;
+    }
+    return out;
+}
+
+static QString iniValue(const QString &path, const QString &key)
+{
+    QFile f(path);
+    if (!f.open(QIODevice::ReadOnly))
+        return {};
+    const QString prefix = key + QLatin1Char('=');
+    QString value;
+    for (const QString &line : QString::fromUtf8(f.readAll()).split(QLatin1Char('\n'))) {
+        if (line.trimmed().startsWith(prefix))
+            value = line.trimmed().mid(prefix.size()).trimmed();
+    }
+    return value;
+}
+
+QString System::plymouthTheme() const
+{
+    QString theme = iniValue(QStringLiteral("/etc/plymouth/plymouthd.conf"), QStringLiteral("Theme"));
+    if (theme.isEmpty())
+        theme = iniValue(QStringLiteral("/usr/share/plymouth/plymouthd.defaults"), QStringLiteral("Theme"));
+    return theme;
+}
+
+QString System::displayManager() const
+{
+    return QFileInfo(QFileInfo(QStringLiteral("/etc/systemd/system/display-manager.service")).symLinkTarget())
+        .completeBaseName();
+}
+
+QString System::autologinUser() const
+{
+    const QString dm = displayManager();
+    if (dm == QLatin1String("gdm")) {
+        const QString on = iniValue(QStringLiteral("/etc/gdm/custom.conf"), QStringLiteral("AutomaticLoginEnable"));
+        return on.compare(QLatin1String("true"), Qt::CaseInsensitive) == 0
+            ? iniValue(QStringLiteral("/etc/gdm/custom.conf"), QStringLiteral("AutomaticLogin")) : QString();
+    }
+    if (dm == QLatin1String("sddm"))
+        return iniValue(QStringLiteral("/etc/sddm.conf.d/hypede-autologin.conf"), QStringLiteral("User"));
+    return {};
+}
+
+QString System::userName() const
+{
+    return qEnvironmentVariable("USER");
+}
+
+void System::admin(const QStringList &args)
+{
+    auto *process = new QProcess(this);
+    const QString action = args.value(0);
+    connect(process, &QProcess::finished, this, [this, process, action](int code, QProcess::ExitStatus status) {
+        Q_EMIT adminFinished(action, status == QProcess::NormalExit && code == 0);
+        process->deleteLater();
+    });
+    process->start(QStringLiteral("pkexec"), QStringList{QStringLiteral(HYPEDE_LIBEXECDIR "/hypede-admin")} + args);
+}
+
 QStringList System::cursorThemes() const
 {
     return scanThemes(QStringLiteral("icons"), [](const QDir &dir) {

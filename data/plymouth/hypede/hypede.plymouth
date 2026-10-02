@@ -1,0 +1,9 @@
+[Plymouth Theme]
+Name=HypeDE
+Description=HypeDE boot splash: logo and a wave of dots, like Chrome OS
+ModuleName=script
+
+[script]
+ImageDir=/usr/share/plymouth/themes/hypede
+ScriptFile=/usr/share/plymouth/themes/hypede/hypede.script
+ConsoleLogBackgroundColor=0x0b1020

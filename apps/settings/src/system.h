@@ -88,6 +88,13 @@ public:
     Q_INVOKABLE QStringList fontFamilies() const;
     Q_INVOKABLE QStringList iconThemes() const;
     Q_INVOKABLE QStringList cursorThemes() const;
+    Q_INVOKABLE QStringList soundThemes() const;
+    Q_INVOKABLE QStringList plymouthThemes() const;
+    Q_INVOKABLE QString plymouthTheme() const;
+    Q_INVOKABLE QString displayManager() const;
+    Q_INVOKABLE QString autologinUser() const;
+    Q_INVOKABLE QString userName() const;
+    Q_INVOKABLE void admin(const QStringList &args);
     Q_INVOKABLE QStringList gtkThemes() const;
 
     // Хранилище: [{name, path, total, free}]
@@ -113,6 +120,7 @@ public:
 
 Q_SIGNALS:
     void shellVersionChanged();
+    void adminFinished(const QString &action, bool ok);
     void powerChanged();
     void wifiChanged();
     void timeChanged();
