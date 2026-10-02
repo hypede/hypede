@@ -43,8 +43,8 @@ TABLE = {
         ("dark", BG, "picture-uri-dark"),
         ("fit", BG, "picture-options"),
         ("color", BG, "primary-color"),
-        ("animated", SHELL, "wallpaper-video"),
-        ("animated-light", SHELL, "wallpaper-video-light"),
+        ("live", SHELL, "wallpaper-live"),
+        ("live-speed", SHELL, "wallpaper-live-speed"),
     ],
     "shelf": [
         ("position", SHELL, "shelf-position"),
@@ -110,11 +110,11 @@ TABLE = {
 }
 
 # Ключи-адреса картинок и видео: их можно встроить в файл.
-MEDIA_KEYS = {("wallpaper", "light"), ("wallpaper", "dark"), ("wallpaper", "animated"),
-              ("wallpaper", "animated-light"), ("lockscreen", "wallpaper")}
+MEDIA_KEYS = {("wallpaper", "light"), ("wallpaper", "dark"), ("wallpaper", "live"),
+              ("lockscreen", "wallpaper")}
 MEDIA_EXT = {".png", ".jpg", ".jpeg", ".webp", ".svg", ".gif", ".mp4", ".webm", ".mkv", ".mov"}
 RESET_IF_MISSING = [("colors", "accent"), ("colors", "shelf"), ("colors", "menus"),
-                    ("wallpaper", "animated"), ("wallpaper", "animated-light"),
+                    ("wallpaper", "live"),
                     ("lockscreen", "clock-color"), ("lockscreen", "wallpaper"), ("lockscreen", "message")]
 MAX_EMBED = 64 * 1024 * 1024
 COLOR_KEYS = {"accent-custom", "shelf-color", "launcher-color", "lock-clock-color"}
@@ -230,8 +230,9 @@ def _variant_for(schema, key, value):
 
 
 def _safe_uri(value):
-    """Обои — только локальные файлы или ресурсы GNOME."""
-    return value == "" or value.startswith("file:///") or value.startswith("resource:///")
+    """Обои — только локальные файлы, ресурсы GNOME и встроенные живые обои."""
+    return (value == "" or value.startswith("file:///") or value.startswith("resource:///")
+            or re.fullmatch(r"hypede:[a-z-]+", value) is not None)
 
 
 def load(path):

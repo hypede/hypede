@@ -70,6 +70,40 @@
       <summary>Название последней применённой темы</summary>
     </key>
 
+    <!-- Рабочий стол (apps/desktop, shell desktop.js) и живые обои. -->
+    <key name="desktop-icons" type="b">
+      <default>true</default>
+      <summary>Значки на рабочем столе</summary>
+      <description>Файлы из папки «Рабочий стол», как в KDE: перетаскивание в приложения и обратно, меню, переименование.</description>
+    </key>
+    <key name="desktop-icon-size" type="i">
+      <range min="32" max="128"/>
+      <default>64</default>
+      <summary>Размер значков рабочего стола</summary>
+    </key>
+    <key name="desktop-show-home" type="b">
+      <default>true</default>
+      <summary>Значок домашней папки на рабочем столе</summary>
+    </key>
+    <key name="desktop-show-trash" type="b">
+      <default>true</default>
+      <summary>Значок корзины на рабочем столе</summary>
+    </key>
+    <key name="wallpaper-live" type="s">
+      <default>''</default>
+      <summary>Живые обои</summary>
+      <description>Пусто — обычные обои. hypede:waves, hypede:aurora, hypede:bokeh, hypede:mesh — встроенные; file:// — своё видео или GIF.</description>
+    </key>
+    <key name="wallpaper-live-pause" type="b">
+      <default>true</default>
+      <summary>Останавливать живые обои под развёрнутыми окнами</summary>
+    </key>
+    <key name="wallpaper-live-speed" type="d">
+      <range min="0.25" max="3.0"/>
+      <default>1.0</default>
+      <summary>Скорость встроенных живых обоев</summary>
+    </key>
+
     <key name="shelf-opacity" type="i">
       <range min="0" max="100"/>
       <default>80</default>
