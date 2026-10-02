@@ -333,6 +333,7 @@ def _summary(path, builtin):
         "path": str(path),
         "scheme": colors.get("scheme", "default"),
         "accent": colors.get("accent") or "",
+        "gnomeAccent": colors.get("gnome-accent") or "blue",
         "shelf": colors.get("shelf") or "",
         "menus": colors.get("menus") or "",
         "wallpaper": wall.get("dark") if colors.get("scheme") == "prefer-dark" else wall.get("light", ""),
@@ -342,7 +343,8 @@ def _summary(path, builtin):
 def themes():
     out, seen = [], set()
     for d in system_dirs():
-        for p in sorted(d.glob("*.json")):
+        # Тема по умолчанию — первой.
+        for p in sorted(d.glob("*.json"), key=lambda p: (p.stem != "hypede", p.stem)):
             if p.stem not in seen:
                 seen.add(p.stem)
                 s = _summary(p, True)

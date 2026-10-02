@@ -73,6 +73,8 @@ public:
 
     Q_INVOKABLE bool hasProgram(const QString &name) const;
     Q_INVOKABLE bool run(const QStringList &argv) const;
+    // Запустить и дождаться: {ok, out, err}. Для коротких команд (hypede-theme).
+    Q_INVOKABLE QVariantMap runSync(const QStringList &argv) const;
     Q_INVOKABLE bool openUrl(const QString &url) const;
     Q_INVOKABLE QStringList wallpapers() const;
     Q_INVOKABLE bool clearRecentFiles() const;

@@ -20,7 +20,13 @@ QtObject {
         "yellow": "#c88800", "orange": "#ed5b00", "red": "#e62d42",
         "pink": "#d56199", "purple": "#9141ac", "slate": "#6f8396"
     })
-    readonly property color accentBase: accents[accentName] || "#3584e4"
+    // Свой акцент HypeDE (любой цвет) важнее акцента GNOME.
+    readonly property var shellSettings: GSettingsHub.schema("dev.hypede.shell")
+    readonly property string customAccent: shellSettings.revision >= 0 && shellSettings.valid
+                                            && shellSettings.hasKey("accent-custom")
+                                            ? shellSettings.value("accent-custom") : ""
+    readonly property color accentBase: /^#[0-9a-fA-F]{6}$/.test(customAccent) ? customAccent
+                                                                             : (accents[accentName] || "#3584e4")
 
     // Смешать два цвета; строки вида «#ffffff» сначала становятся цветом.
     function mix(a, b, t) {

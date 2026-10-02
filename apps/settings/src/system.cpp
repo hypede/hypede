@@ -309,6 +309,25 @@ bool System::run(const QStringList &argv) const
     return QProcess::startDetached(argv.constFirst(), argv.mid(1));
 }
 
+QVariantMap System::runSync(const QStringList &argv) const
+{
+    QVariantMap result{{QStringLiteral("ok"), false}, {QStringLiteral("out"), QString()},
+                       {QStringLiteral("err"), QString()}};
+    if (argv.isEmpty())
+        return result;
+    QProcess process;
+    process.start(argv.constFirst(), argv.mid(1));
+    if (!process.waitForFinished(30000)) {
+        process.kill();
+        result[QStringLiteral("err")] = process.errorString();
+        return result;
+    }
+    result[QStringLiteral("ok")] = process.exitStatus() == QProcess::NormalExit && process.exitCode() == 0;
+    result[QStringLiteral("out")] = QString::fromUtf8(process.readAllStandardOutput());
+    result[QStringLiteral("err")] = QString::fromUtf8(process.readAllStandardError()).trimmed();
+    return result;
+}
+
 bool System::openUrl(const QString &url) const
 {
     return QDesktopServices::openUrl(QUrl(url));

@@ -46,6 +46,10 @@ Loader {
         case "accent": return accentBlock
         case "inputSources": return inputSourcesBlock
         case "about": return aboutBlock
+        case "themes": return themesBlock
+        case "color": return colorRow
+        case "text": return textRow
+        case "picture": return pictureRow
         }
         return null
     }
@@ -403,6 +407,41 @@ Loader {
     Component { id: assistantBlock; AssistantBlock {} }
 
     Component { id: wallpaperBlock; WallpaperGrid {} }
+    Component { id: themesBlock; ThemesBlock {} }
+    Component {
+        id: colorRow
+        ColorRow {
+            settings: loader.settings
+            presets: loader.row.presets || ["#202124", "#0b57d0", "#0f9d8f", "#d6337a", "#ff7a45", "#7c4dff", "#e8ecf4", "#fbe7f0"]
+            key: loader.row.key
+            title: loader.row.title
+            subtitle: loader.row.subtitle || ""
+            iconName: loader.row.icon || ""
+            showDivider: !loader.first
+        }
+    }
+    Component {
+        id: textRow
+        TextRow {
+            settings: loader.settings
+            key: loader.row.key
+            title: loader.row.title
+            subtitle: loader.row.subtitle || ""
+            placeholder: loader.row.placeholder || ""
+            iconName: loader.row.icon || ""
+            showDivider: !loader.first
+        }
+    }
+    Component {
+        id: pictureRow
+        PictureRow {
+            settings: loader.settings
+            key: loader.row.key
+            title: loader.row.title
+            iconName: loader.row.icon || ""
+            showDivider: !loader.first
+        }
+    }
     Component { id: themeBlock; ThemePicker { showDivider: !loader.first } }
     Component { id: accentBlock; AccentPicker { showDivider: !loader.first } }
     Component { id: inputSourcesBlock; InputSources { showDivider: !loader.first } }
