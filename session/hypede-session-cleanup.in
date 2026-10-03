@@ -4,7 +4,7 @@
 # hypede-session, и каталог оболочки HypeDE из XDG_DATA_DIRS.
 data_dirs=$(systemctl --user show-environment 2>/dev/null | sed -n 's/^XDG_DATA_DIRS=//p')
 cleaned=$(printf '%s' "$data_dirs" | tr ':' '\n' | grep -vxF '@SHELLDATADIR@' | paste -sd: -)
-systemctl --user unset-environment DCONF_PROFILE HYPEDE_SESSION
+systemctl --user unset-environment DCONF_PROFILE HYPEDE_SESSION XDG_CURRENT_DESKTOP
 if [ -n "$cleaned" ]; then
     systemctl --user set-environment "XDG_DATA_DIRS=$cleaned"
 else
