@@ -8,6 +8,7 @@ thumbnailer'ы (GnomeDesktop, если есть), и в крайнем случ�
 
 from __future__ import annotations
 
+from collections import OrderedDict
 from concurrent.futures import ThreadPoolExecutor
 
 import gi
@@ -20,9 +21,10 @@ except (ValueError, ImportError):
     GnomeDesktop = None
 
 MAX_DIRECT_SIZE = 40 * 1024 * 1024  # крупнее — не декодировать ради эскиза
+MAX_CACHE = 500  # текстур в памяти: старые вытесняются (LRU), иначе кэш рос бы весь сеанс
 
 _executor = ThreadPoolExecutor(max_workers=2, thread_name_prefix="hypede-thumbs")
-_cache: dict[tuple[str, int, int], Gdk.Texture | None] = {}
+_cache: OrderedDict[tuple[str, int, int], Gdk.Texture | None] = OrderedDict()
 _pending: dict[tuple[str, int, int], list] = {}
 _factory = None
 
@@ -94,6 +96,7 @@ def request(file: Gio.File, info: Gio.FileInfo, size: int, callback) -> Gdk.Text
     mtime = info.get_modification_date_time()
     key = (file.get_uri(), mtime.to_unix() if mtime else 0, size)
     if key in _cache:
+        _cache.move_to_end(key)
         return _cache[key]
     if key in _pending:
         _pending[key].append(callback)
@@ -106,6 +109,9 @@ def request(file: Gio.File, info: Gio.FileInfo, size: int, callback) -> Gdk.Text
         def deliver():
             texture = Gdk.Texture.new_for_pixbuf(pixbuf) if pixbuf else None
             _cache[key] = texture
+            _cache.move_to_end(key)
+            while len(_cache) > MAX_CACHE:
+                _cache.popitem(last=False)
             for cb in _pending.pop(key, []):
                 cb(texture)
             return GLib.SOURCE_REMOVE
