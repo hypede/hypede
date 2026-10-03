@@ -66,7 +66,10 @@ class FileIndex {
             }
             level = next;
             // Промежуточный результат — чтобы поиск работал уже во время обхода.
-            this._entries = entries.slice();
+            // Копируем лишь на первых уровнях: дальше массив большой, а
+            // следующая копия появилась бы через секунды.
+            if (depth < 3)
+                this._entries = entries.slice();
         }
         this._entries = entries;
         this._builtAt = GLib.get_monotonic_time();
