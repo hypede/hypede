@@ -463,8 +463,10 @@ class LauncherView extends St.BoxLayout {
             seen.add(app.get_id());
             apps.push(app);
         }
-        const collator = new Intl.Collator(undefined, {sensitivity: 'base', numeric: true});
-        const byName = (a, b) => collator.compare(a.get_name(), b.get_name());
+        // Intl.Collator создаётся долго (загрузка локали) — один на класс,
+        // а не новый при каждой перестройке сетки приложений.
+        LauncherView._collator ??= new Intl.Collator(undefined, {sensitivity: 'base', numeric: true});
+        const byName = (a, b) => LauncherView._collator.compare(a.get_name(), b.get_name());
         if (this._settings.get_string('launcher-sort') === 'usage') {
             const usage = Shell.AppUsage.get_default();
             apps.sort((a, b) => usage.compare(a.get_id(), b.get_id()) || byName(a, b));

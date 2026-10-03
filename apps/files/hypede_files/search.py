@@ -10,6 +10,7 @@ from __future__ import annotations
 
 import os
 import threading
+from collections import deque
 
 from gi.repository import Gio, GLib, GObject
 
@@ -99,10 +100,10 @@ class Search(GObject.Object):
         self._deliver(batch, generation, finished=True)
 
     def _walk_local(self, root: str, words, emit, generation) -> None:
-        pending = [root]
+        pending = deque([root])
         home = GLib.get_home_dir()
         while pending and self._alive(generation):
-            directory = pending.pop(0)  # обход в ширину: ближние результаты раньше
+            directory = pending.popleft()  # обход в ширину: ближние результаты раньше
             try:
                 entries = list(os.scandir(directory))
             except OSError:
