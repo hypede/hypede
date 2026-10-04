@@ -29,6 +29,7 @@ import {loadRecentFiles, describeWhen} from './recent.js';
 import {getFileIndex, destroyFileIndex, normalize as normalizeName} from './filesearch.js';
 import {addSecondaryClick} from './util.js';
 import {getAssistant} from './assistant.js';
+import {findActions} from './actions.js';
 
 const RESULT_ICON_SIZE = 32;
 const MAX_APP_RESULTS = 6;
@@ -653,6 +654,7 @@ class LauncherView extends St.BoxLayout {
     _search(text) {
         this._clearResults();
         const providers = this._settings.get_strv('launcher-search-providers');
+        providers.unshift('actions');
         providers.push('assistant');
         const sections = new Map();
         for (const provider of providers) {
@@ -666,7 +668,7 @@ class LauncherView extends St.BoxLayout {
         let order = [...sections.keys()];
         if (sections.has('web') && !sections.has('apps') && !sections.has('settings') &&
             !sections.get('files')?._matches)
-            order = ['calculator', 'web', ...order.filter(p => p !== 'calculator' && p !== 'web')];
+            order = ['actions', 'calculator', 'web', ...order.filter(p => !['actions', 'calculator', 'web'].includes(p))];
 
         this._results = [];
         for (const provider of order) {
@@ -678,6 +680,20 @@ class LauncherView extends St.BoxLayout {
             this._results.push(...section.get_children().filter(c => c instanceof ResultRow));
         }
         this._select(0);
+    }
+
+    _search_actions(text) {
+        const actions = findActions(text);
+        if (actions.length === 0)
+            return null;
+        const section = _section(_('Actions'));
+        for (const action of actions) {
+            section.add_child(this._addResult({...action, activate: () => {
+                this._launcher.close();
+                action.activate();
+            }}));
+        }
+        return section;
     }
 
     // Калькулятор — первым, как в Chrome OS.

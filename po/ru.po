@@ -319,7 +319,8 @@ msgstr "О программе"
 
 #: apps/files/hypede_files/window.py:88 apps/files/hypede_files/window.py:985
 #: apps/files/hypede_files/window.py:1003
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:725
+#: shell/extension/hypede-shell@hypede.dev/actions.js:173
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:814
 msgid "Files"
 msgstr "Файлы"
 
@@ -707,7 +708,7 @@ msgid "Open Settings"
 msgstr "Открыть «Настройки»"
 
 #: apps/assistant/hypede_assistant/app.py:191
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:70
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:71
 msgid "AI assistant"
 msgstr "ИИ-помощник"
 
@@ -769,6 +770,211 @@ msgstr "Этот ярлык приложения ещё не проверен. �
 msgid "Allow and Run"
 msgstr "Разрешить и запустить"
 
+#: shell/extension/hypede-shell@hypede.dev/actions.js:48
+msgid "Keep awake"
+msgstr "Не засыпать"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:59
+#: shell/extension/hypede-shell@hypede.dev/actions.js:60
+msgid "Timer"
+msgstr "Таймер"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:59
+#, javascript-format
+msgid "%s is up"
+msgstr "%s прошло"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:98
+#: shell/extension/hypede-shell@hypede.dev/actions.js:103
+#, javascript-format
+msgid "Volume %d%%"
+msgstr "Громкость %d%%"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:98
+msgid "Set sound volume"
+msgstr "Изменить громкость"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:108
+#, javascript-format
+msgid "Brightness %d%%"
+msgstr "Яркость %d%%"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:108
+msgid "Set screen brightness"
+msgstr "Изменить яркость экрана"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:119
+#, javascript-format
+msgid "%d s"
+msgstr "%d с"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:119
+#, javascript-format
+msgid "%d h"
+msgstr "%d ч"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:119
+#, javascript-format
+msgid "%d min"
+msgstr "%d мин"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:120
+#: shell/extension/hypede-shell@hypede.dev/actions.js:122
+#, javascript-format
+msgid "Timer for %s"
+msgstr "Таймер на %s"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:120
+msgid "A notification will remind you"
+msgstr "Напомнит уведомлением"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:127
+#: shell/extension/hypede-shell@hypede.dev/actions.js:129
+#, javascript-format
+msgid "Keep awake for %d min"
+msgstr "Не засыпать %d мин"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:127
+msgid "The screen will not dim or lock"
+msgstr "Экран не погаснет и не заблокируется"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:136
+msgid "Light style"
+msgstr "Светлая тема"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:136
+msgid "Dark style"
+msgstr "Тёмная тема"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:136
+msgid "Switch the color scheme"
+msgstr "Переключить оформление"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:141
+msgid "Turn off Do Not Disturb"
+msgstr "Выключить «Не беспокоить»"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:141
+msgid "Turn on Do Not Disturb"
+msgstr "Включить «Не беспокоить»"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:141
+msgid "Notifications"
+msgstr "Уведомления"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:146
+msgid "Turn off Night Light"
+msgstr "Выключить ночной свет"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:146
+msgid "Turn on Night Light"
+msgstr "Включить ночной свет"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:146
+msgid "Warmer colors at night"
+msgstr "Тёплые цвета вечером"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:151
+msgid "Turn off Wi‑Fi"
+msgstr "Выключить Wi‑Fi"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:151
+msgid "Turn on Wi‑Fi"
+msgstr "Включить Wi‑Fi"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:151
+msgid "Wireless network"
+msgstr "Беспроводная сеть"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:156
+msgid "Turn off Bluetooth"
+msgstr "Выключить Bluetooth"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:156
+msgid "Turn on Bluetooth"
+msgstr "Включить Bluetooth"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:161
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:65
+msgid "Lock screen"
+msgstr "Заблокировать экран"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:161
+msgid "Super+L"
+msgstr "Super+L"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:163
+msgid "Take a screenshot"
+msgstr "Снимок экрана"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:163
+msgid "Print Screen"
+msgstr "Print Screen"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:165
+msgid "Suspend"
+msgstr "Спящий режим"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:165
+#: shell/extension/hypede-shell@hypede.dev/actions.js:167
+#: shell/extension/hypede-shell@hypede.dev/actions.js:169
+#: shell/extension/hypede-shell@hypede.dev/actions.js:171
+msgid "Power"
+msgstr "Питание"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:167
+msgid "Log out"
+msgstr "Выйти"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:169
+#: shell/extension/hypede-shell@hypede.dev/shelf.js:737
+msgid "Restart"
+msgstr "Перезагрузить"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:171
+#: shell/extension/hypede-shell@hypede.dev/shelf.js:735
+msgid "Shut down"
+msgstr "Выключить"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:173
+msgid "Empty trash"
+msgstr "Очистить корзину"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:176
+msgid "Restore last session"
+msgstr "Восстановить прошлый сеанс"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:176
+msgid "Reopen windows from your last session"
+msgstr "Снова открыть окна прошлого сеанса"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:178
+msgid "Save session"
+msgstr "Сохранить сеанс"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:178
+msgid "Remember open windows"
+msgstr "Запомнить открытые окна"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:180
+msgid "Session saved"
+msgstr "Сеанс сохранён"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:189
+#, javascript-format
+msgid "Turn off %s mode"
+msgstr "Выключить режим «%s»"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:189
+#, javascript-format
+msgid "%s mode"
+msgstr "Режим «%s»"
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:190
+#: shell/extension/hypede-shell@hypede.dev/modes.js:52
+msgid "Focus mode"
+msgstr "Режим фокуса"
+
 #: shell/extension/hypede-shell@hypede.dev/extras.js:48
 msgid "Clipboard"
 msgstr "Буфер обмена"
@@ -785,12 +991,12 @@ msgstr "Очистить"
 msgid "Close"
 msgstr "Закрыть"
 
-#: shell/extension/hypede-shell@hypede.dev/extras.js:150
+#: shell/extension/hypede-shell@hypede.dev/extras.js:154
 #, javascript-format
 msgid "Reopened %s"
 msgstr "Снова открыто: %s"
 
-#: shell/extension/hypede-shell@hypede.dev/extras.js:159
+#: shell/extension/hypede-shell@hypede.dev/extras.js:163
 #, javascript-format
 msgid "Explain this:\n\n%s"
 msgstr "Объясни это:\n\n%s"
@@ -828,101 +1034,101 @@ msgstr "%A, %-d %B"
 msgid "Press any key to continue"
 msgstr "Нажмите любую клавишу, чтобы продолжить"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:54
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:55
 msgid "Network"
 msgstr "Сеть"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:56
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:57
 msgid "Bluetooth"
 msgstr "Bluetooth"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:58
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:59
 msgid "Device"
 msgstr "Устройство"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:60
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:61
 msgid "Personalization"
 msgstr "Персонализация"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:62
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:63
 msgid "Shelf and launcher"
 msgstr "Полка и лаунчер"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:64
-msgid "Lock screen"
-msgstr "Экран блокировки"
-
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:66
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:67
 msgid "Security and privacy"
 msgstr "Безопасность и конфиденциальность"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:68
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:660
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:69
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:749
 msgid "Apps"
 msgstr "Приложения"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:72
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:73
 msgid "Accessibility"
 msgstr "Специальные возможности"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:74
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:75
 msgid "System preferences"
 msgstr "Системные настройки"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:76
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:77
 msgid "About HypeDE"
 msgstr "О HypeDE"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:88
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:89
 msgid "Could not open"
 msgstr "Не удалось открыть"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:260
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:261
 msgid "Search your device, apps, settings, web…"
 msgstr "Поиск по устройству, настройкам и в интернете…"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:292
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:293
 msgid "Continue where you left off"
 msgstr "Недавние файлы"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:406
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:640
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:451
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:729
 #, javascript-format
 msgid "Ask %s"
 msgstr "Спросить %s"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:621
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:689
+msgid "Actions"
+msgstr "Действия"
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:710
 msgid "Press Enter to copy the result"
 msgstr "Нажмите Enter, чтобы скопировать результат"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:682
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:687
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:771
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:776
 msgid "Settings"
 msgstr "Настройки"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:743
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:832
 #, javascript-format
 msgid "Search for “%s” in Files"
 msgstr "Найти «%s» в «Файлах»"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:744
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:833
 msgid "Search in the home folder"
 msgstr "Поиск в домашней папке"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:767
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:856
 msgid "Web"
 msgstr "Интернет"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:773
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:862
 #, javascript-format
 msgid "Search with %s"
 msgstr "Искать в %s"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:773
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:862
 msgid "Search the web"
 msgstr "Поиск в интернете"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:842
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:931
 msgid "Launcher"
 msgstr "Лаунчер"
 
@@ -988,6 +1194,31 @@ msgstr "%B, %A"
 msgid "Press any key or click to unlock"
 msgstr "Нажмите любую клавишу, чтобы разблокировать"
 
+#: shell/extension/hypede-shell@hypede.dev/modes.js:40
+msgid "Work"
+msgstr "Работа"
+
+#: shell/extension/hypede-shell@hypede.dev/modes.js:40
+msgid "Game"
+msgstr "Игра"
+
+#: shell/extension/hypede-shell@hypede.dev/modes.js:40
+msgid "Study"
+msgstr "Учёба"
+
+#: shell/extension/hypede-shell@hypede.dev/modes.js:50
+msgid "Focus"
+msgstr "Фокус"
+
+#: shell/extension/hypede-shell@hypede.dev/modes.js:116
+msgid "Focus mode off"
+msgstr "Режим фокуса выключен"
+
+#: shell/extension/hypede-shell@hypede.dev/modes.js:138
+#, javascript-format
+msgid "Focus mode: %s"
+msgstr "Режим фокуса: %s"
+
 #: shell/extension/hypede-shell@hypede.dev/recent.js:97
 msgid "You opened today"
 msgstr "Открыто сегодня"
@@ -1009,13 +1240,22 @@ msgstr[2] "Открыто %d дней назад"
 msgid "You opened %s"
 msgstr "Открыто %s"
 
-#: shell/extension/hypede-shell@hypede.dev/shelf.js:735
-msgid "Shut down"
-msgstr "Выключить"
+#: shell/extension/hypede-shell@hypede.dev/session.js:76
+msgid "Restore your windows?"
+msgstr "Восстановить окна?"
 
-#: shell/extension/hypede-shell@hypede.dev/shelf.js:737
-msgid "Restart"
-msgstr "Перезагрузить"
+#: shell/extension/hypede-shell@hypede.dev/session.js:77
+#, javascript-format
+msgid "%d windows were open when you left"
+msgstr "Открытых окон при выходе: %d"
+
+#: shell/extension/hypede-shell@hypede.dev/session.js:80
+msgid "Restore"
+msgstr "Восстановить"
+
+#: shell/extension/hypede-shell@hypede.dev/session.js:81
+msgid "No thanks"
+msgstr "Не надо"
 
 #: shell/extension/hypede-shell@hypede.dev/shelf.js:832
 msgid "Shelf"

@@ -550,6 +550,7 @@
     </message>
     <message>
         <location filename="../qml/Catalog.qml" line="167" />
+        <location filename="../qml/Catalog.qml" line="614" />
         <source>Ask</source>
         <translation>Спрашивать</translation>
     </message>
@@ -911,6 +912,7 @@
     </message>
     <message>
         <location filename="../qml/Catalog.qml" line="440" />
+        <location filename="../qml/Catalog.qml" line="615" />
         <source>Never</source>
         <translation>Никогда</translation>
     </message>
@@ -1789,23 +1791,44 @@
     </message>
     <message>
         <location filename="../qml/Catalog.qml" line="609" />
-        <location filename="../qml/Catalog.qml" line="610" />
+        <location filename="../qml/Catalog.qml" line="609" />
+        <source>Focus modes</source>
+        <translation>Режимы фокуса</translation>
+    </message>
+    <message>
+        <location filename="../qml/Catalog.qml" line="611" />
+        <source>Session</source>
+        <translation>Сеанс</translation>
+    </message>
+    <message>
+        <location filename="../qml/Catalog.qml" line="612" />
+        <source>Restore windows at sign-in</source>
+        <translation>Восстанавливать окна при входе</translation>
+    </message>
+    <message>
+        <location filename="../qml/Catalog.qml" line="614" />
+        <source>Always</source>
+        <translation>Всегда</translation>
+    </message>
+    <message>
+        <location filename="../qml/Catalog.qml" line="616" />
+        <location filename="../qml/Catalog.qml" line="617" />
         <source>Startup apps</source>
         <translation>Автозапуск</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="612" />
-        <location filename="../qml/Catalog.qml" line="613" />
+        <location filename="../qml/Catalog.qml" line="619" />
+        <location filename="../qml/Catalog.qml" line="620" />
         <source>HypeDE configuration</source>
         <translation>Конфигурация HypeDE</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="635" />
+        <location filename="../qml/Catalog.qml" line="642" />
         <source>Support the project</source>
         <translation>Поддержать проект</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="637" />
+        <location filename="../qml/Catalog.qml" line="644" />
         <source>Show the “Support me” card</source>
         <translation>Показывать карточку «Support me»</translation>
     </message>
@@ -1815,38 +1838,38 @@
         <translation>Поисковая система</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="619" />
-        <location filename="../qml/Catalog.qml" line="622" />
+        <location filename="../qml/Catalog.qml" line="626" />
+        <location filename="../qml/Catalog.qml" line="629" />
         <source>About HypeDE</source>
         <translation>О HypeDE</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="623" />
+        <location filename="../qml/Catalog.qml" line="630" />
         <source>System information</source>
         <translation>Сведения о системе</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="624" />
+        <location filename="../qml/Catalog.qml" line="631" />
         <source>Detailed system information</source>
         <translation>Подробные сведения о системе</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="626" />
+        <location filename="../qml/Catalog.qml" line="633" />
         <source>Battery</source>
         <translation>Батарея</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="628" />
+        <location filename="../qml/Catalog.qml" line="635" />
         <source>Storage devices</source>
         <translation>Накопители</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="630" />
+        <location filename="../qml/Catalog.qml" line="637" />
         <source>USB devices</source>
         <translation>USB-устройства</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="632" />
+        <location filename="../qml/Catalog.qml" line="639" />
         <source>Graphics (Vulkan)</source>
         <translation>Графика (Vulkan)</translation>
     </message>
@@ -2302,6 +2325,105 @@
     </message>
 </context>
 <context>
+    <name>ModesBlock</name>
+    <message>
+        <location filename="../qml/ModesBlock.qml" line="19" />
+        <source>Work</source>
+        <translation>Работа</translation>
+    </message>
+    <message>
+        <location filename="../qml/ModesBlock.qml" line="19" />
+        <source>Game</source>
+        <translation>Игра</translation>
+    </message>
+    <message>
+        <location filename="../qml/ModesBlock.qml" line="19" />
+        <source>Study</source>
+        <translation>Учёба</translation>
+    </message>
+    <message>
+        <location filename="../qml/ModesBlock.qml" line="47" />
+        <source>Turn on from quick settings or the launcher</source>
+        <translation>Включается в быстрых настройках или из лаунчера</translation>
+    </message>
+    <message>
+        <location filename="../qml/ModesBlock.qml" line="61" />
+        <source>Do Not Disturb</source>
+        <translation>Не беспокоить</translation>
+    </message>
+    <message>
+        <location filename="../qml/ModesBlock.qml" line="68" />
+        <source>Power mode</source>
+        <translation>Режим питания</translation>
+    </message>
+    <message>
+        <location filename="../qml/ModesBlock.qml" line="71" />
+        <location filename="../qml/ModesBlock.qml" line="81" />
+        <source>Don't change</source>
+        <translation>Не менять</translation>
+    </message>
+    <message>
+        <location filename="../qml/ModesBlock.qml" line="71" />
+        <source>Power saver</source>
+        <translation>Энергосбережение</translation>
+    </message>
+    <message>
+        <location filename="../qml/ModesBlock.qml" line="72" />
+        <source>Balanced</source>
+        <translation>Сбалансированный</translation>
+    </message>
+    <message>
+        <location filename="../qml/ModesBlock.qml" line="72" />
+        <source>Performance</source>
+        <translation>Производительность</translation>
+    </message>
+    <message>
+        <location filename="../qml/ModesBlock.qml" line="78" />
+        <source>Theme</source>
+        <translation>Тема</translation>
+    </message>
+    <message>
+        <location filename="../qml/ModesBlock.qml" line="87" />
+        <source>Open apps</source>
+        <translation>Открыть приложения</translation>
+    </message>
+    <message>
+        <location filename="../qml/ModesBlock.qml" line="88" />
+        <source>None</source>
+        <translation>Нет</translation>
+    </message>
+    <message>
+        <location filename="../qml/ModesBlock.qml" line="93" />
+        <source>Add app…</source>
+        <translation>Добавить приложение…</translation>
+    </message>
+    <message>
+        <location filename="../qml/ModesBlock.qml" line="103" />
+        <source>Clear</source>
+        <translation>Очистить</translation>
+    </message>
+    <message>
+        <location filename="../qml/ModesBlock.qml" line="109" />
+        <source>Delete</source>
+        <translation>Удалить</translation>
+    </message>
+    <message>
+        <location filename="../qml/ModesBlock.qml" line="117" />
+        <source>New focus mode</source>
+        <translation>Новый режим фокуса</translation>
+    </message>
+    <message>
+        <location filename="../qml/ModesBlock.qml" line="120" />
+        <source>Add</source>
+        <translation>Добавить</translation>
+    </message>
+    <message>
+        <location filename="../qml/ModesBlock.qml" line="121" />
+        <source>My mode</source>
+        <translation>Мой режим</translation>
+    </message>
+</context>
+<context>
     <name>PictureRow</name>
     <message>
         <location filename="../qml/PictureRow.qml" line="10" />
@@ -2327,94 +2449,94 @@
 <context>
     <name>RowDelegate</name>
     <message>
-        <location filename="../qml/RowDelegate.qml" line="95" />
+        <location filename="../qml/RowDelegate.qml" line="96" />
         <source>%1 ms</source>
         <translation>%1 мс</translation>
     </message>
     <message>
-        <location filename="../qml/RowDelegate.qml" line="96" />
+        <location filename="../qml/RowDelegate.qml" line="97" />
         <source>%1 K</source>
         <translation>%1 K</translation>
     </message>
     <message>
-        <location filename="../qml/RowDelegate.qml" line="97" />
         <location filename="../qml/RowDelegate.qml" line="98" />
+        <location filename="../qml/RowDelegate.qml" line="99" />
         <source>%1%</source>
         <translation>%1%</translation>
     </message>
     <message>
-        <location filename="../qml/RowDelegate.qml" line="99" />
+        <location filename="../qml/RowDelegate.qml" line="100" />
         <source>%1 px</source>
         <translation>%1 пкс</translation>
     </message>
     <message>
-        <location filename="../qml/RowDelegate.qml" line="101" />
+        <location filename="../qml/RowDelegate.qml" line="102" />
         <source>Normal</source>
         <translation>Обычная</translation>
     </message>
     <message>
-        <location filename="../qml/RowDelegate.qml" line="101" />
+        <location filename="../qml/RowDelegate.qml" line="102" />
         <source>×%1</source>
         <translation>×%1</translation>
     </message>
     <message>
-        <location filename="../qml/RowDelegate.qml" line="144" />
+        <location filename="../qml/RowDelegate.qml" line="145" />
         <source>Not installed — install the “%1” package</source>
         <translation>Нужен пакет «%1»</translation>
     </message>
     <message>
-        <location filename="../qml/RowDelegate.qml" line="172" />
+        <location filename="../qml/RowDelegate.qml" line="173" />
         <source>On</source>
         <translation>Вкл.</translation>
     </message>
     <message>
-        <location filename="../qml/RowDelegate.qml" line="172" />
+        <location filename="../qml/RowDelegate.qml" line="173" />
         <source>Off</source>
         <translation>Выкл.</translation>
     </message>
     <message>
-        <location filename="../qml/RowDelegate.qml" line="187" />
+        <location filename="../qml/RowDelegate.qml" line="188" />
         <source>Power profiles daemon</source>
         <translation>Профили питания</translation>
     </message>
     <message>
-        <location filename="../qml/RowDelegate.qml" line="192" />
+        <location filename="../qml/RowDelegate.qml" line="193" />
         <source>Performance</source>
         <translation>Производительность</translation>
     </message>
     <message>
-        <location filename="../qml/RowDelegate.qml" line="193" />
+        <location filename="../qml/RowDelegate.qml" line="194" />
         <source>Balanced</source>
-        <translation>Баланс</translation>
+        <translation>Сбалансированный</translation>
     </message>
     <message>
-        <location filename="../qml/RowDelegate.qml" line="194" />
+        <location filename="../qml/RowDelegate.qml" line="195" />
         <source>Power saver</source>
         <translation>Энергосбережение</translation>
     </message>
     <message>
-        <location filename="../qml/RowDelegate.qml" line="207" />
+        <location filename="../qml/RowDelegate.qml" line="208" />
         <source>Uses network time servers</source>
         <translation>По серверам времени в интернете</translation>
     </message>
     <message>
-        <location filename="../qml/RowDelegate.qml" line="235" />
-        <location filename="../qml/RowDelegate.qml" line="238" />
+        <location filename="../qml/RowDelegate.qml" line="236" />
+        <location filename="../qml/RowDelegate.qml" line="239" />
         <source>Same as the language</source>
         <translation>Как у языка системы</translation>
     </message>
     <message>
-        <location filename="../qml/RowDelegate.qml" line="252" />
+        <location filename="../qml/RowDelegate.qml" line="253" />
         <source>History cleared</source>
         <translation>История очищена</translation>
     </message>
     <message>
-        <location filename="../qml/RowDelegate.qml" line="252" />
+        <location filename="../qml/RowDelegate.qml" line="253" />
         <source>Removes the list shown in the launcher and apps</source>
         <translation>Удаляет список недавних файлов в лаунчере и приложениях</translation>
     </message>
     <message>
-        <location filename="../qml/RowDelegate.qml" line="255" />
+        <location filename="../qml/RowDelegate.qml" line="256" />
         <source>Clear</source>
         <translation>Очистить</translation>
     </message>

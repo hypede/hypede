@@ -73,6 +73,7 @@ qt_add_qml_module(hypede-settings
         qml/ShortcutsBlock.qml
         qml/EasterEgg.qml
         qml/AsteroidsGame.qml
+        qml/ModesBlock.qml
         qml/ColorRow.qml
         qml/TextRow.qml
         qml/PictureRow.qml

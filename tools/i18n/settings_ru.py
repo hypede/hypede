@@ -559,3 +559,11 @@ RU.update({
     "Best: %1 · Enter — play again": "Рекорд: %1 · Enter — ещё раз",
     "← → turn · ↑ thrust · Space fire · Esc quit": "← → поворот · ↑ газ · Пробел — огонь · Esc — выход",
 })
+RU.update({
+    "Work": "Работа", "Game": "Игра", "Study": "Учёба", "Turn on from quick settings or the launcher": "Включается в быстрых настройках или из лаунчера",
+    "Power mode": "Режим питания", "Don't change": "Не менять", "Power saver": "Энергосбережение", "Balanced": "Сбалансированный",
+    "Performance": "Производительность", "Open apps": "Открыть приложения", "None": "Нет", "Add app…": "Добавить приложение…",
+    "Clear": "Очистить", "New focus mode": "Новый режим фокуса", "My mode": "Мой режим", "Focus modes": "Режимы фокуса",
+    "Session": "Сеанс", "Restore windows at sign-in": "Восстанавливать окна при входе", "Ask": "Спрашивать",
+    "Always": "Всегда", "Never": "Никогда", "Theme": "Тема", "Do Not Disturb": "Не беспокоить",
+})

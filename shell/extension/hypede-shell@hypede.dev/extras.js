@@ -120,17 +120,21 @@ export class Extras {
             this._closed = [{app: app.get_id(), rect: win.get_frame_rect(), workspace: win.get_workspace()?.index() ?? -1},
                 ...this._closed].slice(0, CLOSED);
         }, this);
-        if (this._pending && Shell.WindowTracker.get_default().get_window_app(win)?.get_id() === this._pending.app) {
+        win.connectObject('shown', () => {
             const entry = this._pending;
+            if (!entry || Shell.WindowTracker.get_default().get_window_app(win)?.get_id() !== entry.app)
+                return;
             this._pending = null;
-            win.connectObject('shown', () => GLib.timeout_add(GLib.PRIORITY_DEFAULT, 120, () => {
-                if (entry.workspace >= 0 && entry.workspace < global.workspace_manager.n_workspaces)
-                    win.change_workspace_by_index(entry.workspace, false);
-                const r = entry.rect;
-                win.move_resize_frame(true, r.x, r.y, r.width, r.height);
-                return GLib.SOURCE_REMOVE;
-            }), this);
-        }
+            for (const delay of [100, 600]) {
+                GLib.timeout_add(GLib.PRIORITY_DEFAULT, delay, () => {
+                    if (entry.workspace >= 0 && entry.workspace < global.workspace_manager.n_workspaces)
+                        win.change_workspace_by_index(entry.workspace, false);
+                    const r = entry.rect;
+                    win.move_resize_frame(true, r.x, r.y, r.width, r.height);
+                    return GLib.SOURCE_REMOVE;
+                });
+            }
+        }, this);
     }
 
     _reopen() {

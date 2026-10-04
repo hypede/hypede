@@ -9,7 +9,7 @@ msgstr ""
 "#-#-#-#-#  files.pot (PACKAGE VERSION)  #-#-#-#-#\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-02 06:53+0000\n"
+"POT-Creation-Date: 2026-10-04 20:02+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 "#-#-#-#-#  shell.pot (PACKAGE VERSION)  #-#-#-#-#\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-02 16:56+0000\n"
+"POT-Creation-Date: 2026-10-04 20:21+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -330,7 +330,8 @@ msgstr ""
 
 #: apps/files/hypede_files/window.py:88 apps/files/hypede_files/window.py:985
 #: apps/files/hypede_files/window.py:1003
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:725
+#: shell/extension/hypede-shell@hypede.dev/actions.js:173
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:814
 msgid "Files"
 msgstr ""
 
@@ -718,7 +719,7 @@ msgid "Open Settings"
 msgstr ""
 
 #: apps/assistant/hypede_assistant/app.py:191
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:70
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:71
 msgid "AI assistant"
 msgstr ""
 
@@ -782,6 +783,211 @@ msgstr ""
 msgid "Allow and Run"
 msgstr ""
 
+#: shell/extension/hypede-shell@hypede.dev/actions.js:48
+msgid "Keep awake"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:59
+#: shell/extension/hypede-shell@hypede.dev/actions.js:60
+msgid "Timer"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:59
+#, javascript-format
+msgid "%s is up"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:98
+#: shell/extension/hypede-shell@hypede.dev/actions.js:103
+#, javascript-format
+msgid "Volume %d%%"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:98
+msgid "Set sound volume"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:108
+#, javascript-format
+msgid "Brightness %d%%"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:108
+msgid "Set screen brightness"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:119
+#, javascript-format
+msgid "%d s"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:119
+#, javascript-format
+msgid "%d h"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:119
+#, javascript-format
+msgid "%d min"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:120
+#: shell/extension/hypede-shell@hypede.dev/actions.js:122
+#, javascript-format
+msgid "Timer for %s"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:120
+msgid "A notification will remind you"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:127
+#: shell/extension/hypede-shell@hypede.dev/actions.js:129
+#, javascript-format
+msgid "Keep awake for %d min"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:127
+msgid "The screen will not dim or lock"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:136
+msgid "Light style"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:136
+msgid "Dark style"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:136
+msgid "Switch the color scheme"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:141
+msgid "Turn off Do Not Disturb"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:141
+msgid "Turn on Do Not Disturb"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:141
+msgid "Notifications"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:146
+msgid "Turn off Night Light"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:146
+msgid "Turn on Night Light"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:146
+msgid "Warmer colors at night"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:151
+msgid "Turn off Wi‑Fi"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:151
+msgid "Turn on Wi‑Fi"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:151
+msgid "Wireless network"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:156
+msgid "Turn off Bluetooth"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:156
+msgid "Turn on Bluetooth"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:161
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:65
+msgid "Lock screen"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:161
+msgid "Super+L"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:163
+msgid "Take a screenshot"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:163
+msgid "Print Screen"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:165
+msgid "Suspend"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:165
+#: shell/extension/hypede-shell@hypede.dev/actions.js:167
+#: shell/extension/hypede-shell@hypede.dev/actions.js:169
+#: shell/extension/hypede-shell@hypede.dev/actions.js:171
+msgid "Power"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:167
+msgid "Log out"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:169
+#: shell/extension/hypede-shell@hypede.dev/shelf.js:737
+msgid "Restart"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:171
+#: shell/extension/hypede-shell@hypede.dev/shelf.js:735
+msgid "Shut down"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:173
+msgid "Empty trash"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:176
+msgid "Restore last session"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:176
+msgid "Reopen windows from your last session"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:178
+msgid "Save session"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:178
+msgid "Remember open windows"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:180
+msgid "Session saved"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:189
+#, javascript-format
+msgid "Turn off %s mode"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:189
+#, javascript-format
+msgid "%s mode"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/actions.js:190
+#: shell/extension/hypede-shell@hypede.dev/modes.js:52
+msgid "Focus mode"
+msgstr ""
+
 #: shell/extension/hypede-shell@hypede.dev/extras.js:48
 msgid "Clipboard"
 msgstr ""
@@ -798,12 +1004,12 @@ msgstr ""
 msgid "Close"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/extras.js:150
+#: shell/extension/hypede-shell@hypede.dev/extras.js:154
 #, javascript-format
 msgid "Reopened %s"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/extras.js:159
+#: shell/extension/hypede-shell@hypede.dev/extras.js:163
 #, javascript-format
 msgid ""
 "Explain this:\n"
@@ -844,101 +1050,101 @@ msgstr ""
 msgid "Press any key to continue"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:54
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:55
 msgid "Network"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:56
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:57
 msgid "Bluetooth"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:58
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:59
 msgid "Device"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:60
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:61
 msgid "Personalization"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:62
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:63
 msgid "Shelf and launcher"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:64
-msgid "Lock screen"
-msgstr ""
-
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:66
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:67
 msgid "Security and privacy"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:68
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:660
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:69
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:749
 msgid "Apps"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:72
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:73
 msgid "Accessibility"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:74
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:75
 msgid "System preferences"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:76
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:77
 msgid "About HypeDE"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:88
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:89
 msgid "Could not open"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:260
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:261
 msgid "Search your device, apps, settings, web…"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:292
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:293
 msgid "Continue where you left off"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:406
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:640
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:451
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:729
 #, javascript-format
 msgid "Ask %s"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:621
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:689
+msgid "Actions"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:710
 msgid "Press Enter to copy the result"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:682
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:687
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:771
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:776
 msgid "Settings"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:743
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:832
 #, javascript-format
 msgid "Search for “%s” in Files"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:744
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:833
 msgid "Search in the home folder"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:767
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:856
 msgid "Web"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:773
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:862
 #, javascript-format
 msgid "Search with %s"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:773
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:862
 msgid "Search the web"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:842
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:931
 msgid "Launcher"
 msgstr ""
 
@@ -1004,6 +1210,31 @@ msgstr ""
 msgid "Press any key or click to unlock"
 msgstr ""
 
+#: shell/extension/hypede-shell@hypede.dev/modes.js:40
+msgid "Work"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/modes.js:40
+msgid "Game"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/modes.js:40
+msgid "Study"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/modes.js:50
+msgid "Focus"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/modes.js:116
+msgid "Focus mode off"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/modes.js:138
+#, javascript-format
+msgid "Focus mode: %s"
+msgstr ""
+
 #: shell/extension/hypede-shell@hypede.dev/recent.js:97
 msgid "You opened today"
 msgstr ""
@@ -1024,12 +1255,21 @@ msgstr[1] ""
 msgid "You opened %s"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/shelf.js:735
-msgid "Shut down"
+#: shell/extension/hypede-shell@hypede.dev/session.js:76
+msgid "Restore your windows?"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/shelf.js:737
-msgid "Restart"
+#: shell/extension/hypede-shell@hypede.dev/session.js:77
+#, javascript-format
+msgid "%d windows were open when you left"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/session.js:80
+msgid "Restore"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/session.js:81
+msgid "No thanks"
 msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/shelf.js:832

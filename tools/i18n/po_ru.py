@@ -264,3 +264,25 @@ RU.update({
     "Clipboard": "Буфер обмена", "Copy something — it will show up here": "Скопируйте что-нибудь — оно появится здесь",
     "Clear": "Очистить", "Close": "Закрыть", "Reopened %s": "Снова открыто: %s", "Explain this:\n\n%s": "Объясни это:\n\n%s",
 })
+RU.update({
+    "Work": "Работа", "Game": "Игра", "Study": "Учёба", "Focus": "Фокус", "Focus mode": "Режим фокуса",
+    "Focus mode off": "Режим фокуса выключен", "Focus mode: %s": "Режим фокуса: %s",
+    "Restore your windows?": "Восстановить окна?", "%d windows were open when you left": "Открытых окон при выходе: %d",
+    "Restore": "Восстановить", "No thanks": "Не надо", "Actions": "Действия",
+    "Volume %d%%": "Громкость %d%%", "Set sound volume": "Изменить громкость", "Brightness %d%%": "Яркость %d%%",
+    "Set screen brightness": "Изменить яркость экрана", "%d s": "%d с", "%d h": "%d ч", "%d min": "%d мин",
+    "Timer for %s": "Таймер на %s", "A notification will remind you": "Напомнит уведомлением", "Timer": "Таймер",
+    "%s is up": "%s прошло", "Keep awake": "Не засыпать", "Keep awake for %d min": "Не засыпать %d мин",
+    "The screen will not dim or lock": "Экран не погаснет и не заблокируется", "Light style": "Светлая тема",
+    "Dark style": "Тёмная тема", "Switch the color scheme": "Переключить оформление",
+    "Turn off Do Not Disturb": "Выключить «Не беспокоить»", "Turn on Do Not Disturb": "Включить «Не беспокоить»",
+    "Notifications": "Уведомления", "Turn off Night Light": "Выключить ночной свет", "Turn on Night Light": "Включить ночной свет",
+    "Warmer colors at night": "Тёплые цвета вечером", "Turn off Wi‑Fi": "Выключить Wi‑Fi", "Turn on Wi‑Fi": "Включить Wi‑Fi",
+    "Wireless network": "Беспроводная сеть", "Turn off Bluetooth": "Выключить Bluetooth", "Turn on Bluetooth": "Включить Bluetooth",
+    "Lock screen": "Заблокировать экран", "Take a screenshot": "Снимок экрана", "Suspend": "Спящий режим", "Power": "Питание",
+    "Log out": "Выйти", "Restart": "Перезагрузить", "Shut down": "Выключить", "Empty trash": "Очистить корзину", "Files": "Файлы",
+    "Restore last session": "Восстановить прошлый сеанс", "Reopen windows from your last session": "Снова открыть окна прошлого сеанса",
+    "Save session": "Сохранить сеанс", "Remember open windows": "Запомнить открытые окна", "Session saved": "Сеанс сохранён",
+    "Turn off %s mode": "Выключить режим «%s»", "%s mode": "Режим «%s»",
+})
+RU.update({"Super+L": "Super+L", "Print Screen": "Print Screen"})

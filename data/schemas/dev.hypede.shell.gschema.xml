@@ -120,6 +120,23 @@
       <default>['&lt;Super&gt;a']</default>
       <summary>Спросить ИИ о выделенном тексте</summary>
     </key>
+    <key name="session-restore" type="s">
+      <choices>
+        <choice value="ask"/>
+        <choice value="always"/>
+        <choice value="never"/>
+      </choices>
+      <default>'ask'</default>
+      <summary>Восстанавливать окна прошлого сеанса при входе</summary>
+    </key>
+    <key name="focus-modes" type="s">
+      <default>'[{"id":"work","name":"","dnd":true,"power":"balanced","theme":"","apps":[]},{"id":"game","name":"","dnd":true,"power":"performance","theme":"","apps":["steam.desktop"]},{"id":"study","name":"","dnd":true,"power":"balanced","theme":"builtin:lagoon","apps":[]}]'</default>
+      <summary>Режимы фокуса (JSON)</summary>
+    </key>
+    <key name="focus-mode" type="s">
+      <default>''</default>
+      <summary>Включённый режим фокуса</summary>
+    </key>
     <key name="shelf-opacity" type="i">
       <range min="0" max="100"/>
       <default>80</default>

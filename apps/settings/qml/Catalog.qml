@@ -606,6 +606,13 @@ QtObject {
                       subtitle: qsTr("Load extensions enabled for regular GNOME. They can break the shelf."),
                       icon: "application-x-addon-symbolic", keywords: "extensions расширения" },
                 ] },
+                { title: qsTr("Focus modes"), rows: [ { type: "modes", title: qsTr("Focus modes"),
+                      keywords: "focus mode work game study режим фокус работа игра учёба" } ] },
+                { title: qsTr("Session"), rows: [
+                    { type: "combo", schema: shell, key: "session-restore", title: qsTr("Restore windows at sign-in"),
+                      icon: "view-restore-symbolic", keywords: "session restore windows сеанс восстановить окна",
+                      options: [ { value: "ask", label: qsTr("Ask") }, { value: "always", label: qsTr("Always") },
+                                 { value: "never", label: qsTr("Never") } ] } ] },
                 { title: qsTr("Startup apps"), rows: [
                     { type: "autostart", title: qsTr("Startup apps"), keywords: "autostart startup автозапуск baloo" },
                 ] },

@@ -49,6 +49,7 @@ Loader {
         case "themes": return themesBlock
         case "liveWallpaper": return liveWallpaperBlock
         case "boot": return bootBlock
+        case "modes": return modesBlock
         case "shortcuts": return shortcutsBlock
         case "color": return colorRow
         case "text": return textRow
@@ -413,6 +414,7 @@ Loader {
     Component { id: themesBlock; ThemesBlock {} }
     Component { id: liveWallpaperBlock; LiveWallpaperBlock {} }
     Component { id: bootBlock; BootBlock {} }
+    Component { id: modesBlock; ModesBlock {} }
     Component { id: shortcutsBlock; ShortcutsBlock {} }
     Component {
         id: colorRow
