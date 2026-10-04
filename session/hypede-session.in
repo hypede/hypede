@@ -110,6 +110,10 @@ fi
 # им окружение HypeDE и останавливаем: при первом запросе они запустятся
 # заново, уже с настройками HypeDE.
 
+if command -v dconf >/dev/null 2>&1 && [ -z "$(dconf read /org/gnome/desktop/wm/preferences/button-layout 2>/dev/null)" ]; then
+    dconf write /org/gnome/desktop/wm/preferences/button-layout "'appmenu:minimize,maximize,close'" 2>/dev/null
+fi
+
 hypede_env="DCONF_PROFILE HYPEDE_SESSION XDG_DATA_DIRS XDG_CURRENT_DESKTOP"
 systemctl --user import-environment $hypede_env 2>/dev/null
 dbus-update-activation-environment $hypede_env 2>/dev/null

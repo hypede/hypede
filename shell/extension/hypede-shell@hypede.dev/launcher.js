@@ -341,10 +341,16 @@ class LauncherView extends St.BoxLayout {
         this.add_child(this._resultsScroll);
 
         this._appSystem.connectObject('installed-changed',
-            () => (this._appsDirty = true), this);
+            () => this._markDirty(), this);
         for (const key of ['launcher-columns', 'launcher-hidden-apps', 'launcher-icon-size',
             'launcher-show-labels', 'launcher-sort', 'launcher-style'])
-            this._settings.connectObject(`changed::${key}`, () => (this._appsDirty = true), this);
+            this._settings.connectObject(`changed::${key}`, () => this._markDirty(), this);
+        this.connect('destroy', () => {
+            for (const id of [this._warmId, this._gridChunkId])
+                if (id)
+                    GLib.source_remove(id);
+        });
+        this._warmLater(3);
     }
 
     get entry() {
@@ -359,13 +365,51 @@ class LauncherView extends St.BoxLayout {
             this.remove_style_class_name('fullscreen');
 
         this._updateSize();
-        if (this._appsDirty || this._layoutFullscreen !== this._fullscreen ||
-            this._settings.get_string('launcher-sort') === 'usage')
+        if (this._appsDirty || this._layoutFullscreen !== this._fullscreen || this._orderChanged())
             this._rebuildGrid();
-        this._rebuildContinue();
+        if (this._recentChanged())
+            this._rebuildContinue();
         this._layoutForStyle();
         this._homeScroll.vadjustment.value = 0;
         this._animateIn();
+    }
+
+    _markDirty() {
+        this._appsDirty = true;
+        this._warmLater();
+    }
+
+    // Сетку собираем заранее, в простое, — чтобы открытие было мгновенным.
+    _warmLater(delay = 2) {
+        if (this._warmId)
+            return;
+        this._warmId = GLib.timeout_add_seconds(GLib.PRIORITY_LOW, delay, () => {
+            this._warmId = 0;
+            if (this._appsDirty)
+                this._rebuildGrid();
+            if (this._recentChanged())
+                this._rebuildContinue();
+            return GLib.SOURCE_REMOVE;
+        });
+    }
+
+    _orderChanged() {
+        if (this._settings.get_string('launcher-sort') !== 'usage')
+            return false;
+        return this._allApps().map(a => a.get_id()).join() !== this._gridOrder;
+    }
+
+    _recentChanged() {
+        const file = Gio.File.new_for_path(GLib.build_filenamev([GLib.get_user_data_dir(), 'recently-used.xbel']));
+        let stamp = 'none';
+        try {
+            stamp = String(file.query_info('time::modified', Gio.FileQueryInfoFlags.NONE, null).get_modification_date_time().to_unix());
+        } catch {}
+        stamp += `:${this._settings.get_boolean('show-recent-files')}:${this._fullscreen}`;
+        if (stamp === this._recentStamp)
+            return false;
+        this._recentStamp = stamp;
+        return true;
     }
 
     onClosed() {
@@ -415,17 +459,26 @@ class LauncherView extends St.BoxLayout {
     // поднимается — без пустого кадра и «волны» плиток. Полноэкранный
     // лаунчер выезжает снизу, как в Chrome OS.
     _animateIn() {
-        const rise = this._fullscreen ? 48 : 12;
+        const rise = this._fullscreen ? 40 : 24;
         for (const actor of [this._entryBin, this._homeScroll, this._resultsScroll]) {
             actor.remove_all_transitions();
             actor.opacity = 255;
         }
         this.remove_all_transitions();
+        this.set_pivot_point(this._fullscreen ? 0.5 : 0.0, this._fullscreen ? 0.5 : 1.0);
+        this.opacity = 0;
         this.translation_y = rise;
-        this.ease({
-            translation_y: 0,
-            duration: this._fullscreen ? 280 : 220,
-            mode: Clutter.AnimationMode.EASE_OUT_QUINT,
+        this.set_scale(this._fullscreen ? 1.03 : 0.92, this._fullscreen ? 1.03 : 0.92);
+        // Старт — после первого кадра: первая раскладка меню бывает долгой,
+        // и анимация, начатая до неё, успела бы пройти незаметно.
+        if (this._paintId)
+            global.stage.disconnect(this._paintId);
+        this._paintId = global.stage.connect('after-paint', () => {
+            global.stage.disconnect(this._paintId);
+            this._paintId = 0;
+            const duration = this._fullscreen ? 320 : 260;
+            this.ease({opacity: 255, duration: duration * 0.7, mode: Clutter.AnimationMode.EASE_OUT_CUBIC});
+            this.ease({translation_y: 0, scale_x: 1, scale_y: 1, duration, mode: Clutter.AnimationMode.EASE_OUT_QUINT});
         });
     }
 
@@ -487,17 +540,35 @@ class LauncherView extends St.BoxLayout {
         return Math.max(columns, Math.min(fit, 10));
     }
 
+    // Первые ряды — сразу, остальное — порциями в простое: так открытие
+    // не замирает даже при сотнях приложений.
     _rebuildGrid() {
         this._appsDirty = false;
+        if (this._gridChunkId)
+            GLib.source_remove(this._gridChunkId);
+        this._gridChunkId = 0;
         this._grid.destroy_all_children();
         const layout = this._grid.layout_manager;
         const columns = this._columns();
         const iconSize = this._settings.get_int('launcher-icon-size');
         const showLabels = this._settings.get_boolean('launcher-show-labels');
-        this._allApps().forEach((app, i) => {
-            const tile = new AppTile(app, this._launcher, iconSize, showLabels);
-            layout.attach(tile, i % columns, Math.floor(i / columns), 1, 1);
-        });
+        const apps = this._allApps();
+        this._gridOrder = apps.map(a => a.get_id()).join();
+        let i = 0;
+        const add = count => {
+            for (const end = Math.min(apps.length, i + count); i < end; i++)
+                layout.attach(new AppTile(apps[i], this._launcher, iconSize, showLabels), i % columns, Math.floor(i / columns), 1, 1);
+            return i < apps.length;
+        };
+        add(columns * 4);
+        if (i < apps.length) {
+            this._gridChunkId = GLib.idle_add(GLib.PRIORITY_LOW, () => {
+                if (add(columns * 2))
+                    return GLib.SOURCE_CONTINUE;
+                this._gridChunkId = 0;
+                return GLib.SOURCE_REMOVE;
+            });
+        }
     }
 
     // ---------- «Продолжить с того же места» ----------
@@ -858,7 +929,7 @@ class LauncherButton extends PanelMenu.Button {
         this.view = new LauncherView(launcher, settings);
         this.menu.box.add_child(this.view);
 
-        this._blur = new Shell.BlurEffect({mode: Shell.BlurMode.BACKGROUND, radius: 40, brightness: 0.9});
+        this._blur = new Shell.BlurEffect({mode: Shell.BlurMode.BACKGROUND, radius: 30, brightness: 0.9});
 
         this.menu.connect('open-state-changed', (_menu, open) => {
             // Кольцо «сжимается», пока лаунчер открыт.
@@ -870,8 +941,12 @@ class LauncherButton extends PanelMenu.Button {
                 mode: Clutter.AnimationMode.EASE_OUT_BACK,
             });
             if (open) {
-                if (this._settings.get_strv('launcher-search-providers').includes('files'))
-                    getFileIndex().refresh();
+                if (this._settings.get_strv('launcher-search-providers').includes('files')) {
+                    GLib.timeout_add(GLib.PRIORITY_LOW, 800, () => {
+                        getFileIndex().refresh();
+                        return GLib.SOURCE_REMOVE;
+                    });
+                }
                 this._prepareOpen();
                 this.view._syncAssistant();
                 this.view.onOpen();
@@ -912,6 +987,18 @@ class LauncherButton extends PanelMenu.Button {
             target.add_effect_with_name('hypede-blur', this._blur);
         else if (!blur && target.get_effect('hypede-blur'))
             target.remove_effect(this._blur);
+        // Размытие пересчитывается в каждом кадре движения — включаем его,
+        // когда анимация открытия закончилась.
+        if (blur) {
+            this._blur.enabled = false;
+            if (this._blurId)
+                GLib.source_remove(this._blurId);
+            this._blurId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 340, () => {
+                this._blurId = 0;
+                this._blur.enabled = true;
+                return GLib.SOURCE_REMOVE;
+            });
+        }
     }
 });
 
