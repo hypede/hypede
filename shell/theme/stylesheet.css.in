@@ -852,11 +852,11 @@
 .hypede-widget-weather-icon { icon-size: 44px; }
 .hypede-widget-calendar { padding: 10px 12px; }
 .hypede-widget-calendar .calendar { background-color: transparent; margin: 0; padding: 0; }
-.hypede-widget-media { spacing: 12px; width: 260px; }
+.hypede-widget-media { spacing: 12px; }
 .hypede-widget-cover { icon-size: 52px; border-radius: 12px; background-color: @chip_bg@; padding: 0; }
 .hypede-widget-song { font-size: 11pt; font-weight: 600; }
 .hypede-widget-controls { spacing: 10px; margin-top: 6px; }
 .hypede-widget-button { padding: 8px; border-radius: 999px; background-color: @chip_bg@; }
 .hypede-widget-button:hover { background-color: @chip_hover@; }
 .hypede-widget-button StIcon { icon-size: 16px; }
-.hypede-widget-note-entry { width: 240px; min-height: 120px; padding: 4px 0; border: none; background-color: transparent; color: @fg@; font-size: 11pt; box-shadow: none; caret-color: @fg@; }
+.hypede-widget-note-entry { min-height: 60px; padding: 4px 0; border: none; background-color: transparent; color: @fg@; font-size: 11pt; box-shadow: none; caret-color: @fg@; }

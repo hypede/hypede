@@ -116,6 +116,7 @@ function isNormal(actor) {
 export class WindowAnimations {
     constructor(settings) {
         this._settings = settings;
+        this._genies = new Set();
         this._injections = new InjectionManager();
         const self = this;
 
@@ -226,6 +227,10 @@ export class WindowAnimations {
         const [len, span, t0, tl, c0, cl] = vertical ? [h, w, ty, th, tx, tw] : [w, h, tx, tw, ty, th];
         const forward = t0 + tl / 2 > len / 2;
         const timeline = new Clutter.Timeline({actor: strips.group, duration: GENIE_TIME});
+        // Ссылка обязательна: иначе сборщик мусора заберёт таймлайн вместе
+        // с обработчиками, и окно так и останется полосами.
+        const run = {timeline, strips};
+        this._genies.add(run);
         const step = () => {
             const t = timeline.get_progress();
             const p = minimize ? t : 1 - t;
@@ -242,6 +247,7 @@ export class WindowAnimations {
         step();
         timeline.connect('new-frame', step);
         timeline.connect('stopped', () => {
+            this._genies.delete(run);
             strips.destroy();
             if (minimize)
                 wm._minimizeWindowDone(shellwm, actor);
@@ -321,6 +327,8 @@ export class WindowAnimations {
         const shellwm = global.window_manager;
         shellwm.disconnectObject(this);
         global.display.disconnectObject(this);
+        for (const run of [...this._genies])
+            run.timeline.stop();
         for (const w of [...this._wobbly ?? []])
             this._dropWobbly(w);
         for (const id of this._blocked)

@@ -293,8 +293,9 @@ export class Widgets {
     }
 
     _load() {
-        this._widgets.forEach(w => w.destroy());
+        const old = this._widgets;
         this._widgets = [];
+        old.forEach(w => w.destroy());
         for (const e of this._read())
             this._add(e);
         this._placeAll();
@@ -321,6 +322,11 @@ export class Widgets {
     _placeAll() {
         const area = this._area;
         let y = area.y + MARGIN;
+        // Столбик — одной ширины, по самому широкому виджету в нём.
+        const column = this._widgets.filter(w => !w.pos && w.type !== 'calendar');
+        column.forEach(w => (w.width = -1));
+        const widest = Math.max(0, ...column.map(w => w.get_preferred_width(-1)[1]));
+        column.forEach(w => (w.width = widest));
         for (const w of this._widgets) {
             const [, width] = w.get_preferred_width(-1);
             const [, height] = w.get_preferred_height(width);

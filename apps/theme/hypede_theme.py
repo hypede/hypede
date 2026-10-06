@@ -119,7 +119,7 @@ MEDIA_KEYS = {("wallpaper", "light"), ("wallpaper", "dark"), ("wallpaper", "live
               ("lockscreen", "wallpaper")}
 MEDIA_EXT = {".png", ".jpg", ".jpeg", ".webp", ".svg", ".gif", ".mp4", ".webm", ".mkv", ".mov"}
 RESET_IF_MISSING = [("colors", "accent"), ("colors", "shelf"), ("colors", "menus"),
-                    ("wallpaper", "live"),
+                    ("wallpaper", "live"), ("windows", "genie"), ("windows", "jelly"),
                     ("lockscreen", "clock-color"), ("lockscreen", "wallpaper"), ("lockscreen", "message")]
 MAX_EMBED = 64 * 1024 * 1024
 COLOR_KEYS = {"accent-custom", "shelf-color", "launcher-color", "lock-clock-color"}
