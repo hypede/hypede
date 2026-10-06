@@ -99,7 +99,7 @@ Item {
                     readonly property color accent: /^#[0-9a-fA-F]{6}$/.test(modelData.accent) ? modelData.accent
                                                      : (Theme.accents[modelData.gnomeAccent] || "#3584e4")
                     width: (flow.width - 2 * flow.spacing) / 3
-                    height: preview.height + 74
+                    height: preview.height + 92
 
                     Item {
                         id: preview
@@ -165,6 +165,13 @@ Item {
                             font.weight: Font.Medium
                             elide: Text.ElideRight
                         }
+                        Text {
+                            width: parent.width
+                            text: card.modelData.verified ? "✓ " + qsTr("Reviewed by HypeDE") : qsTr("Not reviewed yet")
+                            color: card.modelData.verified ? Theme.accent : Theme.subtext
+                            font.pixelSize: 11
+                            elide: Text.ElideRight
+                        }
                         Item {
                             width: parent.width
                             height: 30
@@ -187,7 +194,7 @@ Item {
                                       : (card.modelData.installed ? qsTr("Apply") : qsTr("Install"))
                                 filled: !card.modelData.installed
                                 enabled: block.busy === ""
-                                onClicked: block.install(card.modelData.repo + ":" + card.modelData.path, card.modelData.id)
+                                onClicked: block.install(card.modelData.ref, card.modelData.id)
                             }
                         }
                     }
@@ -199,7 +206,7 @@ Item {
 
         SettingRow {
             title: qsTr("Install or publish from GitHub")
-            subtitle: qsTr("Public repository with theme.json (Export current look) and preview.png in the root")
+            subtitle: qsTr("Public repository with theme.json (Export current look) and preview.png in the root. Pictures and videos are checked and rebuilt before use")
             iconName: "emblem-shared-symbolic"
             Row {
                 spacing: 8

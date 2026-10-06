@@ -2801,53 +2801,63 @@
         <translation>Загрузка…</translation>
     </message>
     <message>
-        <location filename="../qml/StoreBlock.qml" line="186" />
+        <location filename="../qml/StoreBlock.qml" line="170" />
+        <source>Reviewed by HypeDE</source>
+        <translation>Проверено HypeDE</translation>
+    </message>
+    <message>
+        <location filename="../qml/StoreBlock.qml" line="170" />
+        <source>Not reviewed yet</source>
+        <translation>Ещё не проверено</translation>
+    </message>
+    <message>
+        <location filename="../qml/StoreBlock.qml" line="193" />
         <source>Installing…</source>
         <translation>Ставлю…</translation>
     </message>
     <message>
-        <location filename="../qml/StoreBlock.qml" line="187" />
+        <location filename="../qml/StoreBlock.qml" line="194" />
         <source>Apply</source>
         <translation>Применить</translation>
     </message>
     <message>
-        <location filename="../qml/StoreBlock.qml" line="187" />
-        <location filename="../qml/StoreBlock.qml" line="224" />
+        <location filename="../qml/StoreBlock.qml" line="194" />
+        <location filename="../qml/StoreBlock.qml" line="231" />
         <source>Install</source>
         <translation>Установить</translation>
     </message>
     <message>
-        <location filename="../qml/StoreBlock.qml" line="201" />
+        <location filename="../qml/StoreBlock.qml" line="208" />
         <source>Install or publish from GitHub</source>
         <translation>Установить или опубликовать с GitHub</translation>
     </message>
     <message>
-        <location filename="../qml/StoreBlock.qml" line="202" />
-        <source>Public repository with theme.json (Export current look) and preview.png in the root</source>
-        <translation>Открытый репозиторий с theme.json («Экспорт текущего вида») и preview.png в корне</translation>
+        <location filename="../qml/StoreBlock.qml" line="209" />
+        <source>Public repository with theme.json (Export current look) and preview.png in the root. Pictures and videos are checked and rebuilt before use</source>
+        <translation>Открытый репозиторий с theme.json («Экспорт текущего вида») и preview.png в корне. Картинки и видео проверяются и пересобираются перед использованием</translation>
     </message>
     <message>
-        <location filename="../qml/StoreBlock.qml" line="229" />
+        <location filename="../qml/StoreBlock.qml" line="236" />
         <source>Publish</source>
         <translation>Опубликовать</translation>
     </message>
     <message>
-        <location filename="../qml/StoreBlock.qml" line="234" />
+        <location filename="../qml/StoreBlock.qml" line="241" />
         <source>Checking the repository…</source>
         <translation>Проверяю репозиторий…</translation>
     </message>
     <message>
-        <location filename="../qml/StoreBlock.qml" line="241" />
+        <location filename="../qml/StoreBlock.qml" line="248" />
         <source>Refresh the store</source>
         <translation>Обновить магазин</translation>
     </message>
     <message>
-        <location filename="../qml/StoreBlock.qml" line="244" />
+        <location filename="../qml/StoreBlock.qml" line="251" />
         <source>Loading…</source>
         <translation>Загрузка…</translation>
     </message>
     <message>
-        <location filename="../qml/StoreBlock.qml" line="244" />
+        <location filename="../qml/StoreBlock.qml" line="251" />
         <source>Refresh</source>
         <translation>Обновить</translation>
     </message>

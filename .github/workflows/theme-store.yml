@@ -16,12 +16,19 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      - name: Tools for checking files
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y -qq python3-gi gir1.2-gdkpixbuf-2.0 gstreamer1.0-plugins-base-apps clamav >/dev/null
+          sudo systemctl stop clamav-freshclam || true
+          sudo freshclam --quiet || true
       - name: Check and add the theme
         id: add
         env:
           TITLE: ${{ github.event.issue.title }}
           BODY: ${{ github.event.issue.body }}
-        run: python3 tools/store/add.py
+          GH_TOKEN: ${{ github.token }}
+        run: /usr/bin/python3 tools/store/add.py
       - name: Commit
         if: steps.add.outputs.added == 'true'
         run: |

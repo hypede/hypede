@@ -2,19 +2,27 @@
   "themes": [
     {
       "repo": "hypede/hypede",
-      "path": "store/themes/aurora-glass.json"
+      "path": "store/themes/aurora-glass.json",
+      "commit": "da4fee5161178055d2ed4dc6bd8549cc87b4aef1",
+      "verified": true
     },
     {
       "repo": "hypede/hypede",
-      "path": "store/themes/sunset-paper.json"
+      "path": "store/themes/sunset-paper.json",
+      "commit": "da4fee5161178055d2ed4dc6bd8549cc87b4aef1",
+      "verified": true
     },
     {
       "repo": "hypede/hypede",
-      "path": "store/themes/deep-forest.json"
+      "path": "store/themes/deep-forest.json",
+      "commit": "da4fee5161178055d2ed4dc6bd8549cc87b4aef1",
+      "verified": true
     },
     {
       "repo": "hypede/hypede",
-      "path": "store/themes/peak-mono.json"
+      "path": "store/themes/peak-mono.json",
+      "commit": "da4fee5161178055d2ed4dc6bd8549cc87b4aef1",
+      "verified": true
     }
   ]
 }

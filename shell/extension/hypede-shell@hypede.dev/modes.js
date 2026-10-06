@@ -149,7 +149,7 @@ export class FocusModes {
         if (before.power)
             powerProfile(before.power);
         if (before.theme)
-            spawn(['hypede-theme', 'apply', STATE.replace(/\.json$/, '-theme.json')]);
+            spawn(['hypede-theme', 'apply', STATE.replace(/\.json$/, '-theme.json'), '--direct']);
         GLib.unlink(STATE);
     }
 

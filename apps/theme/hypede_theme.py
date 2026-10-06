@@ -234,10 +234,32 @@ def _variant_for(schema, key, value):
     return variant if k.range_check(variant) else None
 
 
-def _safe_uri(value):
-    """Обои — только локальные файлы, ресурсы GNOME и встроенные живые обои."""
-    return (value == "" or value.startswith("file:///") or value.startswith("resource:///")
-            or re.fullmatch(r"hypede:[a-z-]+", value) is not None)
+def _safe_uri(value, strict=False):
+    """Обои — только локальные файлы, ресурсы GNOME и встроенные живые обои.
+
+    Чужой теме (магазин, импорт) можно брать файлы только из системных
+    каталогов и из папок тем, а не откуда угодно с диска."""
+    if value == "" or value.startswith("resource:///") or re.fullmatch(r"hypede:[a-z-]+", value):
+        return True
+    if not value.startswith("file:///"):
+        return False
+    from urllib.parse import unquote
+    path = Path(unquote(value[7:]))
+    if ".." in path.parts:
+        return False
+    roots = [Path(d) for d in (os.environ.get("XDG_DATA_DIRS") or "/usr/local/share:/usr/share").split(":") if d]
+    roots += [Path("/usr/share"), USER_DIR]
+    try:
+        real = path.resolve()
+    except OSError:
+        return False
+    if any(real.is_relative_to(r.resolve()) for r in roots):
+        return True
+    if strict:
+        return False
+    # Своя тема: любой файл из домашней папки, кроме скрытых каталогов.
+    home = Path.home().resolve()
+    return real.is_relative_to(home) and not any(p.startswith(".") for p in real.relative_to(home).parts[:-1])
 
 
 def load(path):
@@ -261,7 +283,152 @@ def parse(text, name):
     return data
 
 
-def _extract_media(theme, target_dir):
+# ---------------------------------------------------------------------------
+# Проверка файлов из чужих тем. Тема — данные, но картинки и видео разбирают
+# системные библиотеки, и испорченный файл может бить по их уязвимостям.
+# Поэтому: сигнатура должна совпасть с расширением; картинки пересобираются
+# заново в отдельном процессе с лимитами памяти и времени (из файла остаются
+# только пиксели); SVG — без скриптов, внешних ссылок и сущностей; видео
+# проверяется разбором контейнера; если есть ClamAV — ещё и им.
+
+MAGIC = {
+    ".png": [(0, b"\x89PNG\r\n\x1a\n")],
+    ".jpg": [(0, b"\xff\xd8\xff")],
+    ".jpeg": [(0, b"\xff\xd8\xff")],
+    ".gif": [(0, b"GIF87a"), (0, b"GIF89a")],
+    ".webp": [(8, b"WEBP")],
+    ".mp4": [(4, b"ftyp")],
+    ".mov": [(4, b"ftyp"), (4, b"moov"), (4, b"wide"), (4, b"mdat")],
+    ".webm": [(0, b"\x1a\x45\xdf\xa3")],
+    ".mkv": [(0, b"\x1a\x45\xdf\xa3")],
+}
+PIXBUF_FORMAT = {".png": "png", ".jpg": "jpeg", ".jpeg": "jpeg", ".gif": "gif", ".webp": "webp"}
+MAX_PIXELS = 64_000_000
+MAX_SVG = 8 * 1024 * 1024
+
+# Отдельный процесс: падение или зависание декодера не трогает hypede-theme.
+_REBUILD = r"""
+import resource, sys
+resource.setrlimit(resource.RLIMIT_AS, (1 << 30, 1 << 30))
+resource.setrlimit(resource.RLIMIT_CPU, (20, 20))
+import gi
+gi.require_version("GdkPixbuf", "2.0")
+from gi.repository import GdkPixbuf
+src, dst, fmt, max_side = sys.argv[1], sys.argv[2], sys.argv[3], int(sys.argv[4])
+info, w, h = GdkPixbuf.Pixbuf.get_file_info(src)
+if info and (info.get_name() != fmt or w * h > %d):
+    sys.exit(3)
+if fmt == "gif":
+    anim = GdkPixbuf.PixbufAnimation.new_from_file(src)
+    sys.exit(0 if anim.get_width() * anim.get_height() <= %d else 3)
+pb = GdkPixbuf.Pixbuf.new_from_file(src)
+w, h = pb.get_width(), pb.get_height()
+if w <= 0 or h <= 0 or w * h > %d:
+    sys.exit(3)
+if max_side and max(w, h) > max_side:
+    k = max_side / max(w, h)
+    pb = pb.scale_simple(max(1, int(w * k)), max(1, int(h * k)), GdkPixbuf.InterpType.BILINEAR)
+if fmt == "jpeg":
+    pb.savev(dst, "jpeg", ["quality"], ["92"])
+else:
+    pb.savev(dst, "png", [], [])
+""" % (MAX_PIXELS, MAX_PIXELS, MAX_PIXELS)
+
+
+def _limited(argv, timeout=30):
+    import subprocess
+    env = dict(os.environ)
+    # Декодеры (glycin, GStreamer) ищут свои модули в системных каталогах.
+    env["XDG_DATA_DIRS"] = ":".join(filter(None, [env.get("XDG_DATA_DIRS"), "/usr/local/share", "/usr/share"]))
+    try:
+        return subprocess.run(argv, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+                              timeout=timeout, env=env).returncode
+    except (OSError, subprocess.TimeoutExpired):
+        return -1
+
+
+def _have_pixbuf():
+    try:
+        import gi
+        gi.require_version("GdkPixbuf", "2.0")
+        from gi.repository import GdkPixbuf  # noqa: F401
+        return True
+    except (ImportError, ValueError):
+        return False
+
+
+def _check_svg(raw):
+    import xml.etree.ElementTree as ET
+    if len(raw) > MAX_SVG:
+        raise ThemeError("SVG слишком большой")
+    text = raw.decode("utf-8", "strict")
+    if re.search(r"<!DOCTYPE|<!ENTITY|<\?xml-stylesheet", text, re.I):
+        raise ThemeError("SVG с DOCTYPE или сущностями")
+    root = ET.fromstring(text)
+    if root.tag.rsplit("}", 1)[-1] != "svg":
+        raise ThemeError("это не SVG")
+    bad_tags = {"script", "foreignobject", "iframe", "embed", "object", "audio", "video", "image", "use"}
+    for el in root.iter():
+        tag = el.tag.rsplit("}", 1)[-1].lower()
+        if tag in bad_tags and not (tag == "use" and all(
+                v.startswith("#") for k, v in el.attrib.items() if k.rsplit("}", 1)[-1] == "href")):
+            raise ThemeError(f"в SVG запрещённый элемент <{tag}>")
+        for k, v in el.attrib.items():
+            name = k.rsplit("}", 1)[-1].lower()
+            if name.startswith("on"):
+                raise ThemeError("в SVG обработчик событий")
+            if name == "href" and not v.startswith("#"):
+                raise ThemeError("в SVG внешняя ссылка")
+            if re.search(r"url\(\s*['\"]?(?!#)", v, re.I) or "javascript:" in v.lower():
+                raise ThemeError("в SVG внешний адрес")
+        if tag == "style" and re.search(r"@import|url\(\s*['\"]?(?!#)", el.text or "", re.I):
+            raise ThemeError("в SVG внешний стиль")
+    return raw
+
+
+def _clamscan(path):
+    import shutil
+    scanner = shutil.which("clamdscan") or shutil.which("clamscan")
+    if scanner and _limited([scanner, "--no-summary", str(path)], timeout=120) == 1:
+        raise ThemeError("антивирус ClamAV нашёл угрозу")
+
+
+def check_media(name, raw, max_side=0):
+    """Проверить и пересобрать файл темы. Возвращает (имя, байты) или ThemeError."""
+    import shutil
+    import tempfile
+    ext = Path(name).suffix.lower()
+    if ext not in MEDIA_EXT:
+        raise ThemeError(f"{name}: такие файлы в темах не разрешены")
+    if ext == ".svg":
+        return name, _check_svg(raw)
+    if not any(raw[off:off + len(sig)] == sig for off, sig in MAGIC[ext]):
+        raise ThemeError(f"{name}: содержимое не совпадает с расширением {ext}")
+    if ext == ".webp" and raw[:4] != b"RIFF":
+        raise ThemeError(f"{name}: повреждённый WebP")
+    with tempfile.TemporaryDirectory() as d:
+        src = Path(d) / ("in" + ext)
+        src.write_bytes(raw)
+        _clamscan(src)
+        if ext in PIXBUF_FORMAT:
+            if not _have_pixbuf():
+                return name, raw
+            fmt = PIXBUF_FORMAT[ext]
+            out_ext = ".gif" if fmt == "gif" else (".jpg" if fmt == "jpeg" else ".png")
+            dst = Path(d) / ("out" + out_ext)
+            code = _limited([sys.executable, "-I", "-c", _REBUILD, str(src), str(dst), fmt, str(max_side)])
+            if code != 0:
+                raise ThemeError(f"{name}: картинка не прошла проверку")
+            if fmt == "gif":
+                return name, raw
+            return str(Path(name).with_suffix(out_ext)), dst.read_bytes()
+        discoverer = shutil.which("gst-discoverer-1.0")
+        if discoverer and _limited([discoverer, "-t", "15", src.as_uri()], timeout=30) != 0:
+            raise ThemeError(f"{name}: видео не прошло проверку")
+    return name, raw
+
+
+def _extract_media(theme, target_dir, check=True):
     """Встроенные файлы → в каталог темы; адреса embedded:ИМЯ → file://."""
     files = theme.get("files") or {}
     if not isinstance(files, dict):
@@ -269,7 +436,7 @@ def _extract_media(theme, target_dir):
     written = {}
     for name, blob in files.items():
         safe = Path(str(name)).name
-        if not safe or Path(safe).suffix.lower() not in MEDIA_EXT or not isinstance(blob, str):
+        if not safe or safe.startswith(".") or Path(safe).suffix.lower() not in MEDIA_EXT or not isinstance(blob, str):
             continue
         try:
             raw = base64.b64decode(blob, validate=True)
@@ -277,9 +444,16 @@ def _extract_media(theme, target_dir):
             continue
         if len(raw) > MAX_EMBED:
             continue
+        out = safe
+        if check:
+            try:
+                out, raw = check_media(safe, raw)
+            except (ThemeError, UnicodeDecodeError, SyntaxError) as e:
+                print(f"hypede-theme: {safe} пропущен: {e}", file=sys.stderr)
+                continue
         target_dir.mkdir(parents=True, exist_ok=True)
-        (target_dir / safe).write_bytes(raw)
-        written[safe] = (target_dir / safe).resolve().as_uri()
+        (target_dir / out).write_bytes(raw)
+        written[safe] = (target_dir / out).resolve().as_uri()
     for group, field in MEDIA_KEYS:
         value = (theme.get(group) or {}).get(field)
         if isinstance(value, str) and value.startswith("embedded:"):
@@ -303,7 +477,8 @@ def apply(theme):
             if not settings or not schema.has_key(key):
                 continue
             value = values[field]
-            if (group, field) in MEDIA_KEYS and isinstance(value, str) and not _safe_uri(value):
+            if (group, field) in MEDIA_KEYS and isinstance(value, str) and \
+                    not _safe_uri(value, strict=bool(theme.get("source") or theme.get("imported"))):
                 continue
             variant = _variant_for(schema, key, value)
             if variant is None:
@@ -419,7 +594,7 @@ def save(name, author=""):
     theme = current(name, author)
     # Свои картинки — копией рядом, чтобы тема не зависела от «Загрузок».
     media_dir = USER_DIR / base
-    theme = _extract_media(_embed(theme), media_dir)
+    theme = _extract_media(_embed(theme), media_dir, check=False)
     path.write_text(json.dumps(theme, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     settings, _ = _settings(SHELL)
     if settings:
@@ -454,6 +629,7 @@ def import_(path):
     USER_DIR.mkdir(parents=True, exist_ok=True)
     theme = _extract_media(theme, USER_DIR / target.stem)
     theme["name"] = name
+    theme["imported"] = True
     target.write_text(json.dumps(theme, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     return "user:" + target.stem
 
@@ -504,13 +680,36 @@ def fetch(url, limit=MAX_EMBED * 3 // 2):
     return data
 
 
-def _raw(repo, path):
-    return f"https://raw.githubusercontent.com/{repo}/HEAD/{path}"
+SHA = re.compile(r"^[0-9a-f]{40}$")
+OFFICIAL = "hypede/hypede"
 
 
-def fetch_theme(repo, path="theme.json"):
+def _raw(repo, path, ref="HEAD"):
+    return f"https://raw.githubusercontent.com/{repo}/{ref}/{path}"
+
+
+def validate(theme):
+    """Все встроенные файлы темы проходят check_media — иначе ThemeError."""
+    files = theme.get("files") or {}
+    if not isinstance(files, dict):
+        raise ThemeError("поле files должно быть объектом")
+    for name, blob in files.items():
+        safe = Path(str(name)).name
+        try:
+            raw = base64.b64decode(blob, validate=True)
+        except (ValueError, TypeError):
+            raise ThemeError(f"{safe}: испорченный base64")
+        if len(raw) > MAX_EMBED:
+            raise ThemeError(f"{safe}: файл больше {MAX_EMBED >> 20} МБ")
+        try:
+            check_media(safe, raw)
+        except (UnicodeDecodeError, SyntaxError) as e:
+            raise ThemeError(f"{safe}: {e}")
+
+
+def fetch_theme(repo, path="theme.json", ref="HEAD"):
     try:
-        text = fetch(_raw(repo, path)).decode("utf-8")
+        text = fetch(_raw(repo, path, ref)).decode("utf-8")
     except UnicodeDecodeError:
         raise ThemeError(f"{repo}: {path} — не текстовый файл")
     except ThemeError as e:
@@ -524,7 +723,12 @@ def fetch_theme(repo, path="theme.json"):
 def _store_entry(entry):
     repo = parse_repo(str(entry.get("repo", "")))
     path = str(entry.get("path") or "theme.json")
-    theme = fetch_theme(repo, path)
+    commit = str(entry.get("commit") or "")
+    # Тема в каталоге закреплена за коммитом: автор не может тихо подменить её.
+    if not SHA.match(commit) and repo.lower() != OFFICIAL:
+        raise ThemeError(f"{repo}: в каталоге нет коммита")
+    ref = commit or "HEAD"
+    theme = fetch_theme(repo, path, ref)
     colors = theme.get("colors") or {}
     wall = theme.get("wallpaper") or {}
     wallpaper = wall.get("dark") if colors.get("scheme") == "prefer-dark" else wall.get("light", "")
@@ -532,8 +736,10 @@ def _store_entry(entry):
     CACHE_DIR.mkdir(parents=True, exist_ok=True)
     target = CACHE_DIR / (repo.replace("/", "_") + "_" + Path(path).stem + ".png")
     try:
-        target.write_bytes(fetch(_raw(repo, str(Path(path).with_suffix(".png")) if path != "theme.json" else "preview.png"),
-                                 4 * 1024 * 1024))
+        raw = fetch(_raw(repo, str(Path(path).with_suffix(".png")) if path != "theme.json" else "preview.png", ref),
+                    4 * 1024 * 1024)
+        _, raw = check_media("preview.png", raw, max_side=1280)
+        target.write_bytes(raw)
         preview = target.as_uri()
     except ThemeError:
         pass
@@ -541,6 +747,8 @@ def _store_entry(entry):
         "id": f"store:{repo}:{path}",
         "repo": repo,
         "path": path,
+        "ref": f"{repo}:{path}" + (f"@{commit}" if commit else ""),
+        "verified": entry.get("verified") is True,
         "url": f"https://github.com/{repo}",
         "name": str(theme.get("name"))[:80],
         "author": str(theme.get("author") or repo.split("/")[0])[:80],
@@ -582,12 +790,16 @@ def store():
 
 
 def install(ref):
-    """owner/repo, ссылка на репозиторий или owner/repo:путь/к/теме.json."""
+    """owner/repo, ссылка на репозиторий или owner/repo:путь/к/теме.json[@коммит]."""
     import tempfile
     repo, _, path = ref.partition(":") if not ref.startswith(("http:", "https:")) else (ref, "", "")
+    path, _, commit = path.partition("@")
+    if commit and not SHA.match(commit):
+        raise ThemeError("неверный коммит")
     repo = parse_repo(repo)
     path = path or "theme.json"
-    theme = fetch_theme(repo, path)
+    theme = fetch_theme(repo, path, commit or "HEAD")
+    validate(theme)
     theme["source"] = f"{repo}:{path}"
     for t in themes():
         if t.get("source") == theme["source"] and t["id"].startswith("user:"):
@@ -601,6 +813,7 @@ def install(ref):
 def check(ref):
     repo = parse_repo(ref)
     theme = fetch_theme(repo)
+    validate(theme)
     return {"repo": repo, "name": str(theme.get("name")), "issue": STORE_ISSUE.format(repo=repo)}
 
 
@@ -613,6 +826,7 @@ def main(argv=None):
     sub.add_parser("list")
     sub.add_parser("current")
     a = sub.add_parser("apply"); a.add_argument("theme")
+    a.add_argument("--direct", action="store_true", help="свой файл: применить, не добавляя в темы")
     s = sub.add_parser("save"); s.add_argument("name"); s.add_argument("--author", default="")
     e = sub.add_parser("export"); e.add_argument("file"); e.add_argument("--name", default="")
     e.add_argument("--author", default=""); e.add_argument("--no-embed", action="store_true")
@@ -631,7 +845,11 @@ def main(argv=None):
         elif args.cmd == "apply":
             path = resolve(args.theme)
             theme = load(path)
-            if args.theme.startswith(("builtin:", "user:")):
+            if args.direct:
+                theme.pop("imported", None)
+                theme.pop("source", None)
+                theme.pop("files", None)
+            elif args.theme.startswith(("builtin:", "user:")):
                 theme = _extract_media(theme, path.parent / path.stem)
             else:
                 # Файл со стороны: сначала в свои темы, потом применить.
