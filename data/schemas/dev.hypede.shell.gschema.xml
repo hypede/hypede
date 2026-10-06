@@ -316,6 +316,18 @@
       <description>hypede — окна мягко вырастают и тают, как в Chrome OS; gnome — стандартные анимации GNOME.</description>
     </key>
 
+    <key name="minimize-genie" type="b">
+      <default>true</default>
+      <summary>Сворачивание «джинном»</summary>
+      <description>Окно сворачивается в значок на полке, перетекая в него.</description>
+    </key>
+
+    <key name="window-wobbly" type="b">
+      <default>true</default>
+      <summary>Желейные окна</summary>
+      <description>При перетаскивании окно слегка изгибается и пружинит.</description>
+    </key>
+
     <key name="animation-speed" type="d">
       <range min="0.25" max="3.0"/>
       <default>1.0</default>
