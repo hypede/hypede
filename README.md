@@ -4,7 +4,7 @@
 
 <p align="center">
   A Chrome OS–style desktop built on GNOME Shell.<br>
-  <a href="README.ru.md">Русский</a> · <a href="https://hypede.github.io">Website</a>
+  <a href="README.ru.md">Русский</a> · <a href="https://hypede.github.io">Website</a> · <a href="https://hypede.github.io/wiki/">Wiki</a>
 </p>
 
 <p align="center">

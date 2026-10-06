@@ -4,7 +4,7 @@
 
 <p align="center">
   Рабочий стол в стиле Chrome OS на основе GNOME Shell.<br>
-  <a href="README.md">English</a> · <a href="https://hypede.github.io">Сайт</a>
+  <a href="README.md">English</a> · <a href="https://hypede.github.io">Сайт</a> · <a href="https://hypede.github.io/wiki/ru/">Вики</a>
 </p>
 
 <p align="center">
