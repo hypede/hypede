@@ -49,6 +49,13 @@ Item {
     }
 
     Component.onCompleted: reload()
+    Connections {
+        target: System
+        function onProcessFinished(tag, ok) {
+            if (tag === "store-install" && ok)
+                block.reload()
+        }
+    }
 
     readonly property var gnomeAccents: Theme.accents
 

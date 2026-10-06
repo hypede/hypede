@@ -1,0 +1,30 @@
+{
+  "hypede-theme": 1,
+  "name": "Peak Mono",
+  "author": "HypeDE",
+  "description": "Monochrome graphite with a single blue spark.",
+  "colors": {
+    "scheme": "prefer-dark",
+    "gnome-accent": "slate",
+    "accent": "#7aa2ff",
+    "shelf": "#151618",
+    "menus": "#1b1c1f"
+  },
+  "wallpaper": {
+    "light": "file:///usr/share/hypede/wallpapers/peaks-light.svg",
+    "dark": "file:///usr/share/hypede/wallpapers/peaks-dark.svg",
+    "fit": "zoom"
+  },
+  "shelf": {
+    "style": "full",
+    "opacity": 95
+  },
+  "launcher": {
+    "style": "fullscreen",
+    "opacity": 94
+  },
+  "windows": {
+    "corner-radius": 12,
+    "genie": false
+  }
+}

@@ -75,6 +75,8 @@ public:
     Q_INVOKABLE bool run(const QStringList &argv) const;
     // Запустить и дождаться: {ok, out, err}. Для коротких команд (hypede-theme).
     Q_INVOKABLE QVariantMap runSync(const QStringList &argv) const;
+    // Без ожидания: результат придёт сигналом processFinished с тем же tag.
+    Q_INVOKABLE void runAsync(const QStringList &argv, const QString &tag);
     Q_INVOKABLE bool openUrl(const QString &url) const;
     Q_INVOKABLE QStringList wallpapers() const;
     // Файл из данных HypeDE (/usr/share/hypede/…) как адрес file://, если есть.
@@ -121,6 +123,7 @@ public:
 Q_SIGNALS:
     void shellVersionChanged();
     void adminFinished(const QString &action, bool ok);
+    void processFinished(const QString &tag, bool ok, const QString &out, const QString &err);
     void powerChanged();
     void wifiChanged();
     void timeChanged();

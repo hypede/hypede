@@ -1,0 +1,29 @@
+{
+  "hypede-theme": 1,
+  "name": "Deep Forest",
+  "author": "HypeDE",
+  "description": "Moss green on dark pine, calm and easy on the eyes.",
+  "colors": {
+    "scheme": "prefer-dark",
+    "gnome-accent": "green",
+    "accent": "#9bd77c",
+    "shelf": "#0e1a12",
+    "menus": "#132219"
+  },
+  "wallpaper": {
+    "light": "file:///usr/share/hypede/wallpapers/forest.svg",
+    "dark": "file:///usr/share/hypede/wallpapers/forest.svg",
+    "fit": "zoom"
+  },
+  "shelf": {
+    "style": "floating",
+    "opacity": 82
+  },
+  "launcher": {
+    "style": "bubble",
+    "opacity": 92
+  },
+  "windows": {
+    "corner-radius": 20
+  }
+}

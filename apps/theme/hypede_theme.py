@@ -12,6 +12,9 @@
     hypede-theme import ФАЙЛ          добавить тему в свои (не применяя)
     hypede-theme delete ID            удалить свою тему
     hypede-theme current              текущий вид в формате темы
+    hypede-theme store                каталог тем с GitHub (JSON)
+    hypede-theme install РЕПОЗИТОРИЙ  установить тему из репозитория GitHub
+    hypede-theme check РЕПОЗИТОРИЙ    проверить репозиторий перед публикацией
 
 Обои, которых нет в системе, при экспорте встраиваются в файл (base64),
 поэтому тему можно просто переслать.
@@ -78,6 +81,8 @@ TABLE = {
         ("window-radius", SHELL, "window-corner-radius"),
         ("animations", SHELL, "window-animations"),
         ("animation-speed", SHELL, "animation-speed"),
+        ("genie", SHELL, "minimize-genie"),
+        ("jelly", SHELL, "window-wobbly"),
         ("buttons", "org.gnome.desktop.wm.preferences", "button-layout"),
         ("notifications", SHELL, "notification-position"),
         ("greeting", SHELL, "greeting"),
@@ -238,8 +243,16 @@ def _safe_uri(value):
 def load(path):
     path = Path(path)
     try:
-        data = json.loads(path.read_text(encoding="utf-8"))
-    except (OSError, UnicodeDecodeError, json.JSONDecodeError) as e:
+        return parse(path.read_text(encoding="utf-8"), path.name)
+    except (OSError, UnicodeDecodeError) as e:
+        raise ThemeError(f"{path.name}: не JSON-файл темы ({e})")
+
+
+def parse(text, name):
+    path = Path(name)
+    try:
+        data = json.loads(text)
+    except json.JSONDecodeError as e:
         raise ThemeError(f"{path.name}: не JSON-файл темы ({e})")
     if not isinstance(data, dict) or "hypede-theme" not in data:
         raise ThemeError(f"{path.name}: это не тема HypeDE")
@@ -338,6 +351,7 @@ def _summary(path, builtin):
         "shelf": colors.get("shelf") or "",
         "menus": colors.get("menus") or "",
         "wallpaper": wall.get("dark") if colors.get("scheme") == "prefer-dark" else wall.get("light", ""),
+        "source": str(t.get("source") or ""),
     }
 
 
@@ -456,6 +470,140 @@ def delete(ref):
         media.rmdir()
 
 
+# Магазин тем. Каталог — список репозиториев в store/themes.json репозитория
+# HypeDE; сами темы лежат в репозиториях авторов (theme.json и preview.png
+# в корне). Публикация — issue с адресом репозитория: GitHub Actions
+# проверяет тему и дописывает её в каталог.
+STORE_INDEX = os.environ.get("HYPEDE_STORE_INDEX") or \
+    "https://raw.githubusercontent.com/hypede/hypede/main/store/themes.json"
+STORE_ISSUE = "https://github.com/hypede/hypede/issues/new?template=theme.yml&title=Theme:+{repo}&repo={repo}"
+REPO = re.compile(r"^(?:(?:https?://)?(?:www\.)?github\.com/)?([A-Za-z0-9](?:[A-Za-z0-9-]{0,38}))/([A-Za-z0-9._-]{1,100}?)(?:\.git)?(?:/.*)?$")
+CACHE_DIR = Path(os.environ.get("XDG_CACHE_HOME") or Path.home() / ".cache") / "hypede/store"
+
+
+def parse_repo(text):
+    m = REPO.match(text.strip().rstrip("/"))
+    if not m or m.group(2) in (".", ".."):
+        raise ThemeError(f"«{text}» — не адрес репозитория GitHub (нужно github.com/автор/репозиторий)")
+    return f"{m.group(1)}/{m.group(2)}"
+
+
+def fetch(url, limit=MAX_EMBED * 3 // 2):
+    import urllib.error
+    import urllib.request
+    req = urllib.request.Request(url, headers={"User-Agent": "hypede-theme"})
+    try:
+        with urllib.request.urlopen(req, timeout=20) as r:
+            data = r.read(limit + 1)
+    except urllib.error.HTTPError as e:
+        raise ThemeError("файл не найден" if e.code == 404 else f"GitHub ответил {e.code}")
+    except (urllib.error.URLError, OSError) as e:
+        raise ThemeError(f"нет связи с GitHub ({getattr(e, 'reason', e)})")
+    if len(data) > limit:
+        raise ThemeError("файл слишком большой")
+    return data
+
+
+def _raw(repo, path):
+    return f"https://raw.githubusercontent.com/{repo}/HEAD/{path}"
+
+
+def fetch_theme(repo, path="theme.json"):
+    try:
+        text = fetch(_raw(repo, path)).decode("utf-8")
+    except UnicodeDecodeError:
+        raise ThemeError(f"{repo}: {path} — не текстовый файл")
+    except ThemeError as e:
+        raise ThemeError(f"{repo}: нет {path} в корне репозитория" if "не найден" in str(e) else f"{repo}: {e}")
+    theme = parse(text, path)
+    if not str(theme.get("name") or "").strip():
+        raise ThemeError(f"{repo}: у темы нет названия (поле name)")
+    return theme
+
+
+def _store_entry(entry):
+    repo = parse_repo(str(entry.get("repo", "")))
+    path = str(entry.get("path") or "theme.json")
+    theme = fetch_theme(repo, path)
+    colors = theme.get("colors") or {}
+    wall = theme.get("wallpaper") or {}
+    wallpaper = wall.get("dark") if colors.get("scheme") == "prefer-dark" else wall.get("light", "")
+    preview = ""
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    target = CACHE_DIR / (repo.replace("/", "_") + "_" + Path(path).stem + ".png")
+    try:
+        target.write_bytes(fetch(_raw(repo, str(Path(path).with_suffix(".png")) if path != "theme.json" else "preview.png"),
+                                 4 * 1024 * 1024))
+        preview = target.as_uri()
+    except ThemeError:
+        pass
+    return {
+        "id": f"store:{repo}:{path}",
+        "repo": repo,
+        "path": path,
+        "url": f"https://github.com/{repo}",
+        "name": str(theme.get("name"))[:80],
+        "author": str(theme.get("author") or repo.split("/")[0])[:80],
+        "description": str(theme.get("description") or "")[:300],
+        "scheme": colors.get("scheme", "default"),
+        "accent": colors.get("accent") or "",
+        "gnomeAccent": colors.get("gnome-accent") or "blue",
+        "shelf": colors.get("shelf") or "",
+        "menus": colors.get("menus") or "",
+        "wallpaper": wallpaper if isinstance(wallpaper, str) and wallpaper.startswith("file:///usr/") else "",
+        "preview": preview,
+    }
+
+
+def store():
+    from concurrent.futures import ThreadPoolExecutor
+    cache = CACHE_DIR / "store.json"
+    try:
+        index = json.loads(fetch(STORE_INDEX, 1024 * 1024))
+        entries = [e for e in index.get("themes", []) if isinstance(e, dict)][:200]
+    except (ThemeError, ValueError, AttributeError) as e:
+        if cache.is_file():
+            return json.loads(cache.read_text(encoding="utf-8"))
+        raise ThemeError(f"каталог недоступен: {e}")
+
+    def one(entry):
+        try:
+            return _store_entry(entry)
+        except ThemeError:
+            return None
+    with ThreadPoolExecutor(8) as pool:
+        out = [t for t in pool.map(one, entries) if t]
+    installed = {t["source"] for t in themes() if t.get("source")}
+    for t in out:
+        t["installed"] = f"{t['repo']}:{t['path']}" in installed
+    CACHE_DIR.mkdir(parents=True, exist_ok=True)
+    cache.write_text(json.dumps(out, ensure_ascii=False), encoding="utf-8")
+    return out
+
+
+def install(ref):
+    """owner/repo, ссылка на репозиторий или owner/repo:путь/к/теме.json."""
+    import tempfile
+    repo, _, path = ref.partition(":") if not ref.startswith(("http:", "https:")) else (ref, "", "")
+    repo = parse_repo(repo)
+    path = path or "theme.json"
+    theme = fetch_theme(repo, path)
+    theme["source"] = f"{repo}:{path}"
+    for t in themes():
+        if t.get("source") == theme["source"] and t["id"].startswith("user:"):
+            delete(t["id"])
+    with tempfile.TemporaryDirectory() as d:
+        tmp = Path(d) / "theme.json"
+        tmp.write_text(json.dumps(theme, ensure_ascii=False), encoding="utf-8")
+        return import_(tmp)
+
+
+def check(ref):
+    repo = parse_repo(ref)
+    theme = fetch_theme(repo)
+    return {"repo": repo, "name": str(theme.get("name")), "issue": STORE_ISSUE.format(repo=repo)}
+
+
 def main(argv=None):
     import argparse
     if "HypeDE" in os.environ.get("XDG_CURRENT_DESKTOP", "").split(":") and "DCONF_PROFILE" not in os.environ:
@@ -471,6 +619,9 @@ def main(argv=None):
     e.add_argument("--theme", default=None, help="экспортировать эту тему, а не текущий вид")
     i = sub.add_parser("import"); i.add_argument("file")
     d = sub.add_parser("delete"); d.add_argument("theme")
+    sub.add_parser("store")
+    n = sub.add_parser("install"); n.add_argument("repo"); n.add_argument("--apply", action="store_true")
+    c = sub.add_parser("check"); c.add_argument("repo")
     args = p.parse_args(argv)
     try:
         if args.cmd == "list":
@@ -494,6 +645,16 @@ def main(argv=None):
             print(import_(args.file))
         elif args.cmd == "delete":
             delete(args.theme)
+        elif args.cmd == "store":
+            print(json.dumps(store(), ensure_ascii=False))
+        elif args.cmd == "install":
+            ref = install(args.repo)
+            if args.apply:
+                path = resolve(ref)
+                apply(_extract_media(load(path), path.parent / path.stem))
+            print(ref)
+        elif args.cmd == "check":
+            print(json.dumps(check(args.repo), ensure_ascii=False))
     except ThemeError as e:
         print(f"hypede-theme: {e}", file=sys.stderr)
         return 1

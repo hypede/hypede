@@ -1,0 +1,36 @@
+{
+  "hypede-theme": 1,
+  "name": "Aurora Glass",
+  "author": "HypeDE",
+  "description": "Teal northern lights, glassy floating shelf, jelly windows.",
+  "colors": {
+    "scheme": "prefer-dark",
+    "gnome-accent": "teal",
+    "accent": "#5eead4",
+    "shelf": "#0b1d22",
+    "menus": "#0f262c"
+  },
+  "wallpaper": {
+    "light": "file:///usr/share/hypede/wallpapers/aurora-light.svg",
+    "dark": "file:///usr/share/hypede/wallpapers/aurora-dark.svg",
+    "fit": "zoom"
+  },
+  "shelf": {
+    "style": "floating",
+    "opacity": 70
+  },
+  "launcher": {
+    "style": "fullscreen",
+    "opacity": 86
+  },
+  "windows": {
+    "corner-radius": 24,
+    "genie": true,
+    "jelly": true
+  },
+  "lockscreen": {
+    "clock": "stacked",
+    "waves": true,
+    "clock-color": "#ccfbf1"
+  }
+}

@@ -1,0 +1,41 @@
+name: Theme store
+
+on:
+  issues:
+    types: [opened]
+
+permissions:
+  contents: write
+  issues: write
+
+concurrency: theme-store
+
+jobs:
+  add:
+    if: startsWith(github.event.issue.title, 'Theme:')
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check and add the theme
+        id: add
+        env:
+          TITLE: ${{ github.event.issue.title }}
+          BODY: ${{ github.event.issue.body }}
+        run: python3 tools/store/add.py
+      - name: Commit
+        if: steps.add.outputs.added == 'true'
+        run: |
+          git config user.name "hypede-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add store/themes.json
+          git commit -m "Theme store: add ${{ steps.add.outputs.repo }}"
+          git push
+      - name: Answer
+        if: always() && steps.add.outputs.message != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+          MESSAGE: ${{ steps.add.outputs.message }}
+          ISSUE: ${{ github.event.issue.number }}
+        run: |
+          gh issue comment "$ISSUE" --repo "$GITHUB_REPOSITORY" --body "$MESSAGE"
+          gh issue close "$ISSUE" --repo "$GITHUB_REPOSITORY"

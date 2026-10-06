@@ -179,6 +179,8 @@ QtObject {
             sections: [
                 { title: qsTr("Themes"), rows: [ { type: "themes", title: qsTr("Themes"),
                       keywords: "theme themes export import json тема темы экспорт импорт" } ] },
+                { title: qsTr("Theme store"), rows: [ { type: "store", title: qsTr("Theme store"),
+                      keywords: "store github download publish магазин скачать опубликовать гитхаб" } ] },
                 { title: qsTr("Wallpaper"), rows: [ { type: "wallpaper", title: qsTr("Wallpaper"),
                                                       keywords: "wallpaper background обои фон" } ] },
                 { title: qsTr("Live wallpaper"), rows: [

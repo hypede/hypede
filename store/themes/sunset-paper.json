@@ -1,0 +1,29 @@
+{
+  "hypede-theme": 1,
+  "name": "Sunset Paper",
+  "author": "HypeDE",
+  "description": "Warm light theme with coral accents and a docked shelf.",
+  "colors": {
+    "scheme": "default",
+    "gnome-accent": "orange",
+    "accent": "#f26b4f",
+    "shelf": "#fff4ee",
+    "menus": "#fffaf7"
+  },
+  "wallpaper": {
+    "light": "file:///usr/share/hypede/wallpapers/dawn.svg",
+    "dark": "file:///usr/share/hypede/wallpapers/dawn.svg",
+    "fit": "zoom"
+  },
+  "shelf": {
+    "style": "full",
+    "opacity": 92
+  },
+  "launcher": {
+    "style": "bubble",
+    "opacity": 96
+  },
+  "windows": {
+    "corner-radius": 16
+  }
+}

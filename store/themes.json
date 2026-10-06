@@ -1,0 +1,20 @@
+{
+  "themes": [
+    {
+      "repo": "hypede/hypede",
+      "path": "store/themes/aurora-glass.json"
+    },
+    {
+      "repo": "hypede/hypede",
+      "path": "store/themes/sunset-paper.json"
+    },
+    {
+      "repo": "hypede/hypede",
+      "path": "store/themes/deep-forest.json"
+    },
+    {
+      "repo": "hypede/hypede",
+      "path": "store/themes/peak-mono.json"
+    }
+  ]
+}

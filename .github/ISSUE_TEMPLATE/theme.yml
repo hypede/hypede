@@ -1,0 +1,17 @@
+name: Publish a theme
+description: Add your HypeDE theme to the theme store in Settings
+title: "Theme: "
+labels: ["theme"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        The repository needs `theme.json` in its root (Settings → Personalization → Themes → Export) and, if you like, a 16:9 `preview.png`.
+        A bot checks the theme and adds it to the store within a minute.
+  - type: input
+    id: repo
+    attributes:
+      label: Repository
+      placeholder: https://github.com/you/my-hypede-theme
+    validations:
+      required: true

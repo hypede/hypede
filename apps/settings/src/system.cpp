@@ -328,6 +328,26 @@ QVariantMap System::runSync(const QStringList &argv) const
     return result;
 }
 
+void System::runAsync(const QStringList &argv, const QString &tag)
+{
+    if (argv.isEmpty())
+        return;
+    auto *process = new QProcess(this);
+    connect(process, &QProcess::finished, this, [this, process, tag](int code, QProcess::ExitStatus status) {
+        Q_EMIT processFinished(tag, status == QProcess::NormalExit && code == 0,
+                               QString::fromUtf8(process->readAllStandardOutput()),
+                               QString::fromUtf8(process->readAllStandardError()).trimmed());
+        process->deleteLater();
+    });
+    connect(process, &QProcess::errorOccurred, this, [this, process, tag](QProcess::ProcessError error) {
+        if (error == QProcess::FailedToStart) {
+            Q_EMIT processFinished(tag, false, QString(), process->errorString());
+            process->deleteLater();
+        }
+    });
+    process->start(argv.constFirst(), argv.mid(1));
+}
+
 bool System::openUrl(const QString &url) const
 {
     return QDesktopServices::openUrl(QUrl(url));
