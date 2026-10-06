@@ -470,6 +470,8 @@ class LauncherView extends St.BoxLayout {
         this.opacity = 0;
         this.translation_y = rise;
         this.set_scale(this._fullscreen ? 1.03 : 0.92, this._fullscreen ? 1.03 : 0.92);
+        if (this._gesture)
+            return;
         // Старт — после первого кадра: первая раскладка меню бывает долгой,
         // и анимация, начатая до неё, успела бы пройти незаметно.
         if (this._paintId)
@@ -481,6 +483,27 @@ class LauncherView extends St.BoxLayout {
             this.ease({opacity: 255, duration: duration * 0.7, mode: Clutter.AnimationMode.EASE_OUT_CUBIC});
             this.ease({translation_y: 0, scale_x: 1, scale_y: 1, duration, mode: Clutter.AnimationMode.EASE_OUT_QUINT});
         });
+    }
+
+    // Жест тачпада: лаунчер идёт за пальцами, p от 0 до 1.
+    gestureProgress(p) {
+        const rise = this._fullscreen ? 40 : 24;
+        const from = this._fullscreen ? 1.03 : 0.92;
+        p = Math.min(1, Math.max(0, p));
+        this.opacity = Math.round(255 * Math.min(1, p * 1.4));
+        this.translation_y = rise * (1 - p);
+        this.set_scale(from + (1 - from) * p, from + (1 - from) * p);
+    }
+
+    gestureEnd(open, onClosed) {
+        this._gesture = false;
+        const duration = 220;
+        const mode = Clutter.AnimationMode.EASE_OUT_CUBIC;
+        if (open) {
+            this.ease({opacity: 255, translation_y: 0, scale_x: 1, scale_y: 1, duration, mode});
+            return;
+        }
+        this.ease({opacity: 0, duration, mode, onStopped: onClosed});
     }
 
     _updateSize() {
@@ -1058,6 +1081,24 @@ export class Launcher {
         this._appMenu?.close();
         if (this.button.menu.isOpen)
             this.button.menu.close(BoxPointer.PopupAnimation.FULL);
+    }
+
+    // Жест: begin → update(p) → end(open). Возвращает false, если лаунчер уже открыт.
+    gestureBegin() {
+        if (this.isOpen || Main.sessionMode.isLocked)
+            return false;
+        this.button.view._gesture = true;
+        this.open();
+        this.button.view.gestureProgress(0);
+        return true;
+    }
+
+    gestureUpdate(p) {
+        this.button.view.gestureProgress(p);
+    }
+
+    gestureEnd(open) {
+        this.button.view.gestureEnd(open, () => this.close());
     }
 
     toggle() {

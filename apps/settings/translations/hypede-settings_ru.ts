@@ -259,7 +259,7 @@
     <message>
         <location filename="../qml/Catalog.qml" line="58" />
         <location filename="../qml/Catalog.qml" line="101" />
-        <location filename="../qml/Catalog.qml" line="278" />
+        <location filename="../qml/Catalog.qml" line="281" />
         <source>Off</source>
         <translation>Выкл.</translation>
     </message>
@@ -336,9 +336,9 @@
     </message>
     <message>
         <location filename="../qml/Catalog.qml" line="100" />
-        <location filename="../qml/Catalog.qml" line="117" />
-        <location filename="../qml/Catalog.qml" line="239" />
-        <location filename="../qml/Catalog.qml" line="537" />
+        <location filename="../qml/Catalog.qml" line="120" />
+        <location filename="../qml/Catalog.qml" line="242" />
+        <location filename="../qml/Catalog.qml" line="540" />
         <source>Default</source>
         <translation>По умолчанию</translation>
     </message>
@@ -368,47 +368,47 @@
         <translation>Отключать панель во время набора</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="113" />
+        <location filename="../qml/Catalog.qml" line="116" />
         <source>Secondary click</source>
         <translation>Правый щелчок</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="115" />
+        <location filename="../qml/Catalog.qml" line="118" />
         <source>Two-finger click</source>
         <translation>Щелчок двумя пальцами</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="116" />
+        <location filename="../qml/Catalog.qml" line="119" />
         <source>Corner click</source>
         <translation>Щелчок в углу</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="119" />
+        <location filename="../qml/Catalog.qml" line="122" />
         <source>Two-finger scrolling</source>
         <translation>Прокрутка двумя пальцами</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="121" />
+        <location filename="../qml/Catalog.qml" line="124" />
         <source>Keyboard and inputs</source>
         <translation>Клавиатура и ввод</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="122" />
+        <location filename="../qml/Catalog.qml" line="125" />
         <source>Input methods</source>
         <translation>Способы ввода</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="123" />
+        <location filename="../qml/Catalog.qml" line="126" />
         <source>Auto-repeat</source>
         <translation>Автоповтор клавиш</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="126" />
+        <location filename="../qml/Catalog.qml" line="129" />
         <source>Delay before repeat</source>
         <translation>Задержка перед повтором</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="129" />
+        <location filename="../qml/Catalog.qml" line="132" />
         <source>Repeat interval</source>
         <translation>Интервал повтора</translation>
     </message>
@@ -439,1469 +439,1479 @@
         <translation>Мониторы</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="136" />
+        <location filename="../qml/Catalog.qml" line="139" />
         <source>Sound and printing</source>
         <translation>Звук и печать</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="137" />
+        <location filename="../qml/Catalog.qml" line="140" />
         <source>Sound</source>
         <translation>Звук</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="138" />
+        <location filename="../qml/Catalog.qml" line="141" />
         <source>Output and input devices, volume</source>
         <translation>Устройства вывода и ввода, громкость</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="141" />
+        <location filename="../qml/Catalog.qml" line="144" />
         <source>Over-amplification</source>
         <translation>Усиление громкости</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="141" />
+        <location filename="../qml/Catalog.qml" line="144" />
         <source>Volume above 100%</source>
         <translation>Громкость выше 100%</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="145" />
+        <location filename="../qml/Catalog.qml" line="148" />
         <source>System sounds</source>
         <translation>Системные звуки</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="147" />
+        <location filename="../qml/Catalog.qml" line="150" />
         <source>Printers</source>
         <translation>Принтеры</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="150" />
+        <location filename="../qml/Catalog.qml" line="153" />
         <source>Power</source>
         <translation>Питание</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="151" />
+        <location filename="../qml/Catalog.qml" line="154" />
         <source>Power mode</source>
         <translation>Режим питания</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="154" />
-        <location filename="../qml/Catalog.qml" line="346" />
+        <location filename="../qml/Catalog.qml" line="157" />
+        <location filename="../qml/Catalog.qml" line="349" />
         <source>Show battery percentage</source>
         <translation>Показывать заряд в процентах</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="155" />
+        <location filename="../qml/Catalog.qml" line="158" />
         <source>Dim screen when inactive</source>
         <translation>Затемнять экран при бездействии</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="157" />
+        <location filename="../qml/Catalog.qml" line="160" />
         <source>Sleep when idle on power</source>
         <translation>Спящий режим при бездействии</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="158" />
-        <location filename="../qml/Catalog.qml" line="165" />
-        <location filename="../qml/Catalog.qml" line="449" />
+        <location filename="../qml/Catalog.qml" line="161" />
+        <location filename="../qml/Catalog.qml" line="168" />
+        <location filename="../qml/Catalog.qml" line="452" />
         <source>15 minutes</source>
         <translation>15 минут</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="158" />
-        <location filename="../qml/Catalog.qml" line="165" />
+        <location filename="../qml/Catalog.qml" line="161" />
+        <location filename="../qml/Catalog.qml" line="168" />
         <source>30 minutes</source>
         <translation>30 минут</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="159" />
+        <location filename="../qml/Catalog.qml" line="162" />
         <source>1 hour</source>
         <translation>1 час</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="159" />
+        <location filename="../qml/Catalog.qml" line="162" />
         <source>2 hours</source>
         <translation>2 часа</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="160" />
+        <location filename="../qml/Catalog.qml" line="163" />
         <source>When idle on power</source>
         <translation>При бездействии от сети</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="161" />
-        <location filename="../qml/Catalog.qml" line="167" />
+        <location filename="../qml/Catalog.qml" line="164" />
+        <location filename="../qml/Catalog.qml" line="170" />
         <source>Sleep</source>
         <translation>Спящий режим</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="161" />
+        <location filename="../qml/Catalog.qml" line="164" />
         <source>Stay awake</source>
         <translation>Не засыпать</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="163" />
+        <location filename="../qml/Catalog.qml" line="166" />
         <source>Sleep when idle on battery</source>
         <translation>Спящий режим при бездействии от батареи</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="166" />
+        <location filename="../qml/Catalog.qml" line="169" />
         <source>Power button</source>
         <translation>Кнопка питания</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="167" />
-        <location filename="../qml/Catalog.qml" line="624" />
+        <location filename="../qml/Catalog.qml" line="170" />
+        <location filename="../qml/Catalog.qml" line="627" />
         <source>Ask</source>
         <translation>Спрашивать</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="168" />
+        <location filename="../qml/Catalog.qml" line="171" />
         <source>Hibernate</source>
         <translation>Гибернация</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="168" />
+        <location filename="../qml/Catalog.qml" line="171" />
         <source>Do nothing</source>
         <translation>Ничего не делать</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="170" />
-        <location filename="../qml/Catalog.qml" line="171" />
+        <location filename="../qml/Catalog.qml" line="173" />
+        <location filename="../qml/Catalog.qml" line="174" />
         <source>Storage</source>
         <translation>Хранилище</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="177" />
+        <location filename="../qml/Catalog.qml" line="180" />
         <source>Personalization</source>
         <translation>Персонализация</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="184" />
-        <location filename="../qml/Catalog.qml" line="184" />
+        <location filename="../qml/Catalog.qml" line="187" />
+        <location filename="../qml/Catalog.qml" line="187" />
         <source>Wallpaper</source>
         <translation>Обои</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="209" />
-        <location filename="../qml/Catalog.qml" line="310" />
+        <location filename="../qml/Catalog.qml" line="212" />
+        <location filename="../qml/Catalog.qml" line="313" />
         <source>Style</source>
         <translation>Стиль</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="210" />
+        <location filename="../qml/Catalog.qml" line="213" />
         <source>Theme</source>
         <translation>Тема</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="211" />
+        <location filename="../qml/Catalog.qml" line="214" />
         <source>Accent color</source>
         <translation>Цвет акцента</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="213" />
+        <location filename="../qml/Catalog.qml" line="216" />
         <source>Fonts</source>
         <translation>Шрифты</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="214" />
+        <location filename="../qml/Catalog.qml" line="217" />
         <source>Interface</source>
         <translation>Интерфейс</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="216" />
+        <location filename="../qml/Catalog.qml" line="219" />
         <source>Documents</source>
         <translation>Документы</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="218" />
+        <location filename="../qml/Catalog.qml" line="221" />
         <source>Monospace</source>
         <translation>Моноширинный</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="222" />
+        <location filename="../qml/Catalog.qml" line="225" />
         <source>Font smoothing</source>
         <translation>Сглаживание шрифтов</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="224" />
+        <location filename="../qml/Catalog.qml" line="227" />
         <source>Standard (grayscale)</source>
         <translation>Обычное (оттенки серого)</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="225" />
+        <location filename="../qml/Catalog.qml" line="228" />
         <source>Subpixel (for LCD)</source>
         <translation>Субпиксельное (для ЖК)</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="226" />
-        <location filename="../qml/Catalog.qml" line="230" />
-        <location filename="../qml/Catalog.qml" line="335" />
+        <location filename="../qml/Catalog.qml" line="229" />
+        <location filename="../qml/Catalog.qml" line="233" />
+        <location filename="../qml/Catalog.qml" line="338" />
         <source>None</source>
         <translation>Нет</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="227" />
+        <location filename="../qml/Catalog.qml" line="230" />
         <source>Font hinting</source>
         <translation>Хинтинг шрифтов</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="229" />
+        <location filename="../qml/Catalog.qml" line="232" />
         <source>Slight</source>
         <translation>Лёгкий</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="230" />
+        <location filename="../qml/Catalog.qml" line="233" />
         <source>Full</source>
         <translation>Полный</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="232" />
+        <location filename="../qml/Catalog.qml" line="235" />
         <source>Icons and pointer</source>
         <translation>Значки и указатель</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="234" />
+        <location filename="../qml/Catalog.qml" line="237" />
         <source>Icon theme</source>
         <translation>Тема значков</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="237" />
+        <location filename="../qml/Catalog.qml" line="240" />
         <source>Cursor theme</source>
         <translation>Тема курсора</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="243" />
+        <location filename="../qml/Catalog.qml" line="246" />
         <source>Windows</source>
         <translation>Окна</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="244" />
+        <location filename="../qml/Catalog.qml" line="247" />
         <source>Window buttons</source>
         <translation>Кнопки окна</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="246" />
+        <location filename="../qml/Catalog.qml" line="249" />
         <source>Minimize, maximize, close</source>
         <translation>Свернуть, развернуть, закрыть</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="247" />
+        <location filename="../qml/Catalog.qml" line="250" />
         <source>Minimize and close</source>
         <translation>Свернуть и закрыть</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="248" />
+        <location filename="../qml/Catalog.qml" line="251" />
         <source>Close only</source>
         <translation>Только закрыть</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="249" />
+        <location filename="../qml/Catalog.qml" line="252" />
         <source>On the left</source>
         <translation>Слева</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="251" />
+        <location filename="../qml/Catalog.qml" line="254" />
         <source>Double-click on title bar</source>
         <translation>Двойной щелчок по заголовку</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="252" />
+        <location filename="../qml/Catalog.qml" line="255" />
         <source>Maximize</source>
         <translation>Развернуть</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="253" />
+        <location filename="../qml/Catalog.qml" line="256" />
         <source>Minimize</source>
         <translation>Свернуть</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="254" />
+        <location filename="../qml/Catalog.qml" line="257" />
         <source>Nothing</source>
         <translation>Ничего</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="255" />
+        <location filename="../qml/Catalog.qml" line="258" />
         <source>Window focus</source>
         <translation>Фокус окон</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="257" />
+        <location filename="../qml/Catalog.qml" line="260" />
         <source>Click to focus</source>
         <translation>По щелчку</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="258" />
+        <location filename="../qml/Catalog.qml" line="261" />
         <source>Focus follows mouse</source>
         <translation>Следует за указателем</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="259" />
+        <location filename="../qml/Catalog.qml" line="262" />
         <source>Open windows in the center</source>
         <translation>Открывать окна по центру</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="260" />
+        <location filename="../qml/Catalog.qml" line="263" />
         <source>Snap windows to screen edges</source>
         <translation>Прилипание окон к краям экрана</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="263" />
+        <location filename="../qml/Catalog.qml" line="266" />
         <source>Legacy app theme (GTK 3)</source>
         <translation>Тема старых приложений (GTK 3)</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="265" />
+        <location filename="../qml/Catalog.qml" line="268" />
         <source>Animations and effects</source>
         <translation>Анимации и эффекты</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="269" />
+        <location filename="../qml/Catalog.qml" line="272" />
         <source>Animations</source>
         <translation>Анимации</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="190" />
-        <location filename="../qml/Catalog.qml" line="272" />
+        <location filename="../qml/Catalog.qml" line="193" />
+        <location filename="../qml/Catalog.qml" line="275" />
         <source>Animation speed</source>
         <translation>Скорость анимации</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="282" />
+        <location filename="../qml/Catalog.qml" line="285" />
         <source>Window animations</source>
         <translation>Анимации окон</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="284" />
+        <location filename="../qml/Catalog.qml" line="287" />
         <source>Soft (HypeDE)</source>
         <translation>Мягкие (HypeDE)</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="285" />
-        <location filename="../qml/Catalog.qml" line="413" />
+        <location filename="../qml/Catalog.qml" line="288" />
+        <location filename="../qml/Catalog.qml" line="416" />
         <source>GNOME</source>
         <translation>GNOME</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="293" />
+        <location filename="../qml/Catalog.qml" line="296" />
         <source>Corner rounding</source>
         <translation>Скругление углов</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="296" />
+        <location filename="../qml/Catalog.qml" line="299" />
         <source>Menu opacity</source>
         <translation>Непрозрачность меню</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="297" />
+        <location filename="../qml/Catalog.qml" line="300" />
         <source>Launcher, quick settings and menus</source>
         <translation>Лаунчер, быстрые настройки и контекстные меню</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="302" />
+        <location filename="../qml/Catalog.qml" line="305" />
         <source>Shelf and launcher</source>
         <translation>Полка и лаунчер</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="305" />
+        <location filename="../qml/Catalog.qml" line="308" />
         <source>Shelf</source>
         <translation>Полка</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="308" />
+        <location filename="../qml/Catalog.qml" line="311" />
         <source>Left</source>
         <translation>Слева</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="327" />
+        <location filename="../qml/Catalog.qml" line="330" />
         <source>Autohide shelf</source>
         <translation>Автоматически скрывать полку</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="328" />
+        <location filename="../qml/Catalog.qml" line="331" />
         <source>The shelf slides away when a window touches it</source>
         <translation>Полка прячется, когда к ней подходит окно</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="341" />
+        <location filename="../qml/Catalog.qml" line="344" />
         <source>Show date on the shelf</source>
         <translation>Показывать дату на полке</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="342" />
+        <location filename="../qml/Catalog.qml" line="345" />
         <source>Clock format</source>
         <translation>Формат часов</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="344" />
+        <location filename="../qml/Catalog.qml" line="347" />
         <source>24-hour</source>
         <translation>24 часа</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="344" />
+        <location filename="../qml/Catalog.qml" line="347" />
         <source>12-hour</source>
         <translation>12 часов</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="353" />
+        <location filename="../qml/Catalog.qml" line="356" />
         <source>Launcher</source>
         <translation>Лаунчер</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="358" />
+        <location filename="../qml/Catalog.qml" line="361" />
         <source>Everything key (Super)</source>
         <translation>Клавиша Super</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="360" />
+        <location filename="../qml/Catalog.qml" line="363" />
         <source>Opens the launcher</source>
         <translation>Открывает лаунчер</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="361" />
+        <location filename="../qml/Catalog.qml" line="364" />
         <source>Opens the overview</source>
         <translation>Открывает обзор</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="371" />
+        <location filename="../qml/Catalog.qml" line="374" />
         <source>Show “Continue where you left off”</source>
         <translation>Показывать недавние файлы</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="363" />
+        <location filename="../qml/Catalog.qml" line="366" />
         <source>Apps per row</source>
         <translation>Приложений в ряду</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="461" />
+        <location filename="../qml/Catalog.qml" line="464" />
         <source>Security and privacy</source>
         <translation>Безопасность и конфиденциальность</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="442" />
+        <location filename="../qml/Catalog.qml" line="445" />
         <source>Screen lock</source>
         <translation>Блокировка экрана</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="444" />
+        <location filename="../qml/Catalog.qml" line="447" />
         <source>Lock when screen turns off</source>
         <translation>Блокировать, когда экран гаснет</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="447" />
+        <location filename="../qml/Catalog.qml" line="450" />
         <source>Turn off screen when idle</source>
         <translation>Выключать экран при бездействии</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="448" />
-        <location filename="../qml/Catalog.qml" line="454" />
+        <location filename="../qml/Catalog.qml" line="451" />
+        <location filename="../qml/Catalog.qml" line="457" />
         <source>1 minute</source>
         <translation>1 минута</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="164" />
-        <location filename="../qml/Catalog.qml" line="448" />
-        <location filename="../qml/Catalog.qml" line="454" />
+        <location filename="../qml/Catalog.qml" line="167" />
+        <location filename="../qml/Catalog.qml" line="451" />
+        <location filename="../qml/Catalog.qml" line="457" />
         <source>5 minutes</source>
         <translation>5 минут</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="164" />
-        <location filename="../qml/Catalog.qml" line="449" />
+        <location filename="../qml/Catalog.qml" line="167" />
+        <location filename="../qml/Catalog.qml" line="452" />
         <source>10 minutes</source>
         <translation>10 минут</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="450" />
-        <location filename="../qml/Catalog.qml" line="625" />
+        <location filename="../qml/Catalog.qml" line="453" />
+        <location filename="../qml/Catalog.qml" line="628" />
         <source>Never</source>
         <translation>Никогда</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="456" />
+        <location filename="../qml/Catalog.qml" line="459" />
         <source>Notifications on lock screen</source>
         <translation>Уведомления на экране блокировки</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="464" />
+        <location filename="../qml/Catalog.qml" line="467" />
         <source>History</source>
         <translation>История</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="466" />
+        <location filename="../qml/Catalog.qml" line="469" />
         <source>Remember recent files</source>
         <translation>Запоминать недавние файлы</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="468" />
+        <location filename="../qml/Catalog.qml" line="471" />
         <source>Clear recent files history</source>
         <translation>Очистить историю недавних файлов</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="470" />
+        <location filename="../qml/Catalog.qml" line="473" />
         <source>Automatically empty trash</source>
         <translation>Автоматически очищать корзину</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="472" />
+        <location filename="../qml/Catalog.qml" line="475" />
         <source>Automatically delete temporary files</source>
         <translation>Автоматически удалять временные файлы</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="474" />
+        <location filename="../qml/Catalog.qml" line="477" />
         <source>Protection</source>
         <translation>Защита</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="476" />
+        <location filename="../qml/Catalog.qml" line="479" />
         <source>Location services</source>
         <translation>Службы геолокации</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="478" />
+        <location filename="../qml/Catalog.qml" line="481" />
         <source>USB protection</source>
         <translation>Защита USB</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="478" />
+        <location filename="../qml/Catalog.qml" line="481" />
         <source>Block new USB devices while the screen is locked</source>
         <translation>Новые USB-устройства не подключаются, пока экран заблокирован</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="484" />
+        <location filename="../qml/Catalog.qml" line="487" />
         <source>Firewall</source>
         <translation>Брандмауэр</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="313" />
-        <location filename="../qml/Catalog.qml" line="378" />
-        <location filename="../qml/Catalog.qml" line="490" />
+        <location filename="../qml/Catalog.qml" line="316" />
+        <location filename="../qml/Catalog.qml" line="381" />
+        <location filename="../qml/Catalog.qml" line="493" />
         <source>Apps</source>
         <translation>Приложения</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="495" />
+        <location filename="../qml/Catalog.qml" line="498" />
         <source>Default apps</source>
         <translation>Приложения по умолчанию</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="495" />
+        <location filename="../qml/Catalog.qml" line="498" />
         <source>Browser, email, file manager, terminal</source>
         <translation>Браузер, почта, файловый менеджер, терминал</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="497" />
+        <location filename="../qml/Catalog.qml" line="500" />
         <source>File associations</source>
         <translation>Типы файлов</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="498" />
+        <location filename="../qml/Catalog.qml" line="501" />
         <source>Which app opens which file type</source>
         <translation>Какие файлы в каком приложении открываются</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="503" />
+        <location filename="../qml/Catalog.qml" line="506" />
         <source>App permissions</source>
         <translation>Разрешения приложений</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="504" />
+        <location filename="../qml/Catalog.qml" line="507" />
         <source>Flatpak sandbox permissions</source>
         <translation>Права приложений Flatpak</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="347" />
-        <location filename="../qml/Catalog.qml" line="507" />
+        <location filename="../qml/Catalog.qml" line="350" />
+        <location filename="../qml/Catalog.qml" line="510" />
         <source>Notifications</source>
         <translation>Уведомления</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="509" />
+        <location filename="../qml/Catalog.qml" line="512" />
         <source>Do not disturb</source>
         <translation>Не беспокоить</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="525" />
+        <location filename="../qml/Catalog.qml" line="528" />
         <source>Accessibility</source>
         <translation>Специальные возможности</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="528" />
+        <location filename="../qml/Catalog.qml" line="531" />
         <source>Text and display</source>
         <translation>Текст и экран</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="221" />
-        <location filename="../qml/Catalog.qml" line="530" />
+        <location filename="../qml/Catalog.qml" line="224" />
+        <location filename="../qml/Catalog.qml" line="533" />
         <source>Text size</source>
         <translation>Размер текста</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="533" />
+        <location filename="../qml/Catalog.qml" line="536" />
         <source>High contrast</source>
         <translation>Высокая контрастность</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="535" />
+        <location filename="../qml/Catalog.qml" line="538" />
         <source>Reduce motion</source>
         <translation>Уменьшить движение</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="238" />
-        <location filename="../qml/Catalog.qml" line="536" />
+        <location filename="../qml/Catalog.qml" line="241" />
+        <location filename="../qml/Catalog.qml" line="539" />
         <source>Cursor size</source>
         <translation>Размер указателя</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="131" />
+        <location filename="../qml/Catalog.qml" line="134" />
         <source>Num Lock on at start</source>
         <translation>Num Lock включён при входе</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="180" />
-        <location filename="../qml/Catalog.qml" line="180" />
+        <location filename="../qml/Catalog.qml" line="183" />
+        <location filename="../qml/Catalog.qml" line="183" />
         <source>Themes</source>
         <translation>Темы</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="229" />
-        <location filename="../qml/Catalog.qml" line="239" />
-        <location filename="../qml/Catalog.qml" line="537" />
+        <location filename="../qml/Catalog.qml" line="232" />
+        <location filename="../qml/Catalog.qml" line="242" />
+        <location filename="../qml/Catalog.qml" line="540" />
         <source>Medium</source>
         <translation>Средний</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="240" />
-        <location filename="../qml/Catalog.qml" line="538" />
+        <location filename="../qml/Catalog.qml" line="243" />
+        <location filename="../qml/Catalog.qml" line="541" />
         <source>Large</source>
         <translation>Крупный</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="240" />
-        <location filename="../qml/Catalog.qml" line="538" />
+        <location filename="../qml/Catalog.qml" line="243" />
+        <location filename="../qml/Catalog.qml" line="541" />
         <source>Larger</source>
         <translation>Очень крупный</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="241" />
-        <location filename="../qml/Catalog.qml" line="539" />
+        <location filename="../qml/Catalog.qml" line="244" />
+        <location filename="../qml/Catalog.qml" line="542" />
         <source>Largest</source>
         <translation>Огромный</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="266" />
+        <location filename="../qml/Catalog.qml" line="269" />
         <source>Lite mode</source>
         <translation>Облегчённый режим</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="267" />
+        <location filename="../qml/Catalog.qml" line="270" />
         <source>For slower computers: no blur, rounded-corner effect, lock screen waves or greeting</source>
         <translation>Для слабых компьютеров: без размытия, скругления окон, волн на экране блокировки и приветствия</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="274" />
+        <location filename="../qml/Catalog.qml" line="277" />
         <source>Greeting at sign-in</source>
         <translation>Приветствие при входе</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="276" />
+        <location filename="../qml/Catalog.qml" line="279" />
         <source>Every time</source>
         <translation>При каждом входе</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="277" />
+        <location filename="../qml/Catalog.qml" line="280" />
         <source>First sign-in only</source>
         <translation>Только при первом входе</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="279" />
+        <location filename="../qml/Catalog.qml" line="282" />
         <source>Rounded window corners</source>
         <translation>Скруглённые углы окон</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="280" />
+        <location filename="../qml/Catalog.qml" line="283" />
         <source>For apps that draw square corners without a shadow</source>
         <translation>Для приложений с прямыми углами и без тени</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="306" />
+        <location filename="../qml/Catalog.qml" line="309" />
         <source>Position</source>
         <translation>Положение</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="308" />
+        <location filename="../qml/Catalog.qml" line="311" />
         <source>Bottom</source>
         <translation>Снизу</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="309" />
+        <location filename="../qml/Catalog.qml" line="312" />
         <source>Right</source>
         <translation>Справа</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="309" />
+        <location filename="../qml/Catalog.qml" line="312" />
         <source>Top</source>
         <translation>Сверху</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="311" />
+        <location filename="../qml/Catalog.qml" line="314" />
         <source>Full width</source>
         <translation>Во всю ширину</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="312" />
+        <location filename="../qml/Catalog.qml" line="315" />
         <source>Floating</source>
         <translation>Плавающая</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="314" />
+        <location filename="../qml/Catalog.qml" line="317" />
         <source>Centered</source>
         <translation>По центру</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="315" />
+        <location filename="../qml/Catalog.qml" line="318" />
         <source>Next to the launcher</source>
         <translation>Рядом с лаунчером</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="317" />
+        <location filename="../qml/Catalog.qml" line="320" />
         <source>Shelf size</source>
         <translation>Размер полки</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="200" />
-        <location filename="../qml/Catalog.qml" line="319" />
-        <location filename="../qml/Catalog.qml" line="365" />
+        <location filename="../qml/Catalog.qml" line="203" />
+        <location filename="../qml/Catalog.qml" line="322" />
+        <location filename="../qml/Catalog.qml" line="368" />
         <source>Icon size</source>
         <translation>Размер значков</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="321" />
+        <location filename="../qml/Catalog.qml" line="324" />
         <source>Opacity</source>
         <translation>Непрозрачность</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="322" />
+        <location filename="../qml/Catalog.qml" line="325" />
         <source>Shelf color</source>
         <translation>Цвет полки</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="324" />
+        <location filename="../qml/Catalog.qml" line="327" />
         <source>Launcher and menu color</source>
         <translation>Цвет лаунчера и меню</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="326" />
+        <location filename="../qml/Catalog.qml" line="329" />
         <source>Blur behind the shelf</source>
         <translation>Размытие под полкой</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="330" />
+        <location filename="../qml/Catalog.qml" line="333" />
         <source>Apps on the shelf</source>
         <translation>Приложения на полке</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="331" />
+        <location filename="../qml/Catalog.qml" line="334" />
         <source>Show pinned apps</source>
         <translation>Показывать закреплённые приложения</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="332" />
+        <location filename="../qml/Catalog.qml" line="335" />
         <source>Drag icons to reorder them; right-click to pin or unpin</source>
         <translation>Перетаскивайте значки, чтобы поменять порядок. Закрепить — правой кнопкой</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="333" />
+        <location filename="../qml/Catalog.qml" line="336" />
         <source>Running app indicator</source>
         <translation>Отметка открытых приложений</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="334" />
+        <location filename="../qml/Catalog.qml" line="337" />
         <source>Dot</source>
         <translation>Точка</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="334" />
+        <location filename="../qml/Catalog.qml" line="337" />
         <source>Line</source>
         <translation>Полоска</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="336" />
+        <location filename="../qml/Catalog.qml" line="339" />
         <source>Magnify icon under pointer</source>
         <translation>Увеличивать значок под указателем</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="337" />
+        <location filename="../qml/Catalog.qml" line="340" />
         <source>App names on hover</source>
         <translation>Названия приложений при наведении</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="338" />
+        <location filename="../qml/Catalog.qml" line="341" />
         <source>Minimize windows into the shelf</source>
         <translation>Сворачивать окна в полку</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="340" />
+        <location filename="../qml/Catalog.qml" line="343" />
         <source>Status tray</source>
         <translation>Область состояния</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="345" />
+        <location filename="../qml/Catalog.qml" line="348" />
         <source>Show seconds</source>
         <translation>Показывать секунды</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="349" />
+        <location filename="../qml/Catalog.qml" line="352" />
         <source>Bottom right</source>
         <translation>Справа внизу</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="350" />
+        <location filename="../qml/Catalog.qml" line="353" />
         <source>Top right</source>
         <translation>Справа вверху</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="351" />
+        <location filename="../qml/Catalog.qml" line="354" />
         <source>Top center</source>
         <translation>Вверху по центру</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="354" />
+        <location filename="../qml/Catalog.qml" line="357" />
         <source>Launcher style</source>
         <translation>Вид лаунчера</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="356" />
+        <location filename="../qml/Catalog.qml" line="359" />
         <source>Bubble</source>
         <translation>Компактный</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="357" />
+        <location filename="../qml/Catalog.qml" line="360" />
         <source>Full screen</source>
         <translation>Во весь экран</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="366" />
+        <location filename="../qml/Catalog.qml" line="369" />
         <source>App names under icons</source>
         <translation>Названия под значками</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="367" />
+        <location filename="../qml/Catalog.qml" line="370" />
         <source>Order</source>
         <translation>Порядок</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="368" />
+        <location filename="../qml/Catalog.qml" line="371" />
         <source>Alphabetical</source>
         <translation>По алфавиту</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="369" />
+        <location filename="../qml/Catalog.qml" line="372" />
         <source>Most used first</source>
         <translation>Сначала частые</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="372" />
+        <location filename="../qml/Catalog.qml" line="375" />
         <source>Blur behind the launcher</source>
         <translation>Размытие под лаунчером</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="374" />
+        <location filename="../qml/Catalog.qml" line="377" />
         <source>Search in the launcher</source>
         <translation>Поиск в лаунчере</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="376" />
+        <location filename="../qml/Catalog.qml" line="379" />
         <source>Calculator</source>
         <translation>Калькулятор</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="380" />
+        <location filename="../qml/Catalog.qml" line="383" />
         <source>Settings</source>
         <translation>Настройки</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="382" />
+        <location filename="../qml/Catalog.qml" line="385" />
         <source>Files</source>
         <translation>Файлы</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="384" />
+        <location filename="../qml/Catalog.qml" line="387" />
         <source>Web</source>
         <translation>Интернет</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="388" />
+        <location filename="../qml/Catalog.qml" line="391" />
         <source>Apps in the launcher</source>
         <translation>Приложения в лаунчере</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="389" />
+        <location filename="../qml/Catalog.qml" line="392" />
         <source>Show in the launcher</source>
         <translation>Показывать в лаунчере</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="195" />
-        <location filename="../qml/Catalog.qml" line="392" />
+        <location filename="../qml/Catalog.qml" line="198" />
+        <location filename="../qml/Catalog.qml" line="395" />
         <source>Desktop</source>
         <translation>Рабочий стол</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="134" />
-        <location filename="../qml/Catalog.qml" line="134" />
+        <location filename="../qml/Catalog.qml" line="113" />
+        <source>Four-finger gestures</source>
+        <translation>Жесты четырьмя пальцами</translation>
+    </message>
+    <message>
+        <location filename="../qml/Catalog.qml" line="114" />
+        <source>Up — launcher, down — desktop. Three fingers: up — overview, sideways — desks</source>
+        <translation>Вверх — лаунчер, вниз — рабочий стол. Тремя пальцами: вверх — обзор, вбок — рабочие столы</translation>
+    </message>
+    <message>
+        <location filename="../qml/Catalog.qml" line="137" />
+        <location filename="../qml/Catalog.qml" line="137" />
         <source>Keyboard shortcuts</source>
         <translation>Сочетания клавиш</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="143" />
+        <location filename="../qml/Catalog.qml" line="146" />
         <source>Sound theme</source>
         <translation>Звуковая тема</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="182" />
-        <location filename="../qml/Catalog.qml" line="182" />
+        <location filename="../qml/Catalog.qml" line="185" />
+        <location filename="../qml/Catalog.qml" line="185" />
         <source>Theme store</source>
         <translation>Магазин тем</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="186" />
-        <location filename="../qml/Catalog.qml" line="187" />
+        <location filename="../qml/Catalog.qml" line="189" />
+        <location filename="../qml/Catalog.qml" line="190" />
         <source>Live wallpaper</source>
         <translation>Живые обои</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="192" />
+        <location filename="../qml/Catalog.qml" line="195" />
         <source>Pause under maximized windows</source>
         <translation>Пауза под развёрнутыми окнами</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="193" />
+        <location filename="../qml/Catalog.qml" line="196" />
         <source>Saves battery: the wallpaper stops when nobody sees it</source>
         <translation>Бережёт батарею: обои замирают, когда их не видно</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="196" />
+        <location filename="../qml/Catalog.qml" line="199" />
         <source>Icons on the desktop</source>
         <translation>Значки на рабочем столе</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="197" />
+        <location filename="../qml/Catalog.qml" line="200" />
         <source>Files from the Desktop folder. Drag them to apps and back</source>
         <translation>Файлы из папки «Рабочий стол». Их можно перетаскивать в приложения и обратно</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="202" />
+        <location filename="../qml/Catalog.qml" line="205" />
         <source>Home folder</source>
         <translation>Домашняя папка</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="204" />
+        <location filename="../qml/Catalog.qml" line="207" />
         <source>Trash</source>
         <translation>Корзина</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="207" />
-        <location filename="../qml/Catalog.qml" line="207" />
+        <location filename="../qml/Catalog.qml" line="210" />
+        <location filename="../qml/Catalog.qml" line="210" />
         <source>Widgets</source>
         <translation>Виджеты</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="286" />
+        <location filename="../qml/Catalog.qml" line="289" />
         <source>Genie minimize</source>
         <translation>Сворачивание «джинном»</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="287" />
+        <location filename="../qml/Catalog.qml" line="290" />
         <source>Windows flow into their shelf icon</source>
         <translation>Окно перетекает в значок на полке</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="289" />
+        <location filename="../qml/Catalog.qml" line="292" />
         <source>Jelly windows</source>
         <translation>Желейные окна</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="290" />
+        <location filename="../qml/Catalog.qml" line="293" />
         <source>Windows bend and spring back while you drag them</source>
         <translation>При перетаскивании окно изгибается и пружинит</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="393" />
+        <location filename="../qml/Catalog.qml" line="396" />
         <source>Hot corner</source>
         <translation>Активный угол</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="394" />
+        <location filename="../qml/Catalog.qml" line="397" />
         <source>Top-left corner opens the overview</source>
         <translation>Левый верхний угол открывает обзор</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="395" />
+        <location filename="../qml/Catalog.qml" line="398" />
         <source>Dynamic desks</source>
         <translation>Динамические рабочие столы</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="396" />
+        <location filename="../qml/Catalog.qml" line="399" />
         <source>A new desk appears when the last one is used</source>
         <translation>Новый стол добавляется, когда занят последний</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="399" />
+        <location filename="../qml/Catalog.qml" line="402" />
         <source>Number of desks</source>
         <translation>Число рабочих столов</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="402" />
+        <location filename="../qml/Catalog.qml" line="405" />
         <source>Desks only on the main display</source>
         <translation>Рабочие столы только на основном мониторе</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="407" />
-        <location filename="../qml/Catalog.qml" line="411" />
+        <location filename="../qml/Catalog.qml" line="410" />
+        <location filename="../qml/Catalog.qml" line="414" />
         <source>Lock screen</source>
         <translation>Экран блокировки</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="410" />
+        <location filename="../qml/Catalog.qml" line="413" />
         <source>Look</source>
         <translation>Оформление</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="413" />
+        <location filename="../qml/Catalog.qml" line="416" />
         <source>HypeDE</source>
         <translation>HypeDE</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="414" />
+        <location filename="../qml/Catalog.qml" line="417" />
         <source>Clock</source>
         <translation>Часы</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="416" />
+        <location filename="../qml/Catalog.qml" line="419" />
         <source>Digital</source>
         <translation>Цифровые</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="416" />
+        <location filename="../qml/Catalog.qml" line="419" />
         <source>Stacked</source>
         <translation>Столбиком</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="417" />
+        <location filename="../qml/Catalog.qml" line="420" />
         <source>Analog</source>
         <translation>Стрелочные</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="418" />
+        <location filename="../qml/Catalog.qml" line="421" />
         <source>Color waves when locking</source>
         <translation>Волны при блокировке</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="420" />
+        <location filename="../qml/Catalog.qml" line="423" />
         <source>Battery and system cards</source>
         <translation>Карточки с зарядом и нагрузкой</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="423" />
+        <location filename="../qml/Catalog.qml" line="426" />
         <source>Wallpaper blur</source>
         <translation>Размытие обоев</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="426" />
+        <location filename="../qml/Catalog.qml" line="429" />
         <source>Wallpaper dimming</source>
         <translation>Затемнение обоев</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="428" />
+        <location filename="../qml/Catalog.qml" line="431" />
         <source>Lock screen wallpaper</source>
         <translation>Обои экрана блокировки</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="431" />
+        <location filename="../qml/Catalog.qml" line="434" />
         <source>Clock color</source>
         <translation>Цвет часов</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="435" />
+        <location filename="../qml/Catalog.qml" line="438" />
         <source>Clock size</source>
         <translation>Размер часов</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="437" />
+        <location filename="../qml/Catalog.qml" line="440" />
         <source>Message</source>
         <translation>Надпись</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="438" />
+        <location filename="../qml/Catalog.qml" line="441" />
         <source>Shown under the date</source>
         <translation>Под датой</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="438" />
+        <location filename="../qml/Catalog.qml" line="441" />
         <source>For example, your name</source>
         <translation>Например, ваше имя</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="452" />
+        <location filename="../qml/Catalog.qml" line="455" />
         <source>Lock after the screen turns off</source>
         <translation>Блокировать после выключения экрана</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="453" />
+        <location filename="../qml/Catalog.qml" line="456" />
         <source>Immediately</source>
         <translation>Сразу</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="453" />
+        <location filename="../qml/Catalog.qml" line="456" />
         <source>30 seconds</source>
         <translation>30 секунд</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="481" />
+        <location filename="../qml/Catalog.qml" line="484" />
         <source>Camera</source>
         <translation>Камера</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="483" />
+        <location filename="../qml/Catalog.qml" line="486" />
         <source>Microphone</source>
         <translation>Микрофон</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="500" />
+        <location filename="../qml/Catalog.qml" line="503" />
         <source>Add to autostart</source>
         <translation>Добавить в автозапуск</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="501" />
+        <location filename="../qml/Catalog.qml" line="504" />
         <source>Apps and scripts started when you sign in</source>
         <translation>Программы и скрипты, которые запускаются при входе</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="511" />
+        <location filename="../qml/Catalog.qml" line="514" />
         <source>Notifications from apps</source>
         <translation>Уведомления приложений</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="517" />
         <location filename="../qml/Catalog.qml" line="520" />
+        <location filename="../qml/Catalog.qml" line="523" />
         <source>AI assistant</source>
         <translation>ИИ-помощник</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="540" />
+        <location filename="../qml/Catalog.qml" line="543" />
         <source>Locate pointer with Ctrl</source>
         <translation>Показывать указатель по нажатию Ctrl</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="542" />
+        <location filename="../qml/Catalog.qml" line="545" />
         <source>Assistive tools</source>
         <translation>Вспомогательные инструменты</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="544" />
+        <location filename="../qml/Catalog.qml" line="547" />
         <source>Screen reader</source>
         <translation>Экранный диктор</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="546" />
+        <location filename="../qml/Catalog.qml" line="549" />
         <source>Zoom</source>
         <translation>Экранная лупа</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="548" />
+        <location filename="../qml/Catalog.qml" line="551" />
         <source>On-screen keyboard</source>
         <translation>Экранная клавиатура</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="550" />
+        <location filename="../qml/Catalog.qml" line="553" />
         <source>Sticky keys</source>
         <translation>Залипание клавиш</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="550" />
+        <location filename="../qml/Catalog.qml" line="553" />
         <source>Press shortcuts one key at a time</source>
         <translation>Сочетания клавиш можно нажимать по очереди</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="552" />
+        <location filename="../qml/Catalog.qml" line="555" />
         <source>Bounce keys</source>
         <translation>Замедление клавиш</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="552" />
+        <location filename="../qml/Catalog.qml" line="555" />
         <source>Ignore fast repeated key presses</source>
         <translation>Пропускать случайные повторные нажатия</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="557" />
+        <location filename="../qml/Catalog.qml" line="560" />
         <source>System preferences</source>
         <translation>Системные настройки</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="560" />
+        <location filename="../qml/Catalog.qml" line="563" />
         <source>Date and time</source>
         <translation>Дата и время</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="561" />
+        <location filename="../qml/Catalog.qml" line="564" />
         <source>Time zone</source>
         <translation>Часовой пояс</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="564" />
+        <location filename="../qml/Catalog.qml" line="567" />
         <source>Set time zone automatically</source>
         <translation>Определять часовой пояс автоматически</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="565" />
+        <location filename="../qml/Catalog.qml" line="568" />
         <source>Set time automatically</source>
         <translation>Синхронизировать время автоматически</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="567" />
+        <location filename="../qml/Catalog.qml" line="570" />
         <source>Week numbers in the calendar</source>
         <translation>Номера недель в календаре</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="569" />
+        <location filename="../qml/Catalog.qml" line="572" />
         <source>Languages and inputs</source>
         <translation>Языки и ввод</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="570" />
+        <location filename="../qml/Catalog.qml" line="573" />
         <source>Language</source>
         <translation>Язык</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="571" />
+        <location filename="../qml/Catalog.qml" line="574" />
         <source>Applied after you sign in again</source>
         <translation>Применится при следующем входе</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="572" />
+        <location filename="../qml/Catalog.qml" line="575" />
         <source>Formats</source>
         <translation>Форматы</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="573" />
+        <location filename="../qml/Catalog.qml" line="576" />
         <source>Dates, numbers and currency</source>
         <translation>Даты, числа и валюта</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="575" />
+        <location filename="../qml/Catalog.qml" line="578" />
         <source>Boot and sign-in</source>
         <translation>Загрузка и вход</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="575" />
+        <location filename="../qml/Catalog.qml" line="578" />
         <source>Boot splash</source>
         <translation>Заставка загрузки</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="577" />
+        <location filename="../qml/Catalog.qml" line="580" />
         <source>Login screen (SDDM)</source>
         <translation>Экран входа (SDDM)</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="578" />
+        <location filename="../qml/Catalog.qml" line="581" />
         <source>Theme and background of the login screen</source>
         <translation>Тема и фон экрана входа</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="579" />
+        <location filename="../qml/Catalog.qml" line="582" />
         <source>Hardware and updates</source>
         <translation>Оборудование и обновления</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="580" />
+        <location filename="../qml/Catalog.qml" line="583" />
         <source>Software updates</source>
         <translation>Обновления программ</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="582" />
+        <location filename="../qml/Catalog.qml" line="585" />
         <source>Game controllers</source>
         <translation>Игровые контроллеры</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="584" />
+        <location filename="../qml/Catalog.qml" line="587" />
         <source>Thunderbolt</source>
         <translation>Thunderbolt</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="586" />
+        <location filename="../qml/Catalog.qml" line="589" />
         <source>Accounts</source>
         <translation>Учётные записи</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="587" />
+        <location filename="../qml/Catalog.qml" line="590" />
         <source>Users</source>
         <translation>Пользователи</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="588" />
+        <location filename="../qml/Catalog.qml" line="591" />
         <source>Accounts, passwords and avatars</source>
         <translation>Учётные записи, пароли и аватары</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="591" />
+        <location filename="../qml/Catalog.qml" line="594" />
         <source>GNOME services</source>
         <translation>Службы GNOME</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="592" />
+        <location filename="../qml/Catalog.qml" line="595" />
         <source>HypeDE starts only the GNOME services it needs. Optional ones start after you sign in again.</source>
         <translation>HypeDE запускает только необходимые службы GNOME. Изменения вступят в силу после повторного входа.</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="594" />
+        <location filename="../qml/Catalog.qml" line="597" />
         <source>File indexing</source>
         <translation>Индексация файлов</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="594" />
+        <location filename="../qml/Catalog.qml" line="597" />
         <source>Search inside files (LocalSearch)</source>
         <translation>Поиск по содержимому файлов (LocalSearch)</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="597" />
+        <location filename="../qml/Catalog.qml" line="600" />
         <source>Update notifications</source>
         <translation>Уведомления об обновлениях</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="597" />
+        <location filename="../qml/Catalog.qml" line="600" />
         <source>GNOME Software in the background</source>
         <translation>GNOME Software проверяет обновления в фоне</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="600" />
+        <location filename="../qml/Catalog.qml" line="603" />
         <source>Calendar reminders</source>
         <translation>Напоминания календаря</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="602" />
+        <location filename="../qml/Catalog.qml" line="605" />
         <source>Sharing and remote desktop</source>
         <translation>Общий доступ и удалённый рабочий стол</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="605" />
+        <location filename="../qml/Catalog.qml" line="608" />
         <source>Printer notifications</source>
         <translation>Уведомления принтеров</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="607" />
+        <location filename="../qml/Catalog.qml" line="610" />
         <source>Disk health warnings</source>
         <translation>Предупреждения о состоянии дисков</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="609" />
+        <location filename="../qml/Catalog.qml" line="612" />
         <source>Smart cards</source>
         <translation>Смарт-карты</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="611" />
+        <location filename="../qml/Catalog.qml" line="614" />
         <source>USB protection service</source>
         <translation>Служба защиты USB</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="613" />
+        <location filename="../qml/Catalog.qml" line="616" />
         <source>Mobile broadband</source>
         <translation>Мобильная связь</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="613" />
+        <location filename="../qml/Catalog.qml" line="616" />
         <source>SIM cards and modems</source>
         <translation>SIM-карты и модемы</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="615" />
+        <location filename="../qml/Catalog.qml" line="618" />
         <source>GNOME extensions</source>
         <translation>Расширения GNOME</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="616" />
+        <location filename="../qml/Catalog.qml" line="619" />
         <source>Load extensions enabled for regular GNOME. They can break the shelf.</source>
         <translation>Включить расширения из обычного GNOME. Некоторые из них ломают полку.</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="619" />
-        <location filename="../qml/Catalog.qml" line="619" />
+        <location filename="../qml/Catalog.qml" line="622" />
+        <location filename="../qml/Catalog.qml" line="622" />
         <source>Focus modes</source>
         <translation>Режимы фокуса</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="621" />
+        <location filename="../qml/Catalog.qml" line="624" />
         <source>Session</source>
         <translation>Сеанс</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="622" />
+        <location filename="../qml/Catalog.qml" line="625" />
         <source>Restore windows at sign-in</source>
         <translation>Восстанавливать окна при входе</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="624" />
+        <location filename="../qml/Catalog.qml" line="627" />
         <source>Always</source>
         <translation>Всегда</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="626" />
-        <location filename="../qml/Catalog.qml" line="627" />
+        <location filename="../qml/Catalog.qml" line="629" />
+        <location filename="../qml/Catalog.qml" line="630" />
         <source>Startup apps</source>
         <translation>Автозапуск</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="629" />
-        <location filename="../qml/Catalog.qml" line="630" />
+        <location filename="../qml/Catalog.qml" line="632" />
+        <location filename="../qml/Catalog.qml" line="633" />
         <source>HypeDE configuration</source>
         <translation>Конфигурация HypeDE</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="652" />
+        <location filename="../qml/Catalog.qml" line="655" />
         <source>Support the project</source>
         <translation>Поддержать проект</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="654" />
+        <location filename="../qml/Catalog.qml" line="657" />
         <source>Show the “Support me” card</source>
         <translation>Показывать карточку «Support me»</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="385" />
+        <location filename="../qml/Catalog.qml" line="388" />
         <source>Search engine</source>
         <translation>Поисковая система</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="636" />
         <location filename="../qml/Catalog.qml" line="639" />
+        <location filename="../qml/Catalog.qml" line="642" />
         <source>About HypeDE</source>
         <translation>О HypeDE</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="640" />
+        <location filename="../qml/Catalog.qml" line="643" />
         <source>System information</source>
         <translation>Сведения о системе</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="641" />
+        <location filename="../qml/Catalog.qml" line="644" />
         <source>Detailed system information</source>
         <translation>Подробные сведения о системе</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="643" />
+        <location filename="../qml/Catalog.qml" line="646" />
         <source>Battery</source>
         <translation>Батарея</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="645" />
+        <location filename="../qml/Catalog.qml" line="648" />
         <source>Storage devices</source>
         <translation>Накопители</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="647" />
+        <location filename="../qml/Catalog.qml" line="650" />
         <source>USB devices</source>
         <translation>USB-устройства</translation>
     </message>
     <message>
-        <location filename="../qml/Catalog.qml" line="649" />
+        <location filename="../qml/Catalog.qml" line="652" />
         <source>Graphics (Vulkan)</source>
         <translation>Графика (Vulkan)</translation>
     </message>

@@ -600,3 +600,8 @@ RU.update({
     'Loading…': 'Загрузка…',
     'Refresh': 'Обновить',
 })
+
+RU.update({
+    'Four-finger gestures': 'Жесты четырьмя пальцами',
+    'Up — launcher, down — desktop. Three fingers: up — overview, sideways — desks': 'Вверх — лаунчер, вниз — рабочий стол. Тремя пальцами: вверх — обзор, вбок — рабочие столы',
+})

@@ -21,7 +21,7 @@ msgstr ""
 "#-#-#-#-#  shell.pot (PACKAGE VERSION)  #-#-#-#-#\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-06 10:16+0000\n"
+"POT-Creation-Date: 2026-10-06 10:31+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -332,7 +332,7 @@ msgstr ""
 #: apps/files/hypede_files/window.py:88 apps/files/hypede_files/window.py:985
 #: apps/files/hypede_files/window.py:1003
 #: shell/extension/hypede-shell@hypede.dev/actions.js:173
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:814
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:837
 msgid "Files"
 msgstr ""
 
@@ -1076,7 +1076,7 @@ msgid "Security and privacy"
 msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/launcher.js:69
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:749
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:772
 msgid "Apps"
 msgstr ""
 
@@ -1105,47 +1105,47 @@ msgid "Continue where you left off"
 msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/launcher.js:451
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:729
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:752
 #, javascript-format
 msgid "Ask %s"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:689
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:712
 msgid "Actions"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:710
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:733
 msgid "Press Enter to copy the result"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:771
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:776
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:794
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:799
 msgid "Settings"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:832
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:855
 #, javascript-format
 msgid "Search for “%s” in Files"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:833
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:856
 msgid "Search in the home folder"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:856
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:879
 msgid "Web"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:862
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:885
 #, javascript-format
 msgid "Search with %s"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:862
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:885
 msgid "Search the web"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:931
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:954
 msgid "Launcher"
 msgstr ""
 

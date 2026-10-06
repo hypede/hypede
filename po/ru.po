@@ -321,7 +321,7 @@ msgstr "О программе"
 #: apps/files/hypede_files/window.py:88 apps/files/hypede_files/window.py:985
 #: apps/files/hypede_files/window.py:1003
 #: shell/extension/hypede-shell@hypede.dev/actions.js:173
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:814
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:837
 msgid "Files"
 msgstr "Файлы"
 
@@ -1060,7 +1060,7 @@ msgid "Security and privacy"
 msgstr "Безопасность и конфиденциальность"
 
 #: shell/extension/hypede-shell@hypede.dev/launcher.js:69
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:749
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:772
 msgid "Apps"
 msgstr "Приложения"
 
@@ -1089,47 +1089,47 @@ msgid "Continue where you left off"
 msgstr "Недавние файлы"
 
 #: shell/extension/hypede-shell@hypede.dev/launcher.js:451
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:729
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:752
 #, javascript-format
 msgid "Ask %s"
 msgstr "Спросить %s"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:689
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:712
 msgid "Actions"
 msgstr "Действия"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:710
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:733
 msgid "Press Enter to copy the result"
 msgstr "Нажмите Enter, чтобы скопировать результат"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:771
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:776
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:794
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:799
 msgid "Settings"
 msgstr "Настройки"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:832
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:855
 #, javascript-format
 msgid "Search for “%s” in Files"
 msgstr "Найти «%s» в «Файлах»"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:833
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:856
 msgid "Search in the home folder"
 msgstr "Поиск в домашней папке"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:856
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:879
 msgid "Web"
 msgstr "Интернет"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:862
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:885
 #, javascript-format
 msgid "Search with %s"
 msgstr "Искать в %s"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:862
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:885
 msgid "Search the web"
 msgstr "Поиск в интернете"
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:931
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:954
 msgid "Launcher"
 msgstr "Лаунчер"
 

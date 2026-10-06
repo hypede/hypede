@@ -339,6 +339,12 @@
       <description>При перетаскивании окно слегка изгибается и пружинит.</description>
     </key>
 
+    <key name="touchpad-gestures" type="b">
+      <default>true</default>
+      <summary>Жесты четырьмя пальцами</summary>
+      <description>Вверх — лаунчер, вниз — рабочий стол. Движение идёт за пальцами.</description>
+    </key>
+
     <key name="animation-speed" type="d">
       <range min="0.25" max="3.0"/>
       <default>1.0</default>
