@@ -89,6 +89,17 @@
       <default>true</default>
       <summary>Значок корзины на рабочем столе</summary>
     </key>
+    <key name="desktop-widgets" type="s">
+      <default>'[{"type":"clock"},{"type":"weather"},{"type":"media"}]'</default>
+      <summary>Виджеты на рабочем столе</summary>
+      <description>JSON: список {type, x, y}; type — clock, calendar, weather, system, media, note. Без x/y виджет стоит в столбике у правого края.</description>
+    </key>
+
+    <key name="widget-note" type="s">
+      <default>''</default>
+      <summary>Текст заметки на рабочем столе</summary>
+    </key>
+
     <key name="wallpaper-live" type="s">
       <default>''</default>
       <summary>Живые обои</summary>

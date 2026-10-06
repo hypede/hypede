@@ -202,6 +202,8 @@ QtObject {
                     { type: "toggle", schema: shell, key: "desktop-show-trash", title: qsTr("Trash"),
                       visibleWhen: { schema: shell, key: "desktop-icons", value: true } },
                 ] },
+                { title: qsTr("Widgets"), rows: [ { type: "widgets", title: qsTr("Widgets"),
+                      keywords: "widgets clock weather calendar note music виджеты часы погода календарь заметка музыка" } ] },
                 { title: qsTr("Style"), rows: [
                     { type: "theme", title: qsTr("Theme"), keywords: "dark light тёмная светлая тема" },
                     { type: "accent", title: qsTr("Accent color"), keywords: "accent color цвет акцент" },

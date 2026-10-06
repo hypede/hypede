@@ -411,6 +411,8 @@ CONTEXT_RU = {
     ("Catalog", "Zoom"): "Экранная лупа",
     ("AutostartBlock", "System"): "Системная",
     ("System", "System"): "Система",
+    ("WidgetsBlock", "System"): "Система",
+    ("WidgetsBlock", "Calendar"): "Календарь",
 }
 
 # Версия 2.1: вычитанные формулировки и новые разделы. Более поздние
@@ -570,4 +572,15 @@ RU.update({
     "Clear": "Очистить", "New focus mode": "Новый режим фокуса", "My mode": "Мой режим", "Focus modes": "Режимы фокуса",
     "Session": "Сеанс", "Restore windows at sign-in": "Восстанавливать окна при входе", "Ask": "Спрашивать",
     "Always": "Всегда", "Never": "Никогда", "Theme": "Тема", "Do Not Disturb": "Не беспокоить",
+})
+
+RU.update({
+    'Widgets': 'Виджеты',
+    'Clock': 'Часы',
+    'Weather': 'Погода',
+    'City is taken from the Weather app': 'Город берётся из приложения «Погода»',
+    'Processor, memory and battery': 'Процессор, память и батарея',
+    'Music': 'Музыка',
+    'Shown while something is playing': 'Виден, пока что-то играет',
+    'Note': 'Заметка',
 })

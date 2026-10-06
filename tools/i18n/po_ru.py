@@ -286,3 +286,24 @@ RU.update({
     "Turn off %s mode": "Выключить режим «%s»", "%s mode": "Режим «%s»",
 })
 RU.update({"Super+L": "Super+L", "Print Screen": "Print Screen"})
+RU.update({
+    "Clock": "Часы",
+    "Calendar": "Календарь",
+    "Weather": "Погода",
+    "System": "Система",
+    "Music": "Музыка",
+    "Note": "Заметка",
+    "Choose a city in Weather": "Выберите город в «Погоде»",
+    "Install GNOME Weather": "Установите «Погоду» GNOME",
+    "Click to open": "Нажмите, чтобы открыть",
+    "Loading…": "Загрузка…",
+    "Weather unavailable": "Погода недоступна",
+    "Processor": "Процессор",
+    "Memory": "Память",
+    "Battery": "Батарея",
+    "GB": "ГБ",
+    "Write something…": "Напишите что-нибудь…",
+    "Add widget": "Добавить виджет",
+    "Return to the column": "Вернуть в столбик",
+    "Remove widget": "Убрать виджет",
+})

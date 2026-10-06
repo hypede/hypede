@@ -26,6 +26,7 @@ import {WindowAnimations} from './windows.js';
 import {WindowCorners} from './corners.js';
 import {LiveWallpaper} from './livewallpaper.js';
 import {Desktop} from './desktop.js';
+import {Widgets} from './widgets.js';
 import {Extras} from './extras.js';
 import {FocusModes} from './modes.js';
 import {SessionKeeper} from './session.js';
@@ -63,6 +64,7 @@ export default class HypeDEShellExtension extends Extension {
         this._corners = new WindowCorners(this._settings);
         this._live = new LiveWallpaper(this._settings);
         this._desktop = new Desktop(this._settings);
+        this._widgets = new Widgets(this._settings);
         this._extras = new Extras(this._settings);
         this._modes = new FocusModes(this._settings);
         this._session = new SessionKeeper(this._settings);
@@ -75,7 +77,7 @@ export default class HypeDEShellExtension extends Extension {
     disable() {
         // Порядок обратный: полка держит кнопку лаунчера, поэтому уходит
         // раньше самого лаунчера.
-        for (const part of ['_greeting', '_lock', '_quickSettings', '_session', '_modes', '_extras', '_desktop', '_live', '_corners', '_windows', '_notifications', '_overview',
+        for (const part of ['_greeting', '_lock', '_quickSettings', '_session', '_modes', '_extras', '_widgets', '_desktop', '_live', '_corners', '_windows', '_notifications', '_overview',
             '_shelf', '_launcher', '_assistant', '_style', '_decoration', '_guard']) {
             this[part]?.destroy();
             this[part] = null;

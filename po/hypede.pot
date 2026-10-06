@@ -21,7 +21,7 @@ msgstr ""
 "#-#-#-#-#  shell.pot (PACKAGE VERSION)  #-#-#-#-#\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-04 20:21+0000\n"
+"POT-Creation-Date: 2026-10-06 10:16+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -257,6 +257,7 @@ msgid "MB"
 msgstr ""
 
 #: apps/files/hypede_files/util.py:16
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:162
 msgid "GB"
 msgstr ""
 
@@ -1157,14 +1158,18 @@ msgid "Sorry, that didn’t work. Please try again."
 msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/lockscreen.js:336
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:30
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:141
 msgid "System"
 msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/lockscreen.js:337
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:138
 msgid "Processor"
 msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/lockscreen.js:338
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:139
 msgid "Memory"
 msgstr ""
 
@@ -1179,6 +1184,7 @@ msgid "Up for %d h %d min"
 msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/lockscreen.js:382
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:140
 msgid "Battery"
 msgstr ""
 
@@ -1279,4 +1285,60 @@ msgstr ""
 #: shell/extension/hypede-shell@hypede.dev/shelf.js:1139
 #, javascript-format
 msgid "%b %-d"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:29
+msgid "Clock"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:29
+msgid "Calendar"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:29
+msgid "Weather"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:30
+msgid "Music"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:30
+msgid "Note"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:111
+msgid "Choose a city in Weather"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:111
+msgid "Install GNOME Weather"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:112
+msgid "Click to open"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:118
+msgid "Loading…"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:118
+msgid "Weather unavailable"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:225
+msgid "Write something…"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:399
+msgid "Add widget"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:412
+msgid "Return to the column"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:418
+msgid "Remove widget"
 msgstr ""
