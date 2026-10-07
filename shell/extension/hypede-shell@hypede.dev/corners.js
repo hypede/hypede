@@ -35,7 +35,7 @@ if (hd_q.x < hd_radius && hd_q.y < hd_radius) {
 }
 `;
 
-const CornersEffect = GObject.registerClass(
+export const CornersEffect = GObject.registerClass(
 class CornersEffect extends Shell.GLSLEffect {
     _init(radius) {
         super._init();

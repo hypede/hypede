@@ -31,6 +31,7 @@ import {AppMenu} from 'resource:///org/gnome/shell/ui/appMenu.js';
 import {InjectionManager, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
 import {addSecondaryClick} from './util.js';
+import {Backdrop} from './backdrop.js';
 
 const TOOLTIP_DELAY = 350;
 const AUTOHIDE_CHECK_INTERVAL = 350;
@@ -832,8 +833,24 @@ export class Shelf {
         Main.ctrlAltTabManager.addGroup(this.actor, _('Shelf'), 'focus-top-bar-symbolic',
             {sortGroup: 0});
 
-        // Размытие того, что под полкой.
-        this._blur = new Shell.BlurEffect({mode: Shell.BlurMode.BACKGROUND, radius: 30, brightness: 1});
+        // Размытые обои под полкой — отдельный слой прямо под ней.
+        this._backdrop = new Backdrop();
+        this._backdrop.hide();
+        Main.layoutManager.uiGroup.insert_child_below(this._backdrop, this._panelBox);
+        // Положение — перед ближайшей перерисовкой: двигать актёров посреди
+        // раскладки Clutter не любит.
+        const follow = () => {
+            if (this._backdropLater)
+                return;
+            this._backdropLater = global.compositor.get_laters().add(Meta.LaterType.BEFORE_REDRAW, () => {
+                this._backdropLater = 0;
+                this._syncBackdrop();
+                return GLib.SOURCE_REMOVE;
+            });
+        };
+        this.actor.connectObject('notify::allocation', follow, 'notify::mapped', follow, 'style-changed', follow, this);
+        this._panelBox.connectObject('notify::allocation', follow, 'notify::translation-x', follow,
+            'notify::translation-y', follow, 'notify::opacity', follow, this);
 
         // Геометрию полки задаёт HypeDE: GNOME после каждого пересчёта ставит
         // панель наверх во всю ширину — возвращаем по-своему.
@@ -984,14 +1001,28 @@ export class Shelf {
             this.actor.remove_style_class_name(`indicator-${kind}`);
         this.actor.add_style_class_name(`indicator-${this.settings.get_string('shelf-running-indicator')}`);
 
-        // Размытие прямоугольное, поэтому у «островка» со скруглёнными
-        // углами его нет — иначе углы выдали бы себя.
-        const blur = this.settings.get_boolean('shelf-blur') && !floating &&
-            !this.settings.get_boolean('lite-mode');
-        if (blur && !this.actor.get_effect('hypede-blur'))
-            this.actor.add_effect_with_name('hypede-blur', this._blur);
-        else if (!blur && this.actor.get_effect('hypede-blur'))
-            this.actor.remove_effect(this._blur);
+        this._blurOn = this.settings.get_boolean('shelf-blur') && !this.settings.get_boolean('lite-mode');
+        this._syncBackdrop();
+    }
+
+    _syncBackdrop() {
+        const b = this._backdrop;
+        if (!b || !this.actor)
+            return;
+        b.visible = !!this._blurOn && this.actor.mapped;
+        if (!b.visible)
+            return;
+        const [x, y] = this.actor.get_transformed_position();
+        const [w, h] = this.actor.get_transformed_size();
+        b.set_position(Math.round(x), Math.round(y));
+        b.set_size(Math.round(w), Math.round(h));
+        b.opacity = this._panelBox.opacity;
+        let radius = 0;
+        try {
+            radius = this.actor.get_theme_node().get_border_radius(St.Corner.TOPLEFT);
+        } catch {}
+        b.setCornerRadius(radius);
+        b.sync();
     }
 
     // Уведомление для лаунчера и уведомлений: полка переехала.
@@ -1345,6 +1376,11 @@ export class Shelf {
             indicators.orientation = Clutter.Orientation.HORIZONTAL;
 
         Main.ctrlAltTabManager.removeGroup(this.actor);
+        this._panelBox.disconnectObject(this);
+        if (this._backdropLater)
+            global.compositor.get_laters().remove(this._backdropLater);
+        this._backdrop.destroy();
+        this._backdrop = null;
         this.actor.destroy();
         this.actor = null;
         this._panel.show();

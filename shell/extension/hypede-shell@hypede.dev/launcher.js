@@ -9,6 +9,7 @@
 
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
+import Meta from 'gi://Meta';
 import GObject from 'gi://GObject';
 import Gio from 'gi://Gio';
 import Pango from 'gi://Pango';
@@ -30,6 +31,7 @@ import {getFileIndex, destroyFileIndex, normalize as normalizeName} from './file
 import {addSecondaryClick} from './util.js';
 import {getAssistant} from './assistant.js';
 import {findActions} from './actions.js';
+import {Backdrop} from './backdrop.js';
 
 const RESULT_ICON_SIZE = 32;
 const MAX_APP_RESULTS = 6;
@@ -968,7 +970,22 @@ class LauncherButton extends PanelMenu.Button {
         this.view = new LauncherView(launcher, settings);
         this.menu.box.add_child(this.view);
 
-        this._blur = new Shell.BlurEffect({mode: Shell.BlurMode.BACKGROUND, radius: 30, brightness: 0.9});
+        // Под фоном пузыря — размытые обои (см. backdrop.js).
+        const bin = this.menu._boxPointer.bin;
+        bin.set_child(null);
+        this._stack = new St.Widget({layout_manager: new Clutter.BinLayout()});
+        this._backdrop = new Backdrop();
+        this._stack.add_child(this._backdrop);
+        this._stack.add_child(this.menu.box);
+        for (const coordinate of [Clutter.BindCoordinate.POSITION, Clutter.BindCoordinate.SIZE])
+            this._backdrop.add_constraint(new Clutter.BindConstraint({source: this.menu.box, coordinate}));
+        bin.set_child(this._stack);
+        this.menu._boxPointer.connectObject('notify::allocation', () => this._syncBackdropLater(), this);
+        this.connect('destroy', () => {
+            if (this._backdropLater)
+                global.compositor.get_laters().remove(this._backdropLater);
+            this._backdropLater = 0;
+        });
 
         this.menu.connect('open-state-changed', (_menu, open) => {
             // Кольцо «сжимается», пока лаунчер открыт.
@@ -1020,24 +1037,23 @@ class LauncherButton extends PanelMenu.Button {
         else
             this.menu.actor.remove_style_class_name('fullscreen');
 
-        const blur = this._settings.get_boolean('launcher-blur') && !this._settings.get_boolean('lite-mode');
-        const target = boxPointer.bin;
-        if (blur && !target.get_effect('hypede-blur'))
-            target.add_effect_with_name('hypede-blur', this._blur);
-        else if (!blur && target.get_effect('hypede-blur'))
-            target.remove_effect(this._blur);
-        // Размытие пересчитывается в каждом кадре движения — включаем его,
-        // когда анимация открытия закончилась.
-        if (blur) {
-            this._blur.enabled = false;
-            if (this._blurId)
-                GLib.source_remove(this._blurId);
-            this._blurId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 340, () => {
-                this._blurId = 0;
-                this._blur.enabled = true;
-                return GLib.SOURCE_REMOVE;
-            });
-        }
+        this._backdrop.visible = this._settings.get_boolean('launcher-blur') && !this._settings.get_boolean('lite-mode');
+        this._syncBackdropLater();
+    }
+
+    _syncBackdropLater() {
+        if (this._backdropLater || !this._backdrop.visible)
+            return;
+        this._backdropLater = global.compositor.get_laters().add(Meta.LaterType.BEFORE_REDRAW, () => {
+            this._backdropLater = 0;
+            let radius = 0;
+            try {
+                radius = this.menu.box.get_theme_node().get_border_radius(St.Corner.TOPLEFT);
+            } catch {}
+            this._backdrop.setCornerRadius(radius);
+            this._backdrop.sync();
+            return GLib.SOURCE_REMOVE;
+        });
     }
 });
 
