@@ -12,6 +12,13 @@ esac
 name=${1#app-}
 name=${name%@autostart}
 id=$(systemd-escape --unescape -- "$name" 2>/dev/null) || id=$name
+# Окно ввода пароля (агент PolicyKit) встроено в оболочку. Второй агент —
+# от XFCE, MATE, KDE, LXQt и т. п. — не может зарегистрироваться и при входе
+# показывает ошибку «An authentication agent already exists».
+lower=$(printf '%s' "$id" | tr '[:upper:]' '[:lower:]')
+case $lower in
+    *polkit*|*policykit*|soteria) exit 1 ;;
+esac
 blocked=$(gsettings get dev.hypede.session disabled-autostart 2>/dev/null) || exit 0
 case $blocked in
     *"'$id'"*) exit 1 ;;
