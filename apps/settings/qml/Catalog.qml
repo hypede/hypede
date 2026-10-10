@@ -37,6 +37,7 @@ QtObject {
     readonly property string power: "org.gnome.settings-daemon.plugins.power"
     readonly property string sound: "org.gnome.desktop.sound"
     readonly property string shell: "dev.hypede.shell"
+    readonly property string island: "org.gnome.shell.extensions.dynamic-island"
     readonly property string session: "dev.hypede.session"
 
     readonly property var pages: [
@@ -206,6 +207,17 @@ QtObject {
                       visibleWhen: { schema: shell, key: "desktop-icons", value: true } },
                     { type: "toggle", schema: shell, key: "desktop-show-trash", title: qsTr("Trash"),
                       visibleWhen: { schema: shell, key: "desktop-icons", value: true } },
+                ] },
+                { title: qsTr("Dynamic Island"), rows: [
+                    { type: "toggle", schema: island, key: "island-enabled", title: qsTr("Dynamic Island"),
+                      subtitle: qsTr("A capsule on the shelf with music, downloads, timers and recording; click it for clipboard, file shelf, tools and notes"),
+                      icon: "view-app-grid-symbolic", keywords: "island dynamic остров динамический капсула dynamiclinux" },
+                    { type: "toggle", schema: shell, key: "island-follow-theme", title: qsTr("Match the HypeDE theme"),
+                      subtitle: qsTr("Colours, font, corners and animation speed follow your theme"),
+                      visibleWhen: { schema: island, key: "island-enabled", value: true } },
+                    { type: "run", argv: ["gnome-extensions", "prefs", "dynamic-island@dynamiclinux"], program: "gnome-extensions",
+                      title: qsTr("Island settings"), subtitle: qsTr("Tabs, capsule contents, AI, voice input, pet"),
+                      visibleWhen: { schema: island, key: "island-enabled", value: true } },
                 ] },
                 { title: qsTr("Widgets"), rows: [ { type: "widgets", title: qsTr("Widgets"),
                       keywords: "widgets clock weather calendar note music виджеты часы погода календарь заметка музыка" } ] },

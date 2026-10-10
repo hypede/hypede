@@ -89,6 +89,12 @@
       <default>true</default>
       <summary>Значок корзины на рабочем столе</summary>
     </key>
+    <key name="island-follow-theme" type="b">
+      <default>true</default>
+      <summary>Динамический остров в теме HypeDE</summary>
+      <description>Цвета, шрифт, скругления и скорость анимаций острова берутся из темы HypeDE.</description>
+    </key>
+
     <key name="desktop-widgets" type="s">
       <default>'[{"type":"clock"},{"type":"weather"},{"type":"media"}]'</default>
       <summary>Виджеты на рабочем столе</summary>

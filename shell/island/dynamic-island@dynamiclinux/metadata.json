@@ -1,0 +1,10 @@
+{
+  "uuid": "dynamic-island@dynamiclinux",
+  "name": "Dynamic Island",
+  "description": "Динамический остров вместо верхней панели GNOME: музыка, буфер обмена, полка файлов, загрузки, погода, ИИ-чат (NVIDIA NIM), голос в текст, запись экрана, OCR, лаунчер, калькулятор, заметки, питомец и многое другое. Наведите курсор — и остров раскроется.",
+  "shell-version": ["45", "46", "47", "48", "49", "50"],
+  "url": "https://github.com/RBXLU/DynamicLinux",
+  "settings-schema": "org.gnome.shell.extensions.dynamic-island",
+  "gettext-domain": "dynamic-island",
+  "version": 1
+}

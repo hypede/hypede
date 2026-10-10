@@ -57,7 +57,7 @@ ASSISTANT_PY := $(wildcard apps/assistant/hypede_assistant/*.py)
 DESKTOP_PY := $(wildcard apps/desktop/hypede_desktop/*.py)
 WALLPAPERS := $(wildcard assets/wallpapers/*.svg) $(wildcard assets/wallpapers/*.png)
 
-.PHONY: all settings auth mo css pot check install install-shell install-session install-data \
+.PHONY: all settings auth mo css pot check install install-shell install-island install-session install-data \
         install-files install-assistant install-theme install-desktop install-settings install-user uninstall-user clean
 
 all: settings auth mo
@@ -97,13 +97,25 @@ check:
 	python3 -m unittest discover -s apps/theme/tests -t apps/theme
 	python3 -m unittest discover -s apps/files/tests -t apps/files
 	node shell/tests/calculator.test.mjs
-	glib-compile-schemas --strict --dry-run data/schemas
+	d=$$(mktemp -d) && cp data/schemas/* shell/island/$(ISLAND)/schemas/*.xml $$d/ && \
+		glib-compile-schemas --strict --dry-run $$d; r=$$?; rm -rf $$d; exit $$r
 	sh -n session/hypede-session.in && sh -n session/hypede-session-cleanup.in && sh -n session/hypede-autostart-filter && sh -n session/hypede-admin
 	msgfmt --check -o /dev/null po/ru.po
 
 # ---------- установка ----------
 
-install: install-shell install-session install-data install-files install-assistant install-theme install-desktop install-settings
+install: install-shell install-island install-session install-data install-files install-assistant install-theme install-desktop install-settings
+
+# Динамический остров (DynamicLinux, shell/island). Схема — в системные, чтобы
+# работали умолчания HypeDE из 90_hypede.gschema.override.
+ISLAND    := dynamic-island@dynamiclinux
+ISLANDDIR := $(SHELLDATADIR)/gnome-shell/extensions/$(ISLAND)
+install-island:
+	$(INSTALL) -d '$(DESTDIR)$(ISLANDDIR)'
+	cd shell/island/$(ISLAND) && find . -type f ! -path './schemas/*' -exec \
+		$(INSTALL) -Dm644 {} '$(DESTDIR)$(ISLANDDIR)'/{} \;
+	$(INSTALL) -Dm644 shell/island/$(ISLAND)/schemas/org.gnome.shell.extensions.dynamic-island.gschema.xml \
+		'$(DESTDIR)$(DATADIR)'/glib-2.0/schemas/org.gnome.shell.extensions.dynamic-island.gschema.xml
 
 install-shell:
 	$(INSTALL) -d '$(DESTDIR)$(EXTDIR)'

@@ -36,6 +36,10 @@ GNOME session keeps working as before.
   Files and Settings. The assistant cannot run commands.
 - Its own icon theme (Material Symbols), sounds, wallpapers and a greeting
   at sign-in.
+- Dynamic Island from [DynamicLinux](https://github.com/RBXLU/DynamicLinux):
+  a capsule on the shelf with music, downloads, timers and recording; click it
+  for the clipboard, a file shelf, OCR, a colour picker, notes and more. It
+  follows the HypeDE theme.
 
 ## Screenshots
 
@@ -118,4 +122,6 @@ tools/             generators for themes, icons, sounds and screenshots
 
 [GPL-3.0-or-later](LICENSE). Material Symbols icons are Apache 2.0
 (`data/icons/HypeDE/LICENSE`). The KDE colour schemes in
-`apps/settings/colors/` are based on Breeze.
+`apps/settings/colors/` are based on Breeze. Dynamic Island
+(`shell/island/`) is [DynamicLinux](https://github.com/RBXLU/DynamicLinux),
+GPL-3.0.

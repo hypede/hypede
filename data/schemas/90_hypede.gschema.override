@@ -41,3 +41,15 @@ favorite-apps=['org.chromium.Chromium.desktop', 'chromium.desktop', 'google-chro
 [org.gnome.shell.keybindings:HypeDE]
 toggle-message-tray=['<Super>m']
 toggle-application-view=[]
+
+# Динамический остров (DynamicLinux) в духе Chrome OS: живёт на полке, а не
+# вместо верхней панели; открывается щелчком; уведомления остаются у HypeDE;
+# лаунчер и калькулятор — свои, поэтому этих вкладок у острова нет.
+[org.gnome.shell.extensions.dynamic-island]
+replace-panel=false
+reserve-space=false
+hover-expand=false
+island-notifications=false
+compact-width=200
+compact-layout='{"media":"left","pet":"left","clock":"hidden","weather":"right","cpu":"hidden","fps":"hidden","ram":"hidden","temp":"hidden","net":"hidden","battery":"hidden","date":"hidden","keyboard":"hidden"}'
+enabled-tabs=['home', 'clipboard', 'shelf', 'ai', 'tools', 'text', 'notes', 'system', 'weather', 'timer', 'pet', 'settings']

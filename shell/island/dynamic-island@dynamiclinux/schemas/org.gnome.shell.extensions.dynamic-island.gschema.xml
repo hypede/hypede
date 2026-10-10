@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<schemalist gettext-domain="dynamic-island">
+  <schema id="org.gnome.shell.extensions.dynamic-island" path="/org/gnome/shell/extensions/dynamic-island/">
+
+    <!-- ===================== Общие ===================== -->
+    <key name="island-enabled" type="b">
+      <default>true</default>
+      <summary>Показывать остров</summary>
+      <description>Если выключено — остров скрыт, а стандартная панель GNOME возвращается на место.</description>
+    </key>
+    <key name="replace-panel" type="b">
+      <default>true</default>
+      <summary>Заменять верхнюю панель GNOME</summary>
+    </key>
+    <key name="show-panel-in-overview" type="b">
+      <default>true</default>
+      <summary>Показывать стандартную панель в режиме «Обзор»</summary>
+    </key>
+    <key name="reserve-space" type="b">
+      <default>true</default>
+      <summary>Резервировать место сверху, чтобы окна не заезжали под остров</summary>
+    </key>
+    <key name="hide-in-fullscreen" type="b">
+      <default>true</default>
+      <summary>Скрывать остров в полноэкранных приложениях</summary>
+    </key>
+    <key name="hover-expand" type="b">
+      <default>true</default>
+      <summary>Раскрывать остров при наведении</summary>
+    </key>
+    <key name="hover-delay" type="i">
+      <range min="0" max="3000"/>
+      <default>180</default>
+      <summary>Задержка перед раскрытием (мс)</summary>
+    </key>
+    <key name="collapse-delay" type="i">
+      <range min="0" max="5000"/>
+      <default>450</default>
+      <summary>Задержка перед сворачиванием (мс)</summary>
+    </key>
+    <key name="toggle-island-shortcut" type="as">
+      <default><![CDATA[['<Super><Alt>d']]]></default>
+      <summary>Горячая клавиша: включить/выключить остров</summary>
+    </key>
+    <key name="expand-shortcut" type="as">
+      <default><![CDATA[['<Super><Alt>space']]]></default>
+      <summary>Горячая клавиша: раскрыть остров с поиском</summary>
+    </key>
+    <key name="island-notifications" type="b">
+      <default>true</default>
+      <summary>Показывать уведомления внутри острова вместо баннеров</summary>
+    </key>
+    <key name="live-activities" type="b">
+      <default>true</default>
+      <summary>Живые активности (короткие всплывающие события)</summary>
+    </key>
+    <key name="activity-duration" type="i">
+      <range min="1000" max="15000"/>
+      <default>3200</default>
+      <summary>Длительность живой активности (мс)</summary>
+    </key>
+    <key name="activity-sources" type="as">
+      <default>['music', 'clipboard', 'downloads', 'notifications', 'timer', 'pet', 'recording', 'voice', 'system']</default>
+      <summary>Какие события показывать как живые активности</summary>
+    </key>
+
+    <!-- ===================== Внешний вид ===================== -->
+    <key name="theme-preset" type="s">
+      <default>'midnight'</default>
+      <summary>Пресет темы</summary>
+    </key>
+    <key name="bg-color" type="s">
+      <default>'rgba(0,0,0,0.94)'</default>
+      <summary>Цвет фона</summary>
+    </key>
+    <key name="fg-color" type="s">
+      <default>'#ffffff'</default>
+      <summary>Цвет текста</summary>
+    </key>
+    <key name="accent-color" type="s">
+      <default>'#0a84ff'</default>
+      <summary>Акцентный цвет</summary>
+    </key>
+    <key name="border-color" type="s">
+      <default>'rgba(255,255,255,0.08)'</default>
+      <summary>Цвет рамки</summary>
+    </key>
+    <key name="border-width" type="i">
+      <range min="0" max="6"/>
+      <default>1</default>
+      <summary>Толщина рамки</summary>
+    </key>
+    <key name="compact-radius" type="i">
+      <range min="0" max="60"/>
+      <default>20</default>
+      <summary>Скругление в свёрнутом виде</summary>
+    </key>
+    <key name="expanded-radius" type="i">
+      <range min="0" max="80"/>
+      <default>34</default>
+      <summary>Скругление в раскрытом виде</summary>
+    </key>
+    <key name="compact-width" type="i">
+      <range min="120" max="1200"/>
+      <default>300</default>
+      <summary>Ширина в свёрнутом виде</summary>
+    </key>
+    <key name="compact-height" type="i">
+      <range min="24" max="80"/>
+      <default>36</default>
+      <summary>Высота в свёрнутом виде</summary>
+    </key>
+    <key name="expanded-width" type="i">
+      <range min="560" max="1800"/>
+      <default>820</default>
+      <summary>Ширина в раскрытом виде</summary>
+    </key>
+    <key name="expanded-height" type="i">
+      <range min="360" max="1200"/>
+      <default>480</default>
+      <summary>Высота в раскрытом виде</summary>
+    </key>
+    <key name="top-margin" type="i">
+      <range min="0" max="60"/>
+      <default>6</default>
+      <summary>Отступ сверху</summary>
+    </key>
+    <key name="font-size" type="i">
+      <range min="8" max="24"/>
+      <default>13</default>
+      <summary>Размер шрифта</summary>
+    </key>
+    <key name="font-family" type="s">
+      <default>''</default>
+      <summary>Шрифт (пусто — системный)</summary>
+    </key>
+    <key name="shadow" type="b">
+      <default>true</default>
+      <summary>Тень</summary>
+    </key>
+    <key name="blur" type="b">
+      <default>false</default>
+      <summary>Размытие фона под островом</summary>
+    </key>
+
+    <!-- ===================== Анимации ===================== -->
+    <key name="animation-style" type="s">
+      <choices>
+        <choice value="spring"/>
+        <choice value="smooth"/>
+        <choice value="bounce"/>
+        <choice value="elastic"/>
+        <choice value="linear"/>
+        <choice value="none"/>
+      </choices>
+      <default>'spring'</default>
+      <summary>Стиль анимации</summary>
+    </key>
+    <key name="animation-duration" type="i">
+      <range min="0" max="2000"/>
+      <default>480</default>
+      <summary>Длительность анимации (мс)</summary>
+    </key>
+    <key name="content-fade" type="b">
+      <default>true</default>
+      <summary>Плавное появление содержимого</summary>
+    </key>
+    <key name="pulse-on-activity" type="b">
+      <default>true</default>
+      <summary>Пульсация при событиях</summary>
+    </key>
+    <key name="music-visualizer" type="b">
+      <default>true</default>
+      <summary>Анимированный эквалайзер при воспроизведении</summary>
+    </key>
+    <key name="tab-transition" type="s">
+      <choices>
+        <choice value="slide"/>
+        <choice value="fade"/>
+        <choice value="zoom"/>
+        <choice value="none"/>
+      </choices>
+      <default>'slide'</default>
+      <summary>Анимация переключения вкладок</summary>
+    </key>
+
+    <!-- ===================== Модули ===================== -->
+    <key name="compact-layout" type="s">
+      <default>'{"media":"left","pet":"left","clock":"center","weather":"right","cpu":"right","fps":"hidden","ram":"hidden","temp":"hidden","net":"hidden","battery":"hidden","date":"hidden","keyboard":"hidden"}'</default>
+      <summary>Расположение виджетов в свёрнутом острове (JSON)</summary>
+    </key>
+    <key name="enabled-tabs" type="as">
+      <default>['home', 'launcher', 'clipboard', 'shelf', 'ai', 'tools', 'text', 'notes', 'calc', 'system', 'weather', 'timer', 'pet', 'settings']</default>
+      <summary>Включённые вкладки</summary>
+    </key>
+    <key name="default-tab" type="s">
+      <default>'home'</default>
+      <summary>Вкладка по умолчанию</summary>
+    </key>
+    <key name="remember-tab" type="b">
+      <default>true</default>
+      <summary>Запоминать последнюю вкладку</summary>
+    </key>
+    <key name="clock-format" type="s">
+      <default>'%H:%M'</default>
+      <summary>Формат часов (strftime)</summary>
+    </key>
+    <key name="date-format" type="s">
+      <default>'%a, %e %b'</default>
+      <summary>Формат даты (strftime)</summary>
+    </key>
+    <key name="update-interval" type="i">
+      <range min="500" max="10000"/>
+      <default>1500</default>
+      <summary>Интервал обновления системных данных (мс)</summary>
+    </key>
+
+    <!-- ===================== Буфер обмена и файлы ===================== -->
+    <key name="clipboard-enabled" type="b">
+      <default>true</default>
+      <summary>История буфера обмена</summary>
+    </key>
+    <key name="clipboard-history-size" type="i">
+      <range min="5" max="500"/>
+      <default>60</default>
+      <summary>Размер истории буфера</summary>
+    </key>
+    <key name="clipboard-images" type="b">
+      <default>true</default>
+      <summary>Сохранять изображения в истории</summary>
+    </key>
+    <key name="clipboard-persist" type="b">
+      <default>true</default>
+      <summary>Сохранять историю между перезапусками</summary>
+    </key>
+    <key name="clipboard-private" type="b">
+      <default>false</default>
+      <summary>Приватный режим (временно не записывать историю)</summary>
+    </key>
+    <key name="shelf-auto-add" type="b">
+      <default>true</default>
+      <summary>Автоматически класть скопированные файлы на полку</summary>
+    </key>
+    <key name="shelf-copy-files" type="b">
+      <default>false</default>
+      <summary>Делать временную копию файлов при добавлении на полку</summary>
+    </key>
+    <key name="downloads-dir" type="s">
+      <default>''</default>
+      <summary>Папка загрузок (пусто — системная)</summary>
+    </key>
+
+    <!-- ===================== ИИ ===================== -->
+    <key name="ai-endpoint" type="s">
+      <default>'https://integrate.api.nvidia.com/v1/chat/completions'</default>
+      <summary>Адрес API (OpenAI-совместимый, по умолчанию NVIDIA NIM)</summary>
+    </key>
+    <key name="ai-api-key" type="s">
+      <default>''</default>
+      <summary>API-ключ</summary>
+    </key>
+    <key name="ai-model" type="s">
+      <default>'meta/llama-3.3-70b-instruct'</default>
+      <summary>Модель</summary>
+    </key>
+    <key name="ai-system-prompt" type="s">
+      <default>'Ты — дружелюбный ассистент, встроенный в динамический остров рабочего стола Linux. Отвечай кратко и по делу, на языке пользователя.'</default>
+      <summary>Системный промпт</summary>
+    </key>
+    <key name="ai-temperature" type="d">
+      <range min="0" max="2"/>
+      <default>0.6</default>
+      <summary>Температура</summary>
+    </key>
+    <key name="ai-max-tokens" type="i">
+      <range min="64" max="32768"/>
+      <default>1500</default>
+      <summary>Максимум токенов</summary>
+    </key>
+    <key name="ai-stream" type="b">
+      <default>true</default>
+      <summary>Потоковый вывод ответа</summary>
+    </key>
+    <key name="ai-hide-thinking" type="b">
+      <default>true</default>
+      <summary>Скрывать блоки размышлений (&lt;think&gt;)</summary>
+    </key>
+
+    <!-- ===================== Погода ===================== -->
+    <key name="weather-city" type="s">
+      <default>''</default>
+      <summary>Город (пусто — определить по IP)</summary>
+    </key>
+    <key name="weather-units" type="s">
+      <choices>
+        <choice value="celsius"/>
+        <choice value="fahrenheit"/>
+      </choices>
+      <default>'celsius'</default>
+      <summary>Единицы температуры</summary>
+    </key>
+    <key name="weather-interval" type="i">
+      <range min="5" max="240"/>
+      <default>20</default>
+      <summary>Интервал обновления погоды (мин)</summary>
+    </key>
+
+    <!-- ===================== Голос ===================== -->
+    <key name="voice-backend" type="s">
+      <choices>
+        <choice value="command"/>
+        <choice value="api"/>
+      </choices>
+      <default>'command'</default>
+      <summary>Способ распознавания речи</summary>
+    </key>
+    <key name="voice-command" type="s">
+      <default>'whisper-cli -m ~/.local/share/whisper/ggml-base.bin -l {lang} -nt -np -f {file}'</default>
+      <summary>Команда распознавания ({file} — путь к wav, {lang} — язык)</summary>
+    </key>
+    <key name="voice-api-endpoint" type="s">
+      <default>'https://api.openai.com/v1/audio/transcriptions'</default>
+      <summary>OpenAI-совместимый адрес транскрибации</summary>
+    </key>
+    <key name="voice-api-key" type="s">
+      <default>''</default>
+      <summary>API-ключ для транскрибации</summary>
+    </key>
+    <key name="voice-api-model" type="s">
+      <default>'whisper-1'</default>
+      <summary>Модель транскрибации</summary>
+    </key>
+    <key name="voice-language" type="s">
+      <default>'ru'</default>
+      <summary>Язык речи</summary>
+    </key>
+    <key name="voice-auto-copy" type="b">
+      <default>true</default>
+      <summary>Копировать распознанный текст в буфер</summary>
+    </key>
+    <key name="voice-auto-paste" type="b">
+      <default>false</default>
+      <summary>Вставлять распознанный текст в активное окно</summary>
+    </key>
+
+    <!-- ===================== OCR / Запись ===================== -->
+    <key name="ocr-languages" type="s">
+      <default>'rus+eng'</default>
+      <summary>Языки tesseract</summary>
+    </key>
+    <key name="ocr-command" type="s">
+      <default>'tesseract {file} stdout -l {lang} --psm 6'</default>
+      <summary>Команда OCR</summary>
+    </key>
+    <key name="recording-dir" type="s">
+      <default>''</default>
+      <summary>Папка для записей экрана (пусто — ~/Видео/Screencasts)</summary>
+    </key>
+    <key name="recording-cursor" type="b">
+      <default>true</default>
+      <summary>Показывать курсор на записи</summary>
+    </key>
+
+    <!-- ===================== Лаунчер ===================== -->
+    <key name="terminal" type="s">
+      <default>'auto'</default>
+      <summary>Терминал (auto — определить автоматически)</summary>
+    </key>
+    <key name="custom-commands" type="as">
+      <default>['📂 Домашняя папка|xdg-open ~', '🧹 Очистить корзину|gio trash --empty', '🔄 Обновить систему|!sudo apt update &amp;&amp; sudo apt upgrade', '📊 Диск|>df -h /']</default>
+      <summary>Быстрые команды (Название|команда; ! — в терминале, &gt; — показать вывод)</summary>
+    </key>
+    <key name="search-engine" type="s">
+      <default>'https://duckduckgo.com/?q=%s'</default>
+      <summary>Поисковик для запросов из лаунчера</summary>
+    </key>
+
+    <!-- ===================== Питомец ===================== -->
+    <key name="pet-enabled" type="b">
+      <default>true</default>
+      <summary>Питомец</summary>
+    </key>
+    <key name="pet-type" type="s">
+      <default>'cat'</default>
+      <summary>Вид питомца</summary>
+    </key>
+    <key name="pet-name" type="s">
+      <default>'Мурзик'</default>
+      <summary>Имя питомца</summary>
+    </key>
+    <key name="pet-state" type="s">
+      <default>''</default>
+      <summary>Состояние питомца (JSON, служебное)</summary>
+    </key>
+    <key name="pet-speed" type="i">
+      <range min="1" max="10"/>
+      <default>4</default>
+      <summary>Скорость питомца</summary>
+    </key>
+
+    <!-- ===================== Служебное ===================== -->
+    <key name="last-tab" type="s">
+      <default>'home'</default>
+      <summary>Последняя открытая вкладка</summary>
+    </key>
+    <key name="weather-cache" type="s">
+      <default>''</default>
+      <summary>Кэш геолокации погоды (JSON, служебное)</summary>
+    </key>
+  </schema>
+</schemalist>

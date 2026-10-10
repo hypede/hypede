@@ -28,6 +28,7 @@ import {LiveWallpaper} from './livewallpaper.js';
 import {Desktop} from './desktop.js';
 import {Widgets} from './widgets.js';
 import {Gestures} from './gestures.js';
+import {IslandBridge} from './islandbridge.js';
 import {Extras} from './extras.js';
 import {FocusModes} from './modes.js';
 import {SessionKeeper} from './session.js';
@@ -59,6 +60,7 @@ export default class HypeDEShellExtension extends Extension {
         this._assistant = new Assistant();
         this._launcher = new Launcher(this._settings);
         this._shelf = new Shelf(this._settings, this._launcher);
+        this._island = new IslandBridge(this._settings, this._shelf);
         this._overview = new OverviewTweaks(this._settings, this._launcher);
         this._gestures = new Gestures(this._settings, this._launcher);
         this._notifications = new NotificationTweaks(this._settings);
@@ -80,7 +82,7 @@ export default class HypeDEShellExtension extends Extension {
         // Порядок обратный: полка держит кнопку лаунчера, поэтому уходит
         // раньше самого лаунчера.
         for (const part of ['_greeting', '_lock', '_quickSettings', '_session', '_modes', '_extras', '_widgets', '_desktop', '_live', '_corners', '_windows', '_notifications', '_gestures', '_overview',
-            '_shelf', '_launcher', '_assistant', '_style', '_decoration', '_guard']) {
+            '_island', '_shelf', '_launcher', '_assistant', '_style', '_decoration', '_guard']) {
             this[part]?.destroy();
             this[part] = null;
         }

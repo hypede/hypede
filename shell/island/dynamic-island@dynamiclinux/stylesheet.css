@@ -1,0 +1,362 @@
+/* ==========================================================================
+   Dynamic Island — стили.
+   Цвета фона/текста/акцента задаются из настроек инлайном (theme.js),
+   здесь — структура, отступы и полупрозрачные «поверхности».
+   ========================================================================== */
+
+/* ---------- сам остров ---------- */
+.di-island {
+  color: #fff;
+  font-feature-settings: "tnum";
+}
+
+.di-compact-box {
+  padding: 0 14px;
+  spacing: 10px;
+}
+
+.di-slot { spacing: 8px; }
+
+.di-cw { spacing: 5px; }
+.di-cw-clock { font-weight: 700; font-size: 1.05em; }
+.di-cw-text { font-weight: 600; font-size: 0.92em; }
+.di-cw-emoji { font-size: 1.05em; }
+.di-cw-art { border-radius: 6px; }
+.di-mono { font-feature-settings: "tnum"; }
+
+.di-indicators { spacing: 8px; }
+.di-ind { spacing: 4px; }
+.di-rec-dot { background-color: #ff453a; border-radius: 4px; }
+
+.di-visualizer { spacing: 2px; padding: 0 2px; }
+.di-visualizer-bar { background-color: #0a84ff; border-radius: 2px; }
+
+/* ---------- живая активность ---------- */
+.di-activity-box { padding: 0 16px 0 12px; spacing: 12px; }
+.di-activity-icon { min-width: 28px; }
+.di-activity-emoji { font-size: 26px; }
+.di-activity-texts { spacing: 2px; }
+.di-activity-title { font-weight: 700; }
+.di-activity-subtitle { font-size: 0.88em; }
+.di-activity-actions { spacing: 4px; }
+.di-activity-btn { padding: 6px; border-radius: 99px; }
+
+/* ---------- раскрытый остров ---------- */
+.di-expanded { padding: 10px 14px 14px 14px; spacing: 8px; }
+.di-header { spacing: 8px; padding: 0 2px; }
+.di-tabs { spacing: 2px; }
+.di-tab { padding: 7px 9px; border-radius: 12px; background-color: transparent; }
+.di-tab:hover { background-color: rgba(255,255,255,0.10); }
+.di-header-title { font-weight: 700; padding-left: 8px; }
+.di-header-clock { font-weight: 700; padding: 0 6px; }
+.di-header-btn { padding: 6px; border-radius: 99px; }
+.di-toast {
+  spacing: 6px;
+  padding: 4px 12px;
+  border-radius: 99px;
+  background-color: rgba(255,255,255,0.10);
+}
+.di-toast-text { font-size: 0.9em; font-weight: 600; }
+
+.di-page { spacing: 10px; }
+.di-col { spacing: 10px; }
+
+/* ---------- базовые элементы ---------- */
+.di-btn {
+  border-radius: 12px;
+  padding: 6px 10px;
+  background-color: rgba(255,255,255,0.08);
+  transition-duration: 150ms;
+}
+.di-btn:hover { background-color: rgba(255,255,255,0.16); }
+.di-btn:active { background-color: rgba(255,255,255,0.24); }
+.di-btn:focus { box-shadow: inset 0 0 0 2px rgba(255,255,255,0.35); }
+.di-btn-content { spacing: 6px; }
+.di-btn-label { font-weight: 600; }
+
+.di-icon-btn { padding: 7px; border-radius: 99px; }
+.di-flat { background-color: transparent; }
+.di-flat:hover { background-color: rgba(255,255,255,0.12); }
+.di-mini { padding: 4px 6px; font-size: 0.85em; }
+
+.di-card {
+  background-color: rgba(255,255,255,0.07);
+  border-radius: 18px;
+  padding: 12px 14px;
+  spacing: 8px;
+}
+
+.di-heading { font-weight: 800; font-size: 1.08em; }
+.di-section-title { font-weight: 700; font-size: 0.82em; color: rgba(255,255,255,0.55); padding: 4px 2px 0 2px; }
+.di-small { font-size: 0.86em; }
+.di-tiny { font-size: 0.74em; }
+.di-dim { color: rgba(255,255,255,0.62); }
+
+.di-entry {
+  color: #fff;
+  background-color: rgba(255,255,255,0.08);
+  border-radius: 12px;
+  padding: 7px 12px;
+  border: 1px solid rgba(255,255,255,0.06);
+  caret-color: #fff;
+  selection-background-color: rgba(10,132,255,0.5);
+  selected-color: #fff;
+}
+.di-entry:focus { border: 1px solid rgba(255,255,255,0.35); }
+.di-entry .capslock-warning { icon-size: 16px; }
+.di-entry-multiline { padding: 10px 12px; }
+
+.di-progress { background-color: rgba(255,255,255,0.12); border-radius: 99px; }
+.di-progress-fill { background-color: #0a84ff; border-radius: 99px; }
+
+.di-chip { padding: 2px 8px; border-radius: 99px; font-size: 0.78em; font-weight: 700; }
+.di-chips { spacing: 6px; }
+.di-chip-btn { padding: 5px 11px; border-radius: 99px; font-size: 0.9em; }
+.di-chips-scroll { max-height: 40px; }
+
+.di-grid { spacing: 6px; }
+.di-grid-row { spacing: 6px; }
+
+.di-row { spacing: 10px; padding: 6px 4px; }
+.di-row-title { font-weight: 600; }
+.di-row-actions { spacing: 2px; }
+
+.di-switch {
+  border-radius: 99px;
+  background-color: rgba(255,255,255,0.18);
+  transition-duration: 180ms;
+}
+.di-switch-knob { background-color: #fff; border-radius: 9px; box-shadow: 0 1px 3px rgba(0,0,0,0.3); }
+
+.di-empty { spacing: 6px; padding: 20px; }
+.di-empty-emoji { font-size: 36px; }
+
+.di-toolbar { spacing: 6px; }
+
+/* ---------- главная ---------- */
+.di-clock-card { padding: 12px 16px; }
+.di-big-clock { font-size: 2.8em; font-weight: 800; }
+.di-clip-mini, .di-note-mini { border-radius: 18px; padding: 10px 14px; background-color: rgba(255,255,255,0.07); }
+.di-clip-mini:hover, .di-note-mini:hover { background-color: rgba(255,255,255,0.12); }
+.di-clip-mini StBoxLayout, .di-note-mini StBoxLayout { spacing: 4px; }
+.di-weather-mini, .di-sys-mini { border-radius: 18px; padding: 10px 14px; background-color: rgba(255,255,255,0.07); }
+.di-weather-mini:hover, .di-sys-mini:hover { background-color: rgba(255,255,255,0.12); }
+.di-weather-emoji { font-size: 30px; padding-right: 10px; }
+.di-weather-temp { font-size: 1.4em; font-weight: 800; }
+.di-stat-row { spacing: 8px; padding: 2px 0; }
+.di-stat-name { min-width: 34px; font-weight: 700; }
+.di-stat-value { min-width: 38px; text-align: right; }
+
+.di-toggles { spacing: 6px; }
+.di-toggle { padding: 10px; border-radius: 14px; }
+.di-sliders { padding: 6px 10px; spacing: 2px; }
+.di-slider-row { spacing: 4px; }
+.di-action { padding: 8px 4px; border-radius: 14px; font-size: 0.82em; }
+.di-action .di-btn-content { spacing: 4px; }
+.di-power-row { spacing: 4px; }
+.di-power-btn { padding: 8px; border-radius: 12px; }
+
+/* ---------- музыка ---------- */
+.di-media-card { padding: 14px; spacing: 10px; }
+.di-media-top { spacing: 14px; }
+.di-media-texts { spacing: 3px; }
+.di-media-app { spacing: 6px; }
+.di-media-title { font-size: 1.15em; font-weight: 800; }
+.di-media-artist { font-size: 0.95em; }
+.di-media-progress { spacing: 8px; }
+.di-media-controls { spacing: 10px; }
+.di-media-btn { padding: 8px; border-radius: 99px; background-color: transparent; }
+.di-media-btn:hover { background-color: rgba(255,255,255,0.12); }
+.di-media-btn-small { padding: 6px; border-radius: 99px; background-color: transparent; }
+.di-media-btn-small:hover { background-color: rgba(255,255,255,0.12); }
+.di-media-play { padding: 12px; border-radius: 99px; background-color: rgba(255,255,255,0.16); }
+
+/* ---------- лаунчер ---------- */
+.di-search-entry { font-size: 1.15em; padding: 10px 14px; border-radius: 16px; }
+.di-search-entry StIcon { padding-right: 6px; }
+.di-results { spacing: 2px; }
+.di-result { padding: 8px 10px; border-radius: 12px; background-color: transparent; }
+.di-result .di-btn-content, .di-result StBoxLayout { spacing: 12px; }
+.di-result:hover, .di-result:selected { background-color: rgba(255,255,255,0.12); }
+.di-result-title { font-weight: 600; }
+.di-result-emoji { font-size: 19px; min-width: 22px; }
+.di-app-tile { padding: 10px 4px; border-radius: 16px; background-color: transparent; }
+.di-app-tile:hover { background-color: rgba(255,255,255,0.10); }
+.di-output { spacing: 6px; }
+.di-output-text { font-family: monospace; font-size: 0.85em; }
+
+/* ---------- буфер / полка / загрузки ---------- */
+.di-clip-list, .di-shelf-list, .di-dl-list { spacing: 4px; }
+.di-clip-row { padding: 8px 10px; border-radius: 14px; background-color: rgba(255,255,255,0.05); }
+.di-clip-row StBoxLayout { spacing: 10px; }
+.di-clip-row:hover { background-color: rgba(255,255,255,0.11); }
+.di-clip-title { font-weight: 600; }
+.di-shelf-row { spacing: 10px; padding: 8px 10px; border-radius: 14px; background-color: rgba(255,255,255,0.05); }
+.di-shelf-row:hover { background-color: rgba(255,255,255,0.10); }
+.di-dl-card { padding: 10px 12px; spacing: 6px; }
+.di-dl-row { padding: 8px 10px; border-radius: 12px; background-color: transparent; }
+.di-dl-row StBoxLayout { spacing: 10px; }
+.di-dl-row:hover { background-color: rgba(255,255,255,0.10); }
+
+/* ---------- ИИ ---------- */
+.di-chat { spacing: 8px; padding: 4px 2px; }
+.di-msg { padding: 9px 13px; border-radius: 18px; spacing: 4px; max-width: 560px; }
+.di-msg-ai { background-color: rgba(255,255,255,0.09); }
+.di-msg-user { border-radius: 18px 18px 6px 18px; }
+.di-msg-text { line-height: 1.35; }
+.di-msg-actions { spacing: 2px; }
+.di-chat-input { spacing: 6px; }
+.di-send-btn { padding: 9px; }
+
+/* ---------- инструменты ---------- */
+.di-tools-row { spacing: 10px; }
+.di-tool-card { spacing: 8px; }
+.di-big-btn { padding: 10px 14px; border-radius: 14px; }
+.di-tool-result { font-size: 0.92em; }
+.di-color-list { spacing: 6px; }
+.di-color-row { spacing: 10px; }
+
+/* ---------- текст и заметки ---------- */
+.di-editor {
+  background-color: rgba(255,255,255,0.06);
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,0.06);
+  padding: 2px;
+}
+.di-editor .di-editor-entry,
+.di-editor .di-editor-entry:focus,
+.di-light .di-editor .di-editor-entry,
+.di-light .di-editor .di-editor-entry:focus {
+  background-color: transparent;
+  border: none;
+  box-shadow: none;
+}
+.di-tf-btn { font-size: 0.82em; padding: 5px 8px; }
+.di-note-list { spacing: 4px; }
+.di-note-row { padding: 8px 10px; border-radius: 12px; background-color: transparent; }
+.di-note-row StBoxLayout { spacing: 10px; }
+.di-note-row:hover { background-color: rgba(255,255,255,0.08); }
+.di-note-row:checked { background-color: rgba(255,255,255,0.14); }
+.di-note-dot { border-radius: 2px; }
+.di-color-dot { border-radius: 9px; border: 2px solid rgba(255,255,255,0.4); }
+.di-add-btn { padding: 8px; }
+
+/* ---------- калькулятор ---------- */
+.di-calc-display { spacing: 4px; }
+.di-calc-entry { font-size: 1.1em; }
+.di-calc-result { font-size: 2.2em; font-weight: 800; }
+.di-keypad { spacing: 6px; }
+.di-keypad-row { spacing: 6px; }
+.di-key { font-size: 1.05em; border-radius: 14px; padding: 4px; }
+.di-key-op { background-color: rgba(255,255,255,0.14); }
+.di-calc-history { spacing: 2px; }
+.di-hist-row { padding: 6px 10px; border-radius: 10px; background-color: transparent; }
+.di-hist-row:hover { background-color: rgba(255,255,255,0.10); }
+.di-hist-res { font-weight: 700; }
+
+/* ---------- система ---------- */
+.di-rings { spacing: 8px; }
+.di-ring-box { spacing: 3px; }
+.di-ring-value { font-weight: 800; font-size: 0.95em; }
+.di-graphs { spacing: 10px; }
+.di-graph-card { padding: 10px 12px; spacing: 4px; }
+.di-sys-bottom { spacing: 10px; }
+.di-cores { spacing: 3px; min-height: 60px; }
+.di-core { background-color: rgba(255,255,255,0.08); border-radius: 3px; }
+.di-core-fill { border-radius: 3px; }
+.di-proc-row { spacing: 8px; padding: 1px 0; }
+
+/* ---------- погода ---------- */
+.di-weather-main { spacing: 10px; }
+.di-weather-now { spacing: 6px; }
+.di-weather-big-emoji { font-size: 54px; padding-right: 10px; }
+.di-weather-big-temp { font-size: 3em; font-weight: 800; }
+.di-weather-desc { font-size: 1.1em; font-weight: 700; }
+.di-hourly { spacing: 6px; padding-bottom: 6px; }
+.di-hourly-scroll { min-height: 96px; max-height: 110px; }
+.di-hour { padding: 8px 10px; border-radius: 14px; background-color: rgba(255,255,255,0.07); spacing: 3px; min-width: 46px; }
+.di-hour-emoji { font-size: 20px; }
+.di-daily { spacing: 2px; }
+.di-day-row { spacing: 10px; padding: 5px 8px; border-radius: 10px; }
+.di-day-emoji { font-size: 18px; min-width: 28px; }
+
+/* ---------- таймер ---------- */
+.di-timer { spacing: 10px; }
+.di-timer-card { spacing: 10px; }
+.di-timer-display { font-size: 2em; font-weight: 800; }
+.di-stopwatch { font-size: 2.2em; font-weight: 800; padding: 10px 0; }
+
+/* ---------- питомец ---------- */
+.di-pet-room {
+  border-radius: 20px;
+  background-gradient-direction: vertical;
+  background-gradient-start: rgba(100,210,255,0.22);
+  background-gradient-end: rgba(48,209,88,0.10);
+}
+.di-pet-floor { background-color: rgba(48,209,88,0.20); }
+.di-pet-sprite { font-size: 54px; }
+.di-pet-stats { spacing: 8px; }
+.di-pet-bar { spacing: 3px; }
+.di-pet-kind { padding: 3px 0; border-radius: 10px; font-size: 18px; }
+.di-pet-kind .di-btn-label { font-weight: normal; }
+.di-pet-kinds { max-height: 110px; }
+.di-cw-pet { font-size: 20px; }
+
+/* ---------- настройки ---------- */
+.di-settings { spacing: 14px; }
+.di-preset { padding: 8px 10px; border-radius: 12px; }
+.di-preset StBoxLayout { spacing: 8px; }
+.di-swatch { border-radius: 99px; padding: 0; }
+
+/* ==========================================================================
+   Светлые темы
+   ========================================================================== */
+.di-light { color: #1c1c1e; }
+.di-light .di-btn { background-color: rgba(0,0,0,0.06); }
+.di-light .di-btn:hover { background-color: rgba(0,0,0,0.11); }
+.di-light .di-btn:active { background-color: rgba(0,0,0,0.16); }
+.di-light .di-flat,
+.di-light .di-tab,
+.di-light .di-result,
+.di-light .di-app-tile,
+.di-light .di-media-btn,
+.di-light .di-media-btn-small,
+.di-light .di-note-row,
+.di-light .di-hist-row,
+.di-light .di-dl-row { background-color: transparent; }
+.di-light .di-flat:hover,
+.di-light .di-tab:hover,
+.di-light .di-result:hover,
+.di-light .di-result:selected,
+.di-light .di-app-tile:hover,
+.di-light .di-media-btn:hover,
+.di-light .di-media-btn-small:hover,
+.di-light .di-note-row:hover,
+.di-light .di-hist-row:hover,
+.di-light .di-dl-row:hover { background-color: rgba(0,0,0,0.08); }
+.di-light .di-card,
+.di-light .di-clip-mini,
+.di-light .di-note-mini,
+.di-light .di-weather-mini,
+.di-light .di-sys-mini,
+.di-light .di-hour,
+.di-light .di-msg-ai,
+.di-light .di-clip-row,
+.di-light .di-shelf-row { background-color: rgba(0,0,0,0.05); }
+.di-light .di-entry {
+  color: #1c1c1e;
+  background-color: rgba(0,0,0,0.05);
+  border: 1px solid rgba(0,0,0,0.08);
+  caret-color: #1c1c1e;
+  selected-color: #1c1c1e;
+}
+.di-light .di-editor { background-color: rgba(0,0,0,0.04); border: 1px solid rgba(0,0,0,0.08); }
+.di-light .di-progress,
+.di-light .di-core { background-color: rgba(0,0,0,0.10); }
+.di-light .di-section-title,
+.di-light .di-dim { color: rgba(0,0,0,0.55); }
+.di-light .di-switch { background-color: rgba(0,0,0,0.15); }
+.di-light .di-toast { background-color: rgba(0,0,0,0.07); }
+.di-light .di-media-play { background-color: rgba(0,0,0,0.10); }
+.di-light .di-key-op { background-color: rgba(0,0,0,0.11); }
+.di-light .di-note-row:checked { background-color: rgba(0,0,0,0.10); }

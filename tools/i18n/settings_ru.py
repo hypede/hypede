@@ -607,3 +607,12 @@ RU.update({
     'Four-finger gestures': 'Жесты четырьмя пальцами',
     'Up — launcher, down — desktop. Three fingers: up — overview, sideways — desks': 'Вверх — лаунчер, вниз — рабочий стол. Тремя пальцами: вверх — обзор, вбок — рабочие столы',
 })
+
+RU.update({
+    'Dynamic Island': 'Динамический остров',
+    'A capsule on the shelf with music, downloads, timers and recording; click it for clipboard, file shelf, tools and notes': 'Капсула на полке: музыка, загрузки, таймеры и запись экрана; щелчок открывает буфер обмена, полку файлов, инструменты и заметки',
+    'Match the HypeDE theme': 'В теме HypeDE',
+    'Colours, font, corners and animation speed follow your theme': 'Цвета, шрифт, скругления и скорость анимаций — как в вашей теме',
+    'Island settings': 'Настройки острова',
+    'Tabs, capsule contents, AI, voice input, pet': 'Вкладки, что показывать в капсуле, ИИ, голосовой ввод, питомец',
+})
