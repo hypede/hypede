@@ -1009,7 +1009,8 @@ export class Shelf {
         const b = this._backdrop;
         if (!b || !this.actor)
             return;
-        b.visible = !!this._blurOn && this.actor.mapped;
+        // На экране блокировки полка прозрачная, а подложка лежала бы поверх него.
+        b.visible = !!this._blurOn && this.actor.mapped && !Main.sessionMode.isLocked;
         if (!b.visible)
             return;
         const [x, y] = this.actor.get_transformed_position();
@@ -1081,6 +1082,7 @@ export class Shelf {
         } else {
             this.actor.remove_style_class_name('locked');
         }
+        this._syncBackdrop();
     }
 
     // ---------- Трей ----------
