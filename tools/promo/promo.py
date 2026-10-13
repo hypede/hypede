@@ -197,7 +197,7 @@ def scene(t):
         p = (t - 5.5) / 3.5
         im = seg("launcher", lerp(0.0, 2.4, clamp(p * 1.15)))
         if V:
-            footage(f, im, t, 5.5, 9.0, ry0=0.25, ry1=-0.05, focus=(0.5, 0.25))
+            footage(f, im, t, 5.5, 9.0, ry0=0.25, ry1=-0.05, focus=(0.18, 0.62))
         else:
             f.paste(blurred("desktop", W, H, 0.4))
             card(f, im, W * 0.62, H * 0.47, lerp(1180, 1260, in_out(p)), ry=lerp(-0.35, -0.12, in_out(p)))
@@ -206,7 +206,9 @@ def scene(t):
         names = ["sakura", "neon", "ember", "lagoon", "midnight", "graphite"]
         i = min(5, int((t - 9.0) / 0.5)); lt = (t - 9.0) - i * 0.5
         im = still("theme-" + names[i])
-        footage(f, im, lt, 0, 0.5, bgname="theme-" + names[i], z0=1.12, z1=1.0, focus=(0.5, 0.3))
+        # Лаунчер-пузырь — слева внизу, полноэкранный (Neon) — по центру.
+        focus = (0.5, 0.3) if names[i] == "neon" else (0.18, 0.62)
+        footage(f, im, lt, 0, 0.5, bgname="theme-" + names[i], z0=1.12, z1=1.0, focus=focus)
         if lt < 0.08:
             f = Image.blend(f, Image.new("RGB", (W, H), (255, 255, 255)), 0.35 * (1 - lt / 0.08))
         caption(f, "D", t, 9.0, 12.0)
@@ -225,7 +227,7 @@ def scene(t):
     elif t < 18.0:
         p = (t - 15.0) / 3.0
         im = seg("quick", lerp(0.0, 3.2, p))
-        footage(f, im, t, 15.0, 18.0, z0=1.3, z1=1.3, focus=(0.92, 0.9))
+        footage(f, im, t, 15.0, 18.0, z0=1.0, z1=1.0, focus=(0.95, 0.92))
         if not V:
             zoomed = cover(im, W, H, lerp(1.0, 1.55, in_out(clamp(p * 1.4))), 0.86, 0.85)
             f.paste(zoomed)
@@ -236,7 +238,7 @@ def scene(t):
         p = (t - 18.0) / 3.0
         f.paste(blurred("settings-assistant", W, H, 0.5))
         if V:
-            card(f, cover(still("settings-assistant"), 1000, 1150, 1.6, 0.55, 0.3), W / 2, H * 0.55, lerp(960, 1000, in_out(p)), ry=lerp(0.15, -0.05, in_out(p)))
+            card(f, cover(still("settings-assistant"), 1000, 1150, 1.3, 0.57, 0.42), W / 2, H * 0.55, lerp(960, 1000, in_out(p)), ry=lerp(0.15, -0.05, in_out(p)))
         else:
             card(f, still("settings-assistant"), W * 0.6, H * 0.45, lerp(1150, 1250, in_out(p)), ry=lerp(-0.3, -0.1, in_out(p)))
         provs = ["Claude", "Gemini", "ChatGPT", "Mistral", "Grok", "DeepSeek"]
@@ -267,7 +269,7 @@ def scene(t):
         paste_scaled(f, logo, W / 2, H * (0.38 if V else 0.34), s + 0.01 * math.sin(t * 3), clamp(p * 4))
         y = H * (0.52 if V else 0.56)
         text(f, [("Bold", 120 if V else 110, "HypeDE", None), ("Regular", 46 if V else 40, "Free and open source", (205, 215, 235)),
-                 ("Medium", 52 if V else 44, "hypede.github.io", ACCENT)], t, W / 2, y, "center", 26.8)
+                 ("Medium", 52 if V else 44, "hypede.xyz", ACCENT)], t, W / 2, y, "center", 26.8)
     for cut in [3.0, 5.5, 9.0, 12.0, 15.0, 18.0, 21.0, 24.0, 26.5]:
         if cut == 12.0 or cut == 9.0: continue
         waves_wipe(f, (t - cut + 0.25) / 0.5, seed=cut)
