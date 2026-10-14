@@ -54,6 +54,12 @@ glib-compile-schemas /usr/share/glib-2.0/schemas
 systemctl enable gdm NetworkManager sshd systemd-timesyncd
 # Ждать сеть при загрузке незачем: рабочий стол без неё обходится.
 systemctl disable NetworkManager-wait-online
+# Разовую работу первой загрузки (кэш библиотек, каталог журнала, база
+# устройств) делаем здесь: под эмуляцией одно ldconfig занимает 20 секунд.
+ldconfig
+journalctl --update-catalog
+systemd-hwdb update
+touch /etc/.updated /var/.updated
 
 if [[ ${VARIANT:-full} == lite ]]; then
     # Лёгкий режим HypeDE (без размытия и шейдеров), без анимаций, на
@@ -69,7 +75,12 @@ OVERRIDE
     glib-compile-schemas /usr/share/glib-2.0/schemas
     printf '[zram0]\nzram-size = ram / 2\ncompression-algorithm = lz4\n' > /etc/systemd/zram-generator.conf
     # Индексатор файлов GNOME на эмулируемом процессоре съедает всё время.
-    systemctl --global mask localsearch-3.service 2>/dev/null || true
+    # Остальное не нужно машине без Wi‑Fi, принтеров, смарт-карт и
+    # планшетов Wacom, а при входе отнимало процессор у оболочки.
+    systemctl --global mask localsearch-3.service \
+        org.freedesktop.IBus.session.GNOME.service xdg-desktop-portal-gtk.service \
+        org.gnome.SettingsDaemon.{Color,Housekeeping,PrintNotifications,Rfkill,ScreensaverProxy,Sharing,Smartcard,UsbProtection,Wacom}.service
+    systemctl mask wpa_supplicant.service colord.service
 fi
 
 # Служебные значки, которые зависимости кладут в лаунчер: Nautilus (его
