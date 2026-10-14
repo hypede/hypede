@@ -11,6 +11,7 @@
 
 from pathlib import Path
 import random
+from math import cos, sin
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "assets/wallpapers"
@@ -134,14 +135,36 @@ def svg(shape, details, palette, dark, seed):
     return "\n".join(out) + "\n"
 
 
+def dots(dark):
+    """«Dots» в духе Nothing OS: точечная сетка, кольцо из крупных точек и красная точка."""
+    bg, fg = ("#0b0b0c", "#ffffff") if dark else ("#f2f2ef", "#111111")
+    out = [f'<svg xmlns="http://www.w3.org/2000/svg" width="{W}" height="{H}" viewBox="0 0 {W} {H}">',
+           "  <defs>",
+           f'    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">'
+           f'<circle cx="16" cy="16" r="2.2" fill="{fg}" opacity="{0.14 if dark else 0.12}"/></pattern>',
+           "  </defs>",
+           f'  <rect width="{W}" height="{H}" fill="{bg}"/>',
+           f'  <rect width="{W}" height="{H}" fill="url(#grid)"/>']
+    cx, cy, ring = 1880, 980, 360
+    for i in range(48):
+        a = 2 * 3.141592653589793 * i / 48
+        out.append(f'  <circle cx="{cx + ring * cos(a):.0f}" cy="{cy + ring * sin(a):.0f}" r="9" fill="{fg}" opacity="0.85"/>')
+    out.append(f'  <circle cx="{cx:.0f}" cy="{cy - ring:.0f}" r="22" fill="#d71921"/>')
+    out.append("</svg>")
+    return "\n".join(out) + "\n"
+
+
 def main():
     OUT.mkdir(parents=True, exist_ok=True)
     for seed, (name, (shape, details, light, dark)) in enumerate(THEMES.items()):
         (OUT / f"{name}-light.svg").write_text(svg(shape, details, light, False, seed))
         (OUT / f"{name}-dark.svg").write_text(svg(shape, details, dark, True, seed))
+    (OUT / "dots-light.svg").write_text(dots(False))
+    (OUT / "dots-dark.svg").write_text(dots(True))
 
     entries = [("Horizon", "horizon", "#dce8fb", "#0d1830")]
     entries += [(name.capitalize(), name, t[2]["sky"][0], t[3]["sky"][0]) for name, t in THEMES.items()]
+    entries.append(("Dots", "dots", "#f2f2ef", "#0b0b0c"))
     xml = ['<?xml version="1.0" encoding="UTF-8"?>',
            '<!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">',
            "<!-- Обои HypeDE. Файл создан tools/gen-wallpapers.py. -->",

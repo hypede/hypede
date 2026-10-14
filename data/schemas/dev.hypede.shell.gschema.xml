@@ -277,6 +277,47 @@
       <summary>Размывать фон под лаунчером</summary>
     </key>
 
+    <key name="edge-panel" type="b">
+      <default>true</default>
+      <summary>Боковая панель у правого края</summary>
+      <description>Язычок у края экрана открывает панель с любимыми приложениями и инструментами, как Edge Panel в One UI.</description>
+    </key>
+    <key name="edge-panel-apps" type="as">
+      <default>[]</default>
+      <summary>Приложения в боковой панели</summary>
+      <description>Список .desktop-файлов. Пусто — самые используемые приложения.</description>
+    </key>
+
+    <key name="tablet-mode" type="s">
+      <choices>
+        <choice value="auto"/>
+        <choice value="on"/>
+        <choice value="off"/>
+      </choices>
+      <default>'auto'</default>
+      <summary>Режим планшета</summary>
+      <description>auto — сам, когда крышка 2-в-1 перевёрнута или клавиатура отстёгнута; on — всегда; off — никогда.</description>
+    </key>
+    <key name="tablet-saved" type="s">
+      <default>''</default>
+      <summary>Настройки до режима планшета (служебное)</summary>
+    </key>
+
+    <key name="overview-key" type="as">
+      <default>['&lt;Super&gt;w']</default>
+      <summary>Обзор окон и рабочих столов</summary>
+    </key>
+
+    <key name="shelf-overview-button" type="b">
+      <default>true</default>
+      <summary>Кнопка обзора в трее полки</summary>
+    </key>
+
+    <key name="menu-blur" type="b">
+      <default>true</default>
+      <summary>Размывать фон под быстрыми настройками и календарём</summary>
+    </key>
+
     <key name="web-search-url" type="s">
       <default>'https://www.google.com/search?q=%s'</default>
       <summary>Адрес поиска в интернете</summary>

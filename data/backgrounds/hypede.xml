@@ -56,4 +56,13 @@
     <pcolor>#fbe3ee</pcolor>
     <scolor>#22101f</scolor>
   </wallpaper>
+  <wallpaper deleted="false">
+    <name>HypeDE Dots</name>
+    <filename>/usr/share/hypede/wallpapers/dots-light.svg</filename>
+    <filename-dark>/usr/share/hypede/wallpapers/dots-dark.svg</filename-dark>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#f2f2ef</pcolor>
+    <scolor>#0b0b0c</scolor>
+  </wallpaper>
 </wallpapers>

@@ -2,6 +2,8 @@
 
 import Clutter from 'gi://Clutter';
 
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+
 // Правый щелчок. Clutter.ClickGesture есть с GNOME 48; на всякий случай
 // оставлен и запасной путь через событие нажатия.
 export function addSecondaryClick(actor, callback) {
@@ -99,4 +101,14 @@ export function accentHex(shellSettings, interfaceSettings) {
 // анимируют и не считают обычным окном.
 export function isDesktopWindow(win) {
     return win?.get_wm_class?.() === 'dev.hypede.Desktop' || /^hypede-desktop-\d+$/.test(win?.get_title?.() ?? '');
+}
+
+// Всплывающая подсказка со значком на всех мониторах. В GNOME 50 у show()
+// другие аргументы, а showAll() появился только в нём.
+export function showOsd(icon, text) {
+    const manager = Main.osdWindowManager;
+    if (manager.showAll)
+        manager.showAll(icon, text);
+    else
+        manager.show(-1, icon, text);
 }

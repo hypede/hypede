@@ -32,6 +32,7 @@ import {InjectionManager, gettext as _} from 'resource:///org/gnome/shell/extens
 
 import {addSecondaryClick} from './util.js';
 import {Backdrop} from './backdrop.js';
+import {toggleFloat} from './extras.js';
 
 const TOOLTIP_DELAY = 350;
 const AUTOHIDE_CHECK_INTERVAL = 350;
@@ -234,6 +235,36 @@ class Tooltip {
 // Значок приложения на полке.
 // ---------------------------------------------------------------------------
 
+// Открыть приложение в плавающем окне: своё окно, если оно уже есть,
+// иначе — новое, как только появится.
+function openFloating(app) {
+    const win = app.get_windows().find(w => w.get_window_type() === Meta.WindowType.NORMAL);
+    if (win) {
+        Main.activateWindow(win);
+        if (!win._hypedeFloat)
+            toggleFloat(win);
+        return;
+    }
+    const tracker = Shell.WindowTracker.get_default();
+    const id = global.display.connect('window-created', (_d, created) => {
+        const actor = created.get_compositor_private();
+        if (!actor)
+            return;
+        actor.connect('first-frame', () => {
+            if (tracker.get_window_app(created) !== app)
+                return;
+            global.display.disconnect(id);
+            GLib.source_remove(timeout);
+            toggleFloat(created);
+        });
+    });
+    const timeout = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 15, () => {
+        global.display.disconnect(id);
+        return GLib.SOURCE_REMOVE;
+    });
+    app.activate();
+}
+
 const ShelfIcon = GObject.registerClass(
 class ShelfIcon extends St.Button {
     _init(app, shelfApps) {
@@ -250,6 +281,9 @@ class ShelfIcon extends St.Button {
         this.app = app;
         this._shelfApps = shelfApps;
         this._delegate = this;
+        // Обработчик сигнала, а не vfunc_destroy: виртуальную функцию на JS
+        // нельзя вызвать во время сборки мусора, и таймеры остались бы висеть.
+        this.connect('destroy', () => this._onDestroy());
 
         const box = new St.Widget({layout_manager: new Clutter.BinLayout()});
         this._icon = new St.Bin({
@@ -464,6 +498,8 @@ class ShelfIcon extends St.Button {
             });
             this._menu.setApp(this.app);
             this._menu.actor.add_style_class_name('hypede-shelf-menu');
+            // «Маленькое окно» из HyperOS: приложение в плавающем окне в углу.
+            this._menu.addAction(_('Open in a floating window'), () => openFloating(this.app));
             this._menu.connect('open-state-changed', (_m, open) => {
                 if (open)
                     this.add_style_pseudo_class('checked');
@@ -502,13 +538,9 @@ class ShelfIcon extends St.Button {
     _onDestroy() {
         if (this._geometryId)
             GLib.source_remove(this._geometryId);
+        this._geometryId = 0;
         this._menu?.destroy();
         this._menu = null;
-    }
-
-    vfunc_destroy() {
-        this._onDestroy();
-        super.vfunc_destroy();
     }
 });
 
@@ -770,10 +802,6 @@ class LockActions extends St.BoxLayout {
         this._restart.visible = this._actions.can_restart;
     }
 
-    vfunc_destroy() {
-        this._actions.disconnectObject(this);
-        super.vfunc_destroy();
-    }
 });
 
 // ---------------------------------------------------------------------------

@@ -1,0 +1,33 @@
+{
+  "hypede-theme": 1,
+  "name": "Nothing",
+  "author": "HypeDE",
+  "description": "Monochrome with a red dot, inspired by Nothing OS.",
+  "colors": {
+    "scheme": "prefer-dark",
+    "gnome-accent": "red",
+    "accent": "#d71921",
+    "shelf": "#000000",
+    "menus": "#111111"
+  },
+  "wallpaper": {
+    "light": "file:///usr/share/hypede/wallpapers/dots-light.svg",
+    "dark": "file:///usr/share/hypede/wallpapers/dots-dark.svg",
+    "fit": "zoom"
+  },
+  "lockscreen": {
+    "clock": "stacked",
+    "waves": false,
+    "clock-color": "#ffffff"
+  },
+  "shelf": {
+    "style": "floating",
+    "opacity": 92
+  },
+  "launcher": {
+    "opacity": 96
+  },
+  "windows": {
+    "corner-radius": 18
+  }
+}

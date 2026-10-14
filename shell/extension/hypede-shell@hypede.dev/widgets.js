@@ -1,8 +1,11 @@
-// Виджеты на рабочем столе: часы, календарь, погода, система, музыка, заметка.
+// Виджеты на рабочем столе: часы, календарь, погода, система, музыка, заметка
+// и свои (customwidgets.js).
 //
 // Живут в своём слое под окнами. Их перетаскивают мышью, правой кнопкой —
 // меню «Добавить / Убрать». Список и места хранятся в ключе desktop-widgets.
 
+// cairo регистрирует cairo.Context для get_context() у St.DrawingArea.
+import 'cairo';
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
@@ -21,20 +24,27 @@ import {MprisSource} from 'resource:///org/gnome/shell/ui/mpris.js';
 import {WeatherClient} from 'resource:///org/gnome/shell/misc/weather.js';
 import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
+import {WIDGETS_DIR, buildCustomWidget, listCustomWidgets, openWidgetsFolder} from './customwidgets.js';
+
 const GRID = 8;
 const MARGIN = 24;
 
-export const TYPES = ['clock', 'calendar', 'weather', 'system', 'media', 'note'];
+export const TYPES = ['clock', 'dots', 'calendar', 'weather', 'system', 'media', 'note'];
 const title = t => ({
-    clock: _('Clock'), calendar: _('Calendar'), weather: _('Weather'),
+    clock: _('Clock'), dots: _('Dot clock'), calendar: _('Calendar'), weather: _('Weather'),
     system: _('System'), media: _('Music'), note: _('Note'),
 })[t];
 
 const label = (style_class, text = '') => new St.Label({style_class, text, x_align: Clutter.ActorAlign.START});
 
-function readFile(path) {
+Gio._promisify(Gio.File.prototype, 'load_contents_async');
+
+// Чтение асинхронное: /sys (батарея) на некоторых ноутбуках отвечает
+// сотни миллисекунд, а синхронное чтение подвешивало бы всю оболочку.
+async function readFile(path) {
     try {
-        return new TextDecoder().decode(GLib.file_get_contents(path)[1]);
+        const [bytes] = await Gio.File.new_for_path(path).load_contents_async(null);
+        return new TextDecoder().decode(bytes);
     } catch {
         return '';
     }
@@ -69,7 +79,66 @@ function row(name) {
     return box;
 }
 
+// Цифры точечной матрицей 5×7, как часы в Nothing OS.
+const DOT_GLYPHS = {
+    '0': ['01110', '10001', '10011', '10101', '11001', '10001', '01110'],
+    '1': ['00100', '01100', '00100', '00100', '00100', '00100', '01110'],
+    '2': ['01110', '10001', '00001', '00010', '00100', '01000', '11111'],
+    '3': ['11110', '00001', '00001', '01110', '00001', '00001', '11110'],
+    '4': ['00010', '00110', '01010', '10010', '11111', '00010', '00010'],
+    '5': ['11111', '10000', '11110', '00001', '00001', '10001', '01110'],
+    '6': ['00110', '01000', '10000', '11110', '10001', '10001', '01110'],
+    '7': ['11111', '00001', '00010', '00100', '01000', '01000', '01000'],
+    '8': ['01110', '10001', '10001', '01110', '10001', '10001', '01110'],
+    '9': ['01110', '10001', '10001', '01111', '00001', '00010', '01100'],
+    ':': ['0', '0', '1', '0', '1', '0', '0'],
+};
+
 const builders = {
+    dots(w) {
+        const DOT = 9; // шаг сетки, px
+        const area = new St.DrawingArea({style_class: 'hypede-widget-dots'});
+        const date = label('hypede-widget-date hypede-widget-dots-date');
+        w.add_child(area);
+        w.add_child(date);
+        const clock = new GnomeDesktop.WallClock({time_only: true});
+        const text = () => {
+            const now = GLib.DateTime.new_now_local();
+            return now.format(clock.clock.includes(':') && /[AP]M/i.test(clock.clock) ? '%I:%M' : '%H:%M');
+        };
+        const columns = t => [...t].reduce((n, ch) => n + (DOT_GLYPHS[ch]?.[0].length ?? 0) + 1, -1);
+        area.connect('repaint', () => {
+            const cr = area.get_context();
+            const color = area.get_theme_node().get_foreground_color();
+            const accent = w.get_theme_node().lookup_color('-st-accent-color', false);
+            let x = 0;
+            for (const ch of text()) {
+                const glyph = DOT_GLYPHS[ch];
+                if (!glyph)
+                    continue;
+                for (let row = 0; row < glyph.length; row++) {
+                    for (let col = 0; col < glyph[row].length; col++) {
+                        const on = glyph[row][col] === '1';
+                        const c = ch === ':' && on && accent[0] ? accent[1] : color;
+                        cr.setSourceRGBA(c.red / 255, c.green / 255, c.blue / 255, on ? c.alpha / 255 : 0.08);
+                        cr.arc((x + col) * DOT + DOT / 2, row * DOT + DOT / 2, DOT * (on ? 0.38 : 0.2), 0, 2 * Math.PI);
+                        cr.fill();
+                    }
+                }
+                x += glyph[0].length + 1;
+            }
+            cr.$dispose();
+        });
+        const sync = () => {
+            area.set_size(columns(text()) * DOT, 7 * DOT);
+            area.queue_repaint();
+            date.text = GLib.DateTime.new_now_local().format('%a, %e %b').replace(/\s+/g, ' ').toUpperCase();
+        };
+        clock.connectObject('notify::clock', sync, w);
+        sync();
+        w.connect('destroy', () => clock.run_dispose());
+    },
+
     clock(w) {
         const time = label('hypede-widget-time');
         const date = label('hypede-widget-date');
@@ -146,8 +215,13 @@ const builders = {
         const battery = ['BAT0', 'BAT1', 'battery'].map(b => `/sys/class/power_supply/${b}/capacity`)
             .find(p => GLib.file_test(p, GLib.FileTest.EXISTS));
         bat.visible = !!battery;
-        const sync = () => {
-            const n = readFile('/proc/stat').split('\n')[0].split(/\s+/).slice(1).map(Number);
+        let busy = false;
+        const update = async () => {
+            const [stat, info, cap] = await Promise.all([readFile('/proc/stat'), readFile('/proc/meminfo'),
+                battery ? readFile(battery) : '']);
+            if (!w.get_stage())
+                return;
+            const n = stat.split('\n')[0].split(/\s+/).slice(1).map(Number);
             const idle = n[3] + (n[4] || 0);
             const total = n.reduce((a, b) => a + b, 0);
             if (last && total > last[1]) {
@@ -155,15 +229,24 @@ const builders = {
                 cpu.set(used, `${Math.round(used * 100)}%`);
             }
             last = [idle, total];
-            const m = Object.fromEntries(readFile('/proc/meminfo').split('\n')
+            const m = Object.fromEntries(info.split('\n')
                 .map(l => l.split(/:\s+/)).filter(p => p.length === 2).map(([k, v]) => [k, parseInt(v)]));
             if (m.MemTotal) {
                 const used = (m.MemTotal - m.MemAvailable) / m.MemTotal;
                 mem.set(used, `${((m.MemTotal - m.MemAvailable) / 1048576).toFixed(1)} / ${(m.MemTotal / 1048576).toFixed(1)} ${_('GB')}`);
             }
             if (battery) {
-                const v = parseInt(readFile(battery));
+                const v = parseInt(cap);
                 bat.set(v / 100, `${v}%`);
+            }
+        };
+        const sync = () => {
+            // Скрытый виджет не опрашиваем.
+            if (!busy && w.mapped) {
+                busy = true;
+                update().finally(() => {
+                    busy = false;
+                });
             }
             return GLib.SOURCE_CONTINUE;
         };
@@ -251,7 +334,7 @@ const builders = {
 
 const Widget = GObject.registerClass(
 class Widget extends St.BoxLayout {
-    _init(type, settings) {
+    _init(type, settings, entry = {}, custom = null) {
         super._init({
             style_class: `hypede-widget hypede-widget-${type}`,
             vertical: true,
@@ -259,7 +342,15 @@ class Widget extends St.BoxLayout {
             track_hover: true,
         });
         this.type = type;
-        builders[type](this, settings);
+        this.id = entry.id;
+        if (type === 'custom')
+            buildCustomWidget(this, entry.id, custom);
+        else
+            builders[type](this, settings);
+    }
+
+    get key() {
+        return this.type === 'custom' ? `custom:${this.id}` : this.type;
     }
 });
 
@@ -276,7 +367,34 @@ export class Widgets {
 
         settings.connectObject('changed::desktop-widgets', () => !this._saving && this._load(), this);
         global.display.connectObject('workareas-changed', () => this._placeAll(), this);
+        this._custom = listCustomWidgets();
+        this._watchCustom();
         this._load();
+    }
+
+    // Свои виджеты: следим за папкой и за каждой подпапкой (widget.json).
+    _watchCustom() {
+        for (const m of this._monitors ?? [])
+            m.cancel();
+        this._monitors = [];
+        const changed = () => {
+            if (this._customId)
+                GLib.source_remove(this._customId);
+            this._customId = GLib.timeout_add(GLib.PRIORITY_LOW, 500, () => {
+                this._customId = 0;
+                this._custom = listCustomWidgets();
+                this._watchCustom();
+                this._load();
+                return GLib.SOURCE_REMOVE;
+            });
+        };
+        for (const path of [WIDGETS_DIR, ...[...this._custom.keys()].map(id => GLib.build_filenamev([WIDGETS_DIR, id]))]) {
+            try {
+                const monitor = Gio.File.new_for_path(path).monitor_directory(Gio.FileMonitorFlags.NONE, null);
+                monitor.connect('changed', changed);
+                this._monitors.push(monitor);
+            } catch {}
+        }
     }
 
     get _area() {
@@ -286,7 +404,8 @@ export class Widgets {
     _read() {
         try {
             const list = JSON.parse(this._settings.get_string('desktop-widgets'));
-            return Array.isArray(list) ? list.filter(e => builders[e?.type]) : [];
+            return Array.isArray(list)
+                ? list.filter(e => builders[e?.type] || (e?.type === 'custom' && this._custom.has(e.id))) : [];
         } catch {
             return [];
         }
@@ -302,7 +421,7 @@ export class Widgets {
     }
 
     _add(e) {
-        const w = new Widget(e.type, this._settings);
+        const w = new Widget(e.type, this._settings, e, e.type === 'custom' ? this._custom.get(e.id) : null);
         w.pos = Number.isFinite(e.x) && Number.isFinite(e.y) ? [e.x, e.y] : null;
         w.connect('button-press-event', (a, ev) => this._press(w, ev));
         w.connect('touch-event', (a, ev) => {
@@ -311,11 +430,28 @@ export class Widgets {
             return Clutter.EVENT_PROPAGATE;
         });
         w.connect('notify::visible', () => this._placeAll());
+        // Содержимое некоторых виджетов приходит позже (погода, свои виджеты).
+        // Сама раскладка тоже меняет размеры — на них не отвечаем, иначе
+        // виджеты перекладывались бы каждый кадр.
+        w.connect('notify::height', () => {
+            if (Math.abs(w.height - (w.placedHeight ?? -1)) > 0.5)
+                this._placeLater();
+        });
         this._layer.add_child(w);
         this._widgets.push(w);
         w.opacity = 0;
         w.ease({opacity: 255, duration: 250, mode: Clutter.AnimationMode.EASE_OUT_QUAD});
         return w;
+    }
+
+    _placeLater() {
+        if (this._placeId)
+            return;
+        this._placeId = GLib.idle_add(GLib.PRIORITY_DEFAULT_IDLE, () => {
+            this._placeId = 0;
+            this._placeAll();
+            return GLib.SOURCE_REMOVE;
+        });
     }
 
     // Без сохранённого места виджеты встают столбиком у правого края.
@@ -330,6 +466,7 @@ export class Widgets {
         for (const w of this._widgets) {
             const [, width] = w.get_preferred_width(-1);
             const [, height] = w.get_preferred_height(width);
+            w.placedHeight = height;
             if (w.pos) {
                 w.set_position(
                     Math.round(Math.min(Math.max(area.x + w.pos[0], area.x), area.x + area.width - width)),
@@ -345,8 +482,10 @@ export class Widgets {
     _save() {
         const area = this._area;
         this._saving = true;
-        this._settings.set_string('desktop-widgets', JSON.stringify(this._widgets.map(w => w.pos
-            ? {type: w.type, x: w.x - area.x, y: w.y - area.y} : {type: w.type})));
+        this._settings.set_string('desktop-widgets', JSON.stringify(this._widgets.map(w => {
+            const e = w.type === 'custom' ? {type: w.type, id: w.id} : {type: w.type};
+            return w.pos ? {...e, x: w.x - area.x, y: w.y - area.y} : e;
+        })));
         this._saving = false;
     }
 
@@ -401,19 +540,22 @@ export class Widgets {
         this._popup = menu;
         Main.uiGroup.add_child(menu.actor);
         this._menuManager.addMenu(menu);
-        const present = new Set(this._widgets.map(x => x.type));
+        const present = new Set(this._widgets.map(x => x.key));
         const add = new PopupMenu.PopupSubMenuMenuItem(_('Add widget'));
-        for (const t of TYPES.filter(t => !present.has(t))) {
-            add.menu.addAction(title(t), () => {
-                this._add({type: t});
-                this._placeAll();
-                this._save();
-            });
+        const addEntry = (label, e) => add.menu.addAction(label, () => {
+            this._add(e);
+            this._placeAll();
+            this._save();
+        });
+        for (const t of TYPES.filter(t => !present.has(t)))
+            addEntry(title(t), {type: t});
+        for (const [id, def] of this._custom) {
+            if (!present.has(`custom:${id}`))
+                addEntry(String(def.name ?? id), {type: 'custom', id});
         }
-        if (add.menu.isEmpty())
-            add.destroy();
-        else
-            menu.addMenuItem(add);
+        add.menu.addMenuItem(new PopupMenu.PopupSeparatorMenuItem());
+        add.menu.addAction(_('Your own widget…'), () => openWidgetsFolder());
+        menu.addMenuItem(add);
         if (w.pos) {
             menu.addAction(_('Return to the column'), () => {
                 w.pos = null;
@@ -442,6 +584,14 @@ export class Widgets {
 
     destroy() {
         this._popup?.destroy();
+        for (const m of this._monitors ?? [])
+            m.cancel();
+        this._monitors = [];
+        if (this._customId)
+            GLib.source_remove(this._customId);
+        if (this._placeId)
+            GLib.source_remove(this._placeId);
+        this._customId = this._placeId = 0;
         this._settings.disconnectObject(this);
         global.display.disconnectObject(this);
         this._layer.destroy();

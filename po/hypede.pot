@@ -9,7 +9,7 @@ msgstr ""
 "#-#-#-#-#  files.pot (PACKAGE VERSION)  #-#-#-#-#\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-04 20:02+0000\n"
+"POT-Creation-Date: 2026-10-14 06:49+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 "#-#-#-#-#  shell.pot (PACKAGE VERSION)  #-#-#-#-#\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-06 10:31+0000\n"
+"POT-Creation-Date: 2026-10-14 07:01+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,7 +31,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
 
-#: apps/files/hypede_files/details.py:59 apps/files/hypede_files/window.py:532
+#: apps/files/hypede_files/details.py:59 apps/files/hypede_files/window.py:533
 #: apps/desktop/hypede_desktop/view.py:554
 msgid "Open"
 msgstr ""
@@ -59,7 +59,7 @@ msgstr[1] ""
 #: apps/files/hypede_files/details.py:108
 #: apps/files/hypede_files/details.py:153
 #: apps/files/hypede_files/folder_view.py:370
-#: apps/files/hypede_files/window.py:116
+#: apps/files/hypede_files/window.py:117
 msgid "Size"
 msgstr ""
 
@@ -107,7 +107,7 @@ msgid "Name"
 msgstr ""
 
 #: apps/files/hypede_files/folder_view.py:371
-#: apps/files/hypede_files/window.py:117
+#: apps/files/hypede_files/window.py:118
 msgid "Type"
 msgstr ""
 
@@ -204,18 +204,18 @@ msgid "Enter a location"
 msgstr ""
 
 #: apps/files/hypede_files/pathbar.py:92 apps/files/hypede_files/sidebar.py:139
-#: apps/files/hypede_files/window.py:184 apps/files/hypede_files/window.py:290
+#: apps/files/hypede_files/window.py:185 apps/files/hypede_files/window.py:291
 #: apps/desktop/hypede_desktop/items.py:54
 msgid "Trash"
 msgstr ""
 
 #: apps/files/hypede_files/pathbar.py:94 apps/files/hypede_files/sidebar.py:130
-#: apps/files/hypede_files/window.py:292
+#: apps/files/hypede_files/window.py:293
 msgid "Recent"
 msgstr ""
 
 #: apps/files/hypede_files/pathbar.py:113
-#: apps/files/hypede_files/sidebar.py:131 apps/files/hypede_files/window.py:295
+#: apps/files/hypede_files/sidebar.py:131 apps/files/hypede_files/window.py:296
 #: apps/desktop/hypede_desktop/items.py:52
 msgid "Home"
 msgstr ""
@@ -224,7 +224,7 @@ msgstr ""
 msgid "Eject"
 msgstr ""
 
-#: apps/files/hypede_files/sidebar.py:166 apps/files/hypede_files/window.py:297
+#: apps/files/hypede_files/sidebar.py:166 apps/files/hypede_files/window.py:298
 msgid "File System"
 msgstr ""
 
@@ -236,7 +236,7 @@ msgstr ""
 msgid "Devices"
 msgstr ""
 
-#: apps/files/hypede_files/sidebar.py:253 apps/files/hypede_files/window.py:534
+#: apps/files/hypede_files/sidebar.py:253 apps/files/hypede_files/window.py:535
 msgid "Open in New Tab"
 msgstr ""
 
@@ -257,7 +257,7 @@ msgid "MB"
 msgstr ""
 
 #: apps/files/hypede_files/util.py:16
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:162
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:236
 msgid "GB"
 msgstr ""
 
@@ -300,132 +300,133 @@ msgstr ""
 msgid "The name is too long"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:75
+#: apps/files/hypede_files/window.py:76
 msgid "New Window"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:76 apps/files/hypede_files/window.py:1001
+#: apps/files/hypede_files/window.py:77 apps/files/hypede_files/window.py:1017
 msgid "New Tab"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:79 apps/files/hypede_files/window.py:578
-#: apps/files/hypede_files/window.py:1009
+#: apps/files/hypede_files/window.py:80 apps/files/hypede_files/window.py:579
+#: apps/files/hypede_files/window.py:1025
 msgid "Show Hidden Files"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:80 apps/files/hypede_files/window.py:1009
+#: apps/files/hypede_files/window.py:81 apps/files/hypede_files/window.py:1025
 msgid "Show Details Pane"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:81
+#: apps/files/hypede_files/window.py:82
 msgid "Sort Folders Before Files"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:84
+#: apps/files/hypede_files/window.py:85
 msgid "Keyboard Shortcuts"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:85
+#: apps/files/hypede_files/window.py:86
 msgid "About Files"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:88 apps/files/hypede_files/window.py:985
-#: apps/files/hypede_files/window.py:1003
-#: shell/extension/hypede-shell@hypede.dev/actions.js:173
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:837
+#: apps/files/hypede_files/window.py:89 apps/files/hypede_files/window.py:1001
+#: apps/files/hypede_files/window.py:1019
+#: shell/extension/hypede-shell@hypede.dev/actions.js:174
+#: shell/extension/hypede-shell@hypede.dev/edgepanel.js:106
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:839
 msgid "Files"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:90
+#: apps/files/hypede_files/window.py:91
 msgid "Main Menu"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:96
+#: apps/files/hypede_files/window.py:97
 msgid "Show Sidebar"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:101 apps/files/hypede_files/window.py:998
+#: apps/files/hypede_files/window.py:102 apps/files/hypede_files/window.py:1014
 msgid "Back"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:103 apps/files/hypede_files/window.py:998
+#: apps/files/hypede_files/window.py:104 apps/files/hypede_files/window.py:1014
 msgid "Forward"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:114
+#: apps/files/hypede_files/window.py:115
 msgid "A–Z"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:115
+#: apps/files/hypede_files/window.py:116
 msgid "Last Modified"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:118
+#: apps/files/hypede_files/window.py:119
 msgid "Sort"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:120
+#: apps/files/hypede_files/window.py:121
 msgid "Reversed Order"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:131 apps/files/hypede_files/window.py:1008
+#: apps/files/hypede_files/window.py:132 apps/files/hypede_files/window.py:1024
 msgid "Zoom Out"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:133
+#: apps/files/hypede_files/window.py:134
 msgid "Reset Zoom"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:135 apps/files/hypede_files/window.py:1008
+#: apps/files/hypede_files/window.py:136 apps/files/hypede_files/window.py:1024
 msgid "Zoom In"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:139 apps/files/hypede_files/window.py:1007
+#: apps/files/hypede_files/window.py:140 apps/files/hypede_files/window.py:1023
 msgid "Grid View"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:140 apps/files/hypede_files/window.py:1007
+#: apps/files/hypede_files/window.py:141 apps/files/hypede_files/window.py:1023
 msgid "List View"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:146
+#: apps/files/hypede_files/window.py:147
 msgid "View Options"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:148 apps/files/hypede_files/window.py:999
+#: apps/files/hypede_files/window.py:149 apps/files/hypede_files/window.py:1015
 msgid "Search"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:162
+#: apps/files/hypede_files/window.py:163
 msgid "File Operations"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:173
+#: apps/files/hypede_files/window.py:174
 msgid "Search files and folders"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:184 apps/files/hypede_files/window.py:568
+#: apps/files/hypede_files/window.py:185 apps/files/hypede_files/window.py:569
 msgid "Empty Trash…"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:234 apps/files/hypede_files/window.py:839
-#: apps/files/hypede_files/window.py:854
+#: apps/files/hypede_files/window.py:235 apps/files/hypede_files/window.py:855
+#: apps/files/hypede_files/window.py:870
 #: apps/desktop/hypede_desktop/view.py:620
 msgid "Cancel"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:352
+#: apps/files/hypede_files/window.py:353
 #, python-format
 msgid "Ask %s about the selected files"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:361
+#: apps/files/hypede_files/window.py:362
 msgid "Question about this file: "
 msgid_plural "Question about these files: "
 msgstr[0] ""
 msgstr[1] ""
 
-#: apps/files/hypede_files/window.py:376
+#: apps/files/hypede_files/window.py:377
 #, python-format
 msgid ""
 "Folder “%s” contains:\n"
@@ -434,256 +435,256 @@ msgid ""
 "Question: "
 msgstr ""
 
-#: apps/files/hypede_files/window.py:462
+#: apps/files/hypede_files/window.py:463
 msgid "Restore the file from the trash to open it"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:491
+#: apps/files/hypede_files/window.py:492
 #, python-format
 msgid "Could not open “%s”: %s"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:535 apps/files/hypede_files/window.py:576
+#: apps/files/hypede_files/window.py:536 apps/files/hypede_files/window.py:577
 msgid "Open in Terminal"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:537
+#: apps/files/hypede_files/window.py:538
 msgid "Open With…"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:542
+#: apps/files/hypede_files/window.py:543
 msgid "Restore From Trash"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:543
+#: apps/files/hypede_files/window.py:544
 msgid "Delete Permanently…"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:547 apps/files/hypede_files/window.py:1005
+#: apps/files/hypede_files/window.py:548 apps/files/hypede_files/window.py:1021
 #: apps/desktop/hypede_desktop/view.py:560
 msgid "Cut"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:548 apps/files/hypede_files/window.py:1005
+#: apps/files/hypede_files/window.py:549 apps/files/hypede_files/window.py:1021
 #: apps/desktop/hypede_desktop/view.py:561
 msgid "Copy"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:550
+#: apps/files/hypede_files/window.py:551
 msgid "Paste Into Folder"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:553
+#: apps/files/hypede_files/window.py:554
 #: apps/desktop/hypede_desktop/view.py:563
 msgid "Rename…"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:554 apps/files/hypede_files/window.py:1004
+#: apps/files/hypede_files/window.py:555 apps/files/hypede_files/window.py:1020
 #: apps/desktop/hypede_desktop/view.py:568
 msgid "Move to Trash"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:558
+#: apps/files/hypede_files/window.py:559
 msgid "Copy Path"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:560 apps/files/hypede_files/window.py:577
+#: apps/files/hypede_files/window.py:561 apps/files/hypede_files/window.py:578
 msgid "Add to Bookmarks"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:561
+#: apps/files/hypede_files/window.py:562
 msgid "Show Details"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:571
+#: apps/files/hypede_files/window.py:572
 msgid "New Folder…"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:572 apps/files/hypede_files/window.py:1005
+#: apps/files/hypede_files/window.py:573 apps/files/hypede_files/window.py:1021
 #: apps/desktop/hypede_desktop/view.py:582
 msgid "Paste"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:573 apps/files/hypede_files/window.py:1006
+#: apps/files/hypede_files/window.py:574 apps/files/hypede_files/window.py:1022
 #: apps/desktop/hypede_desktop/view.py:586
 msgid "Select All"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:718
+#: apps/files/hypede_files/window.py:734
 #, python-format
 msgid "%d item cut"
 msgid_plural "%d items cut"
 msgstr[0] ""
 msgstr[1] ""
 
-#: apps/files/hypede_files/window.py:719
+#: apps/files/hypede_files/window.py:735
 #, python-format
 msgid "%d item copied"
 msgid_plural "%d items copied"
 msgstr[0] ""
 msgstr[1] ""
 
-#: apps/files/hypede_files/window.py:739
+#: apps/files/hypede_files/window.py:755
 msgid "Nothing to paste"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:752
+#: apps/files/hypede_files/window.py:768
 #, python-format
 msgid "Copied to “%s”"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:752
+#: apps/files/hypede_files/window.py:768
 #, python-format
 msgid "Moved to “%s”"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:764
+#: apps/files/hypede_files/window.py:780
 #, python-format
 msgid "“%s” moved to the trash"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:766
+#: apps/files/hypede_files/window.py:782
 #, python-format
 msgid "%d item moved to the trash"
 msgid_plural "%d items moved to the trash"
 msgstr[0] ""
 msgstr[1] ""
 
-#: apps/files/hypede_files/window.py:774
+#: apps/files/hypede_files/window.py:790
 #, python-format
 msgid "%d item restored"
 msgid_plural "%d items restored"
 msgstr[0] ""
 msgstr[1] ""
 
-#: apps/files/hypede_files/window.py:782
+#: apps/files/hypede_files/window.py:798
 #, python-format
 msgid "Permanently delete “%s”?"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:783
+#: apps/files/hypede_files/window.py:799
 #, python-format
 msgid "Permanently delete %d item?"
 msgid_plural "Permanently delete %d items?"
 msgstr[0] ""
 msgstr[1] ""
 
-#: apps/files/hypede_files/window.py:784
+#: apps/files/hypede_files/window.py:800
 msgid "Deleted items cannot be restored."
 msgstr ""
 
-#: apps/files/hypede_files/window.py:784
+#: apps/files/hypede_files/window.py:800
 msgid "Delete"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:799
+#: apps/files/hypede_files/window.py:815
 msgid "Empty all items from the trash?"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:799
+#: apps/files/hypede_files/window.py:815
 msgid "All items in the trash will be permanently deleted."
 msgstr ""
 
-#: apps/files/hypede_files/window.py:800
+#: apps/files/hypede_files/window.py:816
 #: apps/desktop/hypede_desktop/view.py:572
 msgid "Empty Trash"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:812 apps/files/hypede_files/window.py:919
+#: apps/files/hypede_files/window.py:828 apps/files/hypede_files/window.py:935
 msgid "Undo"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:887
+#: apps/files/hypede_files/window.py:903
 msgid "Untitled Folder"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:899 apps/files/hypede_files/window.py:1003
+#: apps/files/hypede_files/window.py:915 apps/files/hypede_files/window.py:1019
 #: apps/desktop/hypede_desktop/view.py:580
 #: apps/desktop/hypede_desktop/view.py:704
 msgid "New Folder"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:899
+#: apps/files/hypede_files/window.py:915
 msgid "Create"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:919
+#: apps/files/hypede_files/window.py:935
 #, python-format
 msgid "Renamed to “%s”"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:930
+#: apps/files/hypede_files/window.py:946
 msgid "Rename Folder"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:930
+#: apps/files/hypede_files/window.py:946
 msgid "Rename File"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:931 apps/files/hypede_files/window.py:1003
+#: apps/files/hypede_files/window.py:947 apps/files/hypede_files/window.py:1019
 msgid "Rename"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:937
+#: apps/files/hypede_files/window.py:953
 msgid "Path copied"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:941
+#: apps/files/hypede_files/window.py:957
 #, python-format
 msgid "“%s” added to bookmarks"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:943
+#: apps/files/hypede_files/window.py:959
 msgid "Already in bookmarks"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:948
+#: apps/files/hypede_files/window.py:964
 msgid "Only local folders can be opened in a terminal"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:952
+#: apps/files/hypede_files/window.py:968
 msgid "No terminal found"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:991
+#: apps/files/hypede_files/window.py:1007
 msgid ""
 "File manager of the HypeDE desktop: the layout of GNOME Files with tabs and "
 "a details pane inspired by COSMIC Files."
 msgstr ""
 
-#: apps/files/hypede_files/window.py:998
+#: apps/files/hypede_files/window.py:1014
 msgid "Navigation"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:998
+#: apps/files/hypede_files/window.py:1014
 msgid "Parent Folder"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:999
+#: apps/files/hypede_files/window.py:1015
 msgid "Enter Location"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:1000
+#: apps/files/hypede_files/window.py:1016
 msgid "Toggle Sidebar"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:1001
+#: apps/files/hypede_files/window.py:1017
 msgid "Tabs"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:1001
+#: apps/files/hypede_files/window.py:1017
 msgid "Close Tab"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:1002
+#: apps/files/hypede_files/window.py:1018
 msgid "Next Tab"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:1004
+#: apps/files/hypede_files/window.py:1020
 msgid "Delete Permanently"
 msgstr ""
 
-#: apps/files/hypede_files/window.py:1007
+#: apps/files/hypede_files/window.py:1023
 msgid "View"
 msgstr ""
 
@@ -720,7 +721,7 @@ msgid "Open Settings"
 msgstr ""
 
 #: apps/assistant/hypede_assistant/app.py:191
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:71
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:73
 msgid "AI assistant"
 msgstr ""
 
@@ -784,233 +785,252 @@ msgstr ""
 msgid "Allow and Run"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:48
+#: shell/extension/hypede-shell@hypede.dev/actions.js:49
 msgid "Keep awake"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:59
 #: shell/extension/hypede-shell@hypede.dev/actions.js:60
+#: shell/extension/hypede-shell@hypede.dev/actions.js:61
 msgid "Timer"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:59
+#: shell/extension/hypede-shell@hypede.dev/actions.js:60
 #, javascript-format
 msgid "%s is up"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:98
-#: shell/extension/hypede-shell@hypede.dev/actions.js:103
+#: shell/extension/hypede-shell@hypede.dev/actions.js:99
+#: shell/extension/hypede-shell@hypede.dev/actions.js:104
 #, javascript-format
 msgid "Volume %d%%"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:98
+#: shell/extension/hypede-shell@hypede.dev/actions.js:99
 msgid "Set sound volume"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:108
+#: shell/extension/hypede-shell@hypede.dev/actions.js:109
 #, javascript-format
 msgid "Brightness %d%%"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:108
+#: shell/extension/hypede-shell@hypede.dev/actions.js:109
 msgid "Set screen brightness"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:119
+#: shell/extension/hypede-shell@hypede.dev/actions.js:120
 #, javascript-format
 msgid "%d s"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:119
+#: shell/extension/hypede-shell@hypede.dev/actions.js:120
 #, javascript-format
 msgid "%d h"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:119
+#: shell/extension/hypede-shell@hypede.dev/actions.js:120
 #, javascript-format
 msgid "%d min"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:120
-#: shell/extension/hypede-shell@hypede.dev/actions.js:122
+#: shell/extension/hypede-shell@hypede.dev/actions.js:121
+#: shell/extension/hypede-shell@hypede.dev/actions.js:123
 #, javascript-format
 msgid "Timer for %s"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:120
+#: shell/extension/hypede-shell@hypede.dev/actions.js:121
 msgid "A notification will remind you"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:127
-#: shell/extension/hypede-shell@hypede.dev/actions.js:129
+#: shell/extension/hypede-shell@hypede.dev/actions.js:128
+#: shell/extension/hypede-shell@hypede.dev/actions.js:130
 #, javascript-format
 msgid "Keep awake for %d min"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:127
+#: shell/extension/hypede-shell@hypede.dev/actions.js:128
 msgid "The screen will not dim or lock"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:136
+#: shell/extension/hypede-shell@hypede.dev/actions.js:137
 msgid "Light style"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:136
+#: shell/extension/hypede-shell@hypede.dev/actions.js:137
 msgid "Dark style"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:136
+#: shell/extension/hypede-shell@hypede.dev/actions.js:137
 msgid "Switch the color scheme"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:141
+#: shell/extension/hypede-shell@hypede.dev/actions.js:142
 msgid "Turn off Do Not Disturb"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:141
+#: shell/extension/hypede-shell@hypede.dev/actions.js:142
 msgid "Turn on Do Not Disturb"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:141
+#: shell/extension/hypede-shell@hypede.dev/actions.js:142
 msgid "Notifications"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:146
+#: shell/extension/hypede-shell@hypede.dev/actions.js:147
 msgid "Turn off Night Light"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:146
+#: shell/extension/hypede-shell@hypede.dev/actions.js:147
 msgid "Turn on Night Light"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:146
+#: shell/extension/hypede-shell@hypede.dev/actions.js:147
 msgid "Warmer colors at night"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:151
+#: shell/extension/hypede-shell@hypede.dev/actions.js:152
 msgid "Turn off Wi‑Fi"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:151
+#: shell/extension/hypede-shell@hypede.dev/actions.js:152
 msgid "Turn on Wi‑Fi"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:151
+#: shell/extension/hypede-shell@hypede.dev/actions.js:152
 msgid "Wireless network"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:156
+#: shell/extension/hypede-shell@hypede.dev/actions.js:157
 msgid "Turn off Bluetooth"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:156
+#: shell/extension/hypede-shell@hypede.dev/actions.js:157
 msgid "Turn on Bluetooth"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:161
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:65
+#: shell/extension/hypede-shell@hypede.dev/actions.js:162
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:67
 msgid "Lock screen"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:161
+#: shell/extension/hypede-shell@hypede.dev/actions.js:162
 msgid "Super+L"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:163
+#: shell/extension/hypede-shell@hypede.dev/actions.js:164
 msgid "Take a screenshot"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:163
+#: shell/extension/hypede-shell@hypede.dev/actions.js:164
 msgid "Print Screen"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:165
+#: shell/extension/hypede-shell@hypede.dev/actions.js:166
 msgid "Suspend"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:165
-#: shell/extension/hypede-shell@hypede.dev/actions.js:167
-#: shell/extension/hypede-shell@hypede.dev/actions.js:169
-#: shell/extension/hypede-shell@hypede.dev/actions.js:171
+#: shell/extension/hypede-shell@hypede.dev/actions.js:166
+#: shell/extension/hypede-shell@hypede.dev/actions.js:168
+#: shell/extension/hypede-shell@hypede.dev/actions.js:170
+#: shell/extension/hypede-shell@hypede.dev/actions.js:172
 msgid "Power"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:167
+#: shell/extension/hypede-shell@hypede.dev/actions.js:168
 msgid "Log out"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:169
-#: shell/extension/hypede-shell@hypede.dev/shelf.js:737
+#: shell/extension/hypede-shell@hypede.dev/actions.js:170
+#: shell/extension/hypede-shell@hypede.dev/shelf.js:770
 msgid "Restart"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:171
-#: shell/extension/hypede-shell@hypede.dev/shelf.js:735
+#: shell/extension/hypede-shell@hypede.dev/actions.js:172
+#: shell/extension/hypede-shell@hypede.dev/shelf.js:768
 msgid "Shut down"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:173
+#: shell/extension/hypede-shell@hypede.dev/actions.js:174
 msgid "Empty trash"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:176
+#: shell/extension/hypede-shell@hypede.dev/actions.js:177
 msgid "Restore last session"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:176
+#: shell/extension/hypede-shell@hypede.dev/actions.js:177
 msgid "Reopen windows from your last session"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:178
+#: shell/extension/hypede-shell@hypede.dev/actions.js:179
 msgid "Save session"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:178
+#: shell/extension/hypede-shell@hypede.dev/actions.js:179
 msgid "Remember open windows"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:180
+#: shell/extension/hypede-shell@hypede.dev/actions.js:181
 msgid "Session saved"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:189
+#: shell/extension/hypede-shell@hypede.dev/actions.js:190
 #, javascript-format
 msgid "Turn off %s mode"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:189
+#: shell/extension/hypede-shell@hypede.dev/actions.js:190
 #, javascript-format
 msgid "%s mode"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/actions.js:190
-#: shell/extension/hypede-shell@hypede.dev/modes.js:52
+#: shell/extension/hypede-shell@hypede.dev/actions.js:191
+#: shell/extension/hypede-shell@hypede.dev/modes.js:53
 msgid "Focus mode"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/extras.js:48
+#: shell/extension/hypede-shell@hypede.dev/edgepanel.js:39
+msgid "Edge panel"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/edgepanel.js:100
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:71
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:774
+msgid "Apps"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/edgepanel.js:104
+msgid "Screenshot"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/edgepanel.js:105
+#: shell/extension/hypede-shell@hypede.dev/extras.js:69
 msgid "Clipboard"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/extras.js:51
-msgid "Copy something — it will show up here"
-msgstr ""
-
-#: shell/extension/hypede-shell@hypede.dev/extras.js:68
-msgid "Clear"
+#: shell/extension/hypede-shell@hypede.dev/edgepanel.js:108
+msgid "Tools"
 msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/extras.js:72
+msgid "Copy something — it will show up here"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/extras.js:89
+msgid "Clear"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/extras.js:93
 msgid "Close"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/extras.js:154
+#: shell/extension/hypede-shell@hypede.dev/extras.js:159
 #, javascript-format
 msgid "Reopened %s"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/extras.js:163
+#: shell/extension/hypede-shell@hypede.dev/extras.js:168
 #, javascript-format
 msgid ""
 "Explain this:\n"
@@ -1018,134 +1038,129 @@ msgid ""
 "%s"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/greeting.js:109
+#: shell/extension/hypede-shell@hypede.dev/greeting.js:111
 msgid "Welcome to HypeDE"
-msgstr ""
-
-#: shell/extension/hypede-shell@hypede.dev/greeting.js:112
-#, javascript-format
-msgid "Good night, %s"
 msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/greeting.js:114
 #, javascript-format
-msgid "Good morning, %s"
+msgid "Good night, %s"
 msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/greeting.js:116
 #, javascript-format
+msgid "Good morning, %s"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/greeting.js:118
+#, javascript-format
 msgid "Good afternoon, %s"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/greeting.js:117
+#: shell/extension/hypede-shell@hypede.dev/greeting.js:119
 #, javascript-format
 msgid "Good evening, %s"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/greeting.js:167
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:228
+#: shell/extension/hypede-shell@hypede.dev/greeting.js:169
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:231
 msgid "%A, %B %-d"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/greeting.js:176
+#: shell/extension/hypede-shell@hypede.dev/greeting.js:178
 msgid "Press any key to continue"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:55
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:57
 msgid "Network"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:57
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:59
 msgid "Bluetooth"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:59
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:61
 msgid "Device"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:61
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:63
 msgid "Personalization"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:63
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:65
 msgid "Shelf and launcher"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:67
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:69
 msgid "Security and privacy"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:69
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:772
-msgid "Apps"
-msgstr ""
-
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:73
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:75
 msgid "Accessibility"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:75
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:77
 msgid "System preferences"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:77
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:79
 msgid "About HypeDE"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:89
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:91
 msgid "Could not open"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:261
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:263
 msgid "Search your device, apps, settings, web…"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:293
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:295
 msgid "Continue where you left off"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:451
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:752
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:453
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:754
 #, javascript-format
 msgid "Ask %s"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:712
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:714
 msgid "Actions"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:733
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:735
 msgid "Press Enter to copy the result"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:794
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:799
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:796
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:801
 msgid "Settings"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:855
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:857
 #, javascript-format
 msgid "Search for “%s” in Files"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:856
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:858
 msgid "Search in the home folder"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:879
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:881
 msgid "Web"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:885
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:887
 #, javascript-format
 msgid "Search with %s"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:885
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:887
 msgid "Search the web"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:954
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:956
 msgid "Launcher"
 msgstr ""
 
@@ -1157,88 +1172,92 @@ msgstr ""
 msgid "Sorry, that didn’t work. Please try again."
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:336
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:30
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:141
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:338
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:35
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:210
 msgid "System"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:337
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:138
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:339
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:207
 msgid "Processor"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:338
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:139
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:340
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:208
 msgid "Memory"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:365
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:367
 #, javascript-format
 msgid "%s / %s GB"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:374
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:376
 #, javascript-format
 msgid "Up for %d h %d min"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:382
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:140
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:384
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:209
 msgid "Battery"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:391
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:393
 msgid "Today"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:423
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:425
 msgid "Charging"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:424
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:426
 msgid "Fully charged"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:425
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:427
 msgid "On battery"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:426
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:428
 msgid "Plugged in"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:435
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:437
 msgid "%B, %A"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:491
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:493
 msgid "Press any key or click to unlock"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/modes.js:40
+#: shell/extension/hypede-shell@hypede.dev/modes.js:41
 msgid "Work"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/modes.js:40
+#: shell/extension/hypede-shell@hypede.dev/modes.js:41
 msgid "Game"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/modes.js:40
+#: shell/extension/hypede-shell@hypede.dev/modes.js:41
 msgid "Study"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/modes.js:50
+#: shell/extension/hypede-shell@hypede.dev/modes.js:51
 msgid "Focus"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/modes.js:116
+#: shell/extension/hypede-shell@hypede.dev/modes.js:117
 msgid "Focus mode off"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/modes.js:138
+#: shell/extension/hypede-shell@hypede.dev/modes.js:139
 #, javascript-format
 msgid "Focus mode: %s"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/overview.js:27
+msgid "Overview"
 msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/recent.js:97
@@ -1278,67 +1297,95 @@ msgstr ""
 msgid "No thanks"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/shelf.js:832
+#: shell/extension/hypede-shell@hypede.dev/shelf.js:502
+msgid "Open in a floating window"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/shelf.js:861
 msgid "Shelf"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/shelf.js:1139
+#: shell/extension/hypede-shell@hypede.dev/shelf.js:1200
 #, javascript-format
 msgid "%b %-d"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:29
+#: shell/extension/hypede-shell@hypede.dev/tablet.js:37
+msgid "Tablet"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/tablet.js:45
+msgid "Automatic"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/tablet.js:97
+msgid "Tablet mode"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/tablet.js:97
+msgid "Laptop mode"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:34
 msgid "Clock"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:29
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:34
+msgid "Dot clock"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:34
 msgid "Calendar"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:29
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:34
 msgid "Weather"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:30
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:35
 msgid "Music"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:30
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:35
 msgid "Note"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:111
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:180
 msgid "Choose a city in Weather"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:111
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:180
 msgid "Install GNOME Weather"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:112
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:181
 msgid "Click to open"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:118
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:187
 msgid "Loading…"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:118
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:187
 msgid "Weather unavailable"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:225
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:308
 msgid "Write something…"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:399
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:538
 msgid "Add widget"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:412
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:551
+msgid "Your own widget…"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:554
 msgid "Return to the column"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:418
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:560
 msgid "Remove widget"
 msgstr ""

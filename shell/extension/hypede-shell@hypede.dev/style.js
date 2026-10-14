@@ -20,6 +20,7 @@ const KEYS = [
     'shelf-opacity', 'shelf-icon-size', 'shelf-size', 'corner-radius',
     'launcher-opacity', 'launcher-icon-size', 'animation-speed',
     'accent-custom', 'shelf-color', 'launcher-color', 'lock-clock-color', 'lock-clock-size',
+    'menu-blur', 'lite-mode',
 ];
 
 const BASE = {
@@ -212,11 +213,14 @@ ${boostCss(this._baseCss(s, shelfColor, bubbleColor))}`;
         const clockScale = s.get_int('lock-clock-size') / 100;
         const clockColor = parseHex(s.get_string('lock-clock-color'));
         const px = v => `${Math.round(v * clockScale)}px`;
+        // Под размытой подложкой (menublur.js) меню чуть прозрачнее.
+        const menuBlur = s.get_boolean('menu-blur') && !s.get_boolean('lite-mode');
         return `
 #panel.hypede-shelf { background-color: ${rgba(shelfColor, s.get_int('shelf-opacity'))}; transition-duration: 300ms; }
 #panel.hypede-shelf.floating { border-radius: ${floatRadius}px; }
 .hypede-shelf-item { width: ${item}px; height: ${item}px; }
 .popup-menu-content { background-color: ${rgba(bubbleColor, s.get_int('launcher-opacity'))}; border-radius: ${radius}px; }
+${menuBlur ? `.quick-settings, .datemenu-popover { background-color: ${rgba(bubbleColor, Math.min(s.get_int('launcher-opacity'), 82))}; }` : ''}
 .hypede-launcher-menu .popup-menu-content { border-radius: ${radius + 4}px; }
 .quick-settings { border-radius: ${radius + 4}px; }
 .quick-toggle-menu, .datemenu-popover, #calendarArea { border-radius: ${radius}px; }

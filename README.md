@@ -36,6 +36,18 @@ GNOME session keeps working as before.
   Files and Settings. The assistant cannot run commands.
 - Its own icon theme (Material Symbols), sounds, wallpapers and a greeting
   at sign-in.
+- **Window overview** with a blurred background: the tray button or Super+W.
+  Windows grow out of the icon you clicked; minimized windows flow into
+  their shelf icon (genie).
+- **Tablet mode**: turns on by itself when a 2-in-1 is folded or the keyboard
+  is detached (or from quick settings): full-screen launcher, bigger shelf,
+  maximized windows, on-screen keyboard.
+- **Edge panel** on the right screen edge with favorite apps and tools, like
+  One UI; **floating windows** from the shelf menu, like HyperOS; a
+  Nothing-style dot clock and the “Nothing” theme.
+- **Your own desktop widgets**: a folder with a `widget.json` that shows text,
+  a file or the output of a command (right-click a widget → Add widget →
+  Your own widget…).
 - Dynamic Island from [DynamicLinux](https://github.com/RBXLU/DynamicLinux):
   a capsule on the shelf with music, downloads, timers and recording; click it
   for the clipboard, a file shelf, OCR, a colour picker, notes and more. It
