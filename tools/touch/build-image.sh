@@ -57,7 +57,9 @@ sed '/^\[core\]/i [hypede]\nSigLevel = Optional TrustAll\nServer = https://githu
 cp "$here/configure.sh" "$root/configure.sh"
 arch-chroot "$root" bash /configure.sh
 rm "$root/configure.sh"
-umount -R "$root"
+# pacman-key оставляет gpg-agent, который держит каталог.
+gpgconf --homedir "$root/etc/pacman.d/gnupg" --kill all 2>/dev/null || true
+umount -R "$root" || umount -R -l "$root"
 trap - EXIT
 
 # Раздел EFI: ядро, initramfs и systemd-boot по запасному пути, чтобы
