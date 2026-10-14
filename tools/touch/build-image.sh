@@ -27,8 +27,9 @@ PACKAGES=(
     firefox gnome-text-editor gnome-weather
     noto-fonts noto-fonts-emoji
     pipewire pipewire-pulse wireplumber gst-plugins-good
-    # разделы «Настроек»
-    plasma-nm plasma-pa kde-cli-tools
+    # «Типы файлов» в «Настройках». plasma-nm и plasma-pa не ставим: они
+    # тянут весь plasma-workspace с KWin, а сеть в машине и так готова.
+    kde-cli-tools
     # виртуальная машина: графика, буфер обмена, общие папки
     mesa spice-vdagent qemu-guest-agent
     # сеть и разработка

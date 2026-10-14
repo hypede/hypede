@@ -50,6 +50,17 @@ glib-compile-schemas /usr/share/glib-2.0/schemas
 
 systemctl enable gdm NetworkManager sshd systemd-timesyncd
 
+# Служебные значки, которые зависимости кладут в лаунчер: Nautilus (его
+# требует портал выбора файлов, а у HypeDE свои «Файлы»), Avahi, hwloc,
+# v4l-utils. Копии в /usr/local переживают обновления пакетов.
+mkdir -p /usr/local/share/applications
+for app in org.gnome.Nautilus avahi-discover bssh bvnc lstopo qv4l2 qvidcap; do
+    src=/usr/share/applications/$app.desktop
+    if [[ -f $src ]]; then
+        sed '/^\[Desktop Entry\]/a NoDisplay=true' "$src" > /usr/local/share/applications/$app.desktop
+    fi
+done
+
 # Свой machine-id каждой копии машины: systemd создаст его при первом запуске.
 : > /etc/machine-id
 rm -f /var/lib/dbus/machine-id
