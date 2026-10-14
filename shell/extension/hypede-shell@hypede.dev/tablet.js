@@ -18,7 +18,7 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import {QuickToggle, SystemIndicator} from 'resource:///org/gnome/shell/ui/quickSettings.js';
 import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
-import {isDesktopWindow, showOsd} from './util.js';
+import {isDesktopWindow, showOsd, maximizeWindow, unmaximizeWindow} from './util.js';
 
 // [схема, ключ, значение в режиме планшета]
 const OVERRIDES = [
@@ -51,7 +51,7 @@ export class TabletMode {
         this._settings = settings;
         this._schemas = new Map();
         this._maximized = new Set();
-        this._seat = Clutter.get_default_backend().get_default_seat();
+        this._seat = global.stage.context.get_backend().get_default_seat();
         this.active = false;
 
         this._indicator = new SystemIndicator();
@@ -137,7 +137,7 @@ export class TabletMode {
         for (const win of this._maximized) {
             if (!win.get_compositor_private())
                 continue;
-            win.unmaximize(Meta.MaximizeFlags.BOTH);
+            unmaximizeWindow(win);
         }
         this._maximized.clear();
     }
@@ -146,7 +146,7 @@ export class TabletMode {
         if (!win || isDesktopWindow(win) || win.get_window_type() !== Meta.WindowType.NORMAL ||
             !win.can_maximize() || win.maximized_horizontally && win.maximized_vertically)
             return;
-        win.maximize(Meta.MaximizeFlags.BOTH);
+        maximizeWindow(win);
         if (remember)
             this._maximized.add(win);
         win.connectObject('unmanaged', () => this._maximized.delete(win), this);

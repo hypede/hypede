@@ -28,7 +28,7 @@ import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js'
 import {evaluate as calculate, looksLikeMath} from './calculator.js';
 import {loadRecentFiles, describeWhen} from './recent.js';
 import {getFileIndex, destroyFileIndex, normalize as normalizeName} from './filesearch.js';
-import {addSecondaryClick} from './util.js';
+import {addSecondaryClick, PRIMARY_AND_MIDDLE} from './util.js';
 import {getAssistant} from './assistant.js';
 import {findActions} from './actions.js';
 import {Backdrop} from './backdrop.js';
@@ -107,7 +107,7 @@ class AppTile extends St.Button {
             style_class: 'hypede-launcher-app',
             can_focus: true,
             track_hover: true,
-            button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
+            button_mask: PRIMARY_AND_MIDDLE,
             accessible_name: app.get_name(),
         });
         this.app = app;

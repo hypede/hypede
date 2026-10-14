@@ -1,6 +1,8 @@
 // Мелочи, общие для частей оболочки.
 
 import Clutter from 'gi://Clutter';
+import Meta from 'gi://Meta';
+import St from 'gi://St';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
@@ -112,3 +114,25 @@ export function showOsd(icon, text) {
     else
         manager.show(-1, icon, text);
 }
+
+// Развернуть и восстановить окно. В GNOME 51 maximize()/unmaximize() — без
+// флагов (направления задаёт set_maximize_flags), в 48–50 — с флагами.
+const NEW_MAXIMIZE = typeof Meta.Window.prototype.set_maximize_flags === 'function';
+
+export function maximizeWindow(win) {
+    if (NEW_MAXIMIZE)
+        win.maximize();
+    else
+        win.maximize(Meta.MaximizeFlags.BOTH);
+}
+
+export function unmaximizeWindow(win) {
+    if (NEW_MAXIMIZE)
+        win.unmaximize();
+    else
+        win.unmaximize(Meta.MaximizeFlags.BOTH);
+}
+
+// Левая и средняя кнопки мыши. В GNOME 51 ONE и TWO переименовали.
+export const PRIMARY_AND_MIDDLE = (St.ButtonMask.PRIMARY ?? St.ButtonMask.ONE) |
+    (St.ButtonMask.MIDDLE ?? St.ButtonMask.TWO);

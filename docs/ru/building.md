@@ -13,7 +13,7 @@ makepkg -si
 
 Зависимости сборки: `cmake`, `extra-cmake-modules`, `qt6-base`,
 `qt6-declarative`, `qt6-tools`, `kcmutils`, `kcolorscheme`, `kconfig`,
-`kcoreaddons`, `gettext`. Для работы: `gnome-shell` 48–50, `gnome-session`,
+`kcoreaddons`, `gettext`. Для работы: `gnome-shell` 48–51, `gnome-session`,
 `python-gobject`, `gtk4`, `libadwaita` ≥ 1.7, `gvfs`, `kirigami`,
 `qqc2-desktop-style`, `ttf-roboto`.
 

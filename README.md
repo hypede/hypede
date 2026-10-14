@@ -124,7 +124,7 @@ tools/             generators for themes, icons, sounds and screenshots
 - KDE modules that configure KWin, KScreen or PowerDevil do nothing under
   GNOME, so displays, mouse, keyboard and power have HypeDE pages instead.
 - Arranging several monitors still opens `gnome-control-center display`.
-- Tested on GNOME Shell 50.5 with KDE Frameworks 6.30.
+- Tested on GNOME Shell 50.5 and 51.0 with KDE Frameworks 6.30.
 
 ## Support
 

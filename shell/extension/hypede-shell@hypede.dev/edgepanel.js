@@ -75,7 +75,7 @@ export class EdgePanel {
     }
 
     _tile(iconName, label, callback, gicon = null) {
-        const box = new St.BoxLayout({vertical: true, style_class: 'hypede-edge-tile-box'});
+        const box = new St.BoxLayout({orientation: Clutter.Orientation.VERTICAL, style_class: 'hypede-edge-tile-box'});
         box.add_child(new St.Icon({style_class: 'hypede-edge-tile-icon', ...(gicon ? {gicon} : {icon_name: iconName})}));
         box.add_child(new St.Label({text: label, style_class: 'hypede-edge-tile-label', x_align: Clutter.ActorAlign.CENTER}));
         const button = new St.Button({style_class: 'hypede-edge-tile', child: box, can_focus: true, accessible_name: label});
@@ -89,7 +89,7 @@ export class EdgePanel {
     open() {
         if (this._panel || !this._handle)
             return;
-        const panel = new St.BoxLayout({vertical: true, style_class: 'hypede-edge-panel', reactive: true});
+        const panel = new St.BoxLayout({orientation: Clutter.Orientation.VERTICAL, style_class: 'hypede-edge-panel', reactive: true});
         const grid = new St.Widget({layout_manager: new Clutter.GridLayout({orientation: Clutter.Orientation.HORIZONTAL}),
             style_class: 'hypede-edge-grid'});
         const layout = grid.layout_manager;

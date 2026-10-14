@@ -122,7 +122,7 @@ export function buildCustomWidget(w, id, def) {
     }
     head.add_child(new St.Label({text: String(def.name ?? id), style_class: 'hypede-widget-title', y_align: Clutter.ActorAlign.CENTER}));
     w.add_child(head);
-    const body = new St.BoxLayout({vertical: true, style_class: `hypede-widget-custom-body ${style}`});
+    const body = new St.BoxLayout({orientation: Clutter.Orientation.VERTICAL, style_class: `hypede-widget-custom-body ${style}`});
     w.add_child(body);
 
     const show = text => {

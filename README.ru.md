@@ -133,7 +133,7 @@ tools/             генераторы тем, значков, звуков и 
   разделами HypeDE.
 - Взаимное расположение нескольких мониторов пока настраивается в
   `gnome-control-center display`.
-- Проверено на GNOME Shell 50.5 и KDE Frameworks 6.30.
+- Проверено на GNOME Shell 50.5 и 51.0 с KDE Frameworks 6.30.
 
 ## Поддержать
 

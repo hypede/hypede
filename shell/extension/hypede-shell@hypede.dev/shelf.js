@@ -30,7 +30,7 @@ import * as SystemActions from 'resource:///org/gnome/shell/misc/systemActions.j
 import {AppMenu} from 'resource:///org/gnome/shell/ui/appMenu.js';
 import {InjectionManager, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
-import {addSecondaryClick} from './util.js';
+import {addSecondaryClick, PRIMARY_AND_MIDDLE} from './util.js';
 import {Backdrop} from './backdrop.js';
 import {toggleFloat} from './extras.js';
 
@@ -272,7 +272,7 @@ class ShelfIcon extends St.Button {
             style_class: 'hypede-shelf-item',
             can_focus: true,
             track_hover: true,
-            button_mask: St.ButtonMask.ONE | St.ButtonMask.TWO,
+            button_mask: PRIMARY_AND_MIDDLE,
             accessible_name: app.get_name(),
             x_align: Clutter.ActorAlign.CENTER,
             y_align: Clutter.ActorAlign.CENTER,

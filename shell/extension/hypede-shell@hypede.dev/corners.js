@@ -15,7 +15,6 @@ import Cogl from 'gi://Cogl';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
-import Shell from 'gi://Shell';
 import St from 'gi://St';
 
 import {isDesktopWindow} from './util.js';
@@ -37,17 +36,15 @@ if (hd_q.x < hd_radius && hd_q.y < hd_radius) {
 }
 `;
 
+// Шейдер добавляется в конвейер, которым OffscreenEffect рисует снимок
+// актёра. Shell.GLSLEffect, на котором это было раньше, в GNOME 51 убрали;
+// Cogl.Snippet и get_pipeline() есть во всех поддерживаемых версиях.
 export const CornersEffect = GObject.registerClass(
-class CornersEffect extends Shell.GLSLEffect {
+class CornersEffect extends Clutter.OffscreenEffect {
     _init(radius) {
         super._init();
         this._radius = radius;
-        this._sizeLocation = this.get_uniform_location('hd_size');
-        this._radiusLocation = this.get_uniform_location('hd_radius');
-    }
-
-    vfunc_build_pipeline() {
-        this.add_glsl_snippet(Cogl.SnippetHook.FRAGMENT, DECLARATIONS, CODE, false);
+        this._pipeline = null;
     }
 
     set radius(value) {
@@ -56,9 +53,20 @@ class CornersEffect extends Shell.GLSLEffect {
     }
 
     vfunc_paint_target(node, paintContext) {
-        const actor = this.get_actor();
-        this.set_uniform_float(this._sizeLocation, 2, [actor.width, actor.height]);
-        this.set_uniform_float(this._radiusLocation, 1, [this._radius]);
+        // Конвейер пересоздаётся, когда меняется размер снимка, — тогда
+        // шейдер добавляется заново.
+        const pipeline = this.get_pipeline();
+        if (pipeline && pipeline !== this._pipeline) {
+            pipeline.add_snippet(Cogl.Snippet.new(Cogl.SnippetHook.FRAGMENT, DECLARATIONS, CODE));
+            this._pipeline = pipeline;
+            this._sizeLocation = pipeline.get_uniform_location('hd_size');
+            this._radiusLocation = pipeline.get_uniform_location('hd_radius');
+        }
+        if (this._pipeline) {
+            const actor = this.get_actor();
+            this._pipeline.set_uniform_float(this._sizeLocation, 2, 1, [actor.width, actor.height]);
+            this._pipeline.set_uniform_1f(this._radiusLocation, this._radius);
+        }
         super.vfunc_paint_target(node, paintContext);
     }
 });

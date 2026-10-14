@@ -62,7 +62,7 @@ function bar() {
 }
 
 function row(name) {
-    const box = new St.BoxLayout({vertical: true, style_class: 'hypede-widget-row'});
+    const box = new St.BoxLayout({orientation: Clutter.Orientation.VERTICAL, style_class: 'hypede-widget-row'});
     const head = new St.BoxLayout();
     const text = label('hypede-widget-caption', name);
     const value = label('hypede-widget-value');
@@ -136,7 +136,10 @@ const builders = {
         };
         clock.connectObject('notify::clock', sync, w);
         sync();
-        w.connect('destroy', () => clock.run_dispose());
+        w.connect('destroy', () => {
+            clock.disconnectObject(w);
+            clock.run_dispose();
+        });
     },
 
     clock(w) {
@@ -151,7 +154,10 @@ const builders = {
         };
         clock.connectObject('notify::clock', sync, w);
         sync();
-        w.connect('destroy', () => clock.run_dispose());
+        w.connect('destroy', () => {
+            clock.disconnectObject(w);
+            clock.run_dispose();
+        });
     },
 
     calendar(w) {
@@ -258,7 +264,7 @@ const builders = {
     media(w) {
         const source = new MprisSource();
         const art = new St.Icon({style_class: 'hypede-widget-cover', icon_name: 'audio-x-generic-symbolic'});
-        const text = new St.BoxLayout({vertical: true, x_expand: true, y_align: Clutter.ActorAlign.CENTER});
+        const text = new St.BoxLayout({orientation: Clutter.Orientation.VERTICAL, x_expand: true, y_align: Clutter.ActorAlign.CENTER});
         const song = label('hypede-widget-song');
         const artist = label('hypede-widget-caption');
         song.clutter_text.ellipsize = artist.clutter_text.ellipsize = Pango.EllipsizeMode.END;
@@ -337,7 +343,7 @@ class Widget extends St.BoxLayout {
     _init(type, settings, entry = {}, custom = null) {
         super._init({
             style_class: `hypede-widget hypede-widget-${type}`,
-            vertical: true,
+            orientation: Clutter.Orientation.VERTICAL,
             reactive: true,
             track_hover: true,
         });

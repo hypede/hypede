@@ -8,7 +8,7 @@ import * as MessageTray from 'resource:///org/gnome/shell/ui/messageTray.js';
 import * as SystemActions from 'resource:///org/gnome/shell/misc/systemActions.js';
 import {InjectionManager, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
-import {isDesktopWindow} from './util.js';
+import {isDesktopWindow, maximizeWindow} from './util.js';
 
 const FILE = GLib.build_filenamev([GLib.get_user_state_dir(), 'hypede', 'session.json']);
 
@@ -117,7 +117,7 @@ export class SessionKeeper {
             win.change_workspace_by_index(e.ws, false);
         }
         if (e.max) {
-            win.maximize(Meta.MaximizeFlags.BOTH);
+            maximizeWindow(win);
         } else if (e.rect) {
             const [x, y, w, h] = e.rect;
             win.move_resize_frame(true, x, y, w, h);

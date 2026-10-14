@@ -15,12 +15,12 @@ import GLib from 'gi://GLib';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as ScreenShield from 'resource:///org/gnome/shell/ui/screenShield.js';
-import * as GdmUtil from 'resource:///org/gnome/shell/gdm/util.js';
 import * as Signals from 'resource:///org/gnome/shell/misc/signals.js';
 import * as SystemActions from 'resource:///org/gnome/shell/misc/systemActions.js';
 import {InjectionManager, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
 const AUTH_HELPER = '/usr/lib/hypede/hypede-auth';
+const PASSWORD_SERVICE_NAME = 'gdm-password';
 
 // Экран блокировки создаётся один раз за сеанс: у GNOME нет способа его
 // разобрать, и он держит имя org.gnome.ScreenSaver на шине.
@@ -41,7 +41,7 @@ class PamVerifier extends Signals.EventEmitter {
     async call_begin_verification_for_user(serviceName, _userName, cancellable) {
         // Отпечаток и смарт-карта идут через тот же PAM-стек, если они в нём
         // настроены, — отдельные службы GDM здесь не нужны.
-        if (serviceName !== GdmUtil.PASSWORD_SERVICE_NAME) {
+        if (serviceName !== PASSWORD_SERVICE_NAME) {
             this.emit('service-unavailable', serviceName, null);
             return;
         }
@@ -111,7 +111,13 @@ class PamVerifier extends Signals.EventEmitter {
         this.emit('conversation-stopped', service);
     }
 
-    call_answer_query(serviceName, answer, _cancellable, _callback) {
+    // Вход без имени пользователя (GNOME 51 так спрашивает, когда имя уже известно).
+    call_begin_verification(serviceName, cancellable) {
+        return this.call_begin_verification_for_user(serviceName, GLib.get_user_name(), cancellable);
+    }
+
+    // GNOME 51 ждёт промис, GNOME 48–50 — ничего.
+    async call_answer_query(serviceName, answer, _cancellable, _callback) {
         if (!this._process || serviceName !== this._service)
             return;
         const bytes = new TextEncoder().encode(`${answer}\n`);
@@ -139,14 +145,31 @@ class PamVerifier extends Signals.EventEmitter {
 // вернулась к GDM, пока экран заблокирован, разблокировать его было бы нельзя.
 const injections = new InjectionManager();
 
-export function setupLocker() {
-    if (fallbackShield || Main.screenShield ||
-        !GLib.file_test(AUTH_HELPER, GLib.FileTest.IS_EXECUTABLE))
-        return;
+// Проверка пароля — через hypede-auth вместо GDM. В GNOME 51 проверка
+// переехала в gdm/userVerifier.js и берёт «прокси» GDM из одного метода,
+// в 48–50 она в gdm/util.js и открывает канал сама.
+function hasResource(path) {
+    try {
+        Gio.resources_get_info(path, Gio.ResourceLookupFlags.NONE);
+        return true;
+    } catch {
+        return false;
+    }
+}
 
-    // Проверка пароля — через hypede-auth вместо GDM.
+async function redirectVerifier() {
+    // GNOME 51 вынес проверку пароля в gdm/userVerifier.js.
+    if (hasResource('/org/gnome/shell/gdm/userVerifier.js')) {
+        const {ShellUserVerifier} = await import('resource:///org/gnome/shell/gdm/userVerifier.js');
+        injections.overrideMethod(ShellUserVerifier.prototype, '_getUserVerifierProxies',
+            () => async function () {
+                return {userVerifier: new PamVerifier()};
+            });
+        return;
+    }
+    const {ShellUserVerifier} = await import('resource:///org/gnome/shell/gdm/util.js');
     for (const method of ['_openReauthenticationChannel', '_getUserVerifier']) {
-        injections.overrideMethod(GdmUtil.ShellUserVerifier.prototype, method,
+        injections.overrideMethod(ShellUserVerifier.prototype, method,
             () => function () {
                 this._clearUserVerifier();
                 this._userVerifier = new PamVerifier();
@@ -157,6 +180,14 @@ export function setupLocker() {
                 this._hold.release();
             });
     }
+}
+
+export function setupLocker() {
+    if (fallbackShield || Main.screenShield ||
+        !GLib.file_test(AUTH_HELPER, GLib.FileTest.IS_EXECUTABLE))
+        return;
+
+    redirectVerifier().catch(e => logError(e, 'HypeDE: проверка пароля без GDM недоступна'));
 
     try {
         fallbackShield = new ScreenShield.ScreenShield();
