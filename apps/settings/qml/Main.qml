@@ -57,11 +57,69 @@ Rectangle {
         doNavigate(pageId, kcm)
     }
 
+    // История переходов для кнопок мыши «назад/вперёд» и Alt+←/→.
+    property var backStack: []
+    property var forwardStack: []
+    property bool historyMove: false
+
     function doNavigate(pageId, kcm) {
-        currentPage = Catalog.page(pageId).id
+        const target = Catalog.page(pageId).id
+        if (!historyMove && (target !== currentPage || (kcm || "") !== openedKcm)) {
+            backStack = backStack.concat([{ page: currentPage, kcm: openedKcm }]).slice(-50)
+            forwardStack = []
+        }
+        historyMove = false
+        currentPage = target
         openedKcm = kcm || ""
         if (!activeKcm)
             KcmHost.close()
+    }
+
+    function historyBack() {
+        if (searching) {
+            titleBar.searchText = ""
+            return
+        }
+        if (backStack.length === 0)
+            return
+        const to = backStack[backStack.length - 1]
+        backStack = backStack.slice(0, -1)
+        forwardStack = forwardStack.concat([{ page: currentPage, kcm: openedKcm }])
+        historyMove = true
+        navigate(to.page, to.kcm)
+    }
+
+    function historyForward() {
+        if (forwardStack.length === 0)
+            return
+        const to = forwardStack[forwardStack.length - 1]
+        forwardStack = forwardStack.slice(0, -1)
+        backStack = backStack.concat([{ page: currentPage, kcm: openedKcm }])
+        historyMove = true
+        navigate(to.page, to.kcm)
+    }
+
+    // Боковые кнопки мыши. Остальные кнопки сюда не попадают и проходят дальше.
+    MouseArea {
+        anchors.fill: parent
+        z: 1000
+        acceptedButtons: Qt.BackButton | Qt.ForwardButton
+        onPressed: mouse => {
+            if (mouse.button === Qt.BackButton)
+                root.historyBack()
+            else
+                root.historyForward()
+        }
+    }
+
+    Shortcut {
+        sequences: ["Alt+Left", StandardKey.Back]
+        onActivated: root.historyBack()
+    }
+
+    Shortcut {
+        sequences: ["Alt+Right", StandardKey.Forward]
+        onActivated: root.historyForward()
     }
 
     function openKcm(kcm) {
@@ -235,7 +293,7 @@ Rectangle {
                     ChromeButton {
                         text: qsTr("Cancel")
                         flat: true
-                        onClicked: root.pendingNavigation = null
+                        onClicked: { root.pendingNavigation = null; root.historyMove = false }
                     }
                     ChromeButton {
                         text: qsTr("Discard")

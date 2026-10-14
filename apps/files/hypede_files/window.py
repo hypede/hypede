@@ -54,6 +54,7 @@ class Window(Adw.ApplicationWindow):
 
         self._build_ui()
         self._install_actions()
+        self._install_mouse_navigation()
         self.open_tab(location, select=True)
         if search:
             GLib.idle_add(lambda: self._begin_search(search) and False)
@@ -582,6 +583,21 @@ class Window(Adw.ApplicationWindow):
     # ================================================================
     # Действия
     # ================================================================
+
+    def _install_mouse_navigation(self) -> None:
+        """Боковые кнопки мыши (8 и 9): назад и вперёд, как в браузере."""
+        click = Gtk.GestureClick(button=0)
+        click.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+
+        def pressed(gesture, _n, _x, _y):
+            button = gesture.get_current_button()
+            if button not in (8, 9):
+                return
+            gesture.set_state(Gtk.EventSequenceState.CLAIMED)
+            self.activate_action("win.back" if button == 8 else "win.forward", None)
+
+        click.connect("pressed", pressed)
+        self.add_controller(click)
 
     def _install_actions(self) -> None:
         def add(name, callback, accels=(), parameter=None):
