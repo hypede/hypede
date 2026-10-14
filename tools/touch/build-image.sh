@@ -24,6 +24,7 @@ PACKAGES=(
     # рабочий стол
     gdm gnome-shell gnome-session gnome-keyring gnome-control-center
     xdg-user-dirs-gtk xdg-desktop-portal-gnome ptyxis
+    firefox gnome-text-editor gnome-weather
     noto-fonts noto-fonts-emoji
     pipewire pipewire-pulse wireplumber gst-plugins-good
     # разделы «Настроек»

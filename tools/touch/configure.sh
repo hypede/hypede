@@ -49,3 +49,7 @@ OVERRIDE
 glib-compile-schemas /usr/share/glib-2.0/schemas
 
 systemctl enable gdm NetworkManager sshd systemd-timesyncd
+
+# Свой machine-id каждой копии машины: systemd создаст его при первом запуске.
+: > /etc/machine-id
+rm -f /var/lib/dbus/machine-id
