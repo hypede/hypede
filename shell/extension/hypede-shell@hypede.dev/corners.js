@@ -9,8 +9,10 @@
 // Развёрнутые, прикреплённые к краю и полноэкранные окна остаются
 // прямоугольными.
 
+import Cairo from 'cairo';
 import Clutter from 'gi://Clutter';
 import Cogl from 'gi://Cogl';
+import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
 import Shell from 'gi://Shell';
@@ -62,39 +64,26 @@ class CornersEffect extends Shell.GLSLEffect {
 });
 
 // Тень рисуется слоями вокруг окна, а под самим окном остаётся пустой:
-// иначе она просвечивала бы в вырезанных углах.
+// иначе она просвечивала бы в вырезанных углах. Рисуется она один раз в
+// маленькую картинку (углы и по пикселю края), а на окно растягивается как
+// border-image: при перемещении и изменении размера окна ничего не
+// перерисовывается.
 const SHADOW_MARGIN = 28;
+const shadowFiles = new Map();
 
-const WindowShadow = GObject.registerClass(
-class WindowShadow extends St.DrawingArea {
-    _init() {
-        super._init({style_class: 'hypede-window-shadow'});
-        this._radius = 12;
-        this._focused = false;
-        this._square = false;
-        this.connect('repaint', () => this._draw());
-    }
-
-    update(radius, focused, square) {
-        if (radius === this._radius && focused === this._focused && square === this._square)
-            return;
-        this._radius = radius;
-        this._focused = focused;
-        this._square = square;
-        this.queue_repaint();
-    }
-
-    _draw() {
-        const cr = this.get_context();
-        const [w, h] = this.get_surface_size();
-        if (this._square) {
-            cr.$dispose();
-            return;
-        }
-        const scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        const m = SHADOW_MARGIN * scale;
-        const r = this._radius * scale;
-        const [blur, dy, strength] = this._focused ? [22, 6, 0.30] : [12, 2, 0.16];
+function shadowFile(radius, focused) {
+    const key = `${radius}-${focused ? 1 : 0}`;
+    if (shadowFiles.has(key))
+        return shadowFiles.get(key);
+    const dir = GLib.build_filenamev([GLib.get_user_cache_dir(), 'hypede', 'shadows']);
+    const path = GLib.build_filenamev([dir, `shadow-v1-${key}.png`]);
+    if (!GLib.file_test(path, GLib.FileTest.EXISTS)) {
+        GLib.mkdir_with_parents(dir, 0o755);
+        const m = SHADOW_MARGIN, r = radius;
+        const size = 2 * (m + r) + 2;
+        const surface = new Cairo.ImageSurface(Cairo.Format.ARGB32, size, size);
+        const cr = new Cairo.Context(surface);
+        const [blur, dy, strength] = focused ? [22, 6, 0.30] : [12, 2, 0.16];
         const roundRect = (x, y, rw, rh, rr) => {
             rr = Math.max(0, Math.min(rr, rw / 2, rh / 2));
             cr.newSubPath();
@@ -104,19 +93,44 @@ class WindowShadow extends St.DrawingArea {
             cr.arc(x + rr, y + rr, rr, Math.PI, 3 * Math.PI / 2);
             cr.closePath();
         };
-        const winW = w - 2 * m, winH = h - 2 * m;
-        cr.setFillRule(1); // EVEN_ODD: закрашивается только кольцо вокруг окна
-        const steps = Math.round(blur * scale);
-        for (let i = steps; i > 0; i--) {
+        const win = size - 2 * m;
+        cr.setFillRule(Cairo.FillRule.EVEN_ODD); // закрашивается только кольцо вокруг окна
+        for (let i = blur; i > 0; i--) {
             // Каждый слой шире предыдущего; прозрачность убывает по гауссу.
-            const t = i / steps;
-            const alpha = strength * Math.exp(-4 * t * t) / steps * 3;
+            const t = i / blur;
+            const alpha = strength * Math.exp(-4 * t * t) / blur * 3;
             cr.setSourceRGBA(0, 0, 0, alpha);
-            roundRect(m - i, m - i + dy * scale * (1 - t), winW + 2 * i, winH + 2 * i, r + i);
-            roundRect(m, m, winW, winH, r);
+            roundRect(m - i, m - i + dy * (1 - t), win + 2 * i, win + 2 * i, r + i);
+            roundRect(m, m, win, win, r);
             cr.fill();
         }
         cr.$dispose();
+        surface.writeToPNG(path);
+        surface.finish();
+    }
+    const uri = GLib.filename_to_uri(path, null);
+    shadowFiles.set(key, uri);
+    return uri;
+}
+
+const WindowShadow = GObject.registerClass(
+class WindowShadow extends St.Widget {
+    _init() {
+        super._init({style_class: 'hypede-window-shadow'});
+        this._radius = -1;
+        this._focused = false;
+        this._square = false;
+    }
+
+    update(radius, focused, square) {
+        if (radius === this._radius && focused === this._focused && square === this._square)
+            return;
+        this._radius = radius;
+        this._focused = focused;
+        this._square = square;
+        const slice = SHADOW_MARGIN + radius + 1;
+        this.style = square ? null
+            : `border-image: url("${shadowFile(radius, focused)}") ${slice} ${slice} ${slice} ${slice};`;
     }
 });
 

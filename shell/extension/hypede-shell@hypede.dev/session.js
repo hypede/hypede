@@ -36,7 +36,7 @@ export class SessionKeeper {
 
         const self = this;
         const freeze = name => this._injections.overrideMethod(SystemActions.getDefault(), name, original => function (...args) {
-            self.save();
+            self.save(true);
             self._frozen = true;
             GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 120, () => {
                 self._frozen = false;
@@ -147,11 +147,29 @@ export class SessionKeeper {
         return out.sort((a, b) => a.seq - b.seq).map(({seq: _s, ...e}) => e);
     }
 
-    save() {
+    // Обычное сохранение — в фоне: запись с fsync на некоторых дисках и
+    // файловых системах занимает заметное время. Перед выходом из системы —
+    // сразу, чтобы успеть.
+    save(now = false) {
         if (!this._ready || this._frozen)
             return;
         GLib.mkdir_with_parents(GLib.path_get_dirname(FILE), 0o700);
-        GLib.file_set_contents(FILE, JSON.stringify(this.snapshot()));
+        const text = JSON.stringify(this.snapshot());
+        if (text === this._saved)
+            return;
+        this._saved = text;
+        if (now) {
+            GLib.file_set_contents(FILE, text);
+            return;
+        }
+        Gio.File.new_for_path(FILE).replace_contents_bytes_async(new GLib.Bytes(new TextEncoder().encode(text)),
+            null, false, Gio.FileCreateFlags.PRIVATE, null, (file, res) => {
+                try {
+                    file.replace_contents_finish(res);
+                } catch (e) {
+                    console.warn(`HypeDE: session not saved: ${e.message}`);
+                }
+            });
     }
 
     restore(entries = this._previous) {

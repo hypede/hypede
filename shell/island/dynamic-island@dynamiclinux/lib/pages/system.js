@@ -116,11 +116,17 @@ export class SystemPage extends BasePage {
 
     onShow() {
         super.onShow();
-        this.services.sysmon.acquireFps();
-        this._fpsAcquired = true;
+        // onShow может прийти повторно без onHide — держим одну подписку.
+        if (!this._fpsAcquired) {
+            this.services.sysmon.acquireFps();
+            this.services.sysmon.acquire();
+            this._fpsAcquired = true;
+        }
         this.services.sysmon.readDisk('/');
         this._update();
         this._updateProcs();
+        if (this._procLoop)
+            this.timers.clear(this._procLoop);
         this._procLoop = this.timers.interval(3000, () => {
             this._updateProcs();
             return true;
@@ -131,6 +137,7 @@ export class SystemPage extends BasePage {
         super.onHide();
         if (this._fpsAcquired) {
             this.services.sysmon.releaseFps();
+            this.services.sysmon.release();
             this._fpsAcquired = false;
         }
         if (this._procLoop)

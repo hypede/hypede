@@ -3,9 +3,11 @@
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 
-import {Emitter, Timers, readFileSync, run} from '../utils.js';
+import {Emitter, Timers, readFile, readFileSync, run} from '../utils.js';
 
 const HISTORY = 60;
+// Когда данные нигде не видны, нужен только заряд батареи (для предупреждения).
+const IDLE_INTERVAL = 30000;
 
 export class SysMonitor extends Emitter {
     constructor(settings) {
@@ -20,6 +22,8 @@ export class SysMonitor extends Emitter {
         this._fpsTime = GLib.get_monotonic_time();
         this._paintId = 0;
         this._fpsUsers = 0;
+        this._users = 0;
+        this._busy = false;
         this._thermalPath = undefined;
         this._batteryPath = undefined;
 
@@ -39,14 +43,32 @@ export class SysMonitor extends Emitter {
         this._settings.connectObject('changed::update-interval', () => this._start(), this);
     }
 
+    // Опрос частый, только пока кто-то показывает данные (acquire/release);
+    // иначе раз в 30 секунд и только батарея. Файлы читаются асинхронно:
+    // чтение /sys на некоторых ноутбуках (батарея, датчики) занимает сотни
+    // миллисекунд, и синхронное чтение подвешивало бы всю оболочку.
     _start() {
         if (this._loopId)
             this._timers.clear(this._loopId);
         this._update();
-        this._loopId = this._timers.interval(this._settings.get_int('update-interval'), () => {
+        const interval = this._users > 0 ? this._settings.get_int('update-interval') : IDLE_INTERVAL;
+        this._loopId = this._timers.interval(interval, () => {
             this._update();
             return true;
         });
+    }
+
+    /** Подписка на частое обновление (виджет или страница на экране). */
+    acquire() {
+        this._users++;
+        if (this._users === 1)
+            this._start();
+    }
+
+    release() {
+        this._users = Math.max(0, this._users - 1);
+        if (this._users === 0)
+            this._start();
     }
 
     /** Подписка на подсчёт FPS (включается только когда кто-то смотрит). */
@@ -77,23 +99,34 @@ export class SysMonitor extends Emitter {
             h.shift();
     }
 
-    _update() {
+    async _update() {
+        if (this._busy || this._destroyed)
+            return;
+        this._busy = true;
         try {
-            this._readCpu();
-            this._readMem();
-            this._readNet();
-            this._readTemp();
-            this._readBattery();
-            this._readLoad();
-            this._readFps();
+            if (this._users > 0) {
+                const [stat, mem, net, load, uptime] = await Promise.all(
+                    ['/proc/stat', '/proc/meminfo', '/proc/net/dev', '/proc/loadavg', '/proc/uptime'].map(readFile));
+                if (this._destroyed)
+                    return;
+                this._readCpu(stat);
+                this._readMem(mem);
+                this._readNet(net);
+                this._readLoad(load, uptime);
+                await this._readTemp();
+                this._readFps();
+            }
+            await this._readBattery();
         } catch (e) {
             console.error(`[dynamic-island] sysmon: ${e.message}`);
+        } finally {
+            this._busy = false;
         }
-        this.emit('updated');
+        if (!this._destroyed)
+            this.emit('updated');
     }
 
-    _readCpu() {
-        const stat = readFileSync('/proc/stat');
+    _readCpu(stat) {
         if (!stat)
             return;
         const lines = stat.split('\n').filter(l => l.startsWith('cpu'));
@@ -122,8 +155,7 @@ export class SysMonitor extends Emitter {
         this._push('cpu', this.cpu * 100);
     }
 
-    _readMem() {
-        const info = readFileSync('/proc/meminfo');
+    _readMem(info) {
         if (!info)
             return;
         const get = k => {
@@ -145,8 +177,7 @@ export class SysMonitor extends Emitter {
         this._push('mem', this.mem.percent * 100);
     }
 
-    _readNet() {
-        const dev = readFileSync('/proc/net/dev');
+    _readNet(dev) {
         if (!dev)
             return;
         let rx = 0, tx = 0;
@@ -177,18 +208,19 @@ export class SysMonitor extends Emitter {
         this._push('tx', this.net.tx);
     }
 
-    _findThermal() {
+    async _findThermal() {
         // Предпочитаем датчики CPU в hwmon (coretemp, k10temp, zenpower), затем thermal_zone
         const preferred = ['coretemp', 'k10temp', 'zenpower', 'cpu_thermal', 'acpitz'];
         const candidates = [];
         try {
+            // Читаем только имена датчиков: температура видеокарты в спящем
+            // режиме будила бы её и надолго задерживала чтение.
             const dir = Gio.File.new_for_path('/sys/class/hwmon');
-            const en = dir.enumerate_children('standard::name', Gio.FileQueryInfoFlags.NONE, null);
-            let info;
-            while ((info = en.next_file(null))) {
+            const en = await dir.enumerate_children_async('standard::name', Gio.FileQueryInfoFlags.NONE, GLib.PRIORITY_LOW, null);
+            for (const info of await en.next_files_async(64, GLib.PRIORITY_LOW, null)) {
                 const base = `/sys/class/hwmon/${info.get_name()}`;
-                const name = (readFileSync(`${base}/name`) ?? '').trim();
-                if (readFileSync(`${base}/temp1_input`) !== null)
+                const name = ((await readFile(`${base}/name`)) ?? '').trim();
+                if (GLib.file_test(`${base}/temp1_input`, GLib.FileTest.EXISTS))
                     candidates.push({name, path: `${base}/temp1_input`});
             }
         } catch {}
@@ -197,22 +229,20 @@ export class SysMonitor extends Emitter {
             if (c)
                 return c.path;
         }
-        if (candidates.length)
-            return candidates[0].path;
         for (let i = 0; i < 10; i++) {
             const path = `/sys/class/thermal/thermal_zone${i}/temp`;
-            if (readFileSync(path) !== null)
+            if (GLib.file_test(path, GLib.FileTest.EXISTS))
                 return path;
         }
         return null;
     }
 
-    _readTemp() {
+    async _readTemp() {
         if (this._thermalPath === undefined)
-            this._thermalPath = this._findThermal();
+            this._thermalPath = await this._findThermal();
         if (!this._thermalPath)
             return;
-        const raw = readFileSync(this._thermalPath);
+        const raw = await readFile(this._thermalPath);
         if (raw === null)
             return;
         const v = Number(raw.trim()) / 1000;
@@ -221,11 +251,11 @@ export class SysMonitor extends Emitter {
             this._push('temp', this.temp);
     }
 
-    _readBattery() {
+    async _readBattery() {
         if (this._batteryPath === undefined) {
             this._batteryPath = null;
             for (const n of ['BAT0', 'BAT1', 'BAT2', 'BATT', 'CMB0']) {
-                if (readFileSync(`/sys/class/power_supply/${n}/capacity`) !== null) {
+                if (GLib.file_test(`/sys/class/power_supply/${n}/capacity`, GLib.FileTest.EXISTS)) {
                     this._batteryPath = `/sys/class/power_supply/${n}`;
                     break;
                 }
@@ -233,8 +263,9 @@ export class SysMonitor extends Emitter {
         }
         if (!this._batteryPath)
             return;
-        const cap = Number((readFileSync(`${this._batteryPath}/capacity`) ?? '').trim());
-        const status = (readFileSync(`${this._batteryPath}/status`) ?? '').trim();
+        const [capRaw, statusRaw] = await Promise.all([readFile(`${this._batteryPath}/capacity`), readFile(`${this._batteryPath}/status`)]);
+        const cap = Number((capRaw ?? '').trim());
+        const status = (statusRaw ?? '').trim();
         this.battery = {
             percent: Number.isFinite(cap) ? cap : 0,
             charging: status === 'Charging' || status === 'Full',
@@ -242,11 +273,9 @@ export class SysMonitor extends Emitter {
         };
     }
 
-    _readLoad() {
-        const l = readFileSync('/proc/loadavg');
+    _readLoad(l, u) {
         if (l)
             this.load = l.trim().split(/\s+/).slice(0, 3).map(Number);
-        const u = readFileSync('/proc/uptime');
         if (u)
             this.uptime = Number(u.split(/\s+/)[0]);
     }
@@ -295,6 +324,7 @@ export class SysMonitor extends Emitter {
     }
 
     destroy() {
+        this._destroyed = true;
         this._settings.disconnectObject(this);
         if (this._paintId)
             global.stage.disconnect(this._paintId);

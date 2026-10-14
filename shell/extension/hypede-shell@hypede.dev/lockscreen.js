@@ -11,6 +11,8 @@
 // экран блокировки GNOME — HypeDE только меняет его облик и анимации.
 // Пароль проверяет GDM, а без него — hypede-auth (см. locker.js).
 
+// cairo регистрирует cairo.Context для get_context() у St.DrawingArea.
+import 'cairo';
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
@@ -150,6 +152,7 @@ class LockClock extends St.BoxLayout {
             orientation: Clutter.Orientation.VERTICAL,
             x_align: Clutter.ActorAlign.CENTER,
         });
+        this.connect('destroy', () => this._onDestroy());
         this._interface = new Gio.Settings({schema_id: 'org.gnome.desktop.interface'});
 
         if (style === 'analog') {
@@ -272,13 +275,12 @@ class LockClock extends St.BoxLayout {
         this._accent = rgb;
     }
 
-    vfunc_destroy() {
+    _onDestroy() {
         for (const id of [this._timerId, this._pulseId]) {
             if (id)
                 GLib.source_remove(id);
         }
         this._timerId = this._pulseId = 0;
-        super.vfunc_destroy();
     }
 });
 

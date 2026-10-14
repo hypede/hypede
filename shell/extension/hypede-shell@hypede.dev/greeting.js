@@ -6,6 +6,8 @@
 // буква тихо «щёлкает», волны шуршат, в конце — звук входа (звуковая тема
 // HypeDE). Любая клавиша или щелчок пропускают приветствие.
 
+// cairo регистрирует cairo.Context для get_context() у St.DrawingArea.
+import 'cairo';
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
