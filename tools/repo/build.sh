@@ -21,6 +21,9 @@ pacman -Syu --noconfirm --needed base-devel git sudo
 
 id builder >/dev/null 2>&1 || useradd -m builder
 echo 'builder ALL=(ALL) NOPASSWD: ALL' > /etc/sudoers.d/builder
+# makepkg не работает от root: исходники на время сборки отдаём builder.
+owner=$(stat -c %u:%g "$src")
+trap 'chown -R "$owner" "$src"' EXIT
 chown -R builder "$src"
 mkdir -p "$out"
 chown builder "$out"
@@ -38,7 +41,9 @@ cd "$src/packaging"
 as_builder env PKGDEST="$out" makepkg --syncdeps --noconfirm --cleanbuild "${sign[@]}"
 
 cd "$out"
-as_builder repo-add "${sign[@]}" --remove hypede.db.tar.gz ./*.pkg.tar.zst
+# Arch Linux ARM сжимает пакеты в .pkg.tar.xz, Arch Linux — в .zst.
+mapfile -t pkgs < <(find . -maxdepth 1 -name '*.pkg.tar.*' ! -name '*.sig')
+as_builder repo-add "${sign[@]}" --remove hypede.db.tar.gz "${pkgs[@]}"
 # В релиз GitHub симлинки не загрузить: pacman спрашивает hypede.db и
 # hypede.files, поэтому кладём под этими именами сами архивы.
 for name in hypede.db hypede.files; do
