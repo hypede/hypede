@@ -1004,6 +1004,11 @@ class LauncherButton extends PanelMenu.Button {
                     });
                 }
                 this._prepareOpen();
+                // Экранная клавиатура (режим планшета) должна быть поверх
+                // лаунчера, а не под ним.
+                const {uiGroup, keyboardBox} = Main.layoutManager;
+                if (keyboardBox?.get_parent() === uiGroup && this.menu.actor.get_parent() === uiGroup)
+                    uiGroup.set_child_above_sibling(keyboardBox, this.menu.actor);
                 this.view._syncAssistant();
                 this.view.onOpen();
                 // Фокус в строку поиска — после того, как меню заберёт ввод.
