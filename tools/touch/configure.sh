@@ -21,9 +21,12 @@ FSTAB
 mkdir -p /mnt/share
 
 # initramfs без autodetect: он подобрал бы модули под машину сборки,
-# а не под виртуальную.
+# а не под виртуальную. И без kms — драйверы всех видеокарт подряд не
+# нужны, хватит virtio_gpu. Без сжатия: под эмуляцией (UTM на iPhone)
+# распаковка дороже, чем чтение лишних мегабайт с диска.
 sed -i 's/^MODULES=.*/MODULES=(virtio_pci virtio_blk virtio_net virtio_gpu virtio_input 9p 9pnet_virtio)/;
-        s/ autodetect / /' /etc/mkinitcpio.conf
+        s/ autodetect / /; s/ kms / /; /^COMPRESSION=/d' /etc/mkinitcpio.conf
+echo 'COMPRESSION="cat"' >> /etc/mkinitcpio.conf
 mkinitcpio -P
 
 useradd -m -G wheel -c 'HypeDE' -s /bin/bash hypede
@@ -49,6 +52,25 @@ OVERRIDE
 glib-compile-schemas /usr/share/glib-2.0/schemas
 
 systemctl enable gdm NetworkManager sshd systemd-timesyncd
+# Ждать сеть при загрузке незачем: рабочий стол без неё обходится.
+systemctl disable NetworkManager-wait-online
+
+if [[ ${VARIANT:-full} == lite ]]; then
+    # Лёгкий режим HypeDE (без размытия и шейдеров), без анимаций, на
+    # рабочем столе только часы.
+    cat > /usr/share/glib-2.0/schemas/96_hypede-touch-lite.gschema.override <<'OVERRIDE'
+[dev.hypede.shell]
+lite-mode=true
+desktop-widgets='[{"type":"clock"}]'
+
+[org.gnome.desktop.interface:HypeDE]
+enable-animations=false
+OVERRIDE
+    glib-compile-schemas /usr/share/glib-2.0/schemas
+    printf '[zram0]\nzram-size = ram / 2\ncompression-algorithm = lz4\n' > /etc/systemd/zram-generator.conf
+    # Индексатор файлов GNOME на эмулируемом процессоре съедает всё время.
+    systemctl --global mask localsearch-3.service 2>/dev/null || true
+fi
 
 # Служебные значки, которые зависимости кладут в лаунчер: Nautilus (его
 # требует портал выбора файлов, а у HypeDE свои «Файлы»), Avahi, hwloc,

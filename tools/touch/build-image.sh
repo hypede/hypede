@@ -2,7 +2,11 @@
 # Собирает диск HypeDE Touch — Arch Linux ARM с GNOME и HypeDE для
 # виртуальной машины (UTM на Mac с Apple M1 и новее).
 #
-#   tools/touch/build-image.sh КАТАЛОГ-РЕПОЗИТОРИЯ ВЫХОДНОЙ-КАТАЛОГ
+#   [VARIANT=lite] tools/touch/build-image.sh КАТАЛОГ-РЕПОЗИТОРИЯ ВЫХОДНОЙ-КАТАЛОГ
+#
+# VARIANT=full (по умолчанию) — для Mac; VARIANT=lite — для UTM на iPhone
+# и iPad, где машина эмулируется программно: без браузера и компиляторов,
+# в лёгком режиме HypeDE (настройки — в configure.sh).
 #
 # Запускается от root внутри Arch Linux ARM (aarch64) в привилегированном
 # контейнере: нужен chroot с /proc и /sys. КАТАЛОГ-РЕПОЗИТОРИЯ — то, что
@@ -18,24 +22,33 @@ work=${WORK:-/var/tmp/hypede-touch}
 root=$work/root
 ESP_MB=512
 DISK_GB=${DISK_GB:-32}
+VARIANT=${VARIANT:-full}
 
 PACKAGES=(
-    base linux-aarch64 mkinitcpio sudo nano less man-db
+    base linux-aarch64 mkinitcpio sudo nano less
     # рабочий стол
-    gdm gnome-shell gnome-session gnome-keyring gnome-control-center
-    xdg-user-dirs-gtk xdg-desktop-portal-gnome ptyxis
-    firefox gnome-text-editor gnome-weather
+    gdm gnome-shell gnome-session gnome-keyring
+    xdg-user-dirs-gtk xdg-desktop-portal-gnome ptyxis gnome-text-editor
     noto-fonts noto-fonts-emoji
-    pipewire pipewire-pulse wireplumber gst-plugins-good
-    # «Типы файлов» в «Настройках». plasma-nm и plasma-pa не ставим: они
-    # тянут весь plasma-workspace с KWin, а сеть в машине и так готова.
-    kde-cli-tools
+    pipewire pipewire-pulse wireplumber
     # виртуальная машина: графика, буфер обмена, общие папки
     mesa spice-vdagent qemu-guest-agent
     # сеть и разработка
-    networkmanager openssh git base-devel
+    networkmanager openssh git
     hypede-git
 )
+case $VARIANT in
+full)
+    # «Типы файлов» в «Настройках». plasma-nm и plasma-pa не ставим: они
+    # тянут весь plasma-workspace с KWin, а сеть в машине и так готова.
+    PACKAGES+=(gnome-control-center kde-cli-tools firefox gnome-weather gst-plugins-good base-devel man-db) ;;
+lite)
+    # Сжатый своп в памяти: машине на телефоне дают 1,5 ГБ.
+    PACKAGES+=(zram-generator) ;;
+*)
+    echo "VARIANT: full или lite, а не $VARIANT" >&2
+    exit 1 ;;
+esac
 
 # В контейнере Docker песочница pacman (Landlock) недоступна.
 [[ -f /.dockerenv ]] && ! grep -q '^DisableSandbox' /etc/pacman.conf &&
@@ -57,7 +70,7 @@ sed '/^\[core\]/i [hypede]\nSigLevel = Optional TrustAll\nServer = https://githu
     /etc/pacman.conf | sed '/^DisableSandbox/d' > "$root/etc/pacman.conf"
 
 cp "$here/configure.sh" "$root/configure.sh"
-arch-chroot "$root" bash /configure.sh
+arch-chroot "$root" env VARIANT="$VARIANT" bash /configure.sh
 rm "$root/configure.sh"
 # Скачанные пакеты в образе не нужны: это больше гигабайта.
 find "$root/var/cache/pacman/pkg" -mindepth 1 -delete
