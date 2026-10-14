@@ -19,6 +19,8 @@ import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
+import Mtk from 'gi://Mtk';
+import Shell from 'gi://Shell';
 import St from 'gi://St';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
@@ -29,12 +31,16 @@ const OPEN_TIME = 260;
 const CLOSE_TIME = 200;
 const MINIMIZE_TIME = 320;
 const GENIE_TIME = 460;
+const LAUNCH_TIME = 420;
+const LAUNCH_WAIT = 8 * 1000 * 1000; // мкс: сколько ждать окно после запуска
 
 const clamp = (v, a, b) => Math.min(b, Math.max(a, v));
 const smooth = t => t * t * (3 - 2 * t);
 
-// Окно режется на полосы-клоны, каждая двигается и сжимается сама по себе:
-// так получаются «джинн» и желе без деформации текстуры.
+// Окно один раз рисуется в текстуру, а полосы показывают её куски: так
+// получаются «джинн» и желе. Каждая полоса двигается и сжимается сама по
+// себе. Раньше полосы были клонами окна, и каждая перерисовывала окно целиком
+// (десятки раз за кадр) — это тормозило и оставляло артефакты.
 class Strips {
     constructor(actor, n, vertical = true) {
         this.actor = actor;
@@ -49,15 +55,37 @@ class Strips {
             const at = i * this.size;
             const s = Math.min(this.size, this.len - at);
             const strip = new Clutter.Actor(vertical
-                ? {y: at, width: this.w, height: s, clip_to_allocation: true}
-                : {x: at, width: s, height: this.h, clip_to_allocation: true});
-            strip.add_child(new Clutter.Clone(vertical ? {source: actor, y: -at} : {source: actor, x: -at}));
+                ? {y: at, width: this.w, height: s}
+                : {x: at, width: s, height: this.h});
+            strip.set_content_scaling_filters(Clutter.ScalingFilter.LINEAR, Clutter.ScalingFilter.LINEAR);
             strip.at = at;
             strip.s = s;
             this.group.add_child(strip);
             this.strips.push(strip);
         }
+        this.ok = this.refresh();
         actor.opacity = 0;
+    }
+
+    // Снять окно заново (для желе: содержимое окна может меняться).
+    refresh() {
+        let texture;
+        try {
+            const opacity = this.actor.opacity;
+            this.actor.opacity = 255;
+            texture = this.actor.paint_to_content(null)?.get_texture();
+            this.actor.opacity = opacity;
+        } catch {}
+        if (!texture)
+            return false;
+        const sx = texture.get_width() / this.w, sy = texture.get_height() / this.h;
+        for (const strip of this.strips) {
+            const r = this.vertical
+                ? new Mtk.Rectangle({x: 0, y: Math.round(strip.at * sy), width: texture.get_width(), height: Math.max(1, Math.round(strip.s * sy))})
+                : new Mtk.Rectangle({x: Math.round(strip.at * sx), y: 0, width: Math.max(1, Math.round(strip.s * sx)), height: texture.get_height()});
+            strip.content = Clutter.TextureContent.new_from_texture(texture, r);
+        }
+        return true;
     }
 
     // Положение полосы: вдоль оси — начало и длина, поперёк — начало и ширина.
@@ -120,10 +148,23 @@ export class WindowAnimations {
         this._injections = new InjectionManager();
         const self = this;
 
+        // Запуск приложения: запоминаем значок, по которому щёлкнули (на полке
+        // или в лаунчере), — новое окно вырастет из него, как в HyperOS и One UI.
+        this._launches = new Map();
+        for (const method of ['activate', 'open_new_window', 'activate_full', 'launch']) {
+            this._injections.overrideMethod(Shell.App.prototype, method, original => function (...args) {
+                self._noteLaunch(this);
+                return original.apply(this, args);
+            });
+        }
+
         this._injections.overrideMethod(Main.wm, '_mapWindow',
             original => function (shellwm, actor) {
                 if (!self._enabled || !isNormal(actor))
                     return original.call(this, shellwm, actor);
+                const launch = self._takeLaunch(actor);
+                if (launch)
+                    return tweakNextEase(actor, params => self._launchParams(actor, launch, params), () => original.call(this, shellwm, actor));
                 return tweakNextEase(actor, params => {
                     // Старт: 86 % размера, прозрачное, чуть ниже; масштаб доходит до 100 % с лёгким перелётом, как пружина.
                     actor.set_pivot_point(0.5, 0.5);
@@ -201,48 +242,124 @@ export class WindowAnimations {
             this);
     }
 
+    // Значок под указателем в момент запуска: кнопка полки или плитка лаунчера.
+    _noteLaunch(app) {
+        if (!this._enabled || this._settings.get_boolean('lite-mode'))
+            return;
+        const [px, py] = global.get_pointer();
+        let actor = global.stage.get_actor_at_pos(Clutter.PickMode.REACTIVE, px, py);
+        for (let i = 0; actor && i < 8; i++, actor = actor.get_parent()) {
+            const cls = actor.style_class ?? '';
+            if (/hypede-(shelf-item|launcher-app|launcher-result)/.test(cls) || actor.app === app)
+                break;
+        }
+        if (!actor)
+            return;
+        const [x, y] = actor.get_transformed_position();
+        const [w, h] = actor.get_transformed_size();
+        if (!(w > 0 && h > 0))
+            return;
+        this._launches.set(app.get_id(), {x, y, w, h, time: GLib.get_monotonic_time()});
+    }
+
+    _takeLaunch(actor) {
+        const app = Shell.WindowTracker.get_default().get_window_app(actor.meta_window);
+        const id = app?.get_id();
+        const launch = id && this._launches.get(id);
+        if (!launch)
+            return null;
+        this._launches.delete(id);
+        return GLib.get_monotonic_time() - launch.time < LAUNCH_WAIT ? launch : null;
+    }
+
+    // Окно стартует размером со значок на его месте и разворачивается в своё.
+    _launchParams(actor, launch, params) {
+        const rect = actor.meta_window.get_buffer_rect();
+        const w = actor.width || rect.width, h = actor.height || rect.height;
+        const scale = Math.max(launch.w / w, launch.h / h, 0.04);
+        actor.set_pivot_point(0, 0);
+        actor.scale_x = scale;
+        actor.scale_y = scale;
+        actor.translation_x = launch.x + launch.w / 2 - w * scale / 2 - rect.x;
+        actor.translation_y = launch.y + launch.h / 2 - h * scale / 2 - rect.y;
+        actor.opacity = 0;
+        // Окно сразу становится видимым и растёт из значка; завершение
+        // анимации (onStopped GNOME) — по окончании роста, самой длинной части.
+        // ease() сам учитывает скорость анимаций.
+        const {scale_x: _x, scale_y: _y, onStopped, ...rest} = params;
+        actor.ease({
+            scale_x: 1,
+            scale_y: 1,
+            translation_x: 0,
+            translation_y: 0,
+            duration: LAUNCH_TIME,
+            mode: Clutter.AnimationMode.EASE_OUT_CUBIC,
+            onStopped,
+        });
+        return {
+            ...rest,
+            opacity: 255,
+            duration: Math.round(LAUNCH_TIME / 3),
+            mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+        };
+    }
+
     _genie(wm, shellwm, actor, minimize) {
         const win = actor.meta_window;
         if (!this._enabled || !this._settings.get_boolean('minimize-genie') || this._settings.get_boolean('lite-mode') ||
-            !wm._shouldAnimate() || !actor.get_texture() || win.get_window_type() !== Meta.WindowType.NORMAL ||
-            win.is_monitor_sized())
+            !wm._shouldAnimate() || win.get_window_type() !== Meta.WindowType.NORMAL || win.is_monitor_sized())
             return false;
         const [ok, geom] = win.get_icon_geometry();
-        if (!ok)
+        if (!ok || geom.width <= 0 || geom.height <= 0)
             return false;
-        wm._skippedActors.delete(actor);
+        // Окно, которое GNOME велел не анимировать, остаётся без анимации.
+        if (wm._skippedActors.delete(actor))
+            return false;
         const set = minimize ? wm._minimizing : wm._unminimizing;
         set.add(actor);
+        actor.remove_all_transitions();
+        actor.set_scale(1, 1);
+        actor.set_pivot_point(0, 0);
         if (!minimize) {
+            // Свёрнутое окно GNOME мог оставить там, куда оно улетало.
             const r = win.get_buffer_rect();
             actor.set_position(r.x, r.y);
         }
-        actor.remove_all_transitions();
-        actor.set_scale(1, 1);
+        actor.opacity = 255;
         actor.show();
+
         const [w, h] = actor.get_size();
         const [tx, ty, tw, th] = [geom.x - actor.x, geom.y - actor.y, geom.width, geom.height];
         const vertical = Math.abs(ty + th / 2 - h / 2) >= Math.abs(tx + tw / 2 - w / 2);
-        const strips = new Strips(actor, Math.min(160, Math.ceil((vertical ? h : w) / 4)), vertical);
+        const strips = new Strips(actor, Math.min(180, Math.ceil((vertical ? h : w) / 3)), vertical);
+        if (!strips.ok) {
+            strips.destroy();
+            set.delete(actor);
+            return false;
+        }
         const [len, span, t0, tl, c0, cl] = vertical ? [h, w, ty, th, tx, tw] : [w, h, tx, tw, ty, th];
         const forward = t0 + tl / 2 > len / 2;
-        const timeline = new Clutter.Timeline({actor: strips.group, duration: GENIE_TIME});
+        // Скорость анимаций из «Настроек» (и замедление для отладки) — как у ease().
+        const duration = Math.round(GENIE_TIME * St.Settings.get().slow_down_factor);
+        const timeline = new Clutter.Timeline({actor: strips.group, duration});
         // Ссылка обязательна: иначе сборщик мусора заберёт таймлайн вместе
         // с обработчиками, и окно так и останется полосами.
         const run = {timeline, strips};
         this._genies.add(run);
+        // Сначала к значку тянется ближний край, потом всё окно; поперёк оси
+        // окно сужается до ширины значка, в самом конце гаснет.
         const step = () => {
             const t = timeline.get_progress();
             const p = minimize ? t : 1 - t;
-            const rp = y => clamp(p * 2 - (forward ? 1 - y / len : y / len), 0, 1);
-            const pos = y => y + (t0 + (y / len) * tl - y) * rp(y) ** 2;
+            const rp = a => clamp(p * 2 - (forward ? 1 - a / len : a / len), 0, 1);
+            const pos = a => a + (t0 + (a / len) * tl - a) * rp(a) ** 2;
             for (const strip of strips.strips) {
                 const r = rp(strip.at + strip.s / 2);
                 const squeeze = smooth(clamp(r * 1.6, 0, 1));
                 const a = pos(strip.at);
-                strip.opacity = Math.round(255 * (1 - clamp((r - 0.8) * 5, 0, 1)));
-                strips.place(strip, a, pos(strip.at + strip.s) - a + 0.6, c0 * squeeze, span + (cl - span) * squeeze);
+                strips.place(strip, a, pos(strip.at + strip.s) - a + 0.75, c0 * squeeze, span + (cl - span) * squeeze);
             }
+            strips.group.opacity = Math.round(255 * (1 - clamp((p - 0.85) / 0.15, 0, 1)));
         };
         step();
         timeline.connect('new-frame', step);
@@ -269,10 +386,14 @@ export class WindowAnimations {
         if (!actor)
             return;
         const [, py] = global.get_pointer();
-        const strips = new Strips(actor, 32);
+        const strips = new Strips(actor, 20);
+        if (!strips.ok) {
+            strips.destroy();
+            return;
+        }
         const gy = py - actor.y;
         const weight = y => Math.min(1, Math.abs(y - gy) / strips.h * 1.4) ** 1.3;
-        const w = {win, actor, strips, ox: 0, oy: 0, vx: 0, vy: 0, held: true};
+        const w = {win, actor, strips, ox: 0, oy: 0, vx: 0, vy: 0, held: true, frame: 0};
         let [lx, ly] = [win.get_frame_rect().x, win.get_frame_rect().y];
         let last = GLib.get_monotonic_time();
         w.timeline = new Clutter.Timeline({actor: strips.group, duration: 1000, repeat_count: -1});
@@ -288,11 +409,14 @@ export class WindowAnimations {
             w.vy += (-220 * w.oy - 12 * w.vy) * dt;
             w.ox += w.vx * dt;
             w.oy += w.vy * dt;
+            // Содержимое окна обновляем через кадр: его почти не видно в движении.
+            if (++w.frame % 2 === 0)
+                strips.refresh();
             strips.group.set_position(actor.x, actor.y);
             for (const strip of strips.strips) {
                 const top = weight(strip.at);
                 const bottom = weight(strip.at + strip.s);
-                strips.place(strip, strip.at + w.oy * top, strip.s + w.oy * (bottom - top),
+                strips.place(strip, strip.at + w.oy * top, strip.s + w.oy * (bottom - top) + 0.75,
                     w.ox * weight(strip.at + strip.s / 2), strips.w);
             }
             if (!w.held && Math.abs(w.ox) + Math.abs(w.oy) < 0.3 && Math.abs(w.vx) + Math.abs(w.vy) < 3)
