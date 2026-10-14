@@ -57,6 +57,8 @@ sed '/^\[core\]/i [hypede]\nSigLevel = Optional TrustAll\nServer = https://githu
 cp "$here/configure.sh" "$root/configure.sh"
 arch-chroot "$root" bash /configure.sh
 rm "$root/configure.sh"
+# Скачанные пакеты в образе не нужны: это больше гигабайта.
+find "$root/var/cache/pacman/pkg" -mindepth 1 -delete
 # pacman-key оставляет gpg-agent, который держит каталог.
 gpgconf --homedir "$root/etc/pacman.d/gnupg" --kill all 2>/dev/null || true
 umount -R "$root" || umount -R -l "$root"
@@ -97,6 +99,6 @@ dd if="$esp" of="$disk" bs=1M seek=1 conv=notrunc,sparse status=none
 dd if="$rootimg" of="$disk" bs=1M seek=$((1 + ESP_MB)) conv=notrunc,sparse status=none
 rm "$esp" "$rootimg"
 
-qemu-img convert -c -O qcow2 "$disk" "$out/disk.qcow2"
+qemu-img convert -c -O qcow2 -o compression_type=zstd "$disk" "$out/disk.qcow2"
 rm "$disk"
 ls -lh "$out"
