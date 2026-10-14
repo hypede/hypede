@@ -5,8 +5,8 @@
 
 .utm — это папка с config.plist (настройки UTM 4, движок QEMU) и
 Data/<UUID>.qcow2. Машина рассчитана на Mac с Apple M1 и новее:
-аппаратная виртуализация, 4 ядра, 4 ГБ памяти, видеокарта с ускорением
-(virtio-gpu, GL), общий буфер обмена и общая папка через VirtFS.
+аппаратная виртуализация, 4 ядра, 4 ГБ памяти, видеокарта virtio-ramfb,
+общий буфер обмена и общая папка через VirtFS.
 """
 
 import plistlib
@@ -59,7 +59,10 @@ def config(drive_id, vm_id):
             'UEFIBoot': True,
         },
         'Display': [{
-            'Hardware': 'virtio-gpu-gl-pci',
+            # Как у мастера UTM для Linux: ramfb показывает картинку с первой
+            # секунды загрузки. GL-ускорение (virtio-ramfb-gl) включается в
+            # настройках машины, но с ним GNOME под UTM бывает чёрным.
+            'Hardware': 'virtio-ramfb',
             'DynamicResolution': True,
             'NativeResolution': True,
             'DownscalingFilter': 'Linear',

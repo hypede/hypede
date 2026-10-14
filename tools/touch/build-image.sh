@@ -79,7 +79,7 @@ cat > "$work/espdir/loader/entries/hypede.conf" <<ENTRY
 title   HypeDE Touch
 linux   /Image
 initrd  /initramfs-linux.img
-options root=LABEL=hypede-root rw quiet splash loglevel=3
+options root=LABEL=hypede-root rw console=tty0
 ENTRY
 mcopy -s -i "$esp" "$work/espdir"/* ::/
 find "$root/boot" -mindepth 1 -delete
