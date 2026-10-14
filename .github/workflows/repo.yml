@@ -1,0 +1,78 @@
+name: Package repository
+
+# Собирает пакет HypeDE для x86_64 (Arch Linux) и aarch64 (Arch Linux ARM)
+# и выкладывает pacman-репозиторий «hypede» в релизы repo-x86_64 и
+# repo-aarch64. Подключение — в docs/ru/building.md. Выкладывается только
+# main; в других ветках и пулл-реквестах пакет просто собирается.
+
+on:
+  push:
+    paths-ignore: ['store/**', 'docs/**', '*.md']
+  pull_request:
+    paths-ignore: ['store/**', 'docs/**', '*.md']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: repo-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - arch: x86_64
+            runner: ubuntu-latest
+            image: archlinux:latest
+          - arch: aarch64
+            runner: ubuntu-24.04-arm
+            image: menci/archlinuxarm:latest
+    runs-on: ${{ matrix.runner }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # номер версии пакета считается по истории
+      - name: Build
+        env:
+          REPO_GPG_KEY: ${{ secrets.REPO_GPG_KEY }}
+        run: |
+          docker run --rm -e REPO_GPG_KEY -v "$PWD:/src" -w /src ${{ matrix.image }} \
+            tools/repo/build.sh /src/out
+      - uses: actions/upload-artifact@v4
+        with:
+          name: repo-${{ matrix.arch }}
+          path: out/*
+          if-no-files-found: error
+
+  publish:
+    if: github.ref == 'refs/heads/main' && github.event_name != 'pull_request'
+    needs: build
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        arch: [x86_64, aarch64]
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: repo-${{ matrix.arch }}
+          path: out
+      - name: Upload to the release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: repo-${{ matrix.arch }}
+        run: |
+          gh release view "$TAG" -R "$GITHUB_REPOSITORY" >/dev/null 2>&1 ||
+            gh release create "$TAG" -R "$GITHUB_REPOSITORY" --target "$GITHUB_SHA" --prerelease --latest=false \
+              --title "pacman repository (${{ matrix.arch }})" \
+              --notes "Packages for pacman. See docs/ru/building.md in the repository for how to use them."
+          gh release upload "$TAG" -R "$GITHUB_REPOSITORY" --clobber out/*
+          # Старые версии пакета из релиза убираем: база знает только новую.
+          new=$(ls out)
+          gh release view "$TAG" -R "$GITHUB_REPOSITORY" --json assets -q '.assets[].name' |
+            while read -r asset; do
+              grep -qxF "$asset" <<<"$new" || gh release delete-asset "$TAG" "$asset" -R "$GITHUB_REPOSITORY" -y
+            done

@@ -1,5 +1,30 @@
 # Сборка и запуск
 
+## Готовым пакетом (Arch, Arch Linux ARM, CachyOS)
+
+Каждый коммит в `main` собирается на GitHub для x86_64 и aarch64 и
+попадает в pacman-репозиторий `hypede` — собирать ничего не нужно, что
+особенно важно на ARM (например, в виртуальной машине UTM на Mac с M1+).
+Добавьте в `/etc/pacman.conf`:
+
+```ini
+[hypede]
+SigLevel = Optional TrustAll
+Server = https://github.com/hypede/hypede/releases/download/repo-$arch
+```
+
+и поставьте пакет:
+
+```bash
+sudo pacman -Sy hypede-git
+```
+
+Дальше HypeDE обновляется вместе с системой (`pacman -Syu`). Сборку
+делает `.github/workflows/repo.yml` через `tools/repo/build.sh`; если в
+секрете `REPO_GPG_KEY` лежит закрытый ключ, пакеты и база подписываются
+им — тогда `SigLevel` можно оставить по умолчанию, импортировав ключ
+(`pacman-key --recv-keys` и `--lsign-key`).
+
 ## Пакетом (CachyOS, Arch)
 
 ```bash

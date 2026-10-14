@@ -52,6 +52,18 @@ options=('!lto' '!debug')
 provides=('hypede')
 conflicts=('hypede')
 
+# Версия из git: 2.1.0.r<число коммитов>.g<хеш>, чтобы пакет из
+# репозитория hypede обновлялся с каждым коммитом. Без git — как есть.
+pkgver() {
+  cd "$startdir/.."
+  local base=${pkgver%%.r*}
+  if git rev-parse --git-dir >/dev/null 2>&1; then
+    printf '%s.r%s.g%s' "$base" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
+  else
+    printf '%s' "$pkgver"
+  fi
+}
+
 build() {
   cd "$startdir/.."
   make BUILD="$srcdir/build" PREFIX=/usr ${JOBS:+JOBS=$JOBS}
