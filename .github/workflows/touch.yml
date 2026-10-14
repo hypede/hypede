@@ -7,7 +7,7 @@ name: HypeDE Touch
 
 on:
   push:
-    paths: ['tools/touch/**', '.github/workflows/touch.yml']
+    paths: ['tools/touch/**', 'tools/repo/**', '.github/workflows/touch.yml']
   workflow_dispatch:
 
 permissions:
