@@ -12,6 +12,9 @@ set -euo pipefail
 out=$(realpath -m "${1:-repo}")
 src=$(pwd)
 
+# В контейнере Docker песочница pacman (Landlock) недоступна.
+[[ -f /.dockerenv ]] && ! grep -q '^DisableSandbox' /etc/pacman.conf &&
+    sed -i '/^\[options\]/a DisableSandbox' /etc/pacman.conf
 pacman-key --init >/dev/null
 pacman-key --populate >/dev/null
 pacman -Syu --noconfirm --needed base-devel git sudo
