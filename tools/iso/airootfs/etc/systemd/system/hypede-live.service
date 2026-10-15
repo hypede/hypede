@@ -1,0 +1,11 @@
+[Unit]
+Description=HypeDE live session user
+ConditionPathExists=/run/archiso
+Before=display-manager.service systemd-user-sessions.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/bin/hypede-live-setup
+
+[Install]
+WantedBy=multi-user.target

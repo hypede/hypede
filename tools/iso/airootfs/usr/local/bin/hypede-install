@@ -1,0 +1,110 @@
+#!/bin/bash
+# Устанавливает HypeDE с живого ISO на диск. Диск стирается целиком:
+# GPT с разделом для GRUB в режиме BIOS, разделом EFI и ext4 с системой,
+# поэтому установленная система грузится и в BIOS, и в UEFI (VirtualBox по
+# умолчанию — BIOS). Система копируется с живого образа как есть, сеть не
+# нужна.
+set -euo pipefail
+
+[[ $EUID == 0 ]] || exec sudo "$0" "$@"
+[[ -d /run/archiso ]] || { echo 'Запускается только с живого ISO HypeDE.'; exit 1; }
+
+target=/mnt/hypede
+bootmnt=/run/archiso/bootmnt
+
+ask() { local reply; read -rp "$1" reply; echo "${reply:-$2}"; }
+
+echo '== Установка HypeDE =='
+echo
+# Только настоящие диски от 8 ГБ: без дисководов, CD и zram.
+mapfile -t disks < <(lsblk -dbnpo NAME,TYPE,RO,SIZE | awk '$2 == "disk" && $3 == 0 && $4 >= 8 * 2^30 && $1 !~ /zram/ { print $1 }')
+if (( ${#disks[@]} == 0 )); then
+    echo 'Не найдено ни одного диска от 8 ГБ.'
+    exit 1
+fi
+for i in "${!disks[@]}"; do
+    printf '  %d) %s  %s  %s\n' $((i + 1)) "${disks[i]}" "$(lsblk -dno SIZE "${disks[i]}")" "$(lsblk -dno MODEL "${disks[i]}")"
+done
+choice=$(ask "Диск для установки [1]: " 1)
+[[ $choice =~ ^[0-9]+$ ]] && (( choice >= 1 && choice <= ${#disks[@]} )) || { echo 'Нет такого диска.'; exit 1; }
+disk=${disks[choice - 1]}
+
+echo
+echo "Всё, что есть на $disk, будет удалено."
+[[ $(ask 'Напишите yes, чтобы продолжить: ' '') == yes ]] || { echo 'Отменено.'; exit 1; }
+
+user=$(ask 'Имя пользователя [hypede]: ' hypede)
+[[ $user =~ ^[a-z_][a-z0-9_-]*$ ]] || { echo 'Имя: латинские строчные буквы, цифры, - и _.'; exit 1; }
+while true; do
+    read -rsp 'Пароль: ' pass; echo
+    read -rsp 'Ещё раз: ' pass2; echo
+    [[ -n $pass && $pass == "$pass2" ]] && break
+    echo 'Пароли пустые или не совпадают, ещё раз.'
+done
+host=$(ask 'Имя компьютера [hypede]: ' hypede)
+
+echo
+echo '== Разметка'
+umount -R "$target" 2>/dev/null || true
+wipefs -aq "$disk"
+sfdisk -q "$disk" <<TABLE
+label: gpt
+size=1MiB, type=21686148-6449-6E6F-744E-656564454649, name=bios
+size=512MiB, type=uefi, name=ESP
+type=linux, name=root
+TABLE
+udevadm settle
+part() { lsblk -lnpo NAME "$disk" | sed -n "$(($1 + 1))p"; }
+esp=$(part 2)
+root=$(part 3)
+mkfs.fat -F 32 -n HYPEDE-ESP "$esp" >/dev/null
+mkfs.ext4 -qF -L hypede "$root"
+mkdir -p "$target"
+mount "$root" "$target"
+mount --mkdir "$esp" "$target/boot"
+
+echo '== Копирование системы (несколько минут)'
+rsync -aAXH --info=progress2 --no-inc-recursive \
+    --exclude={/dev/*,/proc/*,/sys/*,/run/*,/tmp/*,/mnt/*,/media/*,/lost+found,/home/*,/boot/*} \
+    --exclude={/etc/sudoers.d/hypede-live,/etc/systemd/system/multi-user.target.wants/hypede-live.service} \
+    --exclude={/usr/local/bin/hypede-install,/usr/local/share/applications/hypede-install.desktop} \
+    / "$target/"
+cp "$bootmnt"/arch/boot/x86_64/vmlinuz-linux "$target/boot/"
+
+echo '== Настройка'
+genfstab -L "$target" > "$target/etc/fstab"
+arch-chroot "$target" /bin/bash -s "$disk" "$user" "$host" <<'CHROOT'
+set -euo pipefail
+disk=$1 user=$2 host=$3
+
+# Обычный initramfs вместо живого.
+rm -f /etc/mkinitcpio.conf.d/archiso.conf
+pacman -Rdd --noconfirm mkinitcpio-archiso >/dev/null || true
+mkinitcpio -P
+
+echo "$host" > /etc/hostname
+: > /etc/machine-id
+passwd -l root >/dev/null
+userdel -f hypede 2>/dev/null || true
+useradd -m -G wheel -c "$user" -s /bin/bash "$user"
+echo '%wheel ALL=(ALL:ALL) ALL' > /etc/sudoers.d/wheel
+chmod 440 /etc/sudoers.d/wheel
+# Вход по паролю, сеанс HypeDE по умолчанию.
+rm -f /var/lib/AccountsService/users/hypede
+printf '[User]\nSession=hypede\nSystemAccount=false\n' > "/var/lib/AccountsService/users/$user"
+printf '[daemon]\n' > /etc/gdm/custom.conf
+
+pacman-key --init >/dev/null 2>&1
+pacman-key --populate archlinux >/dev/null 2>&1
+
+grub-install --target=i386-pc "$disk"
+grub-install --target=x86_64-efi --efi-directory=/boot --boot-directory=/boot --removable
+sed -i 's/^GRUB_TIMEOUT=.*/GRUB_TIMEOUT=2/; s/^GRUB_DISTRIBUTOR=.*/GRUB_DISTRIBUTOR="HypeDE"/' /etc/default/grub
+grub-mkconfig -o /boot/grub/grub.cfg
+CHROOT
+printf '%s:%s\n' "$user" "$pass" | arch-chroot "$target" chpasswd
+
+umount -R "$target"
+echo
+echo 'Готово. Выключите машину, извлеките ISO и включите её снова.'
+read -rp 'Нажмите Enter, чтобы закрыть окно.' _
