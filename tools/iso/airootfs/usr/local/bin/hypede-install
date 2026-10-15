@@ -79,7 +79,7 @@ disk=$1 user=$2 host=$3
 
 # Обычный initramfs вместо живого.
 rm -f /etc/mkinitcpio.conf.d/archiso.conf
-pacman -Rdd --noconfirm mkinitcpio-archiso >/dev/null || true
+pacman -Rdd --noconfirm mkinitcpio-archiso >/dev/null 2>&1 || true
 mkinitcpio -P
 
 echo "$host" > /etc/hostname
