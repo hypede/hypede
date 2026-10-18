@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 """Рисует набор обоев HypeDE (светлый и тёмный вариант каждого).
 
+Пейзажи с природой (лес, озеро, луг…) — в tools/wallpapers_nature.py.
+
 Все обои построены одинаково, как «Horizon»: градиентное небо, мягкое
 свечение и три слоя «холмов» с градиентами. Отличаются палитрой, формой
 слоёв и деталями (солнце, звёзды). Результат — SVG в assets/wallpapers/,
@@ -11,7 +13,11 @@
 
 from pathlib import Path
 import random
+import sys
 from math import cos, sin
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+import wallpapers_nature  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "assets/wallpapers"
@@ -161,10 +167,14 @@ def main():
         (OUT / f"{name}-dark.svg").write_text(svg(shape, details, dark, True, seed))
     (OUT / "dots-light.svg").write_text(dots(False))
     (OUT / "dots-dark.svg").write_text(dots(True))
+    for name in wallpapers_nature.SCENES:
+        (OUT / f"{name}-light.svg").write_text(wallpapers_nature.render(name, False))
+        (OUT / f"{name}-dark.svg").write_text(wallpapers_nature.render(name, True))
 
     entries = [("Horizon", "horizon", "#dce8fb", "#0d1830")]
     entries += [(name.capitalize(), name, t[2]["sky"][0], t[3]["sky"][0]) for name, t in THEMES.items()]
     entries.append(("Dots", "dots", "#f2f2ef", "#0b0b0c"))
+    entries += [(name.capitalize(), name, light, dark) for name, (_f, light, dark) in wallpapers_nature.SCENES.items()]
     xml = ['<?xml version="1.0" encoding="UTF-8"?>',
            '<!DOCTYPE wallpapers SYSTEM "gnome-wp-list.dtd">',
            "<!-- Обои HypeDE. Файл создан tools/gen-wallpapers.py. -->",
