@@ -18,6 +18,7 @@ import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import {ExtensionGuard} from './guard.js';
 import {StyleManager} from './style.js';
 import {DecorationSync} from './decoration.js';
+import {AppTheme} from './apptheme.js';
 import {Shelf} from './shelf.js';
 import {Launcher} from './launcher.js';
 import {OverviewTweaks} from './overview.js';
@@ -59,6 +60,7 @@ export default class HypeDEShellExtension extends Extension {
 
         this._style = new StyleManager(this._settings);
         this._decoration = new DecorationSync();
+        this._appTheme = new AppTheme();
         // Помощник — раньше лаунчера: лаунчер спрашивает, включён ли он.
         this._assistant = new Assistant();
         this._launcher = new Launcher(this._settings);
@@ -88,7 +90,7 @@ export default class HypeDEShellExtension extends Extension {
         // Порядок обратный: полка держит кнопку лаунчера, поэтому уходит
         // раньше самого лаунчера.
         for (const part of ['_greeting', '_lock', '_tablet', '_menuBlur', '_quickSettings', '_session', '_modes', '_edge', '_extras', '_widgets', '_desktop', '_live', '_corners', '_windows', '_notifications', '_gestures', '_overview',
-            '_island', '_shelf', '_launcher', '_assistant', '_style', '_decoration', '_guard']) {
+            '_island', '_shelf', '_launcher', '_assistant', '_style', '_appTheme', '_decoration', '_guard']) {
             this[part]?.destroy();
             this[part] = null;
         }

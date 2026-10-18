@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=HypeDE
-Comment=GNOME in the style of Chrome OS: shelf, launcher and quick settings
-Comment[ru]=GNOME в облике Chrome OS: полка, лаунчер и быстрые настройки
+Comment=A desktop in the style of Chrome OS: shelf, launcher and quick settings
+Comment[ru]=Рабочий стол в стиле Chrome OS: полка, лаунчер и быстрые настройки
 Exec=@LIBEXECDIR@/hypede-session
 TryExec=@LIBEXECDIR@/hypede-session
 Type=Application
