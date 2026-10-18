@@ -18,6 +18,7 @@
 import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
+import Graphene from 'gi://Graphene';
 import Meta from 'gi://Meta';
 import Mtk from 'gi://Mtk';
 import Shell from 'gi://Shell';
@@ -88,20 +89,26 @@ class Strips {
         return true;
     }
 
-    // Положение полосы: вдоль оси — начало и длина, поперёк — начало и ширина.
-    place(strip, a, al, c, cl) {
+    // Положение полосы: вдоль оси — начало a и длина al; поперёк оси края
+    // полосы в её начале l0…r0, в конце — l1…r1. Полоса — трапеция, и края
+    // соседних полос смыкаются в одну линию. Прямоугольные полосы давали
+    // «лесенку»: каждая сдвигалась целиком, и текст окна съезжал кусками.
+    // Прямоугольник в трапецию переводит перспективная матрица (как у
+    // квадрата в четырёхугольник у Хекберта).
+    placeQuad(strip, a, al, l0, r0, l1, r1) {
         const span = this.vertical ? this.w : this.h;
-        if (this.vertical) {
-            strip.translation_y = a - strip.at;
-            strip.scale_y = al / strip.s;
-            strip.translation_x = c;
-            strip.scale_x = cl / span;
-        } else {
-            strip.translation_x = a - strip.at;
-            strip.scale_x = al / strip.s;
-            strip.translation_y = c;
-            strip.scale_y = cl / span;
-        }
+        const t = a - strip.at, s = strip.s;
+        const w0 = Math.max(r0 - l0, 0.01), w1 = Math.max(r1 - l1, 0.01);
+        const h = w0 / w1 - 1;
+        const b = l1 - l0 + h * l1;
+        const e = al + h * (t + al);
+        // Graphene: векторы-строки, x' = x·m00 + y·m10 + m30, w' = … + m33.
+        const m = this.vertical
+            ? [w0 / span, 0, 0, 0, b / s, e / s, 0, h / s, 0, 0, 1, 0, l0, t, 0, 1]
+            : [e / s, b / s, 0, h / s, 0, w0 / span, 0, 0, 0, 0, 1, 0, t, l0, 0, 1];
+        const matrix = new Graphene.Matrix();
+        matrix.init_from_float(m);
+        strip.set_transform(matrix);
     }
 
     destroy() {
@@ -331,7 +338,7 @@ export class WindowAnimations {
         const [w, h] = actor.get_size();
         const [tx, ty, tw, th] = [geom.x - actor.x, geom.y - actor.y, geom.width, geom.height];
         const vertical = Math.abs(ty + th / 2 - h / 2) >= Math.abs(tx + tw / 2 - w / 2);
-        const strips = new Strips(actor, Math.min(180, Math.ceil((vertical ? h : w) / 3)), vertical);
+        const strips = new Strips(actor, Math.min(200, Math.ceil((vertical ? h : w) / 3)), vertical);
         if (!strips.ok) {
             strips.destroy();
             set.delete(actor);
@@ -349,15 +356,21 @@ export class WindowAnimations {
         // Сначала к значку тянется ближний край, потом всё окно; поперёк оси
         // окно сужается до ширины значка, в самом конце гаснет.
         const step = () => {
-            const t = timeline.get_progress();
+            // Плавный разгон и торможение: линейное время выглядело рывком
+            // в начале и в конце.
+            const t = smooth(timeline.get_progress());
             const p = minimize ? t : 1 - t;
             const rp = a => clamp(p * 2 - (forward ? 1 - a / len : a / len), 0, 1);
             const pos = a => a + (t0 + (a / len) * tl - a) * rp(a) ** 2;
+            // Поперёк оси: середина окна едет к середине значка, ширина
+            // сужается до ширины значка.
+            const width = a => span + (cl - span) * smooth(clamp(rp(a) * 1.6, 0, 1));
+            const middle = a => span / 2 + (c0 + cl / 2 - span / 2) * smooth(clamp(rp(a) * 1.6, 0, 1));
             for (const strip of strips.strips) {
-                const r = rp(strip.at + strip.s / 2);
-                const squeeze = smooth(clamp(r * 1.6, 0, 1));
-                const a = pos(strip.at);
-                strips.place(strip, a, pos(strip.at + strip.s) - a + 0.75, c0 * squeeze, span + (cl - span) * squeeze);
+                const [a0, a1] = [strip.at, strip.at + strip.s];
+                const a = pos(a0);
+                const [m0, m1, w0, w1] = [middle(a0), middle(a1), width(a0), width(a1)];
+                strips.placeQuad(strip, a, pos(a1) - a + 0.75, m0 - w0 / 2, m0 + w0 / 2, m1 - w1 / 2, m1 + w1 / 2);
             }
             strips.group.opacity = Math.round(255 * (1 - clamp((p - 0.85) / 0.15, 0, 1)));
         };
@@ -386,7 +399,7 @@ export class WindowAnimations {
         if (!actor)
             return;
         const [, py] = global.get_pointer();
-        const strips = new Strips(actor, 20);
+        const strips = new Strips(actor, Math.min(120, Math.ceil(actor.height / 6)));
         if (!strips.ok) {
             strips.destroy();
             return;
@@ -416,8 +429,9 @@ export class WindowAnimations {
             for (const strip of strips.strips) {
                 const top = weight(strip.at);
                 const bottom = weight(strip.at + strip.s);
-                strips.place(strip, strip.at + w.oy * top, strip.s + w.oy * (bottom - top) + 0.75,
-                    w.ox * weight(strip.at + strip.s / 2), strips.w);
+                const [x0, x1] = [w.ox * top, w.ox * bottom];
+                strips.placeQuad(strip, strip.at + w.oy * top, strip.s + w.oy * (bottom - top) + 0.75,
+                    x0, x0 + strips.w, x1, x1 + strips.w);
             }
             if (!w.held && Math.abs(w.ox) + Math.abs(w.oy) < 0.3 && Math.abs(w.vx) + Math.abs(w.vy) < 3)
                 this._dropWobbly(w);
