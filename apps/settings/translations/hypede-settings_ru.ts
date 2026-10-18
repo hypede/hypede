@@ -1983,6 +1983,22 @@
         <source>Graphics (Vulkan)</source>
         <translation>Графика (Vulkan)</translation>
     </message>
+    <message>
+        <source>A capsule with music, downloads, timers and recording; click it for clipboard, file shelf, tools and notes</source>
+        <translation>Капсула: музыка, загрузки, таймеры и запись экрана; щелчок открывает буфер обмена, полку файлов, инструменты и заметки</translation>
+    </message>
+    <message>
+        <source>Island position</source>
+        <translation>Где остров</translation>
+    </message>
+    <message>
+        <source>Top of the screen</source>
+        <translation>Вверху экрана</translation>
+    </message>
+    <message>
+        <source>On the shelf</source>
+        <translation>На полке</translation>
+    </message>
 </context>
 <context>
     <name>ChromeCombo</name>

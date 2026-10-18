@@ -89,6 +89,15 @@
       <default>true</default>
       <summary>Значок корзины на рабочем столе</summary>
     </key>
+    <key name="island-position" type="s">
+      <choices>
+        <choice value="top"/>
+        <choice value="shelf"/>
+      </choices>
+      <default>'top'</default>
+      <summary>Где динамический остров</summary>
+      <description>top — капсула вверху по центру экрана, как на iPhone; shelf — на полке рядом с кнопкой лаунчера.</description>
+    </key>
     <key name="island-follow-theme" type="b">
       <default>true</default>
       <summary>Динамический остров в теме HypeDE</summary>
