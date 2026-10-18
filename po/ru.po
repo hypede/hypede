@@ -1374,3 +1374,12 @@ msgstr "Вернуть в столбик"
 #: shell/extension/hypede-shell@hypede.dev/widgets.js:560
 msgid "Remove widget"
 msgstr "Убрать виджет"
+
+msgid "Could not run “%s”: %s"
+msgstr "Не удалось запустить «%s»: %s"
+
+msgid "Run “%s”?"
+msgstr "Запустить «%s»?"
+
+msgid "This is a program. Run it only if you trust where it came from."
+msgstr "Это программа. Запускайте её, только если доверяете источнику."

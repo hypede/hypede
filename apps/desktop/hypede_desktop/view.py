@@ -18,6 +18,7 @@ from gi.repository import Gdk, Gio, GLib, GObject, Graphene, Gtk
 
 from hypede_files import thumbnails
 from hypede_files.operations import Operation
+from hypede_files.programs import run_program
 from hypede_files.util import terminal_command, unique_name, validate_filename
 
 from .items import Item, desktop_dir, list_items, trash_count
@@ -609,6 +610,8 @@ class DesktopView(Gtk.Widget):
             return
         if item.kind in ("home", "trash") or item.is_dir:
             _launch(["hypede-files", item.uri if item.kind == "trash" else item.file.get_path()])
+            return
+        if run_program(item.file, self, lambda text: print(text)):
             return
         Gio.AppInfo.launch_default_for_uri_async(item.uri, self.get_display().get_app_launch_context(), None,
                                                  None, None)

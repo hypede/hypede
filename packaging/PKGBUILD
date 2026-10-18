@@ -21,6 +21,7 @@ depends=(
   'xdg-desktop-portal-gnome' 'ttf-roboto'
   # «Файлы»
   'dconf' 'python' 'python-gobject' 'gtk4' 'libadwaita>=1.7' 'gvfs' 'gnome-desktop-4'
+  'fuse2'  # старые AppImage монтируют себя через libfuse2
   # «Настройки»
   'qt6-base' 'qt6-declarative' 'qt6-svg' 'kcmutils' 'kcolorscheme' 'kconfig' 'kcoreaddons'
   'kirigami' 'qqc2-desktop-style' 'breeze' 'breeze-icons'

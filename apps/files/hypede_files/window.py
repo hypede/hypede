@@ -24,6 +24,7 @@ from .folder_view import FolderView, display_path, file_of, is_dir
 from .operations import Operation, find_in_trash
 from .pathbar import PathBar
 from .sidebar import Sidebar, add_bookmark
+from .programs import run_program
 from .util import _, ngettext, split_extension, terminal_command, unique_name, validate_filename
 
 
@@ -481,6 +482,8 @@ class Window(Adw.ApplicationWindow):
         return file
 
     def _launch(self, file: Gio.File, ask: bool = False) -> None:
+        if not ask and run_program(file, self, self.show_toast):
+            return
         launcher = Gtk.FileLauncher(file=file, always_ask=ask)
 
         def done(launcher, result):
