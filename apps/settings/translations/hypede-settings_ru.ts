@@ -53,6 +53,10 @@
         <source>Report a problem</source>
         <translation>Сообщить о проблеме</translation>
     </message>
+    <message>
+        <source>A desktop in the style of Chrome OS</source>
+        <translation>Рабочий стол в стиле Chrome OS</translation>
+    </message>
 </context>
 <context>
     <name>AccentPicker</name>
@@ -1998,6 +2002,14 @@
     <message>
         <source>On the shelf</source>
         <translation>На полке</translation>
+    </message>
+    <message>
+        <source>Background services</source>
+        <translation>Фоновые службы</translation>
+    </message>
+    <message>
+        <source>HypeDE starts only the services it needs. Optional ones start after you sign in again.</source>
+        <translation>HypeDE запускает только нужные службы. Необязательные заработают после повторного входа.</translation>
     </message>
 </context>
 <context>

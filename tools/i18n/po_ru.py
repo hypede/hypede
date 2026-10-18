@@ -2,6 +2,10 @@
 # Используется tools/i18n/make-po.py: po/hypede.pot → po/ru.po.
 # Для строк с числами — три формы: 1 файл, 2 файла, 5 файлов.
 RU = {
+    "Could not run “%s”: %s": "Не удалось запустить «%s»: %s",
+    "Run “%s”?": "Запустить «%s»?",
+    "This is a program. Run it only if you trust where it came from.":
+        "Это программа. Запускайте её, только если доверяете источнику.",
     "Open": "Открыть",
     "kB": "кБ",
     "MB": "МБ",
@@ -114,8 +118,8 @@ RU = {
     "Already in bookmarks": "Уже есть в закладках",
     "Only local folders can be opened in a terminal": "В терминале можно открыть только локальную папку",
     "No terminal found": "Терминал не найден",
-    "File manager of the HypeDE desktop: the layout of GNOME Files with tabs and a details pane inspired by COSMIC Files.":
-        "Файловый менеджер среды HypeDE: раскладка «Файлов» GNOME, вкладки и панель сведений в духе COSMIC Files.",
+    "File manager of HypeDE: tabs, a details pane and quick search.":
+        "Файловый менеджер HypeDE: вкладки, панель сведений и быстрый поиск.",
     "Navigation": "Навигация",
     "Parent Folder": "Папка выше",
     "Enter Location": "Ввести адрес",
@@ -294,7 +298,7 @@ RU.update({
     "Music": "Музыка",
     "Note": "Заметка",
     "Choose a city in Weather": "Выберите город в «Погоде»",
-    "Install GNOME Weather": "Установите «Погоду» GNOME",
+    "Install the Weather app": "Установите приложение «Погода»",
     "Click to open": "Нажмите, чтобы открыть",
     "Loading…": "Загрузка…",
     "Weather unavailable": "Погода недоступна",

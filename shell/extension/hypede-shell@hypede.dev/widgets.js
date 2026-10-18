@@ -184,7 +184,7 @@ const builders = {
             if (!client.available || !client.hasLocation) {
                 icon.icon_name = 'find-location-symbolic';
                 temp.text = '';
-                place.text = client.available ? _('Choose a city in Weather') : _('Install GNOME Weather');
+                place.text = client.available ? _('Choose a city in Weather') : _('Install the Weather app');
                 sky.text = _('Click to open');
                 return;
             }

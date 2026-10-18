@@ -1007,8 +1007,7 @@ class Window(Adw.ApplicationWindow):
             version=self.app.version,
             website="https://hypede.github.io",
             license_type=Gtk.License.GPL_3_0,
-            comments=_("File manager of the HypeDE desktop: the layout of GNOME Files with tabs and "
-                       "a details pane inspired by COSMIC Files."),
+            comments=_("File manager of HypeDE: tabs, a details pane and quick search."),
         )
         about.present(self)
 

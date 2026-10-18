@@ -621,8 +621,8 @@ QtObject {
                       subtitle: qsTr("Accounts, passwords and avatars"), icon: "system-users-symbolic",
                       keywords: "user account password пользователи пароль" },
                 ] },
-                { title: qsTr("GNOME services"), rows: [
-                    { type: "note", title: qsTr("HypeDE starts only the GNOME services it needs. Optional ones start after you sign in again.") },
+                { title: qsTr("Background services"), rows: [
+                    { type: "note", title: qsTr("HypeDE starts only the services it needs. Optional ones start after you sign in again.") },
                     { type: "strvToggle", schema: session, key: "optional-services", item: "file-indexer",
                       title: qsTr("File indexing"), subtitle: qsTr("Search inside files (LocalSearch)"),
                       icon: "system-search-symbolic", keywords: "tracker localsearch индексация" },

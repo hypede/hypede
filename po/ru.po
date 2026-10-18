@@ -11,8 +11,8 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: apps/files/hypede_files/details.py:59 apps/files/hypede_files/window.py:533
-#: apps/desktop/hypede_desktop/view.py:554
+#: apps/files/hypede_files/details.py:59 apps/files/hypede_files/window.py:536
+#: apps/desktop/hypede_desktop/view.py:555
 msgid "Open"
 msgstr "Открыть"
 
@@ -41,7 +41,7 @@ msgstr[2] "%d файлов"
 #: apps/files/hypede_files/details.py:108
 #: apps/files/hypede_files/details.py:153
 #: apps/files/hypede_files/folder_view.py:370
-#: apps/files/hypede_files/window.py:117
+#: apps/files/hypede_files/window.py:118
 msgid "Size"
 msgstr "Размер"
 
@@ -89,7 +89,7 @@ msgid "Name"
 msgstr "Имя"
 
 #: apps/files/hypede_files/folder_view.py:371
-#: apps/files/hypede_files/window.py:118
+#: apps/files/hypede_files/window.py:119
 msgid "Type"
 msgstr "Тип"
 
@@ -191,27 +191,53 @@ msgid "Enter a location"
 msgstr "Введите адрес"
 
 #: apps/files/hypede_files/pathbar.py:92 apps/files/hypede_files/sidebar.py:139
-#: apps/files/hypede_files/window.py:185 apps/files/hypede_files/window.py:291
+#: apps/files/hypede_files/window.py:186 apps/files/hypede_files/window.py:292
 #: apps/desktop/hypede_desktop/items.py:54
 msgid "Trash"
 msgstr "Корзина"
 
 #: apps/files/hypede_files/pathbar.py:94 apps/files/hypede_files/sidebar.py:130
-#: apps/files/hypede_files/window.py:293
+#: apps/files/hypede_files/window.py:294
 msgid "Recent"
 msgstr "Недавние"
 
 #: apps/files/hypede_files/pathbar.py:113
-#: apps/files/hypede_files/sidebar.py:131 apps/files/hypede_files/window.py:296
+#: apps/files/hypede_files/sidebar.py:131 apps/files/hypede_files/window.py:297
 #: apps/desktop/hypede_desktop/items.py:52
 msgid "Home"
 msgstr "Домашняя папка"
+
+#: apps/files/hypede_files/programs.py:48
+#: apps/files/hypede_files/programs.py:63
+#, python-format
+msgid "Could not run “%s”: %s"
+msgstr "Не удалось запустить «%s»: %s"
+
+#: apps/files/hypede_files/programs.py:68
+#, python-format
+msgid "Run “%s”?"
+msgstr "Запустить «%s»?"
+
+#: apps/files/hypede_files/programs.py:69
+msgid "This is a program. Run it only if you trust where it came from."
+msgstr "Это программа. Запускайте её, только если доверяете источнику."
+
+#: apps/files/hypede_files/programs.py:70 apps/files/hypede_files/window.py:236
+#: apps/files/hypede_files/window.py:858 apps/files/hypede_files/window.py:873
+#: apps/desktop/hypede_desktop/view.py:623
+msgid "Cancel"
+msgstr "Отмена"
+
+#: apps/files/hypede_files/programs.py:70
+#: apps/desktop/hypede_desktop/view.py:623
+msgid "Allow and Run"
+msgstr "Разрешить и запустить"
 
 #: apps/files/hypede_files/sidebar.py:82 apps/files/hypede_files/sidebar.py:263
 msgid "Eject"
 msgstr "Извлечь"
 
-#: apps/files/hypede_files/sidebar.py:166 apps/files/hypede_files/window.py:298
+#: apps/files/hypede_files/sidebar.py:166 apps/files/hypede_files/window.py:299
 msgid "File System"
 msgstr "Файловая система"
 
@@ -223,7 +249,7 @@ msgstr "Закладки"
 msgid "Devices"
 msgstr "Устройства"
 
-#: apps/files/hypede_files/sidebar.py:253 apps/files/hypede_files/window.py:535
+#: apps/files/hypede_files/sidebar.py:253 apps/files/hypede_files/window.py:538
 msgid "Open in New Tab"
 msgstr "Открыть в новой вкладке"
 
@@ -244,7 +270,7 @@ msgid "MB"
 msgstr "МБ"
 
 #: apps/files/hypede_files/util.py:16
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:236
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:243
 msgid "GB"
 msgstr "ГБ"
 
@@ -289,214 +315,208 @@ msgstr "«%s» — недопустимое имя"
 msgid "The name is too long"
 msgstr "Слишком длинное имя"
 
-#: apps/files/hypede_files/window.py:76
+#: apps/files/hypede_files/window.py:77
 msgid "New Window"
 msgstr "Новое окно"
 
-#: apps/files/hypede_files/window.py:77 apps/files/hypede_files/window.py:1017
+#: apps/files/hypede_files/window.py:78 apps/files/hypede_files/window.py:1019
 msgid "New Tab"
 msgstr "Новая вкладка"
 
-#: apps/files/hypede_files/window.py:80 apps/files/hypede_files/window.py:579
-#: apps/files/hypede_files/window.py:1025
+#: apps/files/hypede_files/window.py:81 apps/files/hypede_files/window.py:582
+#: apps/files/hypede_files/window.py:1027
 msgid "Show Hidden Files"
 msgstr "Показывать скрытые файлы"
 
-#: apps/files/hypede_files/window.py:81 apps/files/hypede_files/window.py:1025
+#: apps/files/hypede_files/window.py:82 apps/files/hypede_files/window.py:1027
 msgid "Show Details Pane"
 msgstr "Показывать панель сведений"
 
-#: apps/files/hypede_files/window.py:82
+#: apps/files/hypede_files/window.py:83
 msgid "Sort Folders Before Files"
 msgstr "Папки перед файлами"
 
-#: apps/files/hypede_files/window.py:85
+#: apps/files/hypede_files/window.py:86
 msgid "Keyboard Shortcuts"
 msgstr "Комбинации клавиш"
 
-#: apps/files/hypede_files/window.py:86
+#: apps/files/hypede_files/window.py:87
 msgid "About Files"
 msgstr "О программе"
 
-#: apps/files/hypede_files/window.py:89 apps/files/hypede_files/window.py:1001
-#: apps/files/hypede_files/window.py:1019
+#: apps/files/hypede_files/window.py:90 apps/files/hypede_files/window.py:1004
+#: apps/files/hypede_files/window.py:1021
 #: shell/extension/hypede-shell@hypede.dev/actions.js:174
 #: shell/extension/hypede-shell@hypede.dev/edgepanel.js:106
 #: shell/extension/hypede-shell@hypede.dev/launcher.js:839
 msgid "Files"
 msgstr "Файлы"
 
-#: apps/files/hypede_files/window.py:91
+#: apps/files/hypede_files/window.py:92
 msgid "Main Menu"
 msgstr "Главное меню"
 
-#: apps/files/hypede_files/window.py:97
+#: apps/files/hypede_files/window.py:98
 msgid "Show Sidebar"
 msgstr "Показать боковую панель"
 
-#: apps/files/hypede_files/window.py:102 apps/files/hypede_files/window.py:1014
+#: apps/files/hypede_files/window.py:103 apps/files/hypede_files/window.py:1016
 msgid "Back"
 msgstr "Назад"
 
-#: apps/files/hypede_files/window.py:104 apps/files/hypede_files/window.py:1014
+#: apps/files/hypede_files/window.py:105 apps/files/hypede_files/window.py:1016
 msgid "Forward"
 msgstr "Вперёд"
 
-#: apps/files/hypede_files/window.py:115
+#: apps/files/hypede_files/window.py:116
 msgid "A–Z"
 msgstr "По имени"
 
-#: apps/files/hypede_files/window.py:116
+#: apps/files/hypede_files/window.py:117
 msgid "Last Modified"
 msgstr "По дате изменения"
 
-#: apps/files/hypede_files/window.py:119
+#: apps/files/hypede_files/window.py:120
 msgid "Sort"
 msgstr "Сортировка"
 
-#: apps/files/hypede_files/window.py:121
+#: apps/files/hypede_files/window.py:122
 msgid "Reversed Order"
 msgstr "В обратном порядке"
 
-#: apps/files/hypede_files/window.py:132 apps/files/hypede_files/window.py:1024
+#: apps/files/hypede_files/window.py:133 apps/files/hypede_files/window.py:1026
 msgid "Zoom Out"
 msgstr "Уменьшить"
 
-#: apps/files/hypede_files/window.py:134
+#: apps/files/hypede_files/window.py:135
 msgid "Reset Zoom"
 msgstr "Исходный размер"
 
-#: apps/files/hypede_files/window.py:136 apps/files/hypede_files/window.py:1024
+#: apps/files/hypede_files/window.py:137 apps/files/hypede_files/window.py:1026
 msgid "Zoom In"
 msgstr "Увеличить"
 
-#: apps/files/hypede_files/window.py:140 apps/files/hypede_files/window.py:1023
+#: apps/files/hypede_files/window.py:141 apps/files/hypede_files/window.py:1025
 msgid "Grid View"
 msgstr "Сетка"
 
-#: apps/files/hypede_files/window.py:141 apps/files/hypede_files/window.py:1023
+#: apps/files/hypede_files/window.py:142 apps/files/hypede_files/window.py:1025
 msgid "List View"
 msgstr "Список"
 
-#: apps/files/hypede_files/window.py:147
+#: apps/files/hypede_files/window.py:148
 msgid "View Options"
 msgstr "Параметры вида"
 
-#: apps/files/hypede_files/window.py:149 apps/files/hypede_files/window.py:1015
+#: apps/files/hypede_files/window.py:150 apps/files/hypede_files/window.py:1017
 msgid "Search"
 msgstr "Поиск"
 
-#: apps/files/hypede_files/window.py:163
+#: apps/files/hypede_files/window.py:164
 msgid "File Operations"
 msgstr "Файловые операции"
 
-#: apps/files/hypede_files/window.py:174
+#: apps/files/hypede_files/window.py:175
 msgid "Search files and folders"
 msgstr "Поиск файлов и папок"
 
-#: apps/files/hypede_files/window.py:185 apps/files/hypede_files/window.py:569
+#: apps/files/hypede_files/window.py:186 apps/files/hypede_files/window.py:572
 msgid "Empty Trash…"
 msgstr "Очистить корзину…"
 
-#: apps/files/hypede_files/window.py:235 apps/files/hypede_files/window.py:855
-#: apps/files/hypede_files/window.py:870
-#: apps/desktop/hypede_desktop/view.py:620
-msgid "Cancel"
-msgstr "Отмена"
-
-#: apps/files/hypede_files/window.py:353
+#: apps/files/hypede_files/window.py:354
 #, python-format
 msgid "Ask %s about the selected files"
 msgstr "Спросить %s о выбранных файлах"
 
-#: apps/files/hypede_files/window.py:362
+#: apps/files/hypede_files/window.py:363
 msgid "Question about this file: "
 msgid_plural "Question about these files: "
 msgstr[0] "Вопрос об этом файле: "
 msgstr[1] "Вопрос об этих файлах: "
 msgstr[2] "Вопрос об этих файлах: "
 
-#: apps/files/hypede_files/window.py:377
+#: apps/files/hypede_files/window.py:378
 #, python-format
 msgid "Folder “%s” contains:\n%s\n\nQuestion: "
 msgstr "В папке «%s» лежит:\n%s\n\nВопрос: "
 
-#: apps/files/hypede_files/window.py:463
+#: apps/files/hypede_files/window.py:464
 msgid "Restore the file from the trash to open it"
 msgstr "Чтобы открыть файл, восстановите его из корзины"
 
-#: apps/files/hypede_files/window.py:492
+#: apps/files/hypede_files/window.py:495
 #, python-format
 msgid "Could not open “%s”: %s"
 msgstr "Не удалось открыть «%s»: %s"
 
-#: apps/files/hypede_files/window.py:536 apps/files/hypede_files/window.py:577
+#: apps/files/hypede_files/window.py:539 apps/files/hypede_files/window.py:580
 msgid "Open in Terminal"
 msgstr "Открыть в терминале"
 
-#: apps/files/hypede_files/window.py:538
+#: apps/files/hypede_files/window.py:541
 msgid "Open With…"
 msgstr "Открыть с помощью…"
 
-#: apps/files/hypede_files/window.py:543
+#: apps/files/hypede_files/window.py:546
 msgid "Restore From Trash"
 msgstr "Восстановить из корзины"
 
-#: apps/files/hypede_files/window.py:544
+#: apps/files/hypede_files/window.py:547
 msgid "Delete Permanently…"
 msgstr "Удалить навсегда…"
 
-#: apps/files/hypede_files/window.py:548 apps/files/hypede_files/window.py:1021
-#: apps/desktop/hypede_desktop/view.py:560
+#: apps/files/hypede_files/window.py:551 apps/files/hypede_files/window.py:1023
+#: apps/desktop/hypede_desktop/view.py:561
 msgid "Cut"
 msgstr "Вырезать"
 
-#: apps/files/hypede_files/window.py:549 apps/files/hypede_files/window.py:1021
-#: apps/desktop/hypede_desktop/view.py:561
+#: apps/files/hypede_files/window.py:552 apps/files/hypede_files/window.py:1023
+#: apps/desktop/hypede_desktop/view.py:562
 msgid "Copy"
 msgstr "Копировать"
 
-#: apps/files/hypede_files/window.py:551
+#: apps/files/hypede_files/window.py:554
 msgid "Paste Into Folder"
 msgstr "Вставить в папку"
 
-#: apps/files/hypede_files/window.py:554
-#: apps/desktop/hypede_desktop/view.py:563
+#: apps/files/hypede_files/window.py:557
+#: apps/desktop/hypede_desktop/view.py:564
 msgid "Rename…"
 msgstr "Переименовать…"
 
-#: apps/files/hypede_files/window.py:555 apps/files/hypede_files/window.py:1020
-#: apps/desktop/hypede_desktop/view.py:568
+#: apps/files/hypede_files/window.py:558 apps/files/hypede_files/window.py:1022
+#: apps/desktop/hypede_desktop/view.py:569
 msgid "Move to Trash"
 msgstr "Удалить в корзину"
 
-#: apps/files/hypede_files/window.py:559
+#: apps/files/hypede_files/window.py:562
 msgid "Copy Path"
 msgstr "Скопировать путь"
 
-#: apps/files/hypede_files/window.py:561 apps/files/hypede_files/window.py:578
+#: apps/files/hypede_files/window.py:564 apps/files/hypede_files/window.py:581
 msgid "Add to Bookmarks"
 msgstr "Добавить в закладки"
 
-#: apps/files/hypede_files/window.py:562
+#: apps/files/hypede_files/window.py:565
 msgid "Show Details"
 msgstr "Показать сведения"
 
-#: apps/files/hypede_files/window.py:572
+#: apps/files/hypede_files/window.py:575
 msgid "New Folder…"
 msgstr "Новая папка…"
 
-#: apps/files/hypede_files/window.py:573 apps/files/hypede_files/window.py:1021
-#: apps/desktop/hypede_desktop/view.py:582
+#: apps/files/hypede_files/window.py:576 apps/files/hypede_files/window.py:1023
+#: apps/desktop/hypede_desktop/view.py:583
 msgid "Paste"
 msgstr "Вставить"
 
-#: apps/files/hypede_files/window.py:574 apps/files/hypede_files/window.py:1022
-#: apps/desktop/hypede_desktop/view.py:586
+#: apps/files/hypede_files/window.py:577 apps/files/hypede_files/window.py:1024
+#: apps/desktop/hypede_desktop/view.py:587
 msgid "Select All"
 msgstr "Выделить всё"
 
-#: apps/files/hypede_files/window.py:734
+#: apps/files/hypede_files/window.py:737
 #, python-format
 msgid "%d item cut"
 msgid_plural "%d items cut"
@@ -504,7 +524,7 @@ msgstr[0] "Вырезан %d объект"
 msgstr[1] "Вырезано %d объекта"
 msgstr[2] "Вырезано %d объектов"
 
-#: apps/files/hypede_files/window.py:735
+#: apps/files/hypede_files/window.py:738
 #, python-format
 msgid "%d item copied"
 msgid_plural "%d items copied"
@@ -512,26 +532,26 @@ msgstr[0] "Скопирован %d объект"
 msgstr[1] "Скопировано %d объекта"
 msgstr[2] "Скопировано %d объектов"
 
-#: apps/files/hypede_files/window.py:755
+#: apps/files/hypede_files/window.py:758
 msgid "Nothing to paste"
 msgstr "Нечего вставлять"
 
-#: apps/files/hypede_files/window.py:768
+#: apps/files/hypede_files/window.py:771
 #, python-format
 msgid "Copied to “%s”"
 msgstr "Скопировано в «%s»"
 
-#: apps/files/hypede_files/window.py:768
+#: apps/files/hypede_files/window.py:771
 #, python-format
 msgid "Moved to “%s”"
 msgstr "Перемещено в «%s»"
 
-#: apps/files/hypede_files/window.py:780
+#: apps/files/hypede_files/window.py:783
 #, python-format
 msgid "“%s” moved to the trash"
 msgstr "«%s» — в корзине"
 
-#: apps/files/hypede_files/window.py:782
+#: apps/files/hypede_files/window.py:785
 #, python-format
 msgid "%d item moved to the trash"
 msgid_plural "%d items moved to the trash"
@@ -539,7 +559,7 @@ msgstr[0] "%d объект перемещён в корзину"
 msgstr[1] "%d объекта перемещены в корзину"
 msgstr[2] "%d объектов перемещены в корзину"
 
-#: apps/files/hypede_files/window.py:790
+#: apps/files/hypede_files/window.py:793
 #, python-format
 msgid "%d item restored"
 msgid_plural "%d items restored"
@@ -547,12 +567,12 @@ msgstr[0] "Восстановлен %d объект"
 msgstr[1] "Восстановлено %d объекта"
 msgstr[2] "Восстановлено %d объектов"
 
-#: apps/files/hypede_files/window.py:798
+#: apps/files/hypede_files/window.py:801
 #, python-format
 msgid "Permanently delete “%s”?"
 msgstr "Удалить «%s» навсегда?"
 
-#: apps/files/hypede_files/window.py:799
+#: apps/files/hypede_files/window.py:802
 #, python-format
 msgid "Permanently delete %d item?"
 msgid_plural "Permanently delete %d items?"
@@ -560,120 +580,120 @@ msgstr[0] "Удалить %d объект навсегда?"
 msgstr[1] "Удалить %d объекта навсегда?"
 msgstr[2] "Удалить %d объектов навсегда?"
 
-#: apps/files/hypede_files/window.py:800
+#: apps/files/hypede_files/window.py:803
 msgid "Deleted items cannot be restored."
 msgstr "Удалённое навсегда восстановить нельзя."
 
-#: apps/files/hypede_files/window.py:800
+#: apps/files/hypede_files/window.py:803
 msgid "Delete"
 msgstr "Удалить"
 
-#: apps/files/hypede_files/window.py:815
+#: apps/files/hypede_files/window.py:818
 msgid "Empty all items from the trash?"
 msgstr "Очистить корзину?"
 
-#: apps/files/hypede_files/window.py:815
+#: apps/files/hypede_files/window.py:818
 msgid "All items in the trash will be permanently deleted."
 msgstr "Всё содержимое корзины будет удалено навсегда."
 
-#: apps/files/hypede_files/window.py:816
-#: apps/desktop/hypede_desktop/view.py:572
+#: apps/files/hypede_files/window.py:819
+#: apps/desktop/hypede_desktop/view.py:573
 msgid "Empty Trash"
 msgstr "Очистить корзину"
 
-#: apps/files/hypede_files/window.py:828 apps/files/hypede_files/window.py:935
+#: apps/files/hypede_files/window.py:831 apps/files/hypede_files/window.py:938
 msgid "Undo"
 msgstr "Отменить"
 
-#: apps/files/hypede_files/window.py:903
+#: apps/files/hypede_files/window.py:906
 msgid "Untitled Folder"
 msgstr "Новая папка"
 
-#: apps/files/hypede_files/window.py:915 apps/files/hypede_files/window.py:1019
-#: apps/desktop/hypede_desktop/view.py:580
-#: apps/desktop/hypede_desktop/view.py:704
+#: apps/files/hypede_files/window.py:918 apps/files/hypede_files/window.py:1021
+#: apps/desktop/hypede_desktop/view.py:581
+#: apps/desktop/hypede_desktop/view.py:707
 msgid "New Folder"
 msgstr "Новая папка"
 
-#: apps/files/hypede_files/window.py:915
+#: apps/files/hypede_files/window.py:918
 msgid "Create"
 msgstr "Создать"
 
-#: apps/files/hypede_files/window.py:935
+#: apps/files/hypede_files/window.py:938
 #, python-format
 msgid "Renamed to “%s”"
 msgstr "Переименовано в «%s»"
 
-#: apps/files/hypede_files/window.py:946
+#: apps/files/hypede_files/window.py:949
 msgid "Rename Folder"
 msgstr "Переименовать папку"
 
-#: apps/files/hypede_files/window.py:946
+#: apps/files/hypede_files/window.py:949
 msgid "Rename File"
 msgstr "Переименовать файл"
 
-#: apps/files/hypede_files/window.py:947 apps/files/hypede_files/window.py:1019
+#: apps/files/hypede_files/window.py:950 apps/files/hypede_files/window.py:1021
 msgid "Rename"
 msgstr "Переименовать"
 
-#: apps/files/hypede_files/window.py:953
+#: apps/files/hypede_files/window.py:956
 msgid "Path copied"
 msgstr "Путь скопирован"
 
-#: apps/files/hypede_files/window.py:957
+#: apps/files/hypede_files/window.py:960
 #, python-format
 msgid "“%s” added to bookmarks"
 msgstr "Закладка «%s» добавлена"
 
-#: apps/files/hypede_files/window.py:959
+#: apps/files/hypede_files/window.py:962
 msgid "Already in bookmarks"
 msgstr "Уже есть в закладках"
 
-#: apps/files/hypede_files/window.py:964
+#: apps/files/hypede_files/window.py:967
 msgid "Only local folders can be opened in a terminal"
 msgstr "В терминале можно открыть только локальную папку"
 
-#: apps/files/hypede_files/window.py:968
+#: apps/files/hypede_files/window.py:971
 msgid "No terminal found"
 msgstr "Терминал не найден"
 
-#: apps/files/hypede_files/window.py:1007
-msgid "File manager of the HypeDE desktop: the layout of GNOME Files with tabs and a details pane inspired by COSMIC Files."
-msgstr "Файловый менеджер среды HypeDE: раскладка «Файлов» GNOME, вкладки и панель сведений в духе COSMIC Files."
+#: apps/files/hypede_files/window.py:1010
+msgid "File manager of HypeDE: tabs, a details pane and quick search."
+msgstr "Файловый менеджер HypeDE: вкладки, панель сведений и быстрый поиск."
 
-#: apps/files/hypede_files/window.py:1014
+#: apps/files/hypede_files/window.py:1016
 msgid "Navigation"
 msgstr "Навигация"
 
-#: apps/files/hypede_files/window.py:1014
+#: apps/files/hypede_files/window.py:1016
 msgid "Parent Folder"
 msgstr "Папка выше"
 
-#: apps/files/hypede_files/window.py:1015
+#: apps/files/hypede_files/window.py:1017
 msgid "Enter Location"
 msgstr "Ввести адрес"
 
-#: apps/files/hypede_files/window.py:1016
+#: apps/files/hypede_files/window.py:1018
 msgid "Toggle Sidebar"
 msgstr "Боковая панель"
 
-#: apps/files/hypede_files/window.py:1017
+#: apps/files/hypede_files/window.py:1019
 msgid "Tabs"
 msgstr "Вкладки"
 
-#: apps/files/hypede_files/window.py:1017
+#: apps/files/hypede_files/window.py:1019
 msgid "Close Tab"
 msgstr "Закрыть вкладку"
 
-#: apps/files/hypede_files/window.py:1018
+#: apps/files/hypede_files/window.py:1020
 msgid "Next Tab"
 msgstr "Следующая вкладка"
 
-#: apps/files/hypede_files/window.py:1020
+#: apps/files/hypede_files/window.py:1022
 msgid "Delete Permanently"
 msgstr "Удалить навсегда"
 
-#: apps/files/hypede_files/window.py:1023
+#: apps/files/hypede_files/window.py:1025
 msgid "View"
 msgstr "Вид"
 
@@ -726,51 +746,47 @@ msgstr "Если файлы не прикрепились, перетащите 
 msgid "Drag into the chat"
 msgstr "Перетащите в чат"
 
-#: apps/desktop/hypede_desktop/view.py:556
+#: apps/desktop/hypede_desktop/view.py:557
 msgid "Show in Files"
 msgstr "Показать в «Файлах»"
 
-#: apps/desktop/hypede_desktop/view.py:565
+#: apps/desktop/hypede_desktop/view.py:566
 msgid "Allow Launching"
 msgstr "Разрешить запуск"
 
-#: apps/desktop/hypede_desktop/view.py:581
-#: apps/desktop/hypede_desktop/view.py:704
+#: apps/desktop/hypede_desktop/view.py:582
+#: apps/desktop/hypede_desktop/view.py:707
 msgid "New Text File"
 msgstr "Новый текстовый файл"
 
-#: apps/desktop/hypede_desktop/view.py:585
+#: apps/desktop/hypede_desktop/view.py:586
 msgid "Arrange Icons"
 msgstr "Упорядочить значки"
 
-#: apps/desktop/hypede_desktop/view.py:589
+#: apps/desktop/hypede_desktop/view.py:590
 msgid "Open Desktop in Files"
 msgstr "Открыть рабочий стол в «Файлах»"
 
-#: apps/desktop/hypede_desktop/view.py:591
+#: apps/desktop/hypede_desktop/view.py:592
 msgid "Open Terminal Here"
 msgstr "Открыть терминал здесь"
 
-#: apps/desktop/hypede_desktop/view.py:594
+#: apps/desktop/hypede_desktop/view.py:595
 msgid "Change Wallpaper…"
 msgstr "Сменить обои…"
 
-#: apps/desktop/hypede_desktop/view.py:595
+#: apps/desktop/hypede_desktop/view.py:596
 msgid "Display Settings"
 msgstr "Настройки экрана"
 
-#: apps/desktop/hypede_desktop/view.py:618
+#: apps/desktop/hypede_desktop/view.py:621
 #, python-format
 msgid "Allow “%s” to run?"
 msgstr "Разрешить запуск «%s»?"
 
-#: apps/desktop/hypede_desktop/view.py:619
+#: apps/desktop/hypede_desktop/view.py:622
 msgid "This app launcher is not trusted yet. Run it only if you know where it came from."
 msgstr "Этот ярлык приложения ещё не проверен. Запускайте его, только если знаете, откуда он."
-
-#: apps/desktop/hypede_desktop/view.py:620
-msgid "Allow and Run"
-msgstr "Разрешить и запустить"
 
 #: shell/extension/hypede-shell@hypede.dev/actions.js:49
 msgid "Keep awake"
@@ -1157,18 +1173,18 @@ msgid "Sorry, that didn’t work. Please try again."
 msgstr "Неверный пароль. Попробуйте ещё раз."
 
 #: shell/extension/hypede-shell@hypede.dev/lockscreen.js:338
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:35
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:210
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:36
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:217
 msgid "System"
 msgstr "Система"
 
 #: shell/extension/hypede-shell@hypede.dev/lockscreen.js:339
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:207
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:214
 msgid "Processor"
 msgstr "Процессор"
 
 #: shell/extension/hypede-shell@hypede.dev/lockscreen.js:340
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:208
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:215
 msgid "Memory"
 msgstr "Память"
 
@@ -1183,7 +1199,7 @@ msgid "Up for %d h %d min"
 msgstr "Без перезагрузки %d ч %d мин"
 
 #: shell/extension/hypede-shell@hypede.dev/lockscreen.js:384
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:209
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:216
 msgid "Battery"
 msgstr "Батарея"
 
@@ -1311,75 +1327,66 @@ msgstr "Режим планшета"
 msgid "Laptop mode"
 msgstr "Режим ноутбука"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:34
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:35
 msgid "Clock"
 msgstr "Часы"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:34
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:35
 msgid "Dot clock"
 msgstr "Точечные часы"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:34
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:35
 msgid "Calendar"
 msgstr "Календарь"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:34
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:35
 msgid "Weather"
 msgstr "Погода"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:35
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:36
 msgid "Music"
 msgstr "Музыка"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:35
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:36
 msgid "Note"
 msgstr "Заметка"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:180
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:187
 msgid "Choose a city in Weather"
 msgstr "Выберите город в «Погоде»"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:180
-msgid "Install GNOME Weather"
-msgstr "Установите «Погоду» GNOME"
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:187
+msgid "Install the Weather app"
+msgstr "Установите приложение «Погода»"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:181
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:188
 msgid "Click to open"
 msgstr "Нажмите, чтобы открыть"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:187
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:194
 msgid "Loading…"
 msgstr "Загрузка…"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:187
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:194
 msgid "Weather unavailable"
 msgstr "Погода недоступна"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:308
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:315
 msgid "Write something…"
 msgstr "Напишите что-нибудь…"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:538
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:575
 msgid "Add widget"
 msgstr "Добавить виджет"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:551
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:588
 msgid "Your own widget…"
 msgstr "Свой виджет…"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:554
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:591
 msgid "Return to the column"
 msgstr "Вернуть в столбик"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:560
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:597
 msgid "Remove widget"
 msgstr "Убрать виджет"
-
-msgid "Could not run “%s”: %s"
-msgstr "Не удалось запустить «%s»: %s"
-
-msgid "Run “%s”?"
-msgstr "Запустить «%s»?"
-
-msgid "This is a program. Run it only if you trust where it came from."
-msgstr "Это программа. Запускайте её, только если доверяете источнику."
