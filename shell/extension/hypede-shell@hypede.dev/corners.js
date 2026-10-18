@@ -9,7 +9,6 @@
 // Развёрнутые, прикреплённые к краю и полноэкранные окна остаются
 // прямоугольными.
 
-import Cairo from 'cairo';
 import Clutter from 'gi://Clutter';
 import Cogl from 'gi://Cogl';
 import GLib from 'gi://GLib';
@@ -17,6 +16,7 @@ import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
 import St from 'gi://St';
 
+import {SHADOW_MARGIN, shadowStyle} from './shadows.js';
 import {isDesktopWindow} from './util.js';
 
 const DECLARATIONS = `
@@ -71,56 +71,6 @@ class CornersEffect extends Clutter.OffscreenEffect {
     }
 });
 
-// Тень рисуется слоями вокруг окна, а под самим окном остаётся пустой:
-// иначе она просвечивала бы в вырезанных углах. Рисуется она один раз в
-// маленькую картинку (углы и по пикселю края), а на окно растягивается как
-// border-image: при перемещении и изменении размера окна ничего не
-// перерисовывается.
-const SHADOW_MARGIN = 28;
-const shadowFiles = new Map();
-
-function shadowFile(radius, focused) {
-    const key = `${radius}-${focused ? 1 : 0}`;
-    if (shadowFiles.has(key))
-        return shadowFiles.get(key);
-    const dir = GLib.build_filenamev([GLib.get_user_cache_dir(), 'hypede', 'shadows']);
-    const path = GLib.build_filenamev([dir, `shadow-v1-${key}.png`]);
-    if (!GLib.file_test(path, GLib.FileTest.EXISTS)) {
-        GLib.mkdir_with_parents(dir, 0o755);
-        const m = SHADOW_MARGIN, r = radius;
-        const size = 2 * (m + r) + 2;
-        const surface = new Cairo.ImageSurface(Cairo.Format.ARGB32, size, size);
-        const cr = new Cairo.Context(surface);
-        const [blur, dy, strength] = focused ? [22, 6, 0.30] : [12, 2, 0.16];
-        const roundRect = (x, y, rw, rh, rr) => {
-            rr = Math.max(0, Math.min(rr, rw / 2, rh / 2));
-            cr.newSubPath();
-            cr.arc(x + rw - rr, y + rr, rr, -Math.PI / 2, 0);
-            cr.arc(x + rw - rr, y + rh - rr, rr, 0, Math.PI / 2);
-            cr.arc(x + rr, y + rh - rr, rr, Math.PI / 2, Math.PI);
-            cr.arc(x + rr, y + rr, rr, Math.PI, 3 * Math.PI / 2);
-            cr.closePath();
-        };
-        const win = size - 2 * m;
-        cr.setFillRule(Cairo.FillRule.EVEN_ODD); // закрашивается только кольцо вокруг окна
-        for (let i = blur; i > 0; i--) {
-            // Каждый слой шире предыдущего; прозрачность убывает по гауссу.
-            const t = i / blur;
-            const alpha = strength * Math.exp(-4 * t * t) / blur * 3;
-            cr.setSourceRGBA(0, 0, 0, alpha);
-            roundRect(m - i, m - i + dy * (1 - t), win + 2 * i, win + 2 * i, r + i);
-            roundRect(m, m, win, win, r);
-            cr.fill();
-        }
-        cr.$dispose();
-        surface.writeToPNG(path);
-        surface.finish();
-    }
-    const uri = GLib.filename_to_uri(path, null);
-    shadowFiles.set(key, uri);
-    return uri;
-}
-
 const WindowShadow = GObject.registerClass(
 class WindowShadow extends St.Widget {
     _init() {
@@ -136,9 +86,8 @@ class WindowShadow extends St.Widget {
         this._radius = radius;
         this._focused = focused;
         this._square = square;
-        const slice = SHADOW_MARGIN + radius + 1;
-        this.style = square ? null
-            : `border-image: url("${shadowFile(radius, focused)}") ${slice} ${slice} ${slice} ${slice};`;
+        const [blur, dy, strength] = focused ? [22, 6, 0.30] : [12, 2, 0.16];
+        this.style = square ? null : shadowStyle(radius, blur, dy, strength);
     }
 });
 

@@ -25,6 +25,7 @@ import {WeatherClient} from 'resource:///org/gnome/shell/misc/weather.js';
 import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
 import {WIDGETS_DIR, buildCustomWidget, listCustomWidgets, openWidgetsFolder} from './customwidgets.js';
+import {SHADOW_MARGIN, shadowStyle} from './shadows.js';
 
 const GRID = 8;
 const MARGIN = 24;
@@ -444,10 +445,34 @@ export class Widgets {
                 this._placeLater();
         });
         this._layer.add_child(w);
+        this._addShadow(w);
         this._widgets.push(w);
         w.opacity = 0;
         w.ease({opacity: 255, duration: 250, mode: Clutter.AnimationMode.EASE_OUT_QUAD});
         return w;
+    }
+
+    // Тень — отдельный слой под виджетом с пустой серединой: box-shadow
+    // просвечивал бы сквозь полупрозрачный фон тёмным пятном у краёв.
+    _addShadow(w) {
+        const shadow = new St.Widget();
+        const m = SHADOW_MARGIN * St.ThemeContext.get_for_stage(global.stage).scale_factor;
+        for (const [coordinate, offset] of [[Clutter.BindCoordinate.POSITION, -m], [Clutter.BindCoordinate.SIZE, 2 * m]])
+            shadow.add_constraint(new Clutter.BindConstraint({source: w, coordinate, offset}));
+        for (const prop of ['opacity', 'visible', 'translation-x', 'translation-y'])
+            w.bind_property(prop, shadow, prop, GObject.BindingFlags.SYNC_CREATE);
+        const sync = () => {
+            let radius = 24;
+            try {
+                radius = w.get_theme_node().get_border_radius(St.Corner.TOPLEFT);
+            } catch {}
+            const [blur, dy, strength] = w.has_style_pseudo_class('drag') ? [28, 10, 0.32] : [20, 5, 0.18];
+            shadow.style = shadowStyle(radius, blur, dy, strength);
+        };
+        w.connectObject('style-changed', sync, shadow);
+        w.connect('destroy', () => shadow.destroy());
+        this._layer.insert_child_below(shadow, w);
+        sync();
     }
 
     _placeLater() {

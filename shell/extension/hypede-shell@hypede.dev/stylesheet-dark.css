@@ -884,9 +884,7 @@
   padding: 18px 20px;
   spacing: 6px;
   min-width: 220px;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
 }
-.hypede-widget:drag { box-shadow: 0 14px 40px rgba(0, 0, 0, 0.32); }
 .hypede-widget-time { font-size: 34pt; font-weight: 300; }
 .hypede-widget-date { font-size: 12pt; font-weight: 500; }
 .hypede-widget-title { font-size: 11pt; font-weight: 600; margin-bottom: 4px; }
