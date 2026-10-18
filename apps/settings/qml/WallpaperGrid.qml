@@ -44,6 +44,18 @@ Item {
                 }
                 width: (flow.width - 2 * flow.spacing) / 3
                 height: width * 0.62
+                // Картинку не открыть (битый файл, нет декодера) — плитку
+                // не показываем, а не оставляем пустую рамку.
+                visible: image.status !== Image.Error
+
+                // Подложка, пока картинка грузится.
+                Rectangle {
+                    anchors.fill: parent
+                    radius: 12
+                    color: Theme.divider
+                    opacity: image.status === Image.Ready ? 0 : 0.5
+                    Behavior on opacity { NumberAnimation { duration: 150 } }
+                }
 
                 Rectangle {
                     id: mask

@@ -25,6 +25,7 @@ depends=(
   # «Настройки»
   'qt6-base' 'qt6-declarative' 'qt6-svg' 'kcmutils' 'kcolorscheme' 'kconfig' 'kcoreaddons'
   'kirigami' 'qqc2-desktop-style' 'breeze' 'breeze-icons'
+  'qt6-imageformats' 'kimageformats'  # обои в WebP, JPEG XL и AVIF (у GNOME — JPEG XL)
 )
 makedepends=('cmake' 'extra-cmake-modules' 'qt6-tools' 'gettext')
 optdepends=(
