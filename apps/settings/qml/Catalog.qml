@@ -73,7 +73,7 @@ QtObject {
             sections: [
                 { title: qsTr("Displays"), rows: [
                     { type: "displays", title: qsTr("Displays"), icon: "video-display-symbolic",
-                      keywords: "display monitor resolution refresh rate scale rotation экран монитор разрешение частота масштаб поворот" },
+                      keywords: "display monitor resolution refresh rate scale rotation arrange mirror multiple экран монитор разрешение частота масштаб поворот расположение зеркало дублировать несколько" },
                     { type: "strvToggle", schema: mutter, key: "experimental-features", item: "scale-monitor-framebuffer",
                       title: qsTr("Fractional scaling"), subtitle: qsTr("Scales like 125% and 150%"),
                       keywords: "fractional scale дробное масштабирование" },
@@ -86,9 +86,6 @@ QtObject {
                     { type: "toggle", schema: color, key: "night-light-schedule-automatic",
                       title: qsTr("Sunset to sunrise"),
                       visibleWhen: { schema: color, key: "night-light-enabled", value: true } },
-                    { type: "run", argv: ["gnome-control-center", "display"], program: "gnome-control-center",
-                      title: qsTr("Arrange displays"), subtitle: qsTr("Position of several monitors, mirroring"),
-                      icon: "video-joined-displays-symbolic", keywords: "arrange mirror расположение зеркало" },
                 ] },
                 { title: qsTr("Mouse"), rows: [
                     { type: "slider", schema: mouse, key: "speed", from: -1, to: 1, step: 0.05,

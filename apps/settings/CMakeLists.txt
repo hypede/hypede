@@ -59,6 +59,7 @@ qt_add_qml_module(hypede-settings
         qml/InputSources.qml
         qml/AboutHeader.qml
         qml/DisplaysBlock.qml
+        qml/DisplayArrangement.qml
         qml/StorageBlock.qml
         qml/AppListBlock.qml
         qml/AutostartBlock.qml

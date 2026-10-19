@@ -110,6 +110,27 @@ const Displays::Mode *Displays::currentMode(const Monitor &monitor) const
     return nullptr;
 }
 
+const Displays::Mode *Displays::activeMode(const Monitor &monitor) const
+{
+    if (const Mode *current = currentMode(monitor))
+        return current;
+    for (const Mode &mode : monitor.modes) {
+        if (mode.preferred)
+            return &mode;
+    }
+    return monitor.modes.isEmpty() ? nullptr : &monitor.modes.first();
+}
+
+QSize Displays::logicalSize(const Mode &mode, double scale, int transform) const
+{
+    int w = mode.width, h = mode.height;
+    if (transform % 2 == 1)
+        std::swap(w, h);
+    if (isLogicalLayout(m_layoutMode) && scale > 0)
+        return QSize(int(std::round(w / scale)), int(std::round(h / scale)));
+    return QSize(w, h);
+}
+
 void Displays::refresh()
 {
     QDBusMessage message = QDBusMessage::createMethodCall(kService, kPath, kInterface, QStringLiteral("GetCurrentState"));
@@ -190,6 +211,10 @@ void Displays::refresh()
     const QVariantMap properties = readProperties(args.at(3).value<QDBusArgument>());
     m_layoutMode = properties.value(QStringLiteral("layout-mode"), 1).toUInt();
 
+    m_mirrored = std::any_of(m_logical.cbegin(), m_logical.cend(), [](const Logical &l) {
+        return l.connectors.size() > 1;
+    });
+
     // Дробное масштабирование: у какого-нибудь режима есть масштаб не
     // кратный 1.
     m_fractional = false;
@@ -200,10 +225,20 @@ void Displays::refresh()
         }
     }
 
+    // Два одинаковых монитора различаются разъёмом: «Dell 24" (DP-2)».
+    auto nameOf = [this](const Monitor &monitor) {
+        if (monitor.displayName.isEmpty())
+            return monitor.connector;
+        const auto same = std::count_if(m_state.cbegin(), m_state.cend(), [&](const Monitor &other) {
+            return other.displayName == monitor.displayName;
+        });
+        return same > 1 ? QStringLiteral("%1 (%2)").arg(monitor.displayName, monitor.connector) : monitor.displayName;
+    };
+
     for (const Monitor &monitor : std::as_const(m_state)) {
         QVariantMap map;
         map.insert(QStringLiteral("connector"), monitor.connector);
-        map.insert(QStringLiteral("name"), monitor.displayName.isEmpty() ? monitor.connector : monitor.displayName);
+        map.insert(QStringLiteral("name"), nameOf(monitor));
         map.insert(QStringLiteral("builtin"), monitor.builtin);
 
         const Logical *logical = nullptr;
@@ -215,6 +250,15 @@ void Displays::refresh()
         map.insert(QStringLiteral("scale"), logical ? logical->scale : 1.0);
         map.insert(QStringLiteral("transform"), logical ? int(logical->transform) : 0);
         map.insert(QStringLiteral("primary"), logical ? logical->primary : false);
+        // Место и размер на общей схеме (логические пиксели).
+        const Mode *active = activeMode(monitor);
+        const QSize size = active ? logicalSize(*active, logical ? logical->scale : active->preferredScale,
+                                                logical ? int(logical->transform) : 0)
+                                  : QSize(1920, 1080);
+        map.insert(QStringLiteral("x"), logical ? logical->x : 0);
+        map.insert(QStringLiteral("y"), logical ? logical->y : 0);
+        map.insert(QStringLiteral("width"), size.width());
+        map.insert(QStringLiteral("height"), size.height());
 
         const Mode *current = currentMode(monitor);
         map.insert(QStringLiteral("modeId"), current ? current->id : QString());
@@ -292,6 +336,23 @@ bool Displays::apply(const QString &connector, const QString &modeId, double sca
             l.primary = l.connectors.contains(connector);
     }
 
+    const Mode *target = nullptr;
+    for (const Monitor &monitor : std::as_const(m_state)) {
+        for (const Mode &mode : monitor.modes) {
+            if (monitor.connector == connector && mode.id == modeId)
+                target = &mode;
+        }
+    }
+    auto sameSize = [](const Monitor &monitor, const Mode &wanted, const QString &fallback) {
+        const Mode *best = nullptr;
+        for (const Mode &mode : monitor.modes) {
+            if (mode.width == wanted.width && mode.height == wanted.height
+                && (!best || std::abs(mode.refresh - wanted.refresh) < std::abs(best->refresh - wanted.refresh)))
+                best = &mode;
+        }
+        return best ? best->id : fallback;
+    };
+
     QList<ApplyLogical> config;
     for (const Logical &l : std::as_const(logical)) {
         ApplyLogical item;
@@ -300,17 +361,30 @@ bool Displays::apply(const QString &connector, const QString &modeId, double sca
         item.scale = l.scale;
         item.transform = l.transform;
         item.primary = l.primary;
+        // В «дублировании» у всех мониторов группы одно разрешение: им
+        // достаётся режим того же размера, что выбран для этого монитора.
+        const bool group = l.connectors.contains(connector);
         for (const QString &conn : l.connectors) {
             QString mode;
             for (const Monitor &monitor : std::as_const(m_state)) {
-                if (monitor.connector == conn)
-                    mode = conn == connector ? modeId : (currentMode(monitor) ? currentMode(monitor)->id : QString());
+                if (monitor.connector != conn)
+                    continue;
+                mode = currentMode(monitor) ? currentMode(monitor)->id : QString();
+                if (conn == connector)
+                    mode = modeId;
+                else if (group && target)
+                    mode = sameSize(monitor, *target, mode);
             }
             item.monitors << ApplyMonitor{conn, mode, {}};
         }
         config << item;
     }
 
+    return send(config);
+}
+
+bool Displays::send(const QList<ApplyLogical> &config)
+{
     QDBusMessage message =
         QDBusMessage::createMethodCall(kService, kPath, kInterface, QStringLiteral("ApplyMonitorsConfig"));
     // 2 — «постоянно»: GNOME Shell покажет окно подтверждения с откатом.
@@ -322,4 +396,106 @@ bool Displays::apply(const QString &connector, const QString &modeId, double sca
         return false;
     }
     return true;
+}
+
+bool Displays::applyLayout(const QVariantList &items, bool mirror)
+{
+    if (!m_available)
+        return false;
+
+    struct Item {
+        const Monitor *monitor;
+        int x, y;
+    };
+    QList<Item> enabled;
+    for (const QVariant &value : items) {
+        const QVariantMap item = value.toMap();
+        if (!item.value(QStringLiteral("enabled"), true).toBool())
+            continue;
+        const QString connector = item.value(QStringLiteral("connector")).toString();
+        for (const Monitor &monitor : std::as_const(m_state)) {
+            if (monitor.connector == connector && activeMode(monitor))
+                enabled << Item{&monitor, item.value(QStringLiteral("x")).toInt(), item.value(QStringLiteral("y")).toInt()};
+        }
+    }
+    if (enabled.isEmpty()) {
+        Q_EMIT failed(tr("At least one display must stay on"));
+        return false;
+    }
+
+    auto logicalOf = [this](const QString &connector) -> const Logical * {
+        for (const Logical &l : std::as_const(m_logical)) {
+            if (l.connectors.contains(connector))
+                return &l;
+        }
+        return nullptr;
+    };
+
+    QList<ApplyLogical> config;
+    if (mirror) {
+        // Дублирование: самое большое разрешение, которое есть у всех.
+        QList<QSize> common;
+        for (const Mode &mode : enabled.first().monitor->modes)
+            common << QSize(mode.width, mode.height);
+        for (const Item &item : std::as_const(enabled)) {
+            QList<QSize> sizes;
+            for (const Mode &mode : item.monitor->modes)
+                sizes << QSize(mode.width, mode.height);
+            common.erase(std::remove_if(common.begin(), common.end(), [&](const QSize &s) {
+                return !sizes.contains(s);
+            }), common.end());
+        }
+        if (common.isEmpty()) {
+            Q_EMIT failed(tr("These displays have no resolution in common"));
+            return false;
+        }
+        const QSize size = *std::max_element(common.cbegin(), common.cend(), [](const QSize &a, const QSize &b) {
+            return a.width() * a.height() < b.width() * b.height();
+        });
+        ApplyLogical logical;
+        logical.primary = true;
+        const Logical *old = logicalOf(enabled.first().monitor->connector);
+        double scale = old ? old->scale : 1.0;
+        for (const Item &item : std::as_const(enabled)) {
+            const Mode *best = nullptr;
+            for (const Mode &mode : item.monitor->modes) {
+                if (QSize(mode.width, mode.height) == size && (!best || mode.refresh > best->refresh))
+                    best = &mode;
+            }
+            if (!best->scales.contains(scale))
+                scale = 1.0;
+            logical.monitors << ApplyMonitor{item.monitor->connector, best->id, {}};
+        }
+        logical.scale = scale;
+        config << logical;
+        return send(config);
+    }
+
+    // Рядом: координаты со схемы, сдвинутые так, чтобы левый верхний угол
+    // был в нуле. Основной монитор остаётся основным, если он включён.
+    int minX = enabled.first().x, minY = enabled.first().y;
+    for (const Item &item : std::as_const(enabled)) {
+        minX = std::min(minX, item.x);
+        minY = std::min(minY, item.y);
+    }
+    bool hasPrimary = false;
+    for (const Item &item : std::as_const(enabled)) {
+        const Logical *old = logicalOf(item.monitor->connector);
+        const Mode *mode = activeMode(*item.monitor);
+        ApplyLogical logical;
+        logical.x = item.x - minX;
+        logical.y = item.y - minY;
+        // У монитора, который был в «дублировании» или выключен, масштаб —
+        // рекомендуемый для его режима.
+        const bool alone = old && old->connectors.size() == 1;
+        logical.scale = alone ? old->scale : mode->preferredScale;
+        logical.transform = alone ? old->transform : 0;
+        logical.primary = old && old->primary && !hasPrimary;
+        hasPrimary = hasPrimary || logical.primary;
+        logical.monitors << ApplyMonitor{item.monitor->connector, mode->id, {}};
+        config << logical;
+    }
+    if (!hasPrimary)
+        config.first().primary = true;
+    return send(config);
 }

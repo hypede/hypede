@@ -3181,4 +3181,54 @@
         <translation>Заметка</translation>
     </message>
 </context>
+<context>
+    <name>DisplayArrangement</name>
+    <message>
+        <source>Multiple displays</source>
+        <translation>Несколько мониторов</translation>
+    </message>
+    <message>
+        <source>All displays show the same picture</source>
+        <translation>На всех мониторах одно и то же изображение</translation>
+    </message>
+    <message>
+        <source>Drag the displays to match how they stand on your desk</source>
+        <translation>Перетащите мониторы так, как они стоят на столе</translation>
+    </message>
+    <message>
+        <source>Join displays</source>
+        <translation>Рядом</translation>
+    </message>
+    <message>
+        <source>Mirror</source>
+        <translation>Дублировать</translation>
+    </message>
+    <message>
+        <source>Main display</source>
+        <translation>Основной монитор</translation>
+    </message>
+    <message>
+        <source>Use “%1”</source>
+        <translation>Использовать «%1»</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <source>Apply</source>
+        <translation>Применить</translation>
+    </message>
+</context>
+<context>
+    <name>Displays</name>
+    <message>
+        <source>At least one display must stay on</source>
+        <translation>Хотя бы один монитор должен остаться включённым</translation>
+    </message>
+    <message>
+        <source>These displays have no resolution in common</source>
+        <translation>У этих мониторов нет общего разрешения</translation>
+    </message>
+</context>
 </TS>
