@@ -46,11 +46,11 @@ QtObject {
             keywords: "network internet wifi wi-fi ethernet vpn сеть интернет",
             sections: [
                 { rows: [
-                    { type: "wifi", title: qsTr("Wi‑Fi"), icon: "network-wireless-symbolic",
-                      keywords: "wifi wlan wireless беспроводная" },
+                    { type: "network", title: qsTr("Wi‑Fi"), icon: "network-wireless-symbolic",
+                      keywords: "wifi wlan wireless ethernet vpn adapter беспроводная адаптер пароль" },
                     { type: "kcm", kcm: "kcm_networkmanagement", package: "plasma-nm",
-                      title: qsTr("Connections"), icon: "network-wired-symbolic",
-                      subtitle: qsTr("Wi‑Fi, Ethernet, VPN and mobile networks"),
+                      title: qsTr("Advanced connection settings"), icon: "network-wired-symbolic",
+                      subtitle: qsTr("IP addresses, VPN import, enterprise Wi‑Fi, mobile networks"),
                       keywords: "ethernet vpn wireguard openvpn password пароль подключения" },
                 ] },
                 { title: qsTr("Proxy"), rows: [
@@ -64,8 +64,13 @@ QtObject {
         },
         {
             id: "bluetooth", title: qsTr("Bluetooth"), icon: "bluetooth-active-symbolic",
-            kcm: "kcm_bluetooth", package: "bluedevil",
-            keywords: "bluetooth headphones mouse keyboard наушники блютуз"
+            keywords: "bluetooth headphones mouse keyboard наушники блютуз",
+            sections: [
+                { rows: [
+                    { type: "bluetooth", title: qsTr("Bluetooth"), icon: "bluetooth-active-symbolic",
+                      keywords: "bluetooth pair adapter headphones сопряжение адаптер наушники" },
+                ] },
+            ]
         },
         {
             id: "devices", title: qsTr("Device"), icon: "hypede-device-symbolic",

@@ -2011,6 +2011,14 @@
         <source>HypeDE starts only the services it needs. Optional ones start after you sign in again.</source>
         <translation>HypeDE запускает только нужные службы. Необязательные заработают после повторного входа.</translation>
     </message>
+    <message>
+        <source>Advanced connection settings</source>
+        <translation>Дополнительные настройки подключений</translation>
+    </message>
+    <message>
+        <source>IP addresses, VPN import, enterprise Wi‑Fi, mobile networks</source>
+        <translation>IP-адреса, импорт VPN, корпоративный Wi‑Fi, мобильные сети</translation>
+    </message>
 </context>
 <context>
     <name>ChromeCombo</name>
@@ -3229,6 +3237,227 @@
     <message>
         <source>These displays have no resolution in common</source>
         <translation>У этих мониторов нет общего разрешения</translation>
+    </message>
+</context>
+<context>
+    <name>NetworkBlock</name>
+    <message>
+        <source>Connected</source>
+        <translation>Подключено</translation>
+    </message>
+    <message>
+        <source>Connecting…</source>
+        <translation>Подключение…</translation>
+    </message>
+    <message>
+        <source>Cable unplugged</source>
+        <translation>Кабель не подключён</translation>
+    </message>
+    <message>
+        <source>Unavailable</source>
+        <translation>Недоступно</translation>
+    </message>
+    <message>
+        <source>Not connected</source>
+        <translation>Не подключено</translation>
+    </message>
+    <message>
+        <source>Wi‑Fi</source>
+        <translation>Wi‑Fi</translation>
+    </message>
+    <message>
+        <source>Turned off by a switch on the device</source>
+        <translation>Выключен переключателем на устройстве</translation>
+    </message>
+    <message>
+        <source>On</source>
+        <translation>Вкл.</translation>
+    </message>
+    <message>
+        <source>Off</source>
+        <translation>Выкл.</translation>
+    </message>
+    <message>
+        <source>Adapter</source>
+        <translation>Адаптер</translation>
+    </message>
+    <message>
+        <source>Use this adapter</source>
+        <translation>Использовать этот адаптер</translation>
+    </message>
+    <message>
+        <source>Saved</source>
+        <translation>Сохранена</translation>
+    </message>
+    <message>
+        <source>Forget</source>
+        <translation>Забыть</translation>
+    </message>
+    <message>
+        <source>Disconnect</source>
+        <translation>Отключиться</translation>
+    </message>
+    <message>
+        <source>Connect</source>
+        <translation>Подключиться</translation>
+    </message>
+    <message>
+        <source>Hidden network…</source>
+        <translation>Скрытая сеть…</translation>
+    </message>
+    <message>
+        <source>Network name</source>
+        <translation>Имя сети</translation>
+    </message>
+    <message>
+        <source>Password (if any)</source>
+        <translation>Пароль (если есть)</translation>
+    </message>
+    <message>
+        <source>Ethernet</source>
+        <translation>Ethernet</translation>
+    </message>
+    <message>
+        <source>VPN</source>
+        <translation>VPN</translation>
+    </message>
+    <message>
+        <source>Password</source>
+        <translation>Пароль</translation>
+    </message>
+</context>
+<context>
+    <name>BluetoothBlock</name>
+    <message>
+        <source>Adapter</source>
+        <translation>Адаптер</translation>
+    </message>
+    <message>
+        <source>Bluetooth</source>
+        <translation>Bluetooth</translation>
+    </message>
+    <message>
+        <source>On</source>
+        <translation>Вкл.</translation>
+    </message>
+    <message>
+        <source>Off</source>
+        <translation>Выкл.</translation>
+    </message>
+    <message>
+        <source>Device name</source>
+        <translation>Имя устройства</translation>
+    </message>
+    <message>
+        <source>What other devices see</source>
+        <translation>Так его видят другие устройства</translation>
+    </message>
+    <message>
+        <source>Visible to other devices</source>
+        <translation>Видно другим устройствам</translation>
+    </message>
+    <message>
+        <source>Phones and computers nearby can find this device</source>
+        <translation>Телефоны и компьютеры рядом смогут его найти</translation>
+    </message>
+    <message>
+        <source>Does “%1” show this code?</source>
+        <translation>На «%1» показан этот код?</translation>
+    </message>
+    <message>
+        <source>Type this code on “%1” and press Enter</source>
+        <translation>Наберите этот код на «%1» и нажмите Enter</translation>
+    </message>
+    <message>
+        <source>Enter the PIN for “%1” (often 0000 or 1234)</source>
+        <translation>Введите PIN для «%1» (часто 0000 или 1234)</translation>
+    </message>
+    <message>
+        <source>Enter the code shown on “%1”</source>
+        <translation>Введите код, показанный на «%1»</translation>
+    </message>
+    <message>
+        <source>Allow “%1” to connect?</source>
+        <translation>Разрешить «%1» подключиться?</translation>
+    </message>
+    <message>
+        <source>Cancel</source>
+        <translation>Отмена</translation>
+    </message>
+    <message>
+        <source>Reject</source>
+        <translation>Отклонить</translation>
+    </message>
+    <message>
+        <source>Codes match</source>
+        <translation>Коды совпадают</translation>
+    </message>
+    <message>
+        <source>Allow</source>
+        <translation>Разрешить</translation>
+    </message>
+    <message>
+        <source>Paired devices</source>
+        <translation>Сопряжённые устройства</translation>
+    </message>
+    <message>
+        <source>Available devices</source>
+        <translation>Доступные устройства</translation>
+    </message>
+    <message>
+        <source>searching…</source>
+        <translation>поиск…</translation>
+    </message>
+    <message>
+        <source>Looking for devices… Make sure the device is in pairing mode.</source>
+        <translation>Поиск устройств… Убедитесь, что устройство в режиме сопряжения.</translation>
+    </message>
+    <message>
+        <source>Please wait…</source>
+        <translation>Подождите…</translation>
+    </message>
+    <message>
+        <source>Connected</source>
+        <translation>Подключено</translation>
+    </message>
+    <message>
+        <source>Not connected</source>
+        <translation>Не подключено</translation>
+    </message>
+    <message>
+        <source>Battery %1%</source>
+        <translation>Батарея %1%</translation>
+    </message>
+    <message>
+        <source>Remove</source>
+        <translation>Удалить</translation>
+    </message>
+    <message>
+        <source>Pair</source>
+        <translation>Подключить</translation>
+    </message>
+    <message>
+        <source>Disconnect</source>
+        <translation>Отключить</translation>
+    </message>
+    <message>
+        <source>Connect</source>
+        <translation>Подключить</translation>
+    </message>
+</context>
+<context>
+    <name>Network</name>
+    <message>
+        <source>Wi‑Fi adapter</source>
+        <translation>Адаптер Wi‑Fi</translation>
+    </message>
+    <message>
+        <source>Ethernet adapter</source>
+        <translation>Адаптер Ethernet</translation>
+    </message>
+    <message>
+        <source>Enterprise networks are set up in the advanced connection settings</source>
+        <translation>Корпоративные сети настраиваются в дополнительных настройках подключений</translation>
     </message>
 </context>
 </TS>

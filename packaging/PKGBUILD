@@ -29,8 +29,8 @@ depends=(
 )
 makedepends=('cmake' 'extra-cmake-modules' 'qt6-tools' 'gettext')
 optdepends=(
-  'plasma-nm: страница «Сеть → Подключения» (Wi‑Fi, VPN, Ethernet)'
-  'bluedevil: раздел «Bluetooth»'
+  'bluez: «Bluetooth»'
+  'plasma-nm: «Сеть → Дополнительные настройки подключений» (IP, импорт VPN, корпоративный Wi‑Fi)'
   'plasma-pa: «Устройство → Звук»'
   'print-manager: «Устройство → Принтеры»'
   'plasma-workspace: «Приложения по умолчанию» и «Автозапуск»'

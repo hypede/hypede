@@ -26,6 +26,8 @@ qt_add_executable(hypede-settings
     src/gsettingsobject.cpp src/gsettingsobject.h
     src/system.cpp src/system.h
     src/displays.cpp src/displays.h
+    src/network.cpp src/network.h
+    src/bluetooth.cpp src/bluetooth.h
 )
 
 set_source_files_properties(qml/Theme.qml PROPERTIES QT_QML_SINGLETON_TYPE TRUE)
@@ -60,6 +62,8 @@ qt_add_qml_module(hypede-settings
         qml/AboutHeader.qml
         qml/DisplaysBlock.qml
         qml/DisplayArrangement.qml
+        qml/NetworkBlock.qml
+        qml/BluetoothBlock.qml
         qml/StorageBlock.qml
         qml/AppListBlock.qml
         qml/AutostartBlock.qml
@@ -85,6 +89,8 @@ qt_add_qml_module(hypede-settings
         src/gsettingsobject.h
         src/system.h
         src/displays.h
+        src/network.h
+        src/bluetooth.h
 )
 
 # QML компилируется только в байт-код, без перевода в C++ (AOT): иначе на
