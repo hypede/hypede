@@ -31,7 +31,7 @@ makedepends=('cmake' 'extra-cmake-modules' 'qt6-tools' 'gettext')
 optdepends=(
   'bluez: «Bluetooth»'
   'plasma-nm: «Сеть → Дополнительные настройки подключений» (IP, импорт VPN, корпоративный Wi‑Fi)'
-  'plasma-pa: «Устройство → Звук»'
+  'libpulse: «Устройство → Звук» (pactl, работает и с PipeWire)'
   'print-manager: «Устройство → Принтеры»'
   'plasma-workspace: «Приложения по умолчанию» и «Автозапуск»'
   'plasma-desktop: «Пользователи»'

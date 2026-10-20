@@ -2019,6 +2019,46 @@
         <source>IP addresses, VPN import, enterprise Wi‑Fi, mobile networks</source>
         <translation>IP-адреса, импорт VPN, корпоративный Wi‑Fi, мобильные сети</translation>
     </message>
+    <message>
+        <source>Move windows with key</source>
+        <translation>Перетаскивать окна с клавишей</translation>
+    </message>
+    <message>
+        <source>Hold the key and drag a window from anywhere</source>
+        <translation>Зажмите клавишу и тащите окно за любое место</translation>
+    </message>
+    <message>
+        <source>Super</source>
+        <translation>Super</translation>
+    </message>
+    <message>
+        <source>Alt</source>
+        <translation>Alt</translation>
+    </message>
+    <message>
+        <source>Resize with the right button</source>
+        <translation>Менять размер правой кнопкой</translation>
+    </message>
+    <message>
+        <source>Together with the key above</source>
+        <translation>Вместе с клавишей выше</translation>
+    </message>
+    <message>
+        <source>Attach dialogs to their windows</source>
+        <translation>Прикреплять диалоги к их окнам</translation>
+    </message>
+    <message>
+        <source>Raise windows on click</source>
+        <translation>Поднимать окно по щелчку</translation>
+    </message>
+    <message>
+        <source>Middle-click paste</source>
+        <translation>Вставка средней кнопкой</translation>
+    </message>
+    <message>
+        <source>Paste the selected text with the middle button</source>
+        <translation>Выделенный текст вставляется средней кнопкой мыши</translation>
+    </message>
 </context>
 <context>
     <name>ChromeCombo</name>
@@ -3458,6 +3498,25 @@
     <message>
         <source>Enterprise networks are set up in the advanced connection settings</source>
         <translation>Корпоративные сети настраиваются в дополнительных настройках подключений</translation>
+    </message>
+</context>
+<context>
+    <name>SoundBlock</name>
+    <message>
+        <source>Volume</source>
+        <translation>Громкость</translation>
+    </message>
+    <message>
+        <source>Output</source>
+        <translation>Вывод</translation>
+    </message>
+    <message>
+        <source>Input</source>
+        <translation>Ввод</translation>
+    </message>
+    <message>
+        <source>Apps</source>
+        <translation>Программы</translation>
     </message>
 </context>
 </TS>

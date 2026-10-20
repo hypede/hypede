@@ -37,6 +37,7 @@ Loader {
         case "wifi": return wifiRow
         case "network": return networkBlock
         case "bluetooth": return bluetoothBlock
+        case "sound": return soundBlock
         case "power": return powerRow
         case "ntp": return ntpRow
         case "timezone": return timezoneRow
@@ -409,6 +410,7 @@ Loader {
 
     Component { id: networkBlock; NetworkBlock {} }
     Component { id: bluetoothBlock; BluetoothBlock {} }
+    Component { id: soundBlock; SoundBlock {} }
     Component { id: displaysBlock; DisplaysBlock { showDivider: !loader.first } }
     Component { id: storageBlock; StorageBlock { showDivider: !loader.first } }
     Component { id: appListBlock; AppListBlock { mode: loader.row.mode; title: loader.row.title } }

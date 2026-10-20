@@ -159,6 +159,7 @@ install-data: mo
 	$(INSTALL) -Dm644 data/backgrounds/hypede.xml '$(DESTDIR)$(DATADIR)'/gnome-background-properties/hypede.xml
 	$(INSTALL) -Dm644 data/applications/dev.hypede.Files.desktop '$(DESTDIR)$(DATADIR)'/applications/dev.hypede.Files.desktop
 	$(INSTALL) -Dm644 data/applications/dev.hypede.Settings.desktop '$(DESTDIR)$(DATADIR)'/applications/dev.hypede.Settings.desktop
+	$(INSTALL) -Dm644 data/applications/dev.hypede.Tweaks.desktop '$(DESTDIR)$(DATADIR)'/applications/dev.hypede.Tweaks.desktop
 	cd assets/icons && find hicolor -type f \( -name '*.svg' -o -name '*.png' \) ! -name 'dev.hypede.Launcher*' -exec \
 		$(INSTALL) -Dm644 '{}' '$(DESTDIR)$(DATADIR)/icons/{}' ';'
 	$(INSTALL) -d '$(DESTDIR)$(DATADIR)'/icons/HypeDE/symbolic

@@ -8,7 +8,10 @@ SettingRow {
     property bool resettable: true
     readonly property bool available: settings !== null && settings.valid && settings.hasKey(key)
     readonly property var value: settings && settings.revision >= 0 && available ? settings.value(key) : []
-    readonly property string accel: Array.isArray(value) ? (value[0] || "") : value
+    // Список строк из GSettings приходит не JS-массивом (Array.isArray
+    // для него ложно), поэтому различаем по typeof.
+    readonly property bool isList: typeof value !== "string"
+    readonly property string accel: isList ? (value && value.length ? String(value[0]) : "") : value
     property bool capturing: false
 
     function pretty(a) {
@@ -16,10 +19,10 @@ SettingRow {
             return qsTr("Disabled")
         return a.replace(/<Primary>|<Control>/g, "Ctrl+").replace(/<Super>/g, "Super+").replace(/<Alt>/g, "Alt+")
                 .replace(/<Shift>/g, "Shift+").replace(/\+([a-z])$/, (m, c) => "+" + c.toUpperCase())
-                .replace(/^([a-z])$/, c => c.toUpperCase())
+                .replace(/^([a-z])$/, c => c.toUpperCase()).replace(/_/g, " ")
     }
     function store(a) {
-        settings.setValue(key, Array.isArray(value) ? (a ? [a] : []) : a)
+        settings.setValue(key, isList ? (a ? [a] : []) : a)
         capturing = false
     }
 
