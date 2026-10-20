@@ -95,6 +95,9 @@ QtObject {
                 { title: qsTr("Mouse"), rows: [
                     { type: "slider", schema: mouse, key: "speed", from: -1, to: 1, step: 0.05,
                       title: qsTr("Mouse speed"), icon: "input-mouse-symbolic", keywords: "мышь скорость" },
+                    { type: "toggle", schema: shell, key: "shake-to-find", title: qsTr("Shake to find the pointer"),
+                      subtitle: qsTr("Move the mouse quickly back and forth and the pointer grows for a moment"),
+                      keywords: "shake find cursor pointer встряхнуть найти курсор" },
                     { type: "toggle", schema: iface, key: "gtk-enable-primary-paste", title: qsTr("Middle-click paste"),
                       subtitle: qsTr("Paste the selected text with the middle button"),
                       keywords: "middle click paste primary selection средняя кнопка вставка" },
@@ -626,6 +629,9 @@ QtObject {
                     { type: "kcm", kcm: "kcm_sddm", package: "sddm-kcm", title: qsTr("Login screen (SDDM)"),
                       subtitle: qsTr("Theme and background of the login screen"), icon: "system-users-symbolic" } ] },
                 { title: qsTr("Hardware and updates"), rows: [
+                    { type: "toggle", schema: shell, key: "update-check", title: qsTr("Tell me about updates"),
+                      subtitle: qsTr("Checks for system updates every few hours and offers to install them"),
+                      icon: "software-update-available-symbolic", keywords: "updates check pacman обновления проверять" },
                     { type: "kcm", kcm: "kcm_updates", package: "discover", title: qsTr("Software updates"),
                       icon: "software-update-available-symbolic", keywords: "updates обновления" },
                     { type: "kcm", kcm: "kcm_gamecontroller", package: "plasma-desktop", title: qsTr("Game controllers"),

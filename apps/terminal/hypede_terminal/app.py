@@ -483,8 +483,11 @@ def center(widget: Gtk.Widget, window: Gtk.Widget) -> Graphene.Point | None:
 
 
 class Application(Adw.Application):
-    def __init__(self):
-        super().__init__(application_id=APP_ID, flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE)
+    def __init__(self, dropdown: bool = False):
+        # Выпадающий терминал (F12 в HypeDE) — отдельное приложение со своим
+        # app_id: по нему оболочка узнаёт окно и выдвигает его сверху.
+        super().__init__(application_id=APP_ID + (".Dropdown" if dropdown else ""),
+                         flags=Gio.ApplicationFlags.HANDLES_COMMAND_LINE)
         self.settings: Gio.Settings | None = None
         self.style: Adw.StyleManager | None = None
         self.add_main_option("working-directory", ord("w"), GLib.OptionFlags.NONE, GLib.OptionArg.FILENAME,
@@ -663,4 +666,6 @@ class Application(Adw.Application):
 
 def main() -> int:
     _setup_i18n()
-    return Application().run(sys.argv)
+    dropdown = "--dropdown" in sys.argv
+    argv = [a for a in sys.argv if a != "--dropdown"]
+    return Application(dropdown).run(argv)

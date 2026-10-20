@@ -26,6 +26,7 @@ depends=(
   'libsecret' 'libsoup3'
   'vte4'  # «Терминал»
   'python-cairo'  # анимации тура «Добро пожаловать»
+  'pacman-contrib'  # checkupdates: уведомление об обновлениях
   # «Настройки»
   'qt6-base' 'qt6-declarative' 'qt6-svg' 'kcmutils' 'kcolorscheme' 'kconfig' 'kcoreaddons'
   'kirigami' 'qqc2-desktop-style' 'breeze' 'breeze-icons'

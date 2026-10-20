@@ -6,22 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"#-#-#-#-#  files.pot (PACKAGE VERSION)  #-#-#-#-#\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-20 15:15+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"#-#-#-#-#  shell.pot (PACKAGE VERSION)  #-#-#-#-#\n"
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-20 15:07+0000\n"
+"POT-Creation-Date: 2026-10-20 15:17+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -1222,7 +1209,7 @@ msgstr ""
 #: apps/terminal/hypede_terminal/app.py:148
 #: apps/terminal/hypede_terminal/app.py:246
 #: apps/terminal/hypede_terminal/app.py:369
-#: apps/terminal/hypede_terminal/app.py:657
+#: apps/terminal/hypede_terminal/app.py:660
 msgid "Terminal"
 msgstr ""
 
@@ -1253,7 +1240,7 @@ msgid "Find…"
 msgstr ""
 
 #: apps/terminal/hypede_terminal/app.py:173
-#: apps/terminal/hypede_terminal/app.py:601
+#: apps/terminal/hypede_terminal/app.py:604
 msgid "Preferences"
 msgstr ""
 
@@ -1329,64 +1316,64 @@ msgstr ""
 msgid "Ctrl+click"
 msgstr ""
 
-#: apps/terminal/hypede_terminal/app.py:602
-#: apps/terminal/hypede_terminal/app.py:603
+#: apps/terminal/hypede_terminal/app.py:605
+#: apps/terminal/hypede_terminal/app.py:606
 msgid "Appearance"
 msgstr ""
 
-#: apps/terminal/hypede_terminal/app.py:606
+#: apps/terminal/hypede_terminal/app.py:609
 msgid "Color scheme"
 msgstr ""
 
-#: apps/terminal/hypede_terminal/app.py:612
+#: apps/terminal/hypede_terminal/app.py:615
 msgid "Font"
 msgstr ""
 
-#: apps/terminal/hypede_terminal/app.py:619
+#: apps/terminal/hypede_terminal/app.py:622
 msgid "System font"
 msgstr ""
 
-#: apps/terminal/hypede_terminal/app.py:626
+#: apps/terminal/hypede_terminal/app.py:629
 msgid "Background opacity"
 msgstr ""
 
-#: apps/terminal/hypede_terminal/app.py:627
+#: apps/terminal/hypede_terminal/app.py:630
 msgid "Below 100% the desktop shows through"
 msgstr ""
 
-#: apps/terminal/hypede_terminal/app.py:633
+#: apps/terminal/hypede_terminal/app.py:636
 msgid "Cursor"
 msgstr ""
 
-#: apps/terminal/hypede_terminal/app.py:633
+#: apps/terminal/hypede_terminal/app.py:636
 msgid "Block"
 msgstr ""
 
-#: apps/terminal/hypede_terminal/app.py:633
+#: apps/terminal/hypede_terminal/app.py:636
 msgid "I-beam"
 msgstr ""
 
-#: apps/terminal/hypede_terminal/app.py:633
+#: apps/terminal/hypede_terminal/app.py:636
 msgid "Underline"
 msgstr ""
 
-#: apps/terminal/hypede_terminal/app.py:638
+#: apps/terminal/hypede_terminal/app.py:641
 msgid "Blinking cursor"
 msgstr ""
 
-#: apps/terminal/hypede_terminal/app.py:643
+#: apps/terminal/hypede_terminal/app.py:646
 msgid "Behavior"
 msgstr ""
 
-#: apps/terminal/hypede_terminal/app.py:644
+#: apps/terminal/hypede_terminal/app.py:647
 msgid "Unlimited scrollback"
 msgstr ""
 
-#: apps/terminal/hypede_terminal/app.py:649
+#: apps/terminal/hypede_terminal/app.py:652
 msgid "Terminal bell sound"
 msgstr ""
 
-#: apps/terminal/hypede_terminal/app.py:659
+#: apps/terminal/hypede_terminal/app.py:662
 msgid ""
 "Tabs like Konsole, panes like kitty, a see-through background like Alacritty "
 "and a quick start like foot."
@@ -1859,6 +1846,34 @@ msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/greeting.js:178
 msgid "Press any key to continue"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/hype.js:65
+#: shell/extension/hypede-shell@hypede.dev/hype.js:255
+msgid "Could not open the terminal"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/hype.js:244
+msgid "Updates are available"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/hype.js:245
+#, javascript-format
+msgid "%d package can be updated"
+msgid_plural "%d packages can be updated"
+msgstr[0] ""
+msgstr[1] ""
+
+#: shell/extension/hypede-shell@hypede.dev/hype.js:249
+msgid "Update"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/hype.js:252
+msgid "Press Enter to close"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/hype.js:258
+msgid "Later"
 msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/launcher.js:57

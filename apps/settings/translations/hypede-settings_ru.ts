@@ -2067,6 +2067,22 @@
         <source>Paste the selected text with the middle button</source>
         <translation>Выделенный текст вставляется средней кнопкой мыши</translation>
     </message>
+    <message>
+        <source>Shake to find the pointer</source>
+        <translation>Встряхнуть, чтобы найти курсор</translation>
+    </message>
+    <message>
+        <source>Move the mouse quickly back and forth and the pointer grows for a moment</source>
+        <translation>Быстро поводите мышью туда-сюда — курсор на миг станет большим</translation>
+    </message>
+    <message>
+        <source>Tell me about updates</source>
+        <translation>Сообщать об обновлениях</translation>
+    </message>
+    <message>
+        <source>Checks for system updates every few hours and offers to install them</source>
+        <translation>Раз в несколько часов проверяет обновления системы и предлагает их поставить</translation>
+    </message>
 </context>
 <context>
     <name>ChromeCombo</name>
@@ -2900,6 +2916,30 @@
         <location filename="../qml/ShortcutsBlock.qml" line="108" />
         <source>Add</source>
         <translation>Добавить</translation>
+    </message>
+    <message>
+        <source>Overview</source>
+        <translation>Обзор</translation>
+    </message>
+    <message>
+        <source>Clipboard history</source>
+        <translation>История буфера обмена</translation>
+    </message>
+    <message>
+        <source>Drop-down terminal</source>
+        <translation>Выпадающий терминал</translation>
+    </message>
+    <message>
+        <source>Floating window</source>
+        <translation>Плавающее окно</translation>
+    </message>
+    <message>
+        <source>Reopen closed window</source>
+        <translation>Вернуть закрытое окно</translation>
+    </message>
+    <message>
+        <source>Ask AI about selected text</source>
+        <translation>Спросить ИИ о выделенном</translation>
     </message>
 </context>
 <context>

@@ -146,6 +146,18 @@
       <default>['&lt;Super&gt;a']</default>
       <summary>Спросить ИИ о выделенном тексте</summary>
     </key>
+    <key name="dropdown-terminal" type="as">
+      <default>['F12']</default>
+      <summary>Выпадающий терминал (как Yakuake и Guake)</summary>
+    </key>
+    <key name="shake-to-find" type="b">
+      <default>true</default>
+      <summary>Встряхнуть мышь — курсор на миг становится большим</summary>
+    </key>
+    <key name="update-check" type="b">
+      <default>true</default>
+      <summary>Проверять обновления системы и сообщать о них</summary>
+    </key>
     <key name="session-restore" type="s">
       <choices>
         <choice value="ask"/>

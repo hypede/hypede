@@ -1208,7 +1208,7 @@ msgstr "Прогноз: Open-Meteo.com"
 #: apps/terminal/hypede_terminal/app.py:148
 #: apps/terminal/hypede_terminal/app.py:246
 #: apps/terminal/hypede_terminal/app.py:369
-#: apps/terminal/hypede_terminal/app.py:657
+#: apps/terminal/hypede_terminal/app.py:660
 msgid "Terminal"
 msgstr "Терминал"
 
@@ -1239,7 +1239,7 @@ msgid "Find…"
 msgstr "Найти…"
 
 #: apps/terminal/hypede_terminal/app.py:173
-#: apps/terminal/hypede_terminal/app.py:601
+#: apps/terminal/hypede_terminal/app.py:604
 msgid "Preferences"
 msgstr "Параметры"
 
@@ -1315,64 +1315,64 @@ msgstr "Открыть ссылку"
 msgid "Ctrl+click"
 msgstr "Ctrl+щелчок"
 
-#: apps/terminal/hypede_terminal/app.py:602
-#: apps/terminal/hypede_terminal/app.py:603
+#: apps/terminal/hypede_terminal/app.py:605
+#: apps/terminal/hypede_terminal/app.py:606
 msgid "Appearance"
 msgstr "Внешний вид"
 
-#: apps/terminal/hypede_terminal/app.py:606
+#: apps/terminal/hypede_terminal/app.py:609
 msgid "Color scheme"
 msgstr "Цветовая схема"
 
-#: apps/terminal/hypede_terminal/app.py:612
+#: apps/terminal/hypede_terminal/app.py:615
 msgid "Font"
 msgstr "Шрифт"
 
-#: apps/terminal/hypede_terminal/app.py:619
+#: apps/terminal/hypede_terminal/app.py:622
 msgid "System font"
 msgstr "Шрифт системы"
 
-#: apps/terminal/hypede_terminal/app.py:626
+#: apps/terminal/hypede_terminal/app.py:629
 msgid "Background opacity"
 msgstr "Непрозрачность фона"
 
-#: apps/terminal/hypede_terminal/app.py:627
+#: apps/terminal/hypede_terminal/app.py:630
 msgid "Below 100% the desktop shows through"
 msgstr "Меньше 100% — сквозь окно видно рабочий стол"
 
-#: apps/terminal/hypede_terminal/app.py:633
+#: apps/terminal/hypede_terminal/app.py:636
 msgid "Cursor"
 msgstr "Курсор"
 
-#: apps/terminal/hypede_terminal/app.py:633
+#: apps/terminal/hypede_terminal/app.py:636
 msgid "Block"
 msgstr "Блок"
 
-#: apps/terminal/hypede_terminal/app.py:633
+#: apps/terminal/hypede_terminal/app.py:636
 msgid "I-beam"
 msgstr "Черта"
 
-#: apps/terminal/hypede_terminal/app.py:633
+#: apps/terminal/hypede_terminal/app.py:636
 msgid "Underline"
 msgstr "Подчёркивание"
 
-#: apps/terminal/hypede_terminal/app.py:638
+#: apps/terminal/hypede_terminal/app.py:641
 msgid "Blinking cursor"
 msgstr "Мигающий курсор"
 
-#: apps/terminal/hypede_terminal/app.py:643
+#: apps/terminal/hypede_terminal/app.py:646
 msgid "Behavior"
 msgstr "Поведение"
 
-#: apps/terminal/hypede_terminal/app.py:644
+#: apps/terminal/hypede_terminal/app.py:647
 msgid "Unlimited scrollback"
 msgstr "Неограниченная прокрутка"
 
-#: apps/terminal/hypede_terminal/app.py:649
+#: apps/terminal/hypede_terminal/app.py:652
 msgid "Terminal bell sound"
 msgstr "Звук «звонка»"
 
-#: apps/terminal/hypede_terminal/app.py:659
+#: apps/terminal/hypede_terminal/app.py:662
 msgid "Tabs like Konsole, panes like kitty, a see-through background like Alacritty and a quick start like foot."
 msgstr "Вкладки как в Konsole, панели как в kitty, прозрачный фон как в Alacritty и быстрый запуск как у foot."
 
@@ -1826,6 +1826,35 @@ msgstr "%A, %-d %B"
 #: shell/extension/hypede-shell@hypede.dev/greeting.js:178
 msgid "Press any key to continue"
 msgstr "Нажмите любую клавишу, чтобы продолжить"
+
+#: shell/extension/hypede-shell@hypede.dev/hype.js:65
+#: shell/extension/hypede-shell@hypede.dev/hype.js:255
+msgid "Could not open the terminal"
+msgstr "Не удалось открыть терминал"
+
+#: shell/extension/hypede-shell@hypede.dev/hype.js:244
+msgid "Updates are available"
+msgstr "Доступны обновления"
+
+#: shell/extension/hypede-shell@hypede.dev/hype.js:245
+#, javascript-format
+msgid "%d package can be updated"
+msgid_plural "%d packages can be updated"
+msgstr[0] "Можно обновить %d пакет"
+msgstr[1] "Можно обновить %d пакета"
+msgstr[2] "Можно обновить %d пакетов"
+
+#: shell/extension/hypede-shell@hypede.dev/hype.js:249
+msgid "Update"
+msgstr "Обновить"
+
+#: shell/extension/hypede-shell@hypede.dev/hype.js:252
+msgid "Press Enter to close"
+msgstr "Нажмите Enter, чтобы закрыть"
+
+#: shell/extension/hypede-shell@hypede.dev/hype.js:258
+msgid "Later"
+msgstr "Позже"
 
 #: shell/extension/hypede-shell@hypede.dev/launcher.js:57
 msgid "Network"
