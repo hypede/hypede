@@ -1828,15 +1828,15 @@ msgid "Press any key to continue"
 msgstr "Нажмите любую клавишу, чтобы продолжить"
 
 #: shell/extension/hypede-shell@hypede.dev/hype.js:65
-#: shell/extension/hypede-shell@hypede.dev/hype.js:255
+#: shell/extension/hypede-shell@hypede.dev/hype.js:262
 msgid "Could not open the terminal"
 msgstr "Не удалось открыть терминал"
 
-#: shell/extension/hypede-shell@hypede.dev/hype.js:244
+#: shell/extension/hypede-shell@hypede.dev/hype.js:251
 msgid "Updates are available"
 msgstr "Доступны обновления"
 
-#: shell/extension/hypede-shell@hypede.dev/hype.js:245
+#: shell/extension/hypede-shell@hypede.dev/hype.js:252
 #, javascript-format
 msgid "%d package can be updated"
 msgid_plural "%d packages can be updated"
@@ -1844,15 +1844,15 @@ msgstr[0] "Можно обновить %d пакет"
 msgstr[1] "Можно обновить %d пакета"
 msgstr[2] "Можно обновить %d пакетов"
 
-#: shell/extension/hypede-shell@hypede.dev/hype.js:249
+#: shell/extension/hypede-shell@hypede.dev/hype.js:256
 msgid "Update"
 msgstr "Обновить"
 
-#: shell/extension/hypede-shell@hypede.dev/hype.js:252
+#: shell/extension/hypede-shell@hypede.dev/hype.js:259
 msgid "Press Enter to close"
 msgstr "Нажмите Enter, чтобы закрыть"
 
-#: shell/extension/hypede-shell@hypede.dev/hype.js:258
+#: shell/extension/hypede-shell@hypede.dev/hype.js:265
 msgid "Later"
 msgstr "Позже"
 
@@ -2099,6 +2099,14 @@ msgstr "Режим планшета"
 #: shell/extension/hypede-shell@hypede.dev/tablet.js:97
 msgid "Laptop mode"
 msgstr "Режим ноутбука"
+
+#: shell/extension/hypede-shell@hypede.dev/tiling.js:94
+msgid "Auto-tiling off"
+msgstr "Авто-тайлинг выключен"
+
+#: shell/extension/hypede-shell@hypede.dev/tiling.js:97
+msgid "Auto-tiling on"
+msgstr "Авто-тайлинг включён"
 
 #: shell/extension/hypede-shell@hypede.dev/widgets.js:57
 msgid "Clock"

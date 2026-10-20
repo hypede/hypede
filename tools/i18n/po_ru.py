@@ -490,4 +490,6 @@ RU.update({
     "Update": "Обновить",
     "Press Enter to close": "Нажмите Enter, чтобы закрыть",
     "Later": "Позже",
+    "Auto-tiling off": "Авто-тайлинг выключен",
+    "Auto-tiling on": "Авто-тайлинг включён",
 })

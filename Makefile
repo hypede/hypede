@@ -107,7 +107,7 @@ check:
 	node shell/tests/calculator.test.mjs
 	d=$$(mktemp -d) && cp data/schemas/* shell/island/$(ISLAND)/schemas/*.xml $$d/ && \
 		glib-compile-schemas --strict --dry-run $$d; r=$$?; rm -rf $$d; exit $$r
-	sh -n session/hypede-session.in && sh -n session/hypede-session-cleanup.in && sh -n session/hypede-autostart-filter && sh -n session/hypede-admin
+	sh -n session/hypede-session.in && sh -n session/hypede-session-cleanup.in && sh -n session/hypede-autostart-filter && sh -n session/hypede-admin && sh -n session/hypede-android
 	msgfmt --check -o /dev/null po/ru.po
 
 # ---------- установка ----------
@@ -142,6 +142,7 @@ install-session: auth
 	$(INSTALL) -Dm755 '$(BUILD)/session/hypede-session' '$(DESTDIR)$(LIBEXECDIR)'/hypede-session
 	$(INSTALL) -Dm755 '$(BUILD)/session/hypede-session-cleanup' '$(DESTDIR)$(LIBEXECDIR)'/hypede-session-cleanup
 	$(INSTALL) -Dm755 session/hypede-autostart-filter '$(DESTDIR)$(LIBEXECDIR)'/hypede-autostart-filter
+	$(INSTALL) -Dm755 session/hypede-android '$(DESTDIR)$(BINDIR)'/hypede-android
 	$(INSTALL) -Dm755 '$(BUILD)/hypede-auth' '$(DESTDIR)$(LIBEXECDIR)'/hypede-auth
 	$(INSTALL) -Dm755 session/hypede-admin '$(DESTDIR)$(LIBEXECDIR)'/hypede-admin
 	$(INSTALL) -Dm644 session/dev.hypede.admin.policy '$(DESTDIR)$(DATADIR)'/polkit-1/actions/dev.hypede.admin.policy

@@ -146,6 +146,14 @@
       <default>['&lt;Super&gt;a']</default>
       <summary>Спросить ИИ о выделенном тексте</summary>
     </key>
+    <key name="toggle-tiling" type="as">
+      <default>['&lt;Super&gt;t']</default>
+      <summary>Включить или выключить авто-тайлинг на текущем столе</summary>
+    </key>
+    <key name="auto-tile" type="b">
+      <default>false</default>
+      <summary>Авто-тайлинг на всех столах по умолчанию</summary>
+    </key>
     <key name="dropdown-terminal" type="as">
       <default>['F12']</default>
       <summary>Выпадающий терминал (как Yakuake и Guake)</summary>

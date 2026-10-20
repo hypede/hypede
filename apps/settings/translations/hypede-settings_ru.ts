@@ -2083,6 +2083,22 @@
         <source>Checks for system updates every few hours and offers to install them</source>
         <translation>Раз в несколько часов проверяет обновления системы и предлагает их поставить</translation>
     </message>
+    <message>
+        <source>Auto-tiling</source>
+        <translation>Авто-тайлинг</translation>
+    </message>
+    <message>
+        <source>Windows share the screen by themselves, like in COSMIC and Hyprland. Super+T turns it on or off for one desk</source>
+        <translation>Окна сами делят экран, как в COSMIC и Hyprland. Super+T включает и выключает его для одного стола</translation>
+    </message>
+    <message>
+        <source>Android apps</source>
+        <translation>Android-приложения</translation>
+    </message>
+    <message>
+        <source>Run Android apps next to Linux ones (Waydroid). Set up once — the apps appear in the launcher</source>
+        <translation>Android-приложения рядом с обычными (Waydroid). Настройте один раз — приложения появятся в лаунчере</translation>
+    </message>
 </context>
 <context>
     <name>ChromeCombo</name>
@@ -2940,6 +2956,10 @@
     <message>
         <source>Ask AI about selected text</source>
         <translation>Спросить ИИ о выделенном</translation>
+    </message>
+    <message>
+        <source>Auto-tiling on this desk</source>
+        <translation>Авто-тайлинг на этом столе</translation>
     </message>
 </context>
 <context>

@@ -34,6 +34,7 @@ import {Extras} from './extras.js';
 import {HypeFeatures} from './hype.js';
 import {FocusModes} from './modes.js';
 import {SessionKeeper} from './session.js';
+import {AutoTiling} from './tiling.js';
 import {ChromeQuickSettings} from './quicksettings.js';
 import {MenuBlur} from './menublur.js';
 import {TabletMode} from './tablet.js';
@@ -78,6 +79,7 @@ export default class HypeDEShellExtension extends Extension {
         this._extras = new Extras(this._settings);
         this._edge = new EdgePanel(this._settings, this._extras);
         this._hype = new HypeFeatures(this._settings);
+        this._tiling = new AutoTiling(this._settings);
         this._modes = new FocusModes(this._settings);
         this._session = new SessionKeeper(this._settings);
         this._quickSettings = new ChromeQuickSettings();
@@ -91,7 +93,7 @@ export default class HypeDEShellExtension extends Extension {
     disable() {
         // Порядок обратный: полка держит кнопку лаунчера, поэтому уходит
         // раньше самого лаунчера.
-        for (const part of ['_greeting', '_lock', '_tablet', '_menuBlur', '_quickSettings', '_session', '_modes', '_hype', '_edge', '_extras', '_widgets', '_desktop', '_live', '_corners', '_windows', '_notifications', '_gestures', '_overview',
+        for (const part of ['_greeting', '_lock', '_tablet', '_menuBlur', '_quickSettings', '_session', '_modes', '_tiling', '_hype', '_edge', '_extras', '_widgets', '_desktop', '_live', '_corners', '_windows', '_notifications', '_gestures', '_overview',
             '_island', '_shelf', '_launcher', '_assistant', '_style', '_appTheme', '_decoration', '_guard']) {
             this[part]?.destroy();
             this[part] = null;
