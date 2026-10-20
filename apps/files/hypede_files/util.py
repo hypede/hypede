@@ -78,6 +78,7 @@ def validate_filename(name: str) -> str | None:
 
 
 _TERMINALS = (
+    ("hypede-terminal", ["--working-directory"]),
     ("xdg-terminal-exec", []),
     ("ptyxis", ["--new-window", "--working-directory"]),
     ("kgx", ["--working-directory"]),

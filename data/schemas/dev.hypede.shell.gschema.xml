@@ -572,4 +572,43 @@
       <summary>Градусы Цельсия или Фаренгейта</summary>
     </key>
   </schema>
+  <!-- ================================================================ -->
+  <!-- «Терминал»                                                         -->
+  <!-- ================================================================ -->
+  <schema id="dev.hypede.terminal" path="/dev/hypede/terminal/">
+    <key name="scheme" type="s">
+      <default>'hypede'</default>
+      <summary>Цветовая схема</summary>
+    </key>
+    <key name="font" type="s">
+      <default>''</default>
+      <summary>Шрифт; пусто — моноширинный шрифт системы</summary>
+    </key>
+    <key name="zoom" type="i">
+      <default>0</default>
+      <summary>На сколько пунктов крупнее или мельче шрифт (Ctrl+= и Ctrl+-)</summary>
+    </key>
+    <key name="opacity" type="d">
+      <range min="0.3" max="1"/>
+      <default>1</default>
+      <summary>Непрозрачность фона</summary>
+    </key>
+    <key name="cursor-shape" type="s">
+      <choices><choice value="block"/><choice value="ibeam"/><choice value="underline"/></choices>
+      <default>'block'</default>
+      <summary>Форма курсора</summary>
+    </key>
+    <key name="cursor-blink" type="b">
+      <default>true</default>
+      <summary>Мигающий курсор</summary>
+    </key>
+    <key name="scrollback" type="i">
+      <default>10000</default>
+      <summary>Строк прокрутки; -1 — без ограничения</summary>
+    </key>
+    <key name="bell" type="b">
+      <default>false</default>
+      <summary>Звук «звонка» терминала</summary>
+    </key>
+  </schema>
 </schemalist>

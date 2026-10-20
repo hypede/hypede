@@ -6,9 +6,22 @@
 #, fuzzy
 msgid ""
 msgstr ""
+"#-#-#-#-#  files.pot (PACKAGE VERSION)  #-#-#-#-#\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-20 14:54+0000\n"
+"POT-Creation-Date: 2026-10-20 15:02+0000\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
+"#-#-#-#-#  shell.pot (PACKAGE VERSION)  #-#-#-#-#\n"
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2026-10-20 14:56+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -482,6 +495,8 @@ msgstr ""
 #: apps/files/hypede_files/window.py:552 apps/files/hypede_files/window.py:1023
 #: apps/desktop/hypede_desktop/view.py:562
 #: apps/passwords/hypede_passwords/app.py:117
+#: apps/terminal/hypede_terminal/app.py:439
+#: apps/terminal/hypede_terminal/app.py:462
 msgid "Copy"
 msgstr ""
 
@@ -517,6 +532,8 @@ msgstr ""
 
 #: apps/files/hypede_files/window.py:576 apps/files/hypede_files/window.py:1023
 #: apps/desktop/hypede_desktop/view.py:583
+#: apps/terminal/hypede_terminal/app.py:440
+#: apps/terminal/hypede_terminal/app.py:462
 msgid "Paste"
 msgstr ""
 
@@ -1199,6 +1216,205 @@ msgstr ""
 
 #: apps/weather/hypede_weather/app.py:381
 msgid "Forecast: Open-Meteo.com"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:148
+#: apps/terminal/hypede_terminal/app.py:246
+#: apps/terminal/hypede_terminal/app.py:369
+#: apps/terminal/hypede_terminal/app.py:657
+msgid "Terminal"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:162
+msgid "New tab (Ctrl+Shift+T)"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:167
+#: apps/terminal/hypede_terminal/app.py:458
+msgid "New window"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:168
+#: apps/terminal/hypede_terminal/app.py:444
+#: apps/terminal/hypede_terminal/app.py:459
+msgid "Split side by side"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:169
+#: apps/terminal/hypede_terminal/app.py:445
+#: apps/terminal/hypede_terminal/app.py:460
+msgid "Split top and bottom"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:172
+#: apps/terminal/hypede_terminal/app.py:462
+msgid "Find…"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:173
+#: apps/terminal/hypede_terminal/app.py:601
+msgid "Preferences"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:174
+#: apps/terminal/hypede_terminal/app.py:465
+msgid "Keyboard shortcuts"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:175
+msgid "About Terminal"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:178
+#: apps/terminal/hypede_terminal/app.py:461
+msgid "All tabs"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:183
+msgid "Find in terminal"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:187
+msgid "Previous"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:189
+msgid "Next"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:435
+msgid "Open link"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:436
+msgid "Copy link"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:441
+msgid "Select all"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:446
+msgid "Close pane"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:458
+msgid "New tab"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:459
+msgid "Close pane or tab"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:460
+msgid "Move between panes"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:461
+msgid "Next or previous tab"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:463
+msgid "Larger or smaller text"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:463
+msgid "Open a link"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:463
+msgid "Ctrl+click"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:602
+#: apps/terminal/hypede_terminal/app.py:603
+msgid "Appearance"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:606
+msgid "Color scheme"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:612
+msgid "Font"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:619
+msgid "System font"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:626
+msgid "Background opacity"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:627
+msgid "Below 100% the desktop shows through"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:633
+msgid "Cursor"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:633
+msgid "Block"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:633
+msgid "I-beam"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:633
+msgid "Underline"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:638
+msgid "Blinking cursor"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:643
+msgid "Behavior"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:644
+msgid "Unlimited scrollback"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:649
+msgid "Terminal bell sound"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/app.py:659
+msgid ""
+"Tabs like Konsole, panes like kitty, a see-through background like Alacritty "
+"and a quick start like foot."
+msgstr ""
+
+#: apps/terminal/hypede_terminal/schemes.py:22
+msgid "HypeDE (follows the system)"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/schemes.py:31
+msgid "Catppuccin Mocha"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/schemes.py:37
+msgid "Tokyo Night"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/schemes.py:43
+msgid "Nord"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/schemes.py:49
+msgid "Gruvbox"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/schemes.py:55
+msgid "Dracula"
+msgstr ""
+
+#: apps/terminal/hypede_terminal/schemes.py:61
+msgid "Solarized"
 msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/actions.js:49

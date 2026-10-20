@@ -481,6 +481,8 @@ msgstr "Вырезать"
 #: apps/files/hypede_files/window.py:552 apps/files/hypede_files/window.py:1023
 #: apps/desktop/hypede_desktop/view.py:562
 #: apps/passwords/hypede_passwords/app.py:117
+#: apps/terminal/hypede_terminal/app.py:439
+#: apps/terminal/hypede_terminal/app.py:462
 msgid "Copy"
 msgstr "Копировать"
 
@@ -516,6 +518,8 @@ msgstr "Новая папка…"
 
 #: apps/files/hypede_files/window.py:576 apps/files/hypede_files/window.py:1023
 #: apps/desktop/hypede_desktop/view.py:583
+#: apps/terminal/hypede_terminal/app.py:440
+#: apps/terminal/hypede_terminal/app.py:462
 msgid "Paste"
 msgstr "Вставить"
 
@@ -1199,6 +1203,203 @@ msgstr "Сегодня"
 #: apps/weather/hypede_weather/app.py:381
 msgid "Forecast: Open-Meteo.com"
 msgstr "Прогноз: Open-Meteo.com"
+
+#: apps/terminal/hypede_terminal/app.py:148
+#: apps/terminal/hypede_terminal/app.py:246
+#: apps/terminal/hypede_terminal/app.py:369
+#: apps/terminal/hypede_terminal/app.py:657
+msgid "Terminal"
+msgstr "Терминал"
+
+#: apps/terminal/hypede_terminal/app.py:162
+msgid "New tab (Ctrl+Shift+T)"
+msgstr "Новая вкладка (Ctrl+Shift+T)"
+
+#: apps/terminal/hypede_terminal/app.py:167
+#: apps/terminal/hypede_terminal/app.py:458
+msgid "New window"
+msgstr "Новое окно"
+
+#: apps/terminal/hypede_terminal/app.py:168
+#: apps/terminal/hypede_terminal/app.py:444
+#: apps/terminal/hypede_terminal/app.py:459
+msgid "Split side by side"
+msgstr "Разделить по вертикали"
+
+#: apps/terminal/hypede_terminal/app.py:169
+#: apps/terminal/hypede_terminal/app.py:445
+#: apps/terminal/hypede_terminal/app.py:460
+msgid "Split top and bottom"
+msgstr "Разделить по горизонтали"
+
+#: apps/terminal/hypede_terminal/app.py:172
+#: apps/terminal/hypede_terminal/app.py:462
+msgid "Find…"
+msgstr "Найти…"
+
+#: apps/terminal/hypede_terminal/app.py:173
+#: apps/terminal/hypede_terminal/app.py:601
+msgid "Preferences"
+msgstr "Параметры"
+
+#: apps/terminal/hypede_terminal/app.py:174
+#: apps/terminal/hypede_terminal/app.py:465
+msgid "Keyboard shortcuts"
+msgstr "Сочетания клавиш"
+
+#: apps/terminal/hypede_terminal/app.py:175
+msgid "About Terminal"
+msgstr "О «Терминале»"
+
+#: apps/terminal/hypede_terminal/app.py:178
+#: apps/terminal/hypede_terminal/app.py:461
+msgid "All tabs"
+msgstr "Все вкладки"
+
+#: apps/terminal/hypede_terminal/app.py:183
+msgid "Find in terminal"
+msgstr "Найти в терминале"
+
+#: apps/terminal/hypede_terminal/app.py:187
+msgid "Previous"
+msgstr "Назад"
+
+#: apps/terminal/hypede_terminal/app.py:189
+msgid "Next"
+msgstr "Далее"
+
+#: apps/terminal/hypede_terminal/app.py:435
+msgid "Open link"
+msgstr "Открыть ссылку"
+
+#: apps/terminal/hypede_terminal/app.py:436
+msgid "Copy link"
+msgstr "Копировать ссылку"
+
+#: apps/terminal/hypede_terminal/app.py:441
+msgid "Select all"
+msgstr "Выделить всё"
+
+#: apps/terminal/hypede_terminal/app.py:446
+msgid "Close pane"
+msgstr "Закрыть панель"
+
+#: apps/terminal/hypede_terminal/app.py:458
+msgid "New tab"
+msgstr "Новая вкладка"
+
+#: apps/terminal/hypede_terminal/app.py:459
+msgid "Close pane or tab"
+msgstr "Закрыть панель или вкладку"
+
+#: apps/terminal/hypede_terminal/app.py:460
+msgid "Move between panes"
+msgstr "Перейти в соседнюю панель"
+
+#: apps/terminal/hypede_terminal/app.py:461
+msgid "Next or previous tab"
+msgstr "Следующая или предыдущая вкладка"
+
+#: apps/terminal/hypede_terminal/app.py:463
+msgid "Larger or smaller text"
+msgstr "Крупнее или мельче текст"
+
+#: apps/terminal/hypede_terminal/app.py:463
+msgid "Open a link"
+msgstr "Открыть ссылку"
+
+#: apps/terminal/hypede_terminal/app.py:463
+msgid "Ctrl+click"
+msgstr "Ctrl+щелчок"
+
+#: apps/terminal/hypede_terminal/app.py:602
+#: apps/terminal/hypede_terminal/app.py:603
+msgid "Appearance"
+msgstr "Внешний вид"
+
+#: apps/terminal/hypede_terminal/app.py:606
+msgid "Color scheme"
+msgstr "Цветовая схема"
+
+#: apps/terminal/hypede_terminal/app.py:612
+msgid "Font"
+msgstr "Шрифт"
+
+#: apps/terminal/hypede_terminal/app.py:619
+msgid "System font"
+msgstr "Шрифт системы"
+
+#: apps/terminal/hypede_terminal/app.py:626
+msgid "Background opacity"
+msgstr "Непрозрачность фона"
+
+#: apps/terminal/hypede_terminal/app.py:627
+msgid "Below 100% the desktop shows through"
+msgstr "Меньше 100% — сквозь окно видно рабочий стол"
+
+#: apps/terminal/hypede_terminal/app.py:633
+msgid "Cursor"
+msgstr "Курсор"
+
+#: apps/terminal/hypede_terminal/app.py:633
+msgid "Block"
+msgstr "Блок"
+
+#: apps/terminal/hypede_terminal/app.py:633
+msgid "I-beam"
+msgstr "Черта"
+
+#: apps/terminal/hypede_terminal/app.py:633
+msgid "Underline"
+msgstr "Подчёркивание"
+
+#: apps/terminal/hypede_terminal/app.py:638
+msgid "Blinking cursor"
+msgstr "Мигающий курсор"
+
+#: apps/terminal/hypede_terminal/app.py:643
+msgid "Behavior"
+msgstr "Поведение"
+
+#: apps/terminal/hypede_terminal/app.py:644
+msgid "Unlimited scrollback"
+msgstr "Неограниченная прокрутка"
+
+#: apps/terminal/hypede_terminal/app.py:649
+msgid "Terminal bell sound"
+msgstr "Звук «звонка»"
+
+#: apps/terminal/hypede_terminal/app.py:659
+msgid "Tabs like Konsole, panes like kitty, a see-through background like Alacritty and a quick start like foot."
+msgstr "Вкладки как в Konsole, панели как в kitty, прозрачный фон как в Alacritty и быстрый запуск как у foot."
+
+#: apps/terminal/hypede_terminal/schemes.py:22
+msgid "HypeDE (follows the system)"
+msgstr "HypeDE (как в системе)"
+
+#: apps/terminal/hypede_terminal/schemes.py:31
+msgid "Catppuccin Mocha"
+msgstr "Catppuccin Mocha"
+
+#: apps/terminal/hypede_terminal/schemes.py:37
+msgid "Tokyo Night"
+msgstr "Tokyo Night"
+
+#: apps/terminal/hypede_terminal/schemes.py:43
+msgid "Nord"
+msgstr "Nord"
+
+#: apps/terminal/hypede_terminal/schemes.py:49
+msgid "Gruvbox"
+msgstr "Gruvbox"
+
+#: apps/terminal/hypede_terminal/schemes.py:55
+msgid "Dracula"
+msgstr "Dracula"
+
+#: apps/terminal/hypede_terminal/schemes.py:61
+msgid "Solarized"
+msgstr "Solarized"
 
 #: shell/extension/hypede-shell@hypede.dev/actions.js:49
 msgid "Keep awake"

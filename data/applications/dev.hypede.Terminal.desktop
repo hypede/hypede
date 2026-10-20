@@ -1,0 +1,21 @@
+[Desktop Entry]
+Type=Application
+Name=Terminal
+Name[ru]=Терминал
+Comment=Command line with tabs and split panes
+Comment[ru]=Командная строка с вкладками и разделением окна
+Exec=hypede-terminal
+Icon=utilities-terminal
+Terminal=false
+Categories=System;TerminalEmulator;GTK;
+Keywords=terminal;shell;console;command;prompt;cli;
+Keywords[ru]=терминал;консоль;командная;строка;оболочка;
+StartupNotify=true
+X-TerminalArgExec=-e
+X-TerminalArgDir=--working-directory
+Actions=new-window;
+
+[Desktop Action new-window]
+Name=New window
+Name[ru]=Новое окно
+Exec=hypede-terminal

@@ -38,7 +38,7 @@ dynamic-workspaces=true
 [org.gnome.shell:HypeDE]
 # Приветственный тур GNOME в HypeDE не показываем.
 welcome-dialog-last-shown-version='999'
-favorite-apps=['org.chromium.Chromium.desktop', 'chromium.desktop', 'google-chrome.desktop', 'firefox.desktop', 'dev.hypede.Files.desktop', 'org.gnome.Console.desktop', 'org.gnome.TextEditor.desktop', 'dev.hypede.Settings.desktop']
+favorite-apps=['org.chromium.Chromium.desktop', 'chromium.desktop', 'google-chrome.desktop', 'firefox.desktop', 'dev.hypede.Files.desktop', 'dev.hypede.Terminal.desktop', 'org.gnome.TextEditor.desktop', 'dev.hypede.Settings.desktop']
 
 [org.gnome.shell.keybindings:HypeDE]
 toggle-message-tray=['<Super>m']

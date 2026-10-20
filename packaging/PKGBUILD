@@ -24,6 +24,7 @@ depends=(
   'fuse2'  # старые AppImage монтируют себя через libfuse2
   # «Пароли» и «Погода»
   'libsecret' 'libsoup3'
+  'vte4'  # «Терминал»
   # «Настройки»
   'qt6-base' 'qt6-declarative' 'qt6-svg' 'kcmutils' 'kcolorscheme' 'kconfig' 'kcoreaddons'
   'kirigami' 'qqc2-desktop-style' 'breeze' 'breeze-icons'
