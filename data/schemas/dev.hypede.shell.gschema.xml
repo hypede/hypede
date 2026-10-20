@@ -553,4 +553,23 @@
       <summary>Ширина панели помощника</summary>
     </key>
   </schema>
+  <!-- ================================================================ -->
+  <!-- «Погода»: города и единицы; виджет погоды берёт их отсюда же      -->
+  <!-- ================================================================ -->
+  <schema id="dev.hypede.weather" path="/dev/hypede/weather/">
+    <key name="places" type="as">
+      <default>[]</default>
+      <summary>Города</summary>
+      <description>JSON каждого города: {"name", "region", "country", "lat", "lon"}.</description>
+    </key>
+    <key name="current" type="i">
+      <default>0</default>
+      <summary>Город, который показывают виджет и окно</summary>
+    </key>
+    <key name="unit" type="s">
+      <choices><choice value="c"/><choice value="f"/></choices>
+      <default>'c'</default>
+      <summary>Градусы Цельсия или Фаренгейта</summary>
+    </key>
+  </schema>
 </schemalist>

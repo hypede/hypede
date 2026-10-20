@@ -6,22 +6,9 @@
 #, fuzzy
 msgid ""
 msgstr ""
-"#-#-#-#-#  files.pot (PACKAGE VERSION)  #-#-#-#-#\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-18 14:32+0000\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"Language: \n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
-"Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=INTEGER; plural=EXPRESSION;\n"
-"#-#-#-#-#  shell.pot (PACKAGE VERSION)  #-#-#-#-#\n"
-"Project-Id-Version: PACKAGE VERSION\n"
-"Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-18 14:31+0000\n"
+"POT-Creation-Date: 2026-10-20 14:54+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -78,6 +65,7 @@ msgid "Modified"
 msgstr ""
 
 #: apps/files/hypede_files/details.py:159
+#: apps/passwords/hypede_passwords/app.py:132
 msgid "Created"
 msgstr ""
 
@@ -103,6 +91,8 @@ msgid "%-d %b %Y, %H:%M"
 msgstr ""
 
 #: apps/files/hypede_files/folder_view.py:367
+#: apps/passwords/hypede_passwords/app.py:105
+#: apps/passwords/hypede_passwords/app.py:427
 msgid "Name"
 msgstr ""
 
@@ -238,6 +228,10 @@ msgstr ""
 #: apps/files/hypede_files/programs.py:70 apps/files/hypede_files/window.py:236
 #: apps/files/hypede_files/window.py:858 apps/files/hypede_files/window.py:873
 #: apps/desktop/hypede_desktop/view.py:623
+#: apps/passwords/hypede_passwords/app.py:95
+#: apps/passwords/hypede_passwords/app.py:172
+#: apps/passwords/hypede_passwords/app.py:431
+#: apps/passwords/hypede_passwords/app.py:468
 msgid "Cancel"
 msgstr ""
 
@@ -283,7 +277,7 @@ msgid "MB"
 msgstr ""
 
 #: apps/files/hypede_files/util.py:16
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:243
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:291
 msgid "GB"
 msgstr ""
 
@@ -487,6 +481,7 @@ msgstr ""
 
 #: apps/files/hypede_files/window.py:552 apps/files/hypede_files/window.py:1023
 #: apps/desktop/hypede_desktop/view.py:562
+#: apps/passwords/hypede_passwords/app.py:117
 msgid "Copy"
 msgstr ""
 
@@ -594,6 +589,8 @@ msgid "Deleted items cannot be restored."
 msgstr ""
 
 #: apps/files/hypede_files/window.py:803
+#: apps/passwords/hypede_passwords/app.py:173
+#: apps/passwords/hypede_passwords/app.py:469
 msgid "Delete"
 msgstr ""
 
@@ -625,6 +622,7 @@ msgid "New Folder"
 msgstr ""
 
 #: apps/files/hypede_files/window.py:918
+#: apps/passwords/hypede_passwords/app.py:432
 msgid "Create"
 msgstr ""
 
@@ -797,6 +795,410 @@ msgstr ""
 msgid ""
 "This app launcher is not trusted yet. Run it only if you know where it came "
 "from."
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:47
+msgid "Network password"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:48
+msgid "Wi‑Fi or VPN"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:49
+msgid "Website"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:50
+msgid "Online account"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:51
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:58
+msgid "Note"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:52
+#: apps/passwords/hypede_passwords/app.py:88
+#: apps/passwords/hypede_passwords/app.py:112
+#: apps/passwords/hypede_passwords/app.py:146
+#: shell/extension/hypede-shell@hypede.dev/locker.js:79
+msgid "Password"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:53
+#: apps/passwords/hypede_passwords/app.py:54
+msgid "Browser encryption key"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:55
+msgid "Remote desktop"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:88
+msgid "New password"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:98
+msgid "Save"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:108
+msgid "User name"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:109
+msgid "Website or server"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:126
+msgid "Details"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:136
+msgid "Delete password"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:170
+#, python-format
+msgid "Delete “%s”?"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:171
+msgid "Apps that use this password will ask for it again."
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:193
+#: apps/passwords/hypede_passwords/app.py:254
+#: apps/passwords/hypede_passwords/app.py:324
+#: apps/passwords/hypede_passwords/app.py:486
+msgid "Passwords"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:207
+#: apps/passwords/hypede_passwords/app.py:425
+msgid "New keyring"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:214
+msgid "Keyrings"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:219
+msgid "Add password"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:222
+#: apps/passwords/hypede_passwords/app.py:334
+msgid "Lock"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:226
+msgid "Use for new passwords"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:227
+msgid "Delete keyring…"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:228
+msgid "About Passwords"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:230
+msgid "Search passwords"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:243
+#: apps/passwords/hypede_passwords/app.py:334
+msgid "Unlock"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:245
+msgid "Keyring is locked"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:246
+msgid "Unlock it to see the passwords inside."
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:248
+msgid "No passwords"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:249
+msgid "Passwords that apps save appear here."
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:250
+msgid "No keyring service"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:251
+msgid ""
+"Install GNOME Keyring, or turn on Secret Service in KeePassXC or KWallet."
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:303
+#: apps/passwords/hypede_passwords/app.py:347
+msgid "Unnamed"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:305
+msgid "This session"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:308
+msgid "Default"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:352
+msgid "Copy password"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:386
+#, python-format
+msgid "Password copied. It is cleared from the clipboard in %d seconds."
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:426
+msgid "The keyring service asks for a password to protect it."
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:466
+#, python-format
+msgid "Delete keyring “%s”?"
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:467
+msgid "All passwords in it are deleted. Apps will ask for them again."
+msgstr ""
+
+#: apps/passwords/hypede_passwords/app.py:488
+msgid ""
+"Keyrings and saved passwords. Works with GNOME Keyring, KeePassXC and "
+"KWallet through Secret Service."
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:50
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:36
+msgid "Clear sky"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:51
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:37
+msgid "Mostly clear"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:52
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:38
+msgid "Partly cloudy"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:53
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:39
+msgid "Overcast"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:54
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:40
+msgid "Fog"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:55
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:40
+msgid "Freezing fog"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:56
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:41
+msgid "Light drizzle"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:57
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:41
+msgid "Drizzle"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:58
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:42
+msgid "Heavy drizzle"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:59 apps/weather/hypede_weather/app.py:60
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:43
+msgid "Freezing drizzle"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:61
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:44
+msgid "Light rain"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:62
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:44
+msgid "Rain"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:63
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:44
+msgid "Heavy rain"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:64 apps/weather/hypede_weather/app.py:65
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:45
+msgid "Freezing rain"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:66
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:46
+msgid "Light snow"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:67
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:46
+msgid "Snow"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:68
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:46
+msgid "Heavy snow"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:69
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:47
+msgid "Snow grains"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:70 apps/weather/hypede_weather/app.py:71
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:48
+msgid "Rain showers"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:72
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:49
+msgid "Violent rain showers"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:73 apps/weather/hypede_weather/app.py:74
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:50
+msgid "Snow showers"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:75
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:51
+msgid "Thunderstorm"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:76 apps/weather/hypede_weather/app.py:77
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:51
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:52
+msgid "Thunderstorm with hail"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:94
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:238
+msgid "Unknown"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:142
+#: apps/weather/hypede_weather/app.py:237
+msgid "Places"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:148
+msgid "Search for a city"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:174
+msgid "Remove"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:206
+msgid "Nothing found"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:231
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:57
+msgid "Weather"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:240
+msgid "Refresh"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:243
+msgid "Units"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:249
+msgid "Choose a city"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:251
+msgid "Where are you?"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:252
+msgid "Choose a city to see its weather here and in the desktop widget."
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:255
+msgid "Try again"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:257
+msgid "No connection"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:258
+msgid "The forecast could not be loaded."
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:329
+msgid "Feels like"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:330
+msgid "Humidity"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:331
+msgid "Wind"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:331
+#, python-format
+msgid "%d km/h"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:332
+msgid "Sunrise"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:333
+msgid "Sunset"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:345
+msgid "Next 24 hours"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:351
+msgid "Now"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:363
+msgid "7 days"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:368
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:393
+msgid "Today"
+msgstr ""
+
+#: apps/weather/hypede_weather/app.py:381
+msgid "Forecast: Open-Meteo.com"
 msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/actions.js:49
@@ -1178,27 +1580,23 @@ msgstr ""
 msgid "Launcher"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/locker.js:79
-msgid "Password"
-msgstr ""
-
 #: shell/extension/hypede-shell@hypede.dev/locker.js:110
 msgid "Sorry, that didn’t work. Please try again."
 msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/lockscreen.js:338
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:36
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:217
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:58
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:265
 msgid "System"
 msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/lockscreen.js:339
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:214
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:262
 msgid "Processor"
 msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/lockscreen.js:340
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:215
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:263
 msgid "Memory"
 msgstr ""
 
@@ -1213,12 +1611,8 @@ msgid "Up for %d h %d min"
 msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/lockscreen.js:384
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:216
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:264
 msgid "Battery"
-msgstr ""
-
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:393
-msgid "Today"
 msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/lockscreen.js:425
@@ -1340,66 +1734,54 @@ msgstr ""
 msgid "Laptop mode"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:35
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:57
 msgid "Clock"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:35
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:57
 msgid "Dot clock"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:35
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:57
 msgid "Calendar"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:35
-msgid "Weather"
-msgstr ""
-
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:36
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:58
 msgid "Music"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:36
-msgid "Note"
-msgstr ""
-
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:187
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:221
 msgid "Choose a city in Weather"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:187
-msgid "Install the Weather app"
-msgstr ""
-
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:188
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:222
 msgid "Click to open"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:194
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:227
 msgid "Loading…"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:194
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:243
 msgid "Weather unavailable"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:315
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:363
 msgid "Write something…"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:575
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:623
 msgid "Add widget"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:588
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:636
 msgid "Your own widget…"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:591
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:639
 msgid "Return to the column"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:597
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:645
 msgid "Remove widget"
 msgstr ""

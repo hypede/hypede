@@ -11,17 +11,16 @@ import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GnomeDesktop from 'gi://GnomeDesktop';
 import GObject from 'gi://GObject';
-import GWeather from 'gi://GWeather';
 import Meta from 'gi://Meta';
 import Pango from 'gi://Pango';
 import Shell from 'gi://Shell';
+import Soup from 'gi://Soup?version=3.0';
 import St from 'gi://St';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import * as Calendar from 'resource:///org/gnome/shell/ui/calendar.js';
 import {MprisSource} from 'resource:///org/gnome/shell/ui/mpris.js';
-import {WeatherClient} from 'resource:///org/gnome/shell/misc/weather.js';
 import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
 import {WIDGETS_DIR, buildCustomWidget, listCustomWidgets, openWidgetsFolder} from './customwidgets.js';
@@ -29,6 +28,29 @@ import {SHADOW_MARGIN, shadowStyle} from './shadows.js';
 
 const GRID = 8;
 const MARGIN = 24;
+
+// Коды погоды WMO → [описание, значок днём, значок ночью], как в «Погоде».
+// N_ только помечает строку для перевода, перевод — при показе.
+const N_ = s => s;
+const WEATHER_CODES = {
+    0: [N_('Clear sky'), 'weather-clear', 'weather-clear-night'],
+    1: [N_('Mostly clear'), 'weather-few-clouds', 'weather-few-clouds-night'],
+    2: [N_('Partly cloudy'), 'weather-few-clouds', 'weather-few-clouds-night'],
+    3: [N_('Overcast'), 'weather-overcast'],
+    45: [N_('Fog'), 'weather-fog'], 48: [N_('Freezing fog'), 'weather-fog'],
+    51: [N_('Light drizzle'), 'weather-showers-scattered'], 53: [N_('Drizzle'), 'weather-showers-scattered'],
+    55: [N_('Heavy drizzle'), 'weather-showers'],
+    56: [N_('Freezing drizzle'), 'weather-freezing-rain'], 57: [N_('Freezing drizzle'), 'weather-freezing-rain'],
+    61: [N_('Light rain'), 'weather-showers-scattered'], 63: [N_('Rain'), 'weather-showers'], 65: [N_('Heavy rain'), 'weather-showers'],
+    66: [N_('Freezing rain'), 'weather-freezing-rain'], 67: [N_('Freezing rain'), 'weather-freezing-rain'],
+    71: [N_('Light snow'), 'weather-snow'], 73: [N_('Snow'), 'weather-snow'], 75: [N_('Heavy snow'), 'weather-snow'],
+    77: [N_('Snow grains'), 'weather-snow'],
+    80: [N_('Rain showers'), 'weather-showers-scattered'], 81: [N_('Rain showers'), 'weather-showers'],
+    82: [N_('Violent rain showers'), 'weather-showers'],
+    85: [N_('Snow showers'), 'weather-snow'], 86: [N_('Snow showers'), 'weather-snow'],
+    95: [N_('Thunderstorm'), 'weather-storm'], 96: [N_('Thunderstorm with hail'), 'weather-storm'],
+    99: [N_('Thunderstorm with hail'), 'weather-storm'],
+};
 
 export const TYPES = ['clock', 'dots', 'calendar', 'weather', 'system', 'media', 'note'];
 const title = t => ({
@@ -168,7 +190,10 @@ const builders = {
     },
 
     weather(w) {
-        const client = new WeatherClient();
+        // Город и единицы — из «Погоды» (dev.hypede.weather), прогноз —
+        // Open-Meteo, раз в полчаса.
+        const settings = new Gio.Settings({schema_id: 'dev.hypede.weather'});
+        const session = new Soup.Session({timeout: 20});
         const top = new St.BoxLayout({style_class: 'hypede-widget-weather'});
         const icon = new St.Icon({style_class: 'hypede-widget-weather-icon', icon_name: 'weather-clear-symbolic'});
         const temp = label('hypede-widget-time');
@@ -179,35 +204,58 @@ const builders = {
         w.add_child(top);
         w.add_child(place);
         w.add_child(sky);
-        const sync = () => {
-            const info = client.info;
-            if (!client.available || !client.hasLocation) {
+        let serial = 0;
+        const load = () => {
+            const places = settings.get_strv('places').map(text => {
+                try {
+                    return JSON.parse(text);
+                } catch {
+                    return null;
+                }
+            }).filter(Boolean);
+            const city = places[Math.min(Math.max(settings.get_int('current'), 0), places.length - 1)];
+            const mine = ++serial;
+            if (!city) {
                 icon.icon_name = 'find-location-symbolic';
                 temp.text = '';
-                place.text = client.available ? _('Choose a city in Weather') : _('Install the Weather app');
+                place.text = _('Choose a city in Weather');
                 sky.text = _('Click to open');
                 return;
             }
-            place.text = info.location?.get_city_name?.() || info.location?.get_name() || '';
-            if (!info.is_valid()) {
-                temp.text = '';
-                sky.text = client.loading ? _('Loading…') : _('Weather unavailable');
-                return;
-            }
-            const [, t] = info.get_value_temp(GWeather.TemperatureUnit.DEFAULT);
-            temp.text = `${Math.round(t)}°`;
-            icon.icon_name = info.get_symbolic_icon_name();
-            sky.text = info.get_weather_summary().split(/[,:]/).pop().trim() || info.get_sky();
+            place.text = city.name;
+            if (!temp.text)
+                sky.text = _('Loading…');
+            const unit = settings.get_string('unit') === 'f' ? 'fahrenheit' : 'celsius';
+            const message = Soup.Message.new('GET', 'https://api.open-meteo.com/v1/forecast' +
+                `?latitude=${city.lat}&longitude=${city.lon}&current=temperature_2m,weather_code,is_day` +
+                `&temperature_unit=${unit}&timezone=auto`);
+            session.send_and_read_async(message, GLib.PRIORITY_LOW, null, (s, result) => {
+                if (mine !== serial)
+                    return;
+                try {
+                    const bytes = s.send_and_read_finish(result);
+                    const now = JSON.parse(new TextDecoder().decode(bytes.get_data())).current;
+                    const [text, day, night] = WEATHER_CODES[now.weather_code] ?? [N_('Unknown'), 'weather-severe-alert'];
+                    temp.text = `${Math.round(now.temperature_2m)}°`;
+                    icon.icon_name = `${now.is_day || !night ? day : night}-symbolic`;
+                    sky.text = _(text);
+                } catch {
+                    sky.text = _('Weather unavailable');
+                }
+            });
         };
-        client.connectObject('changed', sync, w);
-        client.update();
-        sync();
+        settings.connectObject('changed', load, w);
+        load();
         const id = GLib.timeout_add_seconds(GLib.PRIORITY_LOW, 1800, () => {
-            client.update();
+            load();
             return GLib.SOURCE_CONTINUE;
         });
-        w.connect('destroy', () => GLib.source_remove(id));
-        w.onClick = () => Shell.AppSystem.get_default().lookup_app('org.gnome.Weather.desktop')?.activate();
+        w.connect('destroy', () => {
+            serial++;
+            GLib.source_remove(id);
+            session.abort();
+        });
+        w.onClick = () => Shell.AppSystem.get_default().lookup_app('dev.hypede.Weather.desktop')?.activate();
     },
 
     system(w) {

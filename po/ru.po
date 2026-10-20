@@ -60,6 +60,7 @@ msgid "Modified"
 msgstr "Изменён"
 
 #: apps/files/hypede_files/details.py:159
+#: apps/passwords/hypede_passwords/app.py:132
 msgid "Created"
 msgstr "Создан"
 
@@ -85,6 +86,8 @@ msgid "%-d %b %Y, %H:%M"
 msgstr "%-d %b %Y, %H:%M"
 
 #: apps/files/hypede_files/folder_view.py:367
+#: apps/passwords/hypede_passwords/app.py:105
+#: apps/passwords/hypede_passwords/app.py:427
 msgid "Name"
 msgstr "Имя"
 
@@ -225,6 +228,10 @@ msgstr "Это программа. Запускайте её, только ес�
 #: apps/files/hypede_files/programs.py:70 apps/files/hypede_files/window.py:236
 #: apps/files/hypede_files/window.py:858 apps/files/hypede_files/window.py:873
 #: apps/desktop/hypede_desktop/view.py:623
+#: apps/passwords/hypede_passwords/app.py:95
+#: apps/passwords/hypede_passwords/app.py:172
+#: apps/passwords/hypede_passwords/app.py:431
+#: apps/passwords/hypede_passwords/app.py:468
 msgid "Cancel"
 msgstr "Отмена"
 
@@ -270,7 +277,7 @@ msgid "MB"
 msgstr "МБ"
 
 #: apps/files/hypede_files/util.py:16
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:243
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:291
 msgid "GB"
 msgstr "ГБ"
 
@@ -473,6 +480,7 @@ msgstr "Вырезать"
 
 #: apps/files/hypede_files/window.py:552 apps/files/hypede_files/window.py:1023
 #: apps/desktop/hypede_desktop/view.py:562
+#: apps/passwords/hypede_passwords/app.py:117
 msgid "Copy"
 msgstr "Копировать"
 
@@ -585,6 +593,8 @@ msgid "Deleted items cannot be restored."
 msgstr "Удалённое навсегда восстановить нельзя."
 
 #: apps/files/hypede_files/window.py:803
+#: apps/passwords/hypede_passwords/app.py:173
+#: apps/passwords/hypede_passwords/app.py:469
 msgid "Delete"
 msgstr "Удалить"
 
@@ -616,6 +626,7 @@ msgid "New Folder"
 msgstr "Новая папка"
 
 #: apps/files/hypede_files/window.py:918
+#: apps/passwords/hypede_passwords/app.py:432
 msgid "Create"
 msgstr "Создать"
 
@@ -787,6 +798,407 @@ msgstr "Разрешить запуск «%s»?"
 #: apps/desktop/hypede_desktop/view.py:622
 msgid "This app launcher is not trusted yet. Run it only if you know where it came from."
 msgstr "Этот ярлык приложения ещё не проверен. Запускайте его, только если знаете, откуда он."
+
+#: apps/passwords/hypede_passwords/app.py:47
+msgid "Network password"
+msgstr "Сетевой пароль"
+
+#: apps/passwords/hypede_passwords/app.py:48
+msgid "Wi‑Fi or VPN"
+msgstr "Wi‑Fi или VPN"
+
+#: apps/passwords/hypede_passwords/app.py:49
+msgid "Website"
+msgstr "Сайт"
+
+#: apps/passwords/hypede_passwords/app.py:50
+msgid "Online account"
+msgstr "Сетевая учётная запись"
+
+#: apps/passwords/hypede_passwords/app.py:51
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:58
+msgid "Note"
+msgstr "Заметка"
+
+#: apps/passwords/hypede_passwords/app.py:52
+#: apps/passwords/hypede_passwords/app.py:88
+#: apps/passwords/hypede_passwords/app.py:112
+#: apps/passwords/hypede_passwords/app.py:146
+#: shell/extension/hypede-shell@hypede.dev/locker.js:79
+msgid "Password"
+msgstr "Пароль"
+
+#: apps/passwords/hypede_passwords/app.py:53
+#: apps/passwords/hypede_passwords/app.py:54
+msgid "Browser encryption key"
+msgstr "Ключ шифрования браузера"
+
+#: apps/passwords/hypede_passwords/app.py:55
+msgid "Remote desktop"
+msgstr "Удалённый рабочий стол"
+
+#: apps/passwords/hypede_passwords/app.py:88
+msgid "New password"
+msgstr "Новый пароль"
+
+#: apps/passwords/hypede_passwords/app.py:98
+msgid "Save"
+msgstr "Сохранить"
+
+#: apps/passwords/hypede_passwords/app.py:108
+msgid "User name"
+msgstr "Имя пользователя"
+
+#: apps/passwords/hypede_passwords/app.py:109
+msgid "Website or server"
+msgstr "Сайт или сервер"
+
+#: apps/passwords/hypede_passwords/app.py:126
+msgid "Details"
+msgstr "Подробности"
+
+#: apps/passwords/hypede_passwords/app.py:136
+msgid "Delete password"
+msgstr "Удалить пароль"
+
+#: apps/passwords/hypede_passwords/app.py:170
+#, python-format
+msgid "Delete “%s”?"
+msgstr "Удалить «%s»?"
+
+#: apps/passwords/hypede_passwords/app.py:171
+msgid "Apps that use this password will ask for it again."
+msgstr "Программы, которые им пользуются, спросят его снова."
+
+#: apps/passwords/hypede_passwords/app.py:193
+#: apps/passwords/hypede_passwords/app.py:254
+#: apps/passwords/hypede_passwords/app.py:324
+#: apps/passwords/hypede_passwords/app.py:486
+msgid "Passwords"
+msgstr "Пароли"
+
+#: apps/passwords/hypede_passwords/app.py:207
+#: apps/passwords/hypede_passwords/app.py:425
+msgid "New keyring"
+msgstr "Новая связка ключей"
+
+#: apps/passwords/hypede_passwords/app.py:214
+msgid "Keyrings"
+msgstr "Связки ключей"
+
+#: apps/passwords/hypede_passwords/app.py:219
+msgid "Add password"
+msgstr "Добавить пароль"
+
+#: apps/passwords/hypede_passwords/app.py:222
+#: apps/passwords/hypede_passwords/app.py:334
+msgid "Lock"
+msgstr "Заблокировать"
+
+#: apps/passwords/hypede_passwords/app.py:226
+msgid "Use for new passwords"
+msgstr "Сохранять новые пароли сюда"
+
+#: apps/passwords/hypede_passwords/app.py:227
+msgid "Delete keyring…"
+msgstr "Удалить связку…"
+
+#: apps/passwords/hypede_passwords/app.py:228
+msgid "About Passwords"
+msgstr "О программе «Пароли»"
+
+#: apps/passwords/hypede_passwords/app.py:230
+msgid "Search passwords"
+msgstr "Поиск паролей"
+
+#: apps/passwords/hypede_passwords/app.py:243
+#: apps/passwords/hypede_passwords/app.py:334
+msgid "Unlock"
+msgstr "Разблокировать"
+
+#: apps/passwords/hypede_passwords/app.py:245
+msgid "Keyring is locked"
+msgstr "Связка ключей заблокирована"
+
+#: apps/passwords/hypede_passwords/app.py:246
+msgid "Unlock it to see the passwords inside."
+msgstr "Разблокируйте её, чтобы увидеть пароли."
+
+#: apps/passwords/hypede_passwords/app.py:248
+msgid "No passwords"
+msgstr "Паролей нет"
+
+#: apps/passwords/hypede_passwords/app.py:249
+msgid "Passwords that apps save appear here."
+msgstr "Здесь появятся пароли, которые сохраняют программы."
+
+#: apps/passwords/hypede_passwords/app.py:250
+msgid "No keyring service"
+msgstr "Нет службы паролей"
+
+#: apps/passwords/hypede_passwords/app.py:251
+msgid "Install GNOME Keyring, or turn on Secret Service in KeePassXC or KWallet."
+msgstr "Установите GNOME Keyring или включите Secret Service в KeePassXC или KWallet."
+
+#: apps/passwords/hypede_passwords/app.py:303
+#: apps/passwords/hypede_passwords/app.py:347
+msgid "Unnamed"
+msgstr "Без названия"
+
+#: apps/passwords/hypede_passwords/app.py:305
+msgid "This session"
+msgstr "Этот сеанс"
+
+#: apps/passwords/hypede_passwords/app.py:308
+msgid "Default"
+msgstr "Основная"
+
+#: apps/passwords/hypede_passwords/app.py:352
+msgid "Copy password"
+msgstr "Скопировать пароль"
+
+#: apps/passwords/hypede_passwords/app.py:386
+#, python-format
+msgid "Password copied. It is cleared from the clipboard in %d seconds."
+msgstr "Пароль скопирован. Через %d с он сотрётся из буфера обмена."
+
+#: apps/passwords/hypede_passwords/app.py:426
+msgid "The keyring service asks for a password to protect it."
+msgstr "Служба паролей попросит пароль, которым её защитить."
+
+#: apps/passwords/hypede_passwords/app.py:466
+#, python-format
+msgid "Delete keyring “%s”?"
+msgstr "Удалить связку «%s»?"
+
+#: apps/passwords/hypede_passwords/app.py:467
+msgid "All passwords in it are deleted. Apps will ask for them again."
+msgstr "Все пароли в ней удалятся. Программы спросят их снова."
+
+#: apps/passwords/hypede_passwords/app.py:488
+msgid "Keyrings and saved passwords. Works with GNOME Keyring, KeePassXC and KWallet through Secret Service."
+msgstr "Связки ключей и сохранённые пароли. Работает с GNOME Keyring, KeePassXC и KWallet через Secret Service."
+
+#: apps/weather/hypede_weather/app.py:50
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:36
+msgid "Clear sky"
+msgstr "Ясно"
+
+#: apps/weather/hypede_weather/app.py:51
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:37
+msgid "Mostly clear"
+msgstr "Почти ясно"
+
+#: apps/weather/hypede_weather/app.py:52
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:38
+msgid "Partly cloudy"
+msgstr "Переменная облачность"
+
+#: apps/weather/hypede_weather/app.py:53
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:39
+msgid "Overcast"
+msgstr "Пасмурно"
+
+#: apps/weather/hypede_weather/app.py:54
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:40
+msgid "Fog"
+msgstr "Туман"
+
+#: apps/weather/hypede_weather/app.py:55
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:40
+msgid "Freezing fog"
+msgstr "Изморозь"
+
+#: apps/weather/hypede_weather/app.py:56
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:41
+msgid "Light drizzle"
+msgstr "Слабая морось"
+
+#: apps/weather/hypede_weather/app.py:57
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:41
+msgid "Drizzle"
+msgstr "Морось"
+
+#: apps/weather/hypede_weather/app.py:58
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:42
+msgid "Heavy drizzle"
+msgstr "Сильная морось"
+
+#: apps/weather/hypede_weather/app.py:59 apps/weather/hypede_weather/app.py:60
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:43
+msgid "Freezing drizzle"
+msgstr "Ледяная морось"
+
+#: apps/weather/hypede_weather/app.py:61
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:44
+msgid "Light rain"
+msgstr "Небольшой дождь"
+
+#: apps/weather/hypede_weather/app.py:62
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:44
+msgid "Rain"
+msgstr "Дождь"
+
+#: apps/weather/hypede_weather/app.py:63
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:44
+msgid "Heavy rain"
+msgstr "Сильный дождь"
+
+#: apps/weather/hypede_weather/app.py:64 apps/weather/hypede_weather/app.py:65
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:45
+msgid "Freezing rain"
+msgstr "Ледяной дождь"
+
+#: apps/weather/hypede_weather/app.py:66
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:46
+msgid "Light snow"
+msgstr "Небольшой снег"
+
+#: apps/weather/hypede_weather/app.py:67
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:46
+msgid "Snow"
+msgstr "Снег"
+
+#: apps/weather/hypede_weather/app.py:68
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:46
+msgid "Heavy snow"
+msgstr "Сильный снег"
+
+#: apps/weather/hypede_weather/app.py:69
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:47
+msgid "Snow grains"
+msgstr "Снежная крупа"
+
+#: apps/weather/hypede_weather/app.py:70 apps/weather/hypede_weather/app.py:71
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:48
+msgid "Rain showers"
+msgstr "Ливень"
+
+#: apps/weather/hypede_weather/app.py:72
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:49
+msgid "Violent rain showers"
+msgstr "Сильный ливень"
+
+#: apps/weather/hypede_weather/app.py:73 apps/weather/hypede_weather/app.py:74
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:50
+msgid "Snow showers"
+msgstr "Снегопад"
+
+#: apps/weather/hypede_weather/app.py:75
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:51
+msgid "Thunderstorm"
+msgstr "Гроза"
+
+#: apps/weather/hypede_weather/app.py:76 apps/weather/hypede_weather/app.py:77
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:51
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:52
+msgid "Thunderstorm with hail"
+msgstr "Гроза с градом"
+
+#: apps/weather/hypede_weather/app.py:94
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:238
+msgid "Unknown"
+msgstr "Неизвестно"
+
+#: apps/weather/hypede_weather/app.py:142
+#: apps/weather/hypede_weather/app.py:237
+msgid "Places"
+msgstr "Города"
+
+#: apps/weather/hypede_weather/app.py:148
+msgid "Search for a city"
+msgstr "Найти город"
+
+#: apps/weather/hypede_weather/app.py:174
+msgid "Remove"
+msgstr "Убрать"
+
+#: apps/weather/hypede_weather/app.py:206
+msgid "Nothing found"
+msgstr "Ничего не найдено"
+
+#: apps/weather/hypede_weather/app.py:231
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:57
+msgid "Weather"
+msgstr "Погода"
+
+#: apps/weather/hypede_weather/app.py:240
+msgid "Refresh"
+msgstr "Обновить"
+
+#: apps/weather/hypede_weather/app.py:243
+msgid "Units"
+msgstr "Единицы"
+
+#: apps/weather/hypede_weather/app.py:249
+msgid "Choose a city"
+msgstr "Выбрать город"
+
+#: apps/weather/hypede_weather/app.py:251
+msgid "Where are you?"
+msgstr "Где вы?"
+
+#: apps/weather/hypede_weather/app.py:252
+msgid "Choose a city to see its weather here and in the desktop widget."
+msgstr "Выберите город — его погода появится здесь и в виджете на рабочем столе."
+
+#: apps/weather/hypede_weather/app.py:255
+msgid "Try again"
+msgstr "Повторить"
+
+#: apps/weather/hypede_weather/app.py:257
+msgid "No connection"
+msgstr "Нет связи"
+
+#: apps/weather/hypede_weather/app.py:258
+msgid "The forecast could not be loaded."
+msgstr "Не удалось загрузить прогноз."
+
+#: apps/weather/hypede_weather/app.py:329
+msgid "Feels like"
+msgstr "Ощущается как"
+
+#: apps/weather/hypede_weather/app.py:330
+msgid "Humidity"
+msgstr "Влажность"
+
+#: apps/weather/hypede_weather/app.py:331
+msgid "Wind"
+msgstr "Ветер"
+
+#: apps/weather/hypede_weather/app.py:331
+#, python-format
+msgid "%d km/h"
+msgstr "%d км/ч"
+
+#: apps/weather/hypede_weather/app.py:332
+msgid "Sunrise"
+msgstr "Восход"
+
+#: apps/weather/hypede_weather/app.py:333
+msgid "Sunset"
+msgstr "Закат"
+
+#: apps/weather/hypede_weather/app.py:345
+msgid "Next 24 hours"
+msgstr "Ближайшие сутки"
+
+#: apps/weather/hypede_weather/app.py:351
+msgid "Now"
+msgstr "Сейчас"
+
+#: apps/weather/hypede_weather/app.py:363
+msgid "7 days"
+msgstr "7 дней"
+
+#: apps/weather/hypede_weather/app.py:368
+#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:393
+msgid "Today"
+msgstr "Сегодня"
+
+#: apps/weather/hypede_weather/app.py:381
+msgid "Forecast: Open-Meteo.com"
+msgstr "Прогноз: Open-Meteo.com"
 
 #: shell/extension/hypede-shell@hypede.dev/actions.js:49
 msgid "Keep awake"
@@ -1164,27 +1576,23 @@ msgstr "Поиск в интернете"
 msgid "Launcher"
 msgstr "Лаунчер"
 
-#: shell/extension/hypede-shell@hypede.dev/locker.js:79
-msgid "Password"
-msgstr "Пароль"
-
 #: shell/extension/hypede-shell@hypede.dev/locker.js:110
 msgid "Sorry, that didn’t work. Please try again."
 msgstr "Неверный пароль. Попробуйте ещё раз."
 
 #: shell/extension/hypede-shell@hypede.dev/lockscreen.js:338
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:36
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:217
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:58
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:265
 msgid "System"
 msgstr "Система"
 
 #: shell/extension/hypede-shell@hypede.dev/lockscreen.js:339
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:214
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:262
 msgid "Processor"
 msgstr "Процессор"
 
 #: shell/extension/hypede-shell@hypede.dev/lockscreen.js:340
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:215
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:263
 msgid "Memory"
 msgstr "Память"
 
@@ -1199,13 +1607,9 @@ msgid "Up for %d h %d min"
 msgstr "Без перезагрузки %d ч %d мин"
 
 #: shell/extension/hypede-shell@hypede.dev/lockscreen.js:384
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:216
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:264
 msgid "Battery"
 msgstr "Батарея"
-
-#: shell/extension/hypede-shell@hypede.dev/lockscreen.js:393
-msgid "Today"
-msgstr "Сегодня"
 
 #: shell/extension/hypede-shell@hypede.dev/lockscreen.js:425
 msgid "Charging"
@@ -1327,66 +1731,54 @@ msgstr "Режим планшета"
 msgid "Laptop mode"
 msgstr "Режим ноутбука"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:35
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:57
 msgid "Clock"
 msgstr "Часы"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:35
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:57
 msgid "Dot clock"
 msgstr "Точечные часы"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:35
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:57
 msgid "Calendar"
 msgstr "Календарь"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:35
-msgid "Weather"
-msgstr "Погода"
-
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:36
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:58
 msgid "Music"
 msgstr "Музыка"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:36
-msgid "Note"
-msgstr "Заметка"
-
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:187
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:221
 msgid "Choose a city in Weather"
 msgstr "Выберите город в «Погоде»"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:187
-msgid "Install the Weather app"
-msgstr "Установите приложение «Погода»"
-
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:188
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:222
 msgid "Click to open"
 msgstr "Нажмите, чтобы открыть"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:194
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:227
 msgid "Loading…"
 msgstr "Загрузка…"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:194
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:243
 msgid "Weather unavailable"
 msgstr "Погода недоступна"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:315
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:363
 msgid "Write something…"
 msgstr "Напишите что-нибудь…"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:575
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:623
 msgid "Add widget"
 msgstr "Добавить виджет"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:588
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:636
 msgid "Your own widget…"
 msgstr "Свой виджет…"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:591
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:639
 msgid "Return to the column"
 msgstr "Вернуть в столбик"
 
-#: shell/extension/hypede-shell@hypede.dev/widgets.js:597
+#: shell/extension/hypede-shell@hypede.dev/widgets.js:645
 msgid "Remove widget"
 msgstr "Убрать виджет"

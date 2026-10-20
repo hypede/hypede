@@ -22,6 +22,8 @@ depends=(
   # «Файлы»
   'dconf' 'python' 'python-gobject' 'gtk4' 'libadwaita>=1.7' 'gvfs' 'gnome-desktop-4'
   'fuse2'  # старые AppImage монтируют себя через libfuse2
+  # «Пароли» и «Погода»
+  'libsecret' 'libsoup3'
   # «Настройки»
   'qt6-base' 'qt6-declarative' 'qt6-svg' 'kcmutils' 'kcolorscheme' 'kconfig' 'kcoreaddons'
   'kirigami' 'qqc2-desktop-style' 'breeze' 'breeze-icons'
@@ -29,6 +31,7 @@ depends=(
 )
 makedepends=('cmake' 'extra-cmake-modules' 'qt6-tools' 'gettext')
 optdepends=(
+  'gnome-keyring: хранилище паролей для «Паролей» (или KeePassXC, KWallet)'
   'bluez: «Bluetooth»'
   'plasma-nm: «Сеть → Дополнительные настройки подключений» (IP, импорт VPN, корпоративный Wi‑Fi)'
   'libpulse: «Устройство → Звук» (pactl, работает и с PipeWire)'
