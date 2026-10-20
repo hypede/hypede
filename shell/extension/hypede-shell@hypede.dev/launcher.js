@@ -28,7 +28,7 @@ import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js'
 import {evaluate as calculate, looksLikeMath} from './calculator.js';
 import {loadRecentFiles, describeWhen} from './recent.js';
 import {getFileIndex, destroyFileIndex, normalize as normalizeName} from './filesearch.js';
-import {addSecondaryClick, PRIMARY_AND_MIDDLE} from './util.js';
+import {addSecondaryClick, openApp, PRIMARY_AND_MIDDLE} from './util.js';
 import {getAssistant} from './assistant.js';
 import {findActions} from './actions.js';
 import {Backdrop} from './backdrop.js';
@@ -162,7 +162,7 @@ class AppTile extends St.Button {
             this.app.can_open_new_window())
             this.app.open_new_window(-1);
         else
-            this.app.activate();
+            openApp(this.app);
         this._launcher.close();
     }
 
@@ -349,7 +349,7 @@ class LauncherView extends St.BoxLayout {
             'launcher-show-labels', 'launcher-sort', 'launcher-style'])
             this._settings.connectObject(`changed::${key}`, () => this._markDirty(), this);
         this.connect('destroy', () => {
-            for (const id of [this._warmId, this._gridChunkId])
+            for (const id of [this._warmId, this._gridChunkId, this._paintTimeout])
                 if (id)
                     GLib.source_remove(id);
         });
@@ -367,13 +367,19 @@ class LauncherView extends St.BoxLayout {
         else
             this.remove_style_class_name('fullscreen');
 
-        this._updateSize();
-        if (this._appsDirty || this._layoutFullscreen !== this._fullscreen || this._orderChanged())
-            this._rebuildGrid();
-        if (this._recentChanged())
-            this._rebuildContinue();
-        this._layoutForStyle();
-        this._homeScroll.vadjustment.value = 0;
+        // Что бы ни сломалось при подготовке (например, испорченный список
+        // недавних файлов), лаунчер всё равно должен появиться.
+        try {
+            this._updateSize();
+            if (this._appsDirty || this._layoutFullscreen !== this._fullscreen || this._orderChanged())
+                this._rebuildGrid();
+            if (this._recentChanged())
+                this._rebuildContinue();
+            this._layoutForStyle();
+            this._homeScroll.vadjustment.value = 0;
+        } catch (e) {
+            logError(e, 'HypeDE: launcher');
+        }
         this._animateIn();
     }
 
@@ -417,6 +423,9 @@ class LauncherView extends St.BoxLayout {
 
     onClosed() {
         this._entry.text = '';
+        // Жест, который не дошёл до конца, не должен оставлять лаунчер
+        // невидимым при следующем открытии.
+        this._gesture = false;
     }
 
     // В полноэкранном виде строка поиска и сетка стоят по центру экрана.
@@ -478,12 +487,27 @@ class LauncherView extends St.BoxLayout {
         // и анимация, начатая до неё, успела бы пройти незаметно.
         if (this._paintId)
             global.stage.disconnect(this._paintId);
-        this._paintId = global.stage.connect('after-paint', () => {
-            global.stage.disconnect(this._paintId);
+        if (this._paintTimeout)
+            GLib.source_remove(this._paintTimeout);
+        const start = () => {
+            if (this._paintId)
+                global.stage.disconnect(this._paintId);
+            if (this._paintTimeout)
+                GLib.source_remove(this._paintTimeout);
             this._paintId = 0;
+            this._paintTimeout = 0;
             const duration = this._fullscreen ? 320 : 260;
             this.ease({opacity: 255, duration: duration * 0.7, mode: Clutter.AnimationMode.EASE_OUT_CUBIC});
             this.ease({translation_y: 0, scale_x: 1, scale_y: 1, duration, mode: Clutter.AnimationMode.EASE_OUT_QUINT});
+        };
+        this._paintId = global.stage.connect('after-paint', start);
+        // Кадра может не быть (экран не перерисовывается, например под
+        // полноэкранной игрой) — тогда стартуем сами, иначе лаунчер так и
+        // остался бы прозрачным.
+        this._paintTimeout = GLib.timeout_add(GLib.PRIORITY_DEFAULT, 120, () => {
+            this._paintTimeout = 0;
+            start();
+            return GLib.SOURCE_REMOVE;
         });
     }
 
@@ -778,7 +802,7 @@ class LauncherView extends St.BoxLayout {
                 title: app.get_name(),
                 subtitle: app.get_description() ?? '',
                 activate: () => {
-                    app.activate();
+                    openApp(app);
                     this._launcher.close();
                 },
             }));
@@ -1003,13 +1027,17 @@ class LauncherButton extends PanelMenu.Button {
                         return GLib.SOURCE_REMOVE;
                     });
                 }
-                this._prepareOpen();
-                // Экранная клавиатура (режим планшета) должна быть поверх
-                // лаунчера, а не под ним.
-                const {uiGroup, keyboardBox} = Main.layoutManager;
-                if (keyboardBox?.get_parent() === uiGroup && this.menu.actor.get_parent() === uiGroup)
-                    uiGroup.set_child_above_sibling(keyboardBox, this.menu.actor);
-                this.view._syncAssistant();
+                try {
+                    this._prepareOpen();
+                    // Экранная клавиатура (режим планшета) должна быть поверх
+                    // лаунчера, а не под ним.
+                    const {uiGroup, keyboardBox} = Main.layoutManager;
+                    if (keyboardBox?.get_parent() === uiGroup && this.menu.actor.get_parent() === uiGroup)
+                        uiGroup.set_child_above_sibling(keyboardBox, this.menu.actor);
+                    this.view._syncAssistant();
+                } catch (e) {
+                    logError(e, 'HypeDE: launcher');
+                }
                 this.view.onOpen();
                 // Фокус в строку поиска — после того, как меню заберёт ввод.
                 GLib.idle_add(GLib.PRIORITY_DEFAULT, () => {

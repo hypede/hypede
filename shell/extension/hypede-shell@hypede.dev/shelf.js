@@ -30,7 +30,7 @@ import * as SystemActions from 'resource:///org/gnome/shell/misc/systemActions.j
 import {AppMenu} from 'resource:///org/gnome/shell/ui/appMenu.js';
 import {InjectionManager, gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
-import {addSecondaryClick, PRIMARY_AND_MIDDLE} from './util.js';
+import {addSecondaryClick, openApp, PRIMARY_AND_MIDDLE} from './util.js';
 import {Backdrop} from './backdrop.js';
 import {toggleFloat} from './extras.js';
 
@@ -414,8 +414,8 @@ class ShelfIcon extends St.Button {
         }
 
         if (windows.length === 0) {
-            this.bounce();
-            this.app.activate();
+            if (!openApp(this.app))
+                this.bounce();
             return;
         }
 
