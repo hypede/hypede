@@ -368,6 +368,7 @@ msgid "Show Sidebar"
 msgstr "Показать боковую панель"
 
 #: apps/files/hypede_files/window.py:103 apps/files/hypede_files/window.py:1016
+#: apps/welcome/hypede_welcome/app.py:110
 msgid "Back"
 msgstr "Назад"
 
@@ -712,52 +713,52 @@ msgstr "Удалить навсегда"
 msgid "View"
 msgstr "Вид"
 
-#: apps/assistant/hypede_assistant/app.py:112
+#: apps/assistant/hypede_assistant/app.py:113
 msgid "New chat"
 msgstr "Новый чат"
 
-#: apps/assistant/hypede_assistant/app.py:117
+#: apps/assistant/hypede_assistant/app.py:118
 msgid "Open in browser"
 msgstr "Открыть в браузере"
 
-#: apps/assistant/hypede_assistant/app.py:118
+#: apps/assistant/hypede_assistant/app.py:119
 msgid "Sign in again"
 msgstr "Войти заново"
 
-#: apps/assistant/hypede_assistant/app.py:119
+#: apps/assistant/hypede_assistant/app.py:120
 msgid "Sign out"
 msgstr "Выйти из учётной записи"
 
-#: apps/assistant/hypede_assistant/app.py:120
+#: apps/assistant/hypede_assistant/app.py:121
 msgid "Assistant settings"
 msgstr "Настройки помощника"
 
-#: apps/assistant/hypede_assistant/app.py:140
+#: apps/assistant/hypede_assistant/app.py:141
 msgid "The AI assistant is off"
 msgstr "ИИ-помощник выключен"
 
-#: apps/assistant/hypede_assistant/app.py:141
+#: apps/assistant/hypede_assistant/app.py:142
 msgid "Turn it on and choose a provider in Settings."
 msgstr "Включите его и выберите провайдера в «Настройках»."
 
-#: apps/assistant/hypede_assistant/app.py:142
+#: apps/assistant/hypede_assistant/app.py:143
 msgid "Open Settings"
 msgstr "Открыть «Настройки»"
 
-#: apps/assistant/hypede_assistant/app.py:191
+#: apps/assistant/hypede_assistant/app.py:212
 #: shell/extension/hypede-shell@hypede.dev/launcher.js:73
 msgid "AI assistant"
 msgstr "ИИ-помощник"
 
-#: apps/assistant/hypede_assistant/app.py:269
+#: apps/assistant/hypede_assistant/app.py:293
 msgid "Could not reach the chat box — sign in first"
 msgstr "Не нашлось поле ввода — сначала войдите в учётную запись"
 
-#: apps/assistant/hypede_assistant/app.py:272
+#: apps/assistant/hypede_assistant/app.py:296
 msgid "If the files did not attach, drag them from the bar above into the chat"
 msgstr "Если файлы не прикрепились, перетащите их в чат с панели сверху"
 
-#: apps/assistant/hypede_assistant/app.py:281
+#: apps/assistant/hypede_assistant/app.py:305
 msgid "Drag into the chat"
 msgstr "Перетащите в чат"
 
@@ -1265,6 +1266,8 @@ msgid "Previous"
 msgstr "Назад"
 
 #: apps/terminal/hypede_terminal/app.py:189
+#: apps/welcome/hypede_welcome/app.py:112
+#: apps/welcome/hypede_welcome/app.py:326
 msgid "Next"
 msgstr "Далее"
 
@@ -1401,6 +1404,154 @@ msgstr "Dracula"
 msgid "Solarized"
 msgstr "Solarized"
 
+#: apps/welcome/hypede_welcome/app.py:102
+#: apps/welcome/hypede_welcome/app.py:120
+#: shell/extension/hypede-shell@hypede.dev/greeting.js:111
+msgid "Welcome to HypeDE"
+msgstr "Добро пожаловать в HypeDE"
+
+#: apps/welcome/hypede_welcome/app.py:121
+msgid "A Chrome OS-style desktop for Linux: simple, quick and pretty. This short tour shows the main things in a minute."
+msgstr "Рабочий стол в стиле Chrome OS для Linux: простой, быстрый и красивый. Этот короткий тур покажет главное за минуту."
+
+#: apps/welcome/hypede_welcome/app.py:123
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:65
+msgid "Shelf and launcher"
+msgstr "Полка и лаунчер"
+
+#: apps/welcome/hypede_welcome/app.py:124
+msgid "Press Super (the Windows key) or the circle on the shelf: apps, files, settings and a calculator in one search box. Right-click an icon to pin it to the shelf."
+msgstr "Нажмите Super (клавишу Windows) или кружок на полке: программы, файлы, настройки и калькулятор в одном поиске. Правый щелчок по значку — закрепить его на полке."
+
+#: apps/welcome/hypede_welcome/app.py:126
+msgid "Windows and desks"
+msgstr "Окна и рабочие столы"
+
+#: apps/welcome/hypede_welcome/app.py:127
+msgid "Drag a window to an edge to fill half the screen. Super+W shows every window and desk; three fingers on the touchpad do the same."
+msgstr "Перетащите окно к краю — оно займёт половину экрана. Super+W показывает все окна и столы; то же делают три пальца на тачпаде."
+
+#: apps/welcome/hypede_welcome/app.py:129
+msgid "Dynamic Island"
+msgstr "Dynamic Island"
+
+#: apps/welcome/hypede_welcome/app.py:130
+msgid "The capsule at the top shows music, downloads and timers. Click it for the clipboard, a file shelf and notes. Super+V opens clipboard history."
+msgstr "Капсула сверху показывает музыку, загрузки и таймеры. Щелчок по ней — буфер обмена, полка файлов и заметки. Super+V — история буфера обмена."
+
+#: apps/welcome/hypede_welcome/app.py:132
+msgid "Make it yours"
+msgstr "Под себя"
+
+#: apps/welcome/hypede_welcome/app.py:133
+msgid "Themes, accent colors, wallpapers that change with the dark style, live wallpapers and desktop widgets."
+msgstr "Темы, акцентные цвета, обои, меняющиеся вместе с тёмной темой, живые обои и виджеты на рабочем столе."
+
+#: apps/welcome/hypede_welcome/app.py:136
+#: shell/extension/hypede-shell@hypede.dev/actions.js:137
+msgid "Dark style"
+msgstr "Тёмная тема"
+
+#: apps/welcome/hypede_welcome/app.py:142
+msgid "Themes and wallpaper"
+msgstr "Темы и обои"
+
+#: apps/welcome/hypede_welcome/app.py:147
+msgid "You are all set"
+msgstr "Всё готово"
+
+#: apps/welcome/hypede_welcome/app.py:148
+msgid "Super opens the launcher, Super+W the overview, Super+V the clipboard. Settings has everything else — and the assistant knows where."
+msgstr "Super открывает лаунчер, Super+W — обзор, Super+V — буфер обмена. Всё остальное — в Настройках, а помощник подскажет, где."
+
+#: apps/welcome/hypede_welcome/app.py:181
+msgid "Your AI assistant"
+msgstr "Ваш ИИ-помощник"
+
+#: apps/welcome/hypede_welcome/app.py:182
+msgid "A small Gemma model that runs on this computer, offline. It knows HypeDE, tells you where every setting is and can read your files when you ask."
+msgstr "Небольшая модель Gemma работает прямо на этом компьютере, без интернета. Знает HypeDE, подскажет, где любая настройка, и прочитает ваши файлы, если попросите."
+
+#: apps/welcome/hypede_welcome/app.py:190
+msgid "Install the small model"
+msgstr "Установить маленькую модель"
+
+#: apps/welcome/hypede_welcome/app.py:190
+msgid "Gemma 3 270M · 290 MB · runs on any computer"
+msgstr "Gemma 3 270M · 290 МБ · пойдёт на любом компьютере"
+
+#: apps/welcome/hypede_welcome/app.py:191
+msgid "Install the smarter model"
+msgstr "Установить модель поумнее"
+
+#: apps/welcome/hypede_welcome/app.py:191
+msgid "Gemma 3 1B · 800 MB · needs 4 GB of memory"
+msgstr "Gemma 3 1B · 800 МБ · нужно 4 ГБ памяти"
+
+#: apps/welcome/hypede_welcome/app.py:192
+msgid "Use an online assistant"
+msgstr "Онлайн-помощник"
+
+#: apps/welcome/hypede_welcome/app.py:192
+msgid "Claude, Gemini, ChatGPT and others in Settings"
+msgstr "Claude, Gemini, ChatGPT и другие — в Настройках"
+
+#: apps/welcome/hypede_welcome/app.py:193
+msgid "Not now"
+msgstr "Не сейчас"
+
+#: apps/welcome/hypede_welcome/app.py:193
+msgid "You can install it later in Settings → AI assistant"
+msgstr "Установить можно позже: Настройки → ИИ-помощник"
+
+#: apps/welcome/hypede_welcome/app.py:219
+#, python-format
+msgid "%s is installed and works on this computer."
+msgstr "%s установлена и работает на этом компьютере."
+
+#: apps/welcome/hypede_welcome/app.py:241
+msgid "Installing llama.cpp… (asks for your password)"
+msgstr "Устанавливается llama.cpp… (спросит пароль)"
+
+#: apps/welcome/hypede_welcome/app.py:268
+#, python-format
+msgid "Downloading the model: %d%%"
+msgstr "Загрузка модели: %d%%"
+
+#: apps/welcome/hypede_welcome/app.py:269
+#, python-format
+msgid "%(done)d of %(total)d MB"
+msgstr "%(done)d из %(total)d МБ"
+
+#: apps/welcome/hypede_welcome/app.py:274
+msgid "Starting the assistant…"
+msgstr "Запуск помощника…"
+
+#: apps/welcome/hypede_welcome/app.py:291
+msgid "Done"
+msgstr "Готово"
+
+#: apps/welcome/hypede_welcome/app.py:292
+msgid "The assistant is ready: Super+A, or the Ask button in the launcher."
+msgstr "Помощник готов: Super+A или кнопка «Спросить» в лаунчере."
+
+#: apps/welcome/hypede_welcome/app.py:298
+#, python-format
+msgid "Could not install: %s"
+msgstr "Не удалось установить: %s"
+
+#: apps/welcome/hypede_welcome/app.py:298
+msgid "unknown error"
+msgstr "неизвестная ошибка"
+
+#: apps/welcome/hypede_welcome/app.py:322
+msgid "Start"
+msgstr "Начать"
+
+#: apps/welcome/hypede_welcome/app.py:324
+msgid "Install"
+msgstr "Установить"
+
 #: shell/extension/hypede-shell@hypede.dev/actions.js:49
 msgid "Keep awake"
 msgstr "Не засыпать"
@@ -1472,10 +1623,6 @@ msgstr "Экран не погаснет и не заблокируется"
 #: shell/extension/hypede-shell@hypede.dev/actions.js:137
 msgid "Light style"
 msgstr "Светлая тема"
-
-#: shell/extension/hypede-shell@hypede.dev/actions.js:137
-msgid "Dark style"
-msgstr "Тёмная тема"
 
 #: shell/extension/hypede-shell@hypede.dev/actions.js:137
 msgid "Switch the color scheme"
@@ -1651,10 +1798,6 @@ msgstr "Снова открыто: %s"
 msgid "Explain this:\n\n%s"
 msgstr "Объясни это:\n\n%s"
 
-#: shell/extension/hypede-shell@hypede.dev/greeting.js:111
-msgid "Welcome to HypeDE"
-msgstr "Добро пожаловать в HypeDE"
-
 #: shell/extension/hypede-shell@hypede.dev/greeting.js:114
 #, javascript-format
 msgid "Good night, %s"
@@ -1699,10 +1842,6 @@ msgstr "Устройство"
 #: shell/extension/hypede-shell@hypede.dev/launcher.js:63
 msgid "Personalization"
 msgstr "Персонализация"
-
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:65
-msgid "Shelf and launcher"
-msgstr "Полка и лаунчер"
 
 #: shell/extension/hypede-shell@hypede.dev/launcher.js:69
 msgid "Security and privacy"

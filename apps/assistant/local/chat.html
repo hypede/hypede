@@ -1,0 +1,286 @@
+<!doctype html>
+<!-- Чат локального ИИ HypeDE. Открывается в hypede-assistant (WebKit) с
+     адреса file://. Модель — llama-server на 127.0.0.1:8765 (hypede-ai).
+     Ответы опираются на базу знаний о HypeDE (knowledge.*.md) и на файлы:
+     пути в вопросе, «найди файл …» и приложенные файлы читает мост
+     window.webkit.messageHandlers.hypede (только чтение). -->
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HypeDE AI</title>
+<style>
+:root {
+  --bg: #f6f8fb; --surface: #ffffff; --text: #1f1f1f; --subtext: #5f6368;
+  --accent: #0b57d0; --accent-text: #ffffff; --user: #d3e3fd; --border: rgba(0,0,0,.08);
+  color-scheme: light dark;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #1b1c1e; --surface: #26272a; --text: #e3e3e3; --subtext: #c4c7c5;
+          --accent: #a8c7fa; --accent-text: #062e6f; --user: #004a77; --border: rgba(255,255,255,.08); }
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body { background: var(--bg); color: var(--text); font: 14px/1.5 system-ui, "Roboto", sans-serif;
+       display: flex; flex-direction: column; }
+#log { flex: 1; overflow-y: auto; padding: 16px 14px 8px; }
+.msg { max-width: 92%; margin: 0 0 12px; padding: 10px 14px; border-radius: 18px; white-space: pre-wrap;
+       word-wrap: break-word; animation: pop .18s ease-out; }
+.msg.user { margin-left: auto; background: var(--user); border-bottom-right-radius: 6px; }
+.msg.bot { background: var(--surface); border: 1px solid var(--border); border-bottom-left-radius: 6px; }
+.msg.source { background: none; border: 1px dashed var(--border); font-size: 13px; color: var(--subtext); }
+.msg.source b { color: var(--text); font-weight: 500; }
+.msg.note { background: none; color: var(--subtext); font-size: 12px; padding: 0 4px; margin-bottom: 6px; }
+.msg code { font-family: monospace; background: var(--border); padding: 1px 4px; border-radius: 4px; }
+.msg pre { background: var(--border); padding: 8px; border-radius: 8px; overflow-x: auto; white-space: pre; }
+@keyframes pop { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+#hello { text-align: center; color: var(--subtext); margin: 18vh 20px 0; }
+#hello h1 { color: var(--text); font-size: 22px; font-weight: 500; margin: 12px 0 6px; }
+#hello .orb { width: 56px; height: 56px; border-radius: 50%; margin: auto;
+              background: conic-gradient(from 0deg, #4285f4, #a142f4, #f4511e, #fbbc04, #34a853, #4285f4);
+              animation: spin 6s linear infinite; filter: blur(.3px); }
+@keyframes spin { to { transform: rotate(360deg); } }
+.chips { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; }
+.chip { border: 1px solid var(--border); background: var(--surface); color: var(--text); border-radius: 16px;
+        padding: 6px 12px; cursor: pointer; font: inherit; font-size: 13px; }
+.chip:hover { border-color: var(--accent); }
+#bar { display: flex; gap: 8px; padding: 10px 12px 14px; }
+#input { flex: 1; resize: none; border: none; outline: none; border-radius: 22px; padding: 11px 16px;
+         background: var(--surface); color: var(--text); font: inherit; max-height: 160px;
+         box-shadow: 0 0 0 1px var(--border); }
+#input:focus { box-shadow: 0 0 0 2px var(--accent); }
+#send { border: none; border-radius: 22px; padding: 0 18px; background: var(--accent); color: var(--accent-text);
+        font: inherit; font-weight: 500; cursor: pointer; }
+#send:disabled { opacity: .4; cursor: default; }
+#files { display: flex; flex-wrap: wrap; gap: 6px; padding: 0 12px; }
+#files .chip { cursor: default; }
+#status { text-align: center; color: var(--subtext); font-size: 12px; padding: 0 12px 4px; min-height: 1em; }
+.typing::after { content: "▍"; animation: blink 1s steps(1) infinite; }
+@keyframes blink { 50% { opacity: 0; } }
+</style>
+</head>
+<body>
+<div id="log">
+  <div id="hello">
+    <div class="orb"></div>
+    <h1 data-t="title"></h1>
+    <div data-t="subtitle"></div>
+    <div class="chips" id="examples"></div>
+  </div>
+</div>
+<div id="status"></div>
+<div id="files"></div>
+<div id="bar">
+  <textarea id="input" rows="1"></textarea>
+  <button id="send" data-t="send"></button>
+</div>
+<script>
+'use strict';
+const SERVER = 'http://127.0.0.1:8765';
+const RU = /^ru/i.test(navigator.language);
+const T = RU ? {
+  title: 'Помощник HypeDE', subtitle: 'Работает на этом компьютере, без интернета. Знает всё о HypeDE и может читать ваши файлы.',
+  send: 'Отправить', placeholder: 'Спросите что-нибудь…', thinking: 'Думаю…',
+  offline: 'Модель ещё не запущена. Если вы только что включили её — подождите минуту. Установить: Настройки → ИИ-помощник → «На этом компьютере».',
+  read: 'Прочитан файл', listed: 'Просмотрена папка', found: 'Найдено файлов', none: 'Ничего не найдено по запросу',
+  examples: ['Как подключить два монитора?', 'Как сделать тёмную тему?', 'Что в папке ~/Загрузки?', 'Как разделить терминал?'],
+} : {
+  title: 'HypeDE assistant', subtitle: 'Runs on this computer, offline. Knows HypeDE inside out and can read your files.',
+  send: 'Send', placeholder: 'Ask anything…', thinking: 'Thinking…',
+  offline: 'The model is not running yet. If you just turned it on, wait a minute. Install: Settings → AI assistant → On this computer.',
+  read: 'Read file', listed: 'Looked into folder', found: 'Files found', none: 'Nothing found for',
+  examples: ['How do I connect two displays?', 'How do I turn on dark style?', 'What is in ~/Downloads?', 'How do I split the terminal?'],
+};
+document.querySelectorAll('[data-t]').forEach(e => e.textContent = T[e.dataset.t]);
+const log = document.getElementById('log'), input = document.getElementById('input'),
+      sendButton = document.getElementById('send'), status = document.getElementById('status'),
+      filesBar = document.getElementById('files');
+input.placeholder = T.placeholder;
+for (const text of T.examples) {
+  const b = document.createElement('button');
+  b.className = 'chip'; b.textContent = text;
+  b.onclick = () => { input.value = text; send(); };
+  document.getElementById('examples').append(b);
+}
+
+let history = [];
+let attached = [];   // [{name, text}]
+let busy = false;
+
+// --- мост к файлам (hypede-assistant отвечает на сообщения) ---
+async function bridge(command) {
+  const handler = window.webkit?.messageHandlers?.hypede;
+  if (!handler) return null;
+  try { return JSON.parse(await handler.postMessage(JSON.stringify(command))); } catch { return null; }
+}
+
+// --- база знаний: разделы «## …», выбираются по совпадению слов ---
+const knowledge = {};
+async function loadKnowledge(ru) {
+  const lang = ru ? 'ru' : 'en';
+  if (!knowledge[lang]) {
+    const text = await (await fetch(`knowledge.${lang}.md`)).text();
+    knowledge[lang] = text.split(/\n(?=## )/).filter(s => s.startsWith('## '))
+      .map(s => ({ text: s.trim(), words: stems(s) }));
+  }
+  return knowledge[lang];
+}
+function stems(text) {
+  // Грубая основа слова — первые 5 букв: «мониторы» и «монитор» совпадут.
+  return new Set((text.toLowerCase().match(/[\p{L}\d]{3,}/gu) || []).map(w => w.slice(0, 5)));
+}
+async function relevant(question, ru) {
+  const kb = await loadKnowledge(ru), q = stems(question);
+  return kb.map(s => {
+    let score = 0;
+    for (const w of q) if (s.words.has(w)) score += 1;
+    // Совпадение в заголовке весит больше.
+    for (const w of stems(s.text.split('\n')[0])) if (q.has(w)) score += 2;
+    return { s, score };
+  }).filter(x => x.score > 1).sort((a, b) => b.score - a.score).slice(0, 3).map(x => x.s.text);
+}
+
+// --- файлы из вопроса ---
+async function fileContext(question) {
+  const notes = [], context = [];
+  const paths = question.match(/(~\/[^\s,;!?'"«»]*|\/(?:home|tmp|etc|usr|opt|var|mnt|media)\/[^\s,;!?'"«»]*)/g) || [];
+  for (const raw of paths.slice(0, 3)) {
+    const path = raw.replace(/[.)]+$/, '');
+    const result = await bridge({ cmd: 'read', path });
+    if (!result) continue;
+    if (result.kind === 'dir') {
+      notes.push(`${T.listed} ${path}`);
+      context.push(`Folder ${path} contains:\n${result.entries.join('\n')}`);
+    } else if (result.kind === 'file') {
+      notes.push(`${T.read} ${path}`);
+      context.push(`File ${path}:\n${result.text}`);
+    }
+  }
+  const find = question.match(/(?:найди|найти|где|поищи|find|locate|where is|search for)\s+(?:файл\w*|file|папк\w*|folder)?\s*[«"']?([\p{L}\d_.\-]{3,})/iu);
+  if (find && !paths.length) {
+    const result = await bridge({ cmd: 'find', name: find[1] });
+    if (result) {
+      notes.push(result.paths.length ? `${T.found}: ${result.paths.length}` : `${T.none} «${find[1]}»`);
+      context.push(`Files named like "${find[1]}" in the home folder:\n${result.paths.join('\n') || '(none)'}`);
+    }
+  }
+  return { notes, context };
+}
+
+// --- сообщения ---
+function add(kind, text) {
+  document.getElementById('hello')?.remove();
+  const div = document.createElement('div');
+  div.className = 'msg ' + kind;
+  div.textContent = text;
+  log.append(div);
+  log.scrollTop = log.scrollHeight;
+  return div;
+}
+function render(div, text) {
+  // Немного разметки: блоки кода, `код`, **жирный**.
+  const esc = s => s.replace(/[&<>]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]));
+  div.innerHTML = esc(text)
+    .replace(/```\w*\n?([\s\S]*?)```/g, (_, c) => `<pre>${c}</pre>`)
+    .replace(/`([^`\n]+)`/g, '<code>$1</code>')
+    .replace(/\*\*([^*\n]+)\*\*/g, '<b>$1</b>');
+}
+
+async function send() {
+  const question = input.value.trim();
+  if (!question || busy) return;
+  busy = true; sendButton.disabled = true;
+  input.value = ''; autosize();
+  add('user', question);
+  const { notes, context } = await fileContext(question);
+  for (const note of notes) add('note', note);
+  for (const file of attached) context.push(`Attached file ${file.name}:\n${file.text}`);
+  attached = []; filesBar.replaceChildren();
+  // Язык ответа — по вопросу: кириллица — по-русски.
+  const ru = /[а-яё]/i.test(question) || (RU && !/[a-z]{3,}/i.test(question));
+  const facts = await relevant(question, ru);
+
+  // Маленькие модели плохо слушают системную роль, поэтому справка, файлы и
+  // просьба о языке — прямо в вопросе.
+  const system = 'You are the HypeDE assistant, built into the HypeDE desktop (a Chrome OS-style Linux desktop ' +
+    'based on GNOME Shell) on this computer. Be brief and exact.';
+  const parts = [];
+  if (facts.length) parts.push((ru ? 'Справка HypeDE:\n' : 'HypeDE guide:\n') + facts.join('\n\n'));
+  if (context.length) parts.push((ru ? 'Файлы:\n' : 'Files:\n') + context.join('\n\n').slice(0, 12000));
+  parts.push((ru ? 'Вопрос: ' : 'Question: ') + question);
+  parts.push(ru ? 'Ответь по-русски в 2–4 предложениях. Если есть справка, используй только её и назови, куда нажать.'
+                : 'Answer in English in 2–4 sentences. If there is a guide, use only it and say where to click.');
+  const messages = [{ role: 'system', content: system }, ...history.slice(-4),
+                    { role: 'user', content: parts.join('\n\n') }];
+  const div = add('bot', '');
+  div.classList.add('typing');
+  status.textContent = T.thinking;
+  let answer = '';
+  try {
+    const response = await fetch(SERVER + '/v1/chat/completions', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages, stream: true, temperature: 0.2, max_tokens: 350,
+                              repeat_penalty: 1.3, frequency_penalty: 0.4 }),
+    });
+    if (!response.ok) throw new Error(response.statusText);
+    const reader = response.body.getReader(), decoder = new TextDecoder();
+    let buffer = '';
+    for (;;) {
+      const { value, done } = await reader.read();
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split('\n');
+      buffer = lines.pop();
+      for (const line of lines) {
+        if (!line.startsWith('data: ') || line === 'data: [DONE]') continue;
+        try {
+          answer += JSON.parse(line.slice(6)).choices[0].delta.content || '';
+          render(div, answer);
+          log.scrollTop = log.scrollHeight;
+        } catch {}
+      }
+    }
+    history.push({ role: 'user', content: question }, { role: 'assistant', content: answer });
+    // Маленькая модель может ошибиться — под ответом точный раздел справки.
+    if (facts.length) {
+      const source = add('source', '');
+      const [title, ...body] = facts[0].split('\n');
+      source.innerHTML = `<b>${title.replace(/^## /, '📘 ')}</b>\n`;
+      source.append(body.join('\n').trim());
+    }
+  } catch {
+    div.textContent = T.offline;
+  }
+  div.classList.remove('typing');
+  status.textContent = '';
+  busy = false; sendButton.disabled = false;
+  input.focus();
+}
+
+// Вызывается из hypede-assistant: «Спросить…» с вопросом и файлами.
+window.hypedeAsk = (text, files) => {
+  for (const file of files || []) {
+    let text = '';
+    try { text = new TextDecoder().decode(Uint8Array.from(atob(file.data), c => c.charCodeAt(0))); } catch {}
+    if (text.includes('\u0000')) text = '(binary file, not shown)';
+    attached.push({ name: file.name, text: text.slice(0, 8000) });
+    const chip = document.createElement('span');
+    chip.className = 'chip'; chip.textContent = '📄 ' + file.name;
+    filesBar.append(chip);
+  }
+  input.value = text || '';
+  autosize();
+  if (text) send(); else input.focus();
+  return 'ok';
+};
+window.hypedeNewChat = () => { history = []; log.replaceChildren(); input.focus(); };
+
+function autosize() { input.style.height = 'auto'; input.style.height = Math.min(input.scrollHeight, 160) + 'px'; }
+input.addEventListener('input', autosize);
+input.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); } });
+sendButton.onclick = send;
+fetch(SERVER + '/health').then(r => { if (!r.ok) throw 0; }).catch(() => status.textContent = T.offline);
+input.focus();
+</script>
+</body>
+</html>

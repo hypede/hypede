@@ -1,0 +1,12 @@
+[Desktop Entry]
+Type=Application
+Name=HypeDE Tour
+Name[ru]=Тур по HypeDE
+Comment=Shown once, at the first sign-in
+Exec=hypede-welcome --first-run
+Icon=hypede
+Terminal=false
+NoDisplay=true
+OnlyShowIn=HypeDE;
+X-GNOME-Autostart-Phase=Application
+X-GNOME-Autostart-Delay=4

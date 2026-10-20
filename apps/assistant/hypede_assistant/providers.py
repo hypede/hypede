@@ -8,8 +8,13 @@
 
 from __future__ import annotations
 
+import os
 from dataclasses import dataclass
 from urllib.parse import quote
+
+# Чат локального ИИ лежит рядом с программой: <каталог>/local/chat.html.
+LOCAL_CHAT = "file://" + os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))),
+                                      "local", "chat.html")
 
 
 @dataclass(frozen=True)
@@ -22,6 +27,8 @@ class Provider:
     domains: tuple[str, ...]
     # Адрес чата с уже вписанным вопросом, если сайт это умеет.
     prompt_url: str | None = None
+    # Модель на этом компьютере (hypede-ai): входа нет, есть доступ к файлам.
+    local: bool = False
 
     def url_for_prompt(self, prompt: str) -> str | None:
         if not self.prompt_url or not prompt:
@@ -52,6 +59,7 @@ PROVIDERS: dict[str, Provider] = {p.id: p for p in (
              ("grok.com", "x.ai", "x.com", "twitter.com") + _SSO, "https://grok.com/?q=%s"),
     Provider("deepseek", "DeepSeek", "https://chat.deepseek.com/", "https://chat.deepseek.com/sign_in",
              ("deepseek.com",) + _SSO),
+    Provider("local", "HypeDE AI", LOCAL_CHAT, LOCAL_CHAT, (), local=True),
 )}
 
 DEFAULT = "claude"

@@ -9,7 +9,7 @@ msgstr ""
 "#-#-#-#-#  files.pot (PACKAGE VERSION)  #-#-#-#-#\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-20 15:02+0000\n"
+"POT-Creation-Date: 2026-10-20 15:15+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,7 +21,7 @@ msgstr ""
 "#-#-#-#-#  shell.pot (PACKAGE VERSION)  #-#-#-#-#\n"
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-20 14:56+0000\n"
+"POT-Creation-Date: 2026-10-20 15:07+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -379,6 +379,7 @@ msgid "Show Sidebar"
 msgstr ""
 
 #: apps/files/hypede_files/window.py:103 apps/files/hypede_files/window.py:1016
+#: apps/welcome/hypede_welcome/app.py:110
 msgid "Back"
 msgstr ""
 
@@ -721,52 +722,52 @@ msgstr ""
 msgid "View"
 msgstr ""
 
-#: apps/assistant/hypede_assistant/app.py:112
+#: apps/assistant/hypede_assistant/app.py:113
 msgid "New chat"
 msgstr ""
 
-#: apps/assistant/hypede_assistant/app.py:117
+#: apps/assistant/hypede_assistant/app.py:118
 msgid "Open in browser"
 msgstr ""
 
-#: apps/assistant/hypede_assistant/app.py:118
+#: apps/assistant/hypede_assistant/app.py:119
 msgid "Sign in again"
 msgstr ""
 
-#: apps/assistant/hypede_assistant/app.py:119
+#: apps/assistant/hypede_assistant/app.py:120
 msgid "Sign out"
 msgstr ""
 
-#: apps/assistant/hypede_assistant/app.py:120
+#: apps/assistant/hypede_assistant/app.py:121
 msgid "Assistant settings"
 msgstr ""
 
-#: apps/assistant/hypede_assistant/app.py:140
+#: apps/assistant/hypede_assistant/app.py:141
 msgid "The AI assistant is off"
 msgstr ""
 
-#: apps/assistant/hypede_assistant/app.py:141
+#: apps/assistant/hypede_assistant/app.py:142
 msgid "Turn it on and choose a provider in Settings."
 msgstr ""
 
-#: apps/assistant/hypede_assistant/app.py:142
+#: apps/assistant/hypede_assistant/app.py:143
 msgid "Open Settings"
 msgstr ""
 
-#: apps/assistant/hypede_assistant/app.py:191
+#: apps/assistant/hypede_assistant/app.py:212
 #: shell/extension/hypede-shell@hypede.dev/launcher.js:73
 msgid "AI assistant"
 msgstr ""
 
-#: apps/assistant/hypede_assistant/app.py:269
+#: apps/assistant/hypede_assistant/app.py:293
 msgid "Could not reach the chat box — sign in first"
 msgstr ""
 
-#: apps/assistant/hypede_assistant/app.py:272
+#: apps/assistant/hypede_assistant/app.py:296
 msgid "If the files did not attach, drag them from the bar above into the chat"
 msgstr ""
 
-#: apps/assistant/hypede_assistant/app.py:281
+#: apps/assistant/hypede_assistant/app.py:305
 msgid "Drag into the chat"
 msgstr ""
 
@@ -1279,6 +1280,8 @@ msgid "Previous"
 msgstr ""
 
 #: apps/terminal/hypede_terminal/app.py:189
+#: apps/welcome/hypede_welcome/app.py:112
+#: apps/welcome/hypede_welcome/app.py:326
 msgid "Next"
 msgstr ""
 
@@ -1417,6 +1420,169 @@ msgstr ""
 msgid "Solarized"
 msgstr ""
 
+#: apps/welcome/hypede_welcome/app.py:102
+#: apps/welcome/hypede_welcome/app.py:120
+#: shell/extension/hypede-shell@hypede.dev/greeting.js:111
+msgid "Welcome to HypeDE"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:121
+msgid ""
+"A Chrome OS-style desktop for Linux: simple, quick and pretty. This short "
+"tour shows the main things in a minute."
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:123
+#: shell/extension/hypede-shell@hypede.dev/launcher.js:65
+msgid "Shelf and launcher"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:124
+msgid ""
+"Press Super (the Windows key) or the circle on the shelf: apps, files, "
+"settings and a calculator in one search box. Right-click an icon to pin it "
+"to the shelf."
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:126
+msgid "Windows and desks"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:127
+msgid ""
+"Drag a window to an edge to fill half the screen. Super+W shows every window "
+"and desk; three fingers on the touchpad do the same."
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:129
+msgid "Dynamic Island"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:130
+msgid ""
+"The capsule at the top shows music, downloads and timers. Click it for the "
+"clipboard, a file shelf and notes. Super+V opens clipboard history."
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:132
+msgid "Make it yours"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:133
+msgid ""
+"Themes, accent colors, wallpapers that change with the dark style, live "
+"wallpapers and desktop widgets."
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:136
+#: shell/extension/hypede-shell@hypede.dev/actions.js:137
+msgid "Dark style"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:142
+msgid "Themes and wallpaper"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:147
+msgid "You are all set"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:148
+msgid ""
+"Super opens the launcher, Super+W the overview, Super+V the clipboard. "
+"Settings has everything else — and the assistant knows where."
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:181
+msgid "Your AI assistant"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:182
+msgid ""
+"A small Gemma model that runs on this computer, offline. It knows HypeDE, "
+"tells you where every setting is and can read your files when you ask."
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:190
+msgid "Install the small model"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:190
+msgid "Gemma 3 270M · 290 MB · runs on any computer"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:191
+msgid "Install the smarter model"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:191
+msgid "Gemma 3 1B · 800 MB · needs 4 GB of memory"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:192
+msgid "Use an online assistant"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:192
+msgid "Claude, Gemini, ChatGPT and others in Settings"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:193
+msgid "Not now"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:193
+msgid "You can install it later in Settings → AI assistant"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:219
+#, python-format
+msgid "%s is installed and works on this computer."
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:241
+msgid "Installing llama.cpp… (asks for your password)"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:268
+#, python-format
+msgid "Downloading the model: %d%%"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:269
+#, python-format
+msgid "%(done)d of %(total)d MB"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:274
+msgid "Starting the assistant…"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:291
+msgid "Done"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:292
+msgid "The assistant is ready: Super+A, or the Ask button in the launcher."
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:298
+#, python-format
+msgid "Could not install: %s"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:298
+msgid "unknown error"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:322
+msgid "Start"
+msgstr ""
+
+#: apps/welcome/hypede_welcome/app.py:324
+msgid "Install"
+msgstr ""
+
 #: shell/extension/hypede-shell@hypede.dev/actions.js:49
 msgid "Keep awake"
 msgstr ""
@@ -1487,10 +1653,6 @@ msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/actions.js:137
 msgid "Light style"
-msgstr ""
-
-#: shell/extension/hypede-shell@hypede.dev/actions.js:137
-msgid "Dark style"
 msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/actions.js:137
@@ -1670,10 +1832,6 @@ msgid ""
 "%s"
 msgstr ""
 
-#: shell/extension/hypede-shell@hypede.dev/greeting.js:111
-msgid "Welcome to HypeDE"
-msgstr ""
-
 #: shell/extension/hypede-shell@hypede.dev/greeting.js:114
 #, javascript-format
 msgid "Good night, %s"
@@ -1717,10 +1875,6 @@ msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/launcher.js:63
 msgid "Personalization"
-msgstr ""
-
-#: shell/extension/hypede-shell@hypede.dev/launcher.js:65
-msgid "Shelf and launcher"
 msgstr ""
 
 #: shell/extension/hypede-shell@hypede.dev/launcher.js:69

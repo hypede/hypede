@@ -147,6 +147,14 @@
         <source>Only chat. It cannot run commands or read your files: it sees just the text and files you send with an “Ask” button.</source>
         <translation>Только отвечать в чате. Он не выполняет команды и не читает файлы — видит лишь то, что вы отправили кнопкой «Спросить».</translation>
     </message>
+    <message>
+        <source>On this computer</source>
+        <translation>На этом компьютере</translation>
+    </message>
+    <message>
+        <source>Works offline and knows HypeDE. It reads (never changes) the files and folders you name, like ~/Documents, and finds files by name.</source>
+        <translation>Работает без интернета и знает HypeDE. Читает (но не меняет) файлы и папки, которые вы назовёте, например ~/Документы, и ищет файлы по имени.</translation>
+    </message>
 </context>
 <context>
     <name>AsteroidsGame</name>

@@ -16,7 +16,7 @@ const MARGIN = 8;
 // Те же провайдеры, что в apps/assistant/hypede_assistant/providers.py.
 const PROVIDER_NAMES = {
     claude: 'Claude', gemini: 'Gemini', mistral: 'Mistral',
-    chatgpt: 'ChatGPT', grok: 'Grok', deepseek: 'DeepSeek',
+    chatgpt: 'ChatGPT', grok: 'Grok', deepseek: 'DeepSeek', local: 'HypeDE AI',
 };
 
 let instance = null;

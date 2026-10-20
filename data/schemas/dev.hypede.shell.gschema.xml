@@ -542,10 +542,17 @@
         <choice value="chatgpt"/>
         <choice value="grok"/>
         <choice value="deepseek"/>
+        <choice value="local"/>
       </choices>
       <default>'claude'</default>
       <summary>Провайдер</summary>
       <description>Чей чат открывает помощник. Вход — в собственную учётную запись на сайте провайдера.</description>
+    </key>
+    <key name="local-model" type="s">
+      <choices><choice value="small"/><choice value="large"/></choices>
+      <default>'small'</default>
+      <summary>Модель локального ИИ</summary>
+      <description>small — Gemma 3 270M (290 МБ), large — Gemma 3 1B (800 МБ). Ставит hypede-ai install.</description>
     </key>
     <key name="panel-width" type="i">
       <range min="320" max="900"/>
