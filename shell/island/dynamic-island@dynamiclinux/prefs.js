@@ -193,7 +193,7 @@ export default class DynamicIslandPrefs extends ExtensionPreferences {
     _general(s) {
         const p = page('Общие', 'preferences-system-symbolic');
 
-        const main = group('Остров', 'Остров заменяет верхнюю панель GNOME. Наведите на него курсор — он раскроется.');
+        const main = group('Остров', 'Наведите на остров курсор — он раскроется.');
         main.add(switchRow(s, 'island-enabled', 'Показывать остров', 'Выключите, чтобы вернуть стандартную панель'));
         main.add(switchRow(s, 'replace-panel', 'Заменять верхнюю панель', 'Стандартная панель скрывается и показывается только в «Обзоре»'));
         main.add(switchRow(s, 'show-panel-in-overview', 'Показывать панель в «Обзоре»'));
@@ -211,7 +211,7 @@ export default class DynamicIslandPrefs extends ExtensionPreferences {
 
         const act = group('Живые активности', 'Короткие события: смена трека, копирование, загрузки, уведомления…');
         act.add(switchRow(s, 'live-activities', 'Включить живые активности'));
-        act.add(switchRow(s, 'island-notifications', 'Уведомления внутри острова', 'Вместо стандартных баннеров GNOME'));
+        act.add(switchRow(s, 'island-notifications', 'Уведомления внутри острова', 'Вместо обычных всплывающих уведомлений'));
         act.add(switchRow(s, 'pulse-on-activity', 'Пульсация при событии'));
         act.add(spinRow(s, 'activity-duration', 'Длительность, мс', 1000, 15000, 100));
         const sources = new Adw.ExpanderRow({title: 'Источники событий'});
@@ -459,7 +459,7 @@ export default class DynamicIslandPrefs extends ExtensionPreferences {
         ocr.add(entryRow(s, 'ocr-command', 'Команда ({file}, {lang})'));
         p.add(ocr);
 
-        const rec = group('Запись экрана', 'Используется встроенный в GNOME рекордер (WebM)');
+        const rec = group('Запись экрана', 'Используется встроенная запись экрана (WebM)');
         rec.add(entryRow(s, 'recording-dir', 'Папка (пусто — ~/Видео/Screencasts)'));
         rec.add(switchRow(s, 'recording-cursor', 'Показывать курсор'));
         p.add(rec);

@@ -11,11 +11,12 @@
 
 import Clutter from 'gi://Clutter';
 import Cogl from 'gi://Cogl';
+import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
-import Shell from 'gi://Shell';
 import St from 'gi://St';
 
+import {SHADOW_MARGIN, shadowStyle} from './shadows.js';
 import {isDesktopWindow} from './util.js';
 
 const DECLARATIONS = `
@@ -35,17 +36,15 @@ if (hd_q.x < hd_radius && hd_q.y < hd_radius) {
 }
 `;
 
+// Шейдер добавляется в конвейер, которым OffscreenEffect рисует снимок
+// актёра. Shell.GLSLEffect, на котором это было раньше, в GNOME 51 убрали;
+// Cogl.Snippet и get_pipeline() есть во всех поддерживаемых версиях.
 export const CornersEffect = GObject.registerClass(
-class CornersEffect extends Shell.GLSLEffect {
+class CornersEffect extends Clutter.OffscreenEffect {
     _init(radius) {
         super._init();
         this._radius = radius;
-        this._sizeLocation = this.get_uniform_location('hd_size');
-        this._radiusLocation = this.get_uniform_location('hd_radius');
-    }
-
-    vfunc_build_pipeline() {
-        this.add_glsl_snippet(Cogl.SnippetHook.FRAGMENT, DECLARATIONS, CODE, false);
+        this._pipeline = null;
     }
 
     set radius(value) {
@@ -54,25 +53,31 @@ class CornersEffect extends Shell.GLSLEffect {
     }
 
     vfunc_paint_target(node, paintContext) {
-        const actor = this.get_actor();
-        this.set_uniform_float(this._sizeLocation, 2, [actor.width, actor.height]);
-        this.set_uniform_float(this._radiusLocation, 1, [this._radius]);
+        // Конвейер пересоздаётся, когда меняется размер снимка, — тогда
+        // шейдер добавляется заново.
+        const pipeline = this.get_pipeline();
+        if (pipeline && pipeline !== this._pipeline) {
+            pipeline.add_snippet(Cogl.Snippet.new(Cogl.SnippetHook.FRAGMENT, DECLARATIONS, CODE));
+            this._pipeline = pipeline;
+            this._sizeLocation = pipeline.get_uniform_location('hd_size');
+            this._radiusLocation = pipeline.get_uniform_location('hd_radius');
+        }
+        if (this._pipeline) {
+            const actor = this.get_actor();
+            this._pipeline.set_uniform_float(this._sizeLocation, 2, 1, [actor.width, actor.height]);
+            this._pipeline.set_uniform_1f(this._radiusLocation, this._radius);
+        }
         super.vfunc_paint_target(node, paintContext);
     }
 });
 
-// Тень рисуется слоями вокруг окна, а под самим окном остаётся пустой:
-// иначе она просвечивала бы в вырезанных углах.
-const SHADOW_MARGIN = 28;
-
 const WindowShadow = GObject.registerClass(
-class WindowShadow extends St.DrawingArea {
+class WindowShadow extends St.Widget {
     _init() {
         super._init({style_class: 'hypede-window-shadow'});
-        this._radius = 12;
+        this._radius = -1;
         this._focused = false;
         this._square = false;
-        this.connect('repaint', () => this._draw());
     }
 
     update(radius, focused, square) {
@@ -81,42 +86,8 @@ class WindowShadow extends St.DrawingArea {
         this._radius = radius;
         this._focused = focused;
         this._square = square;
-        this.queue_repaint();
-    }
-
-    _draw() {
-        const cr = this.get_context();
-        const [w, h] = this.get_surface_size();
-        if (this._square) {
-            cr.$dispose();
-            return;
-        }
-        const scale = St.ThemeContext.get_for_stage(global.stage).scale_factor;
-        const m = SHADOW_MARGIN * scale;
-        const r = this._radius * scale;
-        const [blur, dy, strength] = this._focused ? [22, 6, 0.30] : [12, 2, 0.16];
-        const roundRect = (x, y, rw, rh, rr) => {
-            rr = Math.max(0, Math.min(rr, rw / 2, rh / 2));
-            cr.newSubPath();
-            cr.arc(x + rw - rr, y + rr, rr, -Math.PI / 2, 0);
-            cr.arc(x + rw - rr, y + rh - rr, rr, 0, Math.PI / 2);
-            cr.arc(x + rr, y + rh - rr, rr, Math.PI / 2, Math.PI);
-            cr.arc(x + rr, y + rr, rr, Math.PI, 3 * Math.PI / 2);
-            cr.closePath();
-        };
-        const winW = w - 2 * m, winH = h - 2 * m;
-        cr.setFillRule(1); // EVEN_ODD: закрашивается только кольцо вокруг окна
-        const steps = Math.round(blur * scale);
-        for (let i = steps; i > 0; i--) {
-            // Каждый слой шире предыдущего; прозрачность убывает по гауссу.
-            const t = i / steps;
-            const alpha = strength * Math.exp(-4 * t * t) / steps * 3;
-            cr.setSourceRGBA(0, 0, 0, alpha);
-            roundRect(m - i, m - i + dy * scale * (1 - t), winW + 2 * i, winH + 2 * i, r + i);
-            roundRect(m, m, winW, winH, r);
-            cr.fill();
-        }
-        cr.$dispose();
+        const [blur, dy, strength] = focused ? [22, 6, 0.30] : [12, 2, 0.16];
+        this.style = square ? null : shadowStyle(radius, blur, dy, strength);
     }
 });
 

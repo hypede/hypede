@@ -1,10 +1,11 @@
-// Динамический остров (расширение DynamicLinux) в духе Chrome OS.
+// Динамический остров (расширение DynamicLinux).
 //
-// Остров сам по себе — «чёлка» iPhone вверху экрана. В HypeDE верхней панели
-// нет, поэтому он живёт на полке: свёрнутый — капсулой рядом с кнопкой
-// лаунчера (там, где в Chrome OS «Сейчас играет» и запись экрана), раскрытый —
-// пузырём над полкой, как лаунчер и быстрые настройки. Цвета, шрифт,
-// скругления и скорость анимаций берутся из темы HypeDE.
+// По умолчанию (island-position = top) остров — «чёлка» iPhone вверху экрана
+// по центру; если полка тоже сверху, он встаёт под ней. С island-position =
+// shelf он живёт на полке: свёрнутый — капсулой рядом с кнопкой лаунчера (там,
+// где в Chrome OS «Сейчас играет» и запись экрана), раскрытый — пузырём над
+// полкой, как лаунчер и быстрые настройки. Цвета, шрифт, скругления и
+// скорость анимаций берутся из темы HypeDE.
 //
 // Остров узнаёт место через globalThis.hypedeIsland: anchor() и listen().
 
@@ -41,6 +42,7 @@ export class IslandBridge {
         shelf.actor.connectObject('notify::allocation', changed, this);
         settings.connectObject(
             'changed::shelf-position', changed,
+            'changed::island-position', changed,
             'changed::island-follow-theme', () => this._syncTheme(),
             'changed::accent-custom', () => this._syncTheme(),
             'changed::launcher-color', () => this._syncTheme(),
@@ -63,11 +65,20 @@ export class IslandBridge {
     _anchor(state, w, h) {
         const shelf = this._shelf.actor;
         const position = this._settings.get_string('shelf-position');
+        const monitor = Main.layoutManager.primaryMonitor;
+        if (this._settings.get_string('island-position') === 'top') {
+            // Сверху по центру; верхняя полка — над островом.
+            let top = monitor.y + GAP;
+            if (shelf?.mapped && position === 'top') {
+                const [, sy] = shelf.get_transformed_position();
+                top = sy + shelf.get_transformed_size()[1] + GAP;
+            }
+            return {x: Math.round(monitor.x + (monitor.width - w) / 2), y: Math.round(top)};
+        }
         if (!shelf?.mapped || (position !== 'bottom' && position !== 'top'))
             return null;
         const [sx, sy] = shelf.get_transformed_position();
         const [sw, sh] = shelf.get_transformed_size();
-        const monitor = Main.layoutManager.primaryMonitor;
         const ring = Main.panel.statusArea['hypede-launcher']?.container;
         let start = sx + GAP;
         if (ring?.mapped) {

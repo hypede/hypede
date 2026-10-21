@@ -1,6 +1,11 @@
 // Мелочи, общие для частей оболочки.
 
 import Clutter from 'gi://Clutter';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
+
+import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
 // Правый щелчок. Clutter.ClickGesture есть с GNOME 48; на всякий случай
 // оставлен и запасной путь через событие нажатия.
@@ -99,4 +104,74 @@ export function accentHex(shellSettings, interfaceSettings) {
 // анимируют и не считают обычным окном.
 export function isDesktopWindow(win) {
     return win?.get_wm_class?.() === 'dev.hypede.Desktop' || /^hypede-desktop-\d+$/.test(win?.get_title?.() ?? '');
+}
+
+// Всплывающая подсказка со значком на всех мониторах. В GNOME 50 у show()
+// другие аргументы, а showAll() появился только в нём.
+export function showOsd(icon, text) {
+    const manager = Main.osdWindowManager;
+    if (manager.showAll)
+        manager.showAll(icon, text);
+    else
+        manager.show(-1, icon, text);
+}
+
+// Развернуть и восстановить окно. В GNOME 51 maximize()/unmaximize() — без
+// флагов (направления задаёт set_maximize_flags), в 48–50 — с флагами.
+const NEW_MAXIMIZE = typeof Meta.Window.prototype.set_maximize_flags === 'function';
+
+export function maximizeWindow(win) {
+    if (NEW_MAXIMIZE)
+        win.maximize();
+    else
+        win.maximize(Meta.MaximizeFlags.BOTH);
+}
+
+export function unmaximizeWindow(win) {
+    if (NEW_MAXIMIZE)
+        win.unmaximize();
+    else
+        win.unmaximize(Meta.MaximizeFlags.BOTH);
+}
+
+// Левая и средняя кнопки мыши. В GNOME 51 ONE и TWO переименовали.
+export const PRIMARY_AND_MIDDLE = (St.ButtonMask.PRIMARY ?? St.ButtonMask.ONE) |
+    (St.ButtonMask.MIDDLE ?? St.ButtonMask.TWO);
+
+// Окна программы, которые GNOME приписал не ей: имя класса окна, его
+// app_id или «песочный» id совпадает с id ярлыка, StartupWMClass или
+// названием программы. Такие окна иначе не открыть по значку на полке.
+export function strayWindows(app) {
+    const tracker = Shell.WindowTracker.get_default();
+    const normalize = text => (text ?? '').toLowerCase().replace(/\.desktop$/, '').replace(/[\s_]+/g, '-');
+    const id = normalize(app.get_id());
+    const names = new Set([id, id.split('.').pop(), normalize(app.get_name()),
+        normalize(app.get_name()).replace(/-/g, ''), normalize(app.app_info?.get_startup_wm_class?.())]);
+    names.delete('');
+    return global.get_window_actors().map(actor => actor.meta_window).filter(win =>
+        win && win.get_window_type() === Meta.WindowType.NORMAL && !win.skip_taskbar &&
+        tracker.get_window_app(win) !== app &&
+        [win.get_wm_class(), win.get_wm_class_instance(), win.get_gtk_application_id(), win.get_sandboxed_app_id()]
+            .some(name => name && (names.has(normalize(name)) || names.has(normalize(name).replace(/-/g, '')))));
+}
+
+// Открыть программу по значку: её «потерянное» окно, если оно есть; если
+// программа работает, но спрятала окно в трей (Claude Desktop, Discord,
+// Telegram), — запустить ещё раз: так она показывает окно, а activate() в
+// этом случае ничего не делает. Возвращает true, если окно уже было.
+export function openApp(app) {
+    if (app.get_n_windows() > 0) {
+        app.activate();
+        return true;
+    }
+    const stray = strayWindows(app);
+    if (stray.length) {
+        Main.activateWindow(stray[0]);
+        return true;
+    }
+    if (app.state === Shell.AppState.RUNNING)
+        app.launch(0, -1, Shell.AppLaunchGpu.APP_PREF);
+    else
+        app.activate();
+    return false;
 }

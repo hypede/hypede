@@ -2,7 +2,7 @@
 # Запускает GNOME Shell с HypeDE без экрана (виртуальный монитор) — для
 # проверки расширения и скриншотов в контейнере или по SSH.
 #
-#   tools/dev/shell-headless.sh start [WxH]   — запустить
+#   tools/dev/shell-headless.sh start [WxH[,WxH…]] — запустить (несколько мониторов через запятую)
 #   tools/dev/shell-headless.sh shot FILE     — снимок экрана
 #   tools/dev/shell-headless.sh eval 'JS'     — выполнить JS в оболочке
 #   tools/dev/shell-headless.sh stop
@@ -34,7 +34,12 @@ start)
     # Как делает hypede-session: службы шины (порталы) получают окружение
     # HypeDE, иначе приложения GTK берут настройки обычного GNOME.
     dbus-update-activation-environment DCONF_PROFILE HYPEDE_SESSION XDG_CURRENT_DESKTOP XDG_DATA_DIRS
-    nohup gnome-shell --headless --wayland --no-x11 --virtual-monitor "$size" \
+    # Несколько мониторов — через запятую: 1920x1080,1280x1024.
+    monitors=()
+    for one in ${size//,/ }; do
+        monitors+=(--virtual-monitor "$one")
+    done
+    nohup gnome-shell --headless --wayland --no-x11 "${monitors[@]}" \
         --mode="${HYPEDE_MODE:-hypede-dev}" > "$STATE/shell.log" 2>&1 &
     echo $! > "$STATE/shell.pid"
     for _ in $(seq 60); do

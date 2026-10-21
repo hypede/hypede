@@ -9,10 +9,31 @@ import * as ModalDialog from 'resource:///org/gnome/shell/ui/modalDialog.js';
 import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
 import {getAssistant} from './assistant.js';
-import {isDesktopWindow} from './util.js';
+import {isDesktopWindow, showOsd, unmaximizeWindow} from './util.js';
 
 const HISTORY = 25;
 const CLOSED = 10;
+
+// Плавающее окно поверх остальных в углу экрана (как «маленькое окно»
+// в HyperOS); повторный вызов возвращает окно на место.
+export function toggleFloat(win) {
+    if (!win || win.window_type !== Meta.WindowType.NORMAL)
+        return;
+    if (win._hypedeFloat) {
+        const r = win._hypedeFloat;
+        win._hypedeFloat = null;
+        win.unmake_above();
+        win.move_resize_frame(true, r.x, r.y, r.width, r.height);
+        return;
+    }
+    win._hypedeFloat = win.get_frame_rect();
+    if (win.maximized_horizontally || win.maximized_vertically)
+        unmaximizeWindow(win);
+    const area = Main.layoutManager.getWorkAreaForMonitor(win.get_monitor());
+    const w = Math.round(area.width * 0.36), h = Math.round(area.height * 0.42);
+    win.make_above();
+    win.move_resize_frame(true, area.x + area.width - w - 16, area.y + area.height - h - 16, w, h);
+}
 
 export class Extras {
     constructor(settings) {
@@ -76,7 +97,7 @@ export class Extras {
     _paste(text) {
         this._clipboard.set_text(St.ClipboardType.CLIPBOARD, text);
         GLib.timeout_add(GLib.PRIORITY_DEFAULT, 150, () => {
-            const seat = Clutter.get_default_backend().get_default_seat();
+            const seat = global.stage.context.get_backend().get_default_seat();
             this._keyboard ??= seat.create_virtual_device(Clutter.InputDeviceType.KEYBOARD_DEVICE);
             const t = GLib.get_monotonic_time();
             this._keyboard.notify_keyval(t, Clutter.KEY_Control_L, Clutter.KeyState.PRESSED);
@@ -88,23 +109,7 @@ export class Extras {
     }
 
     _toggleFloat() {
-        const win = global.display.focus_window;
-        if (!win || win.window_type !== Meta.WindowType.NORMAL)
-            return;
-        if (win._hypedeFloat) {
-            const r = win._hypedeFloat;
-            win._hypedeFloat = null;
-            win.unmake_above();
-            win.move_resize_frame(true, r.x, r.y, r.width, r.height);
-            return;
-        }
-        win._hypedeFloat = win.get_frame_rect();
-        if (win.get_maximized?.() || win.maximized_horizontally)
-            win.unmaximize(Meta.MaximizeFlags.BOTH);
-        const area = Main.layoutManager.getWorkAreaForMonitor(win.get_monitor());
-        const w = Math.round(area.width * 0.36), h = Math.round(area.height * 0.42);
-        win.make_above();
-        win.move_resize_frame(true, area.x + area.width - w - 16, area.y + area.height - h - 16, w, h);
+        toggleFloat(global.display.focus_window);
     }
 
     _watch(win) {
@@ -151,7 +156,7 @@ export class Extras {
             return GLib.SOURCE_REMOVE;
         });
         app.open_new_window(-1);
-        Main.osdWindowManager.show(-1, app.get_icon(), _('Reopened %s').format(app.get_name()));
+        showOsd(app.get_icon(), _('Reopened %s').format(app.get_name()));
     }
 
     _askSelection() {

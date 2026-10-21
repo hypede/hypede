@@ -164,11 +164,11 @@ class PetWidget extends CompactWidget {
             this._timers.timeout(3000, () => this._walk());
             return;
         }
-        // Чаще отдыхает, чем ходит
-        if (Math.random() < 0.45) {
+        // Чаще отдыхает, чем ходит: каждый шаг — перерисовка экрана.
+        if (Math.random() < 0.7) {
             if (Math.random() < 0.3)
                 this._hop();
-            this._timers.timeout(2500 + Math.random() * 6000, () => this._walk());
+            this._timers.timeout(6000 + Math.random() * 12000, () => this._walk());
             return;
         }
         const maxX = Math.max(0, this._area.width - this._pet.width);
@@ -273,6 +273,10 @@ class StatWidget extends CompactWidget {
         const sys = ctx.services.sysmon;
         if (kind === 'fps')
             sys.acquireFps();
+        // Батарее хватает редкого опроса, остальным показателям нужен частый.
+        this._live = ['cpu', 'ram', 'temp', 'fps', 'net'].includes(kind);
+        if (this._live)
+            sys.acquire();
         if (kind === 'keyboard')
             this.subs.on(ctx.services.controls, 'changed', () => this._update());
         else
@@ -321,6 +325,8 @@ class StatWidget extends CompactWidget {
     destroy() {
         if (this._kind === 'fps')
             this.ctx.services.sysmon.releaseFps();
+        if (this._live)
+            this.ctx.services.sysmon.release();
         super.destroy();
     }
 }

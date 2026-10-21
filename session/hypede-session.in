@@ -20,6 +20,9 @@
 export DCONF_PROFILE=hypede
 export HYPEDE_SESSION=1
 export XDG_DATA_DIRS="@SHELLDATADIR@:${XDG_DATA_DIRS:-/usr/local/share:/usr/share}"
+# Цвета программ KDE в тон теме HypeDE (их пишет оболочка, apptheme.js);
+# сеанс Plasma этого каталога не видит.
+export XDG_CONFIG_DIRS="${XDG_CONFIG_HOME:-$HOME/.config}/hypede/xdg:${XDG_CONFIG_DIRS:-/etc/xdg}"
 
 # Приложения Qt без декораций Adwaita рисуют заголовок в стиле Windows 95.
 # Если пакет qadwaitadecorations стоит — заголовок как у GTK-приложений.
@@ -114,7 +117,7 @@ if command -v dconf >/dev/null 2>&1 && [ -z "$(dconf read /org/gnome/desktop/wm/
     dconf write /org/gnome/desktop/wm/preferences/button-layout "'appmenu:minimize,maximize,close'" 2>/dev/null
 fi
 
-hypede_env="DCONF_PROFILE HYPEDE_SESSION XDG_DATA_DIRS XDG_CURRENT_DESKTOP"
+hypede_env="DCONF_PROFILE HYPEDE_SESSION XDG_DATA_DIRS XDG_CONFIG_DIRS XDG_CURRENT_DESKTOP"
 systemctl --user import-environment $hypede_env 2>/dev/null
 dbus-update-activation-environment $hypede_env 2>/dev/null
 systemctl --user stop xdg-desktop-portal.service \

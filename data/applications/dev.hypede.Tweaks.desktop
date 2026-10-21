@@ -1,0 +1,15 @@
+[Desktop Entry]
+Type=Application
+Name=Tweaks
+Name[ru]=Тонкая настройка
+GenericName=Advanced HypeDE settings
+GenericName[ru]=Расширенные параметры HypeDE
+Comment=Fonts, icons, cursor, windows, shelf, sounds and startup apps
+Comment[ru]=Шрифты, значки, курсор, окна, полка, звуки и автозапуск
+Exec=hypede-settings --page personalization
+Icon=preferences-desktop-appearance
+Terminal=false
+Categories=Settings;DesktopSettings;
+Keywords=tweaks;advanced;fonts;icons;cursor;theme;windows;shelf;autostart;
+Keywords[ru]=твики;расширенные;тонкая;шрифты;значки;курсор;тема;окна;полка;автозапуск;
+OnlyShowIn=HypeDE;

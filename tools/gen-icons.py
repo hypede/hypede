@@ -233,6 +233,10 @@ ICONS = {
     "hypede-printer": "print",
     "hypede-storage": "hard_drive",
     "hypede-trash": "delete",
+    "hypede-tablet": "tablet_android",
+    "hypede-laptop": "laptop_chromebook",
+    "hypede-widgets": "widgets",
+    "hypede-edge": "view_carousel",
 }
 
 # Значки, которых нет в Material Symbols, — нарисованы здесь.

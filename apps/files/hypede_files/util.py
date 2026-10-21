@@ -78,6 +78,7 @@ def validate_filename(name: str) -> str | None:
 
 
 _TERMINALS = (
+    ("hypede-terminal", ["--working-directory"]),
     ("xdg-terminal-exec", []),
     ("ptyxis", ["--new-window", "--working-directory"]),
     ("kgx", ["--working-directory"]),
@@ -102,3 +103,35 @@ def terminal_command(directory: str) -> list[str] | None:
             return [path, *args, directory]
         return [path]
     return None
+
+
+# Файлы, которые запускаются, а не открываются: AppImage и программы ELF.
+_APPIMAGE_TYPES = {"application/vnd.appimage", "application/x-iso9660-appimage"}
+_ELF_TYPES = {"application/x-executable", "application/x-pie-executable"}
+
+
+def is_appimage(name: str, content_type: str) -> bool:
+    return name.lower().endswith(".appimage") or content_type in _APPIMAGE_TYPES
+
+
+def is_program(name: str, content_type: str, executable: bool) -> bool:
+    """Двойной щелчок запускает файл, а не ищет программу для открытия.
+    Программы, собранные как PIE, GLib часто называет x-sharedlib — их
+    отличаем от библиотек по биту запуска и отсутствию «.so» в имени."""
+    if is_appimage(name, content_type) or content_type in _ELF_TYPES:
+        return True
+    return content_type == "application/x-sharedlib" and executable and ".so" not in name
+
+
+def with_exec_bits(mode: int) -> int:
+    """Право на запуск тем, кому файл можно читать (как chmod +x)."""
+    return mode | ((mode & 0o444) >> 2)
+
+
+def appimage_env(env: dict[str, str], has_fuse2: bool) -> dict[str, str]:
+    """Старые AppImage монтируют себя через libfuse2. Без неё просим
+    распаковаться во временный каталог — медленнее, но запускается."""
+    env = dict(env)
+    if not has_fuse2:
+        env["APPIMAGE_EXTRACT_AND_RUN"] = "1"
+    return env

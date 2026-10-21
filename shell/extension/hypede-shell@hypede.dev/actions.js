@@ -7,6 +7,7 @@ import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js'
 
 import {getModes, modeIcon, modeName} from './modes.js';
 import {getSession} from './session.js';
+import {showOsd} from './util.js';
 
 const settings = {};
 const schema = id => (settings[id] ??= new Gio.Settings({schema_id: id}));
@@ -27,7 +28,7 @@ function output(argv) {
 }
 
 const has = program => !!GLib.find_program_in_path(program);
-const osd = (icon, text) => Main.osdWindowManager.show(-1, Gio.ThemedIcon.new(icon), text);
+const osd = (icon, text) => showOsd(Gio.ThemedIcon.new(icon), text);
 
 function toggle(id, key, invert = false) {
     const s = schema(id);

@@ -1,0 +1,42 @@
+#!/bin/sh
+# Android-приложения в HypeDE через Waydroid — как в FydeOS.
+#
+#   hypede-android          в первый раз — настроить, потом — открыть Android
+#   hypede-android setup    поставить и подготовить Waydroid (идёт в терминале)
+#
+# Приложения, поставленные в Android, появляются в лаунчере сами: Waydroid
+# создаёт для них ярлыки .desktop.
+
+say() {
+    case "${LANG:-}" in
+    ru*) printf '%s\n' "$1" ;;
+    *) printf '%s\n' "$2" ;;
+    esac
+}
+
+ready() {
+    command -v waydroid >/dev/null 2>&1 && [ -e /var/lib/waydroid/images/system.img ]
+}
+
+case "${1:-}" in
+setup)
+    say "== Android-приложения (Waydroid) ==" "== Android apps (Waydroid) =="
+    if [ ! -e /dev/binder ] && [ ! -d /dev/binderfs ] && ! grep -qs binder /proc/filesystems; then
+        say "В ядре нет binder, без него Android не запустится. Поставьте ядро linux-zen (sudo pacman -S linux-zen) и перезагрузитесь." \
+            "The kernel has no binder, Android cannot start without it. Install the linux-zen kernel (sudo pacman -S linux-zen) and restart."
+    fi
+    sudo pacman -S --needed waydroid || exit 1
+    # Образ с Google Play, если он доступен; иначе — чистый Android.
+    sudo waydroid init -s GAPPS || sudo waydroid init || exit 1
+    sudo systemctl enable --now waydroid-container || exit 1
+    (waydroid session start >/dev/null 2>&1 &)
+    say "Готово. Откройте «Android» в лаунчере; поставленные приложения появятся там же." \
+        "Done. Open Android in the launcher; the apps you install show up there too."
+    ;;
+*)
+    if ready; then
+        exec waydroid show-full-ui
+    fi
+    exec hypede-terminal -e sh -c 'hypede-android setup; echo; read -r -p "Enter…" _'
+    ;;
+esac

@@ -39,6 +39,10 @@ EXTDIR    := $(SHELLDATADIR)/gnome-shell/extensions/$(UUID)
 MODESDIR  := $(SHELLDATADIR)/gnome-shell/modes
 FILESDIR  := $(DATADIR)/hypede/files
 ASSISTANTDIR := $(DATADIR)/hypede/assistant
+PASSWORDSDIR := $(DATADIR)/hypede/passwords
+WEATHERDIR := $(DATADIR)/hypede/weather
+TERMINALDIR := $(DATADIR)/hypede/terminal
+WELCOMEDIR := $(DATADIR)/hypede/welcome
 THEMEDIR  := $(DATADIR)/hypede/theme
 DESKTOPDIR := $(DATADIR)/hypede/desktop
 SYSTEMDUSERDIR := $(LIBDIR)/systemd/user
@@ -54,11 +58,15 @@ EXT_FILES := $(wildcard shell/extension/$(UUID)/*.js) \
              shell/extension/$(UUID)/metadata.json
 FILES_PY  := $(wildcard apps/files/hypede_files/*.py) apps/files/hypede_files/style.css
 ASSISTANT_PY := $(wildcard apps/assistant/hypede_assistant/*.py)
+PASSWORDS_PY := $(wildcard apps/passwords/hypede_passwords/*.py)
+WEATHER_PY := $(wildcard apps/weather/hypede_weather/*.py)
+TERMINAL_PY := $(wildcard apps/terminal/hypede_terminal/*.py)
+WELCOME_PY := $(wildcard apps/welcome/hypede_welcome/*.py)
 DESKTOP_PY := $(wildcard apps/desktop/hypede_desktop/*.py)
 WALLPAPERS := $(wildcard assets/wallpapers/*.svg) $(wildcard assets/wallpapers/*.png)
 
 .PHONY: all settings auth mo css pot check install install-shell install-island install-session install-data \
-        install-files install-assistant install-theme install-desktop install-settings install-user uninstall-user clean
+        install-files install-assistant install-passwords install-weather install-terminal install-welcome install-theme install-desktop install-settings install-user uninstall-user clean
 
 all: settings auth mo
 
@@ -86,25 +94,25 @@ css:
 	python3 tools/gen-shell-css.py
 
 pot:
-	xgettext --from-code=UTF-8 -L Python -k_ -kngettext:1,2 -o '$(BUILD)/files.pot' apps/files/hypede_files/*.py apps/assistant/hypede_assistant/*.py apps/desktop/hypede_desktop/*.py
-	xgettext --from-code=UTF-8 -L JavaScript -k_ -kngettext:1,2 -o '$(BUILD)/shell.pot' shell/extension/$(UUID)/*.js
+	xgettext --from-code=UTF-8 -L Python -k_ -kN_ -kngettext:1,2 -o '$(BUILD)/files.pot' apps/files/hypede_files/*.py apps/assistant/hypede_assistant/*.py apps/desktop/hypede_desktop/*.py apps/passwords/hypede_passwords/*.py apps/weather/hypede_weather/*.py apps/terminal/hypede_terminal/*.py apps/welcome/hypede_welcome/*.py
+	xgettext --from-code=UTF-8 -L JavaScript -k_ -kN_ -kngettext:1,2 -o '$(BUILD)/shell.pot' shell/extension/$(UUID)/*.js
 	msgcat '$(BUILD)/files.pot' '$(BUILD)/shell.pot' -o po/hypede.pot
 	python3 tools/i18n/make-po.py
 
 check:
 	for f in shell/extension/$(UUID)/*.js; do node --check --input-type=module < $$f || exit 1; done
-	python3 -m py_compile apps/files/hypede_files/*.py apps/assistant/hypede_assistant/*.py apps/theme/hypede_theme.py apps/desktop/hypede_desktop/*.py
+	python3 -m py_compile apps/files/hypede_files/*.py apps/assistant/hypede_assistant/*.py apps/passwords/hypede_passwords/*.py apps/weather/hypede_weather/*.py apps/terminal/hypede_terminal/*.py apps/welcome/hypede_welcome/*.py apps/theme/hypede_theme.py apps/desktop/hypede_desktop/*.py
 	python3 -m unittest discover -s apps/theme/tests -t apps/theme
 	python3 -m unittest discover -s apps/files/tests -t apps/files
 	node shell/tests/calculator.test.mjs
 	d=$$(mktemp -d) && cp data/schemas/* shell/island/$(ISLAND)/schemas/*.xml $$d/ && \
 		glib-compile-schemas --strict --dry-run $$d; r=$$?; rm -rf $$d; exit $$r
-	sh -n session/hypede-session.in && sh -n session/hypede-session-cleanup.in && sh -n session/hypede-autostart-filter && sh -n session/hypede-admin
+	sh -n session/hypede-session.in && sh -n session/hypede-session-cleanup.in && sh -n session/hypede-autostart-filter && sh -n session/hypede-admin && sh -n session/hypede-android
 	msgfmt --check -o /dev/null po/ru.po
 
 # ---------- установка ----------
 
-install: install-shell install-island install-session install-data install-files install-assistant install-theme install-desktop install-settings
+install: install-shell install-island install-session install-data install-files install-assistant install-passwords install-weather install-terminal install-welcome install-theme install-desktop install-settings
 
 # Динамический остров (DynamicLinux, shell/island). Схема — в системные, чтобы
 # работали умолчания HypeDE из 90_hypede.gschema.override.
@@ -134,6 +142,7 @@ install-session: auth
 	$(INSTALL) -Dm755 '$(BUILD)/session/hypede-session' '$(DESTDIR)$(LIBEXECDIR)'/hypede-session
 	$(INSTALL) -Dm755 '$(BUILD)/session/hypede-session-cleanup' '$(DESTDIR)$(LIBEXECDIR)'/hypede-session-cleanup
 	$(INSTALL) -Dm755 session/hypede-autostart-filter '$(DESTDIR)$(LIBEXECDIR)'/hypede-autostart-filter
+	$(INSTALL) -Dm755 session/hypede-android '$(DESTDIR)$(BINDIR)'/hypede-android
 	$(INSTALL) -Dm755 '$(BUILD)/hypede-auth' '$(DESTDIR)$(LIBEXECDIR)'/hypede-auth
 	$(INSTALL) -Dm755 session/hypede-admin '$(DESTDIR)$(LIBEXECDIR)'/hypede-admin
 	$(INSTALL) -Dm644 session/dev.hypede.admin.policy '$(DESTDIR)$(DATADIR)'/polkit-1/actions/dev.hypede.admin.policy
@@ -159,6 +168,7 @@ install-data: mo
 	$(INSTALL) -Dm644 data/backgrounds/hypede.xml '$(DESTDIR)$(DATADIR)'/gnome-background-properties/hypede.xml
 	$(INSTALL) -Dm644 data/applications/dev.hypede.Files.desktop '$(DESTDIR)$(DATADIR)'/applications/dev.hypede.Files.desktop
 	$(INSTALL) -Dm644 data/applications/dev.hypede.Settings.desktop '$(DESTDIR)$(DATADIR)'/applications/dev.hypede.Settings.desktop
+	$(INSTALL) -Dm644 data/applications/dev.hypede.Tweaks.desktop '$(DESTDIR)$(DATADIR)'/applications/dev.hypede.Tweaks.desktop
 	cd assets/icons && find hicolor -type f \( -name '*.svg' -o -name '*.png' \) ! -name 'dev.hypede.Launcher*' -exec \
 		$(INSTALL) -Dm644 '{}' '$(DESTDIR)$(DATADIR)/icons/{}' ';'
 	$(INSTALL) -d '$(DESTDIR)$(DATADIR)'/icons/HypeDE/symbolic
@@ -196,6 +206,55 @@ install-assistant:
 		'sys.exit(main())' > '$(BUILD)/hypede-assistant'
 	$(INSTALL) -Dm755 '$(BUILD)/hypede-assistant' '$(DESTDIR)$(BINDIR)'/hypede-assistant
 	$(INSTALL) -Dm644 data/applications/dev.hypede.Assistant.desktop '$(DESTDIR)$(DATADIR)'/applications/dev.hypede.Assistant.desktop
+	$(INSTALL) -d '$(DESTDIR)$(ASSISTANTDIR)'/local
+	$(INSTALL_DATA) apps/assistant/local/chat.html apps/assistant/local/knowledge.*.md '$(DESTDIR)$(ASSISTANTDIR)'/local/
+	printf '%s\n' '#!/usr/bin/env python3' '# Локальный ИИ HypeDE: llama.cpp и Gemma' 'import sys' \
+		'sys.path.insert(0, "$(ASSISTANTDIR)")' 'from hypede_assistant.localai import main' \
+		'sys.exit(main())' > '$(BUILD)/hypede-ai'
+	$(INSTALL) -Dm755 '$(BUILD)/hypede-ai' '$(DESTDIR)$(BINDIR)'/hypede-ai
+
+# «Пароли» (связки ключей через Secret Service) и «Погода» (Open-Meteo).
+install-passwords:
+	$(INSTALL) -d '$(DESTDIR)$(PASSWORDSDIR)'/hypede_passwords
+	$(INSTALL_DATA) $(PASSWORDS_PY) '$(DESTDIR)$(PASSWORDSDIR)'/hypede_passwords/
+	mkdir -p '$(BUILD)'
+	printf '%s\n' '#!/usr/bin/env python3' '# «Пароли» HypeDE' 'import sys' \
+		'sys.path.insert(0, "$(PASSWORDSDIR)")' 'from hypede_passwords.app import main' \
+		'sys.exit(main())' > '$(BUILD)/hypede-passwords'
+	$(INSTALL) -Dm755 '$(BUILD)/hypede-passwords' '$(DESTDIR)$(BINDIR)'/hypede-passwords
+	$(INSTALL) -Dm644 data/applications/dev.hypede.Passwords.desktop '$(DESTDIR)$(DATADIR)'/applications/dev.hypede.Passwords.desktop
+
+install-weather:
+	$(INSTALL) -d '$(DESTDIR)$(WEATHERDIR)'/hypede_weather
+	$(INSTALL_DATA) $(WEATHER_PY) '$(DESTDIR)$(WEATHERDIR)'/hypede_weather/
+	mkdir -p '$(BUILD)'
+	printf '%s\n' '#!/usr/bin/env python3' '# «Погода» HypeDE' 'import sys' \
+		'sys.path.insert(0, "$(WEATHERDIR)")' 'from hypede_weather.app import main' \
+		'sys.exit(main())' > '$(BUILD)/hypede-weather'
+	$(INSTALL) -Dm755 '$(BUILD)/hypede-weather' '$(DESTDIR)$(BINDIR)'/hypede-weather
+	$(INSTALL) -Dm644 data/applications/dev.hypede.Weather.desktop '$(DESTDIR)$(DATADIR)'/applications/dev.hypede.Weather.desktop
+
+install-terminal:
+	$(INSTALL) -d '$(DESTDIR)$(TERMINALDIR)'/hypede_terminal
+	$(INSTALL_DATA) $(TERMINAL_PY) '$(DESTDIR)$(TERMINALDIR)'/hypede_terminal/
+	mkdir -p '$(BUILD)'
+	printf '%s\n' '#!/usr/bin/env python3' '# «Терминал» HypeDE' 'import sys' \
+		'sys.path.insert(0, "$(TERMINALDIR)")' 'from hypede_terminal.app import main' \
+		'sys.exit(main())' > '$(BUILD)/hypede-terminal'
+	$(INSTALL) -Dm755 '$(BUILD)/hypede-terminal' '$(DESTDIR)$(BINDIR)'/hypede-terminal
+	$(INSTALL) -Dm644 data/applications/dev.hypede.Terminal.desktop '$(DESTDIR)$(DATADIR)'/applications/dev.hypede.Terminal.desktop
+
+# Тур при первом входе: автозапуск в сеансе HypeDE, повтор — из лаунчера.
+install-welcome:
+	$(INSTALL) -d '$(DESTDIR)$(WELCOMEDIR)'/hypede_welcome
+	$(INSTALL_DATA) $(WELCOME_PY) '$(DESTDIR)$(WELCOMEDIR)'/hypede_welcome/
+	mkdir -p '$(BUILD)'
+	printf '%s\n' '#!/usr/bin/env python3' '# Тур по HypeDE' 'import sys' \
+		'sys.path.insert(0, "$(WELCOMEDIR)")' 'from hypede_welcome.app import main' \
+		'sys.exit(main())' > '$(BUILD)/hypede-welcome'
+	$(INSTALL) -Dm755 '$(BUILD)/hypede-welcome' '$(DESTDIR)$(BINDIR)'/hypede-welcome
+	$(INSTALL) -Dm644 data/applications/dev.hypede.Welcome.desktop '$(DESTDIR)$(DATADIR)'/applications/dev.hypede.Welcome.desktop
+	$(INSTALL) -Dm644 data/autostart/dev.hypede.Welcome.desktop '$(DESTDIR)$(SYSCONFDIR)'/xdg/autostart/dev.hypede.Welcome.desktop
 
 # Темы: hypede-theme (применить, сохранить, импорт и экспорт) и встроенные темы.
 install-theme:

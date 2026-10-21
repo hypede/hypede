@@ -2,7 +2,15 @@
 
 import unittest
 
-from hypede_files.util import format_size, split_extension, unique_name, validate_filename
+from hypede_files.util import (
+    appimage_env,
+    format_size,
+    is_program,
+    split_extension,
+    unique_name,
+    validate_filename,
+    with_exec_bits,
+)
 
 
 class FormatSizeTest(unittest.TestCase):
@@ -70,6 +78,29 @@ class ValidateFilenameTest(unittest.TestCase):
         self.assertIsNotNone(validate_filename("a/b"))
         self.assertIsNotNone(validate_filename(".."))
         self.assertIsNotNone(validate_filename("я" * 200))
+
+
+class ProgramTest(unittest.TestCase):
+    def test_appimage_by_name_and_type(self):
+        self.assertTrue(is_program("Modrinth.AppImage", "application/octet-stream", False))
+        self.assertTrue(is_program("app", "application/vnd.appimage", False))
+
+    def test_elf(self):
+        self.assertTrue(is_program("tool", "application/x-executable", True))
+        self.assertTrue(is_program("tool", "application/x-sharedlib", True))
+        self.assertFalse(is_program("libfoo.so.1", "application/x-sharedlib", True))
+        self.assertFalse(is_program("tool", "application/x-sharedlib", False))
+
+    def test_documents_are_not_programs(self):
+        self.assertFalse(is_program("notes.txt", "text/plain", True))
+
+    def test_exec_bits_follow_read_bits(self):
+        self.assertEqual(with_exec_bits(0o644), 0o755)
+        self.assertEqual(with_exec_bits(0o600), 0o700)
+
+    def test_appimage_env(self):
+        self.assertNotIn("APPIMAGE_EXTRACT_AND_RUN", appimage_env({}, True))
+        self.assertEqual(appimage_env({"A": "1"}, False), {"A": "1", "APPIMAGE_EXTRACT_AND_RUN": "1"})
 
 
 if __name__ == "__main__":

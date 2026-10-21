@@ -31,10 +31,11 @@ gi.require_version("Gtk", "4.0")
 gi.require_version("Adw", "1")
 gi.require_version("Gdk", "4.0")
 gi.require_version("WebKit", "6.0")
+gi.require_version("JavaScriptCore", "6.0")
 
-from gi.repository import Adw, Gdk, Gio, GLib, Gtk, WebKit  # noqa: E402
+from gi.repository import Adw, Gdk, Gio, GLib, Gtk, JavaScriptCore, WebKit  # noqa: E402
 
-from . import providers  # noqa: E402
+from . import bridge, providers  # noqa: E402
 
 APP_ID = "dev.hypede.Assistant"
 SCHEMA = "dev.hypede.assistant"
@@ -164,14 +165,34 @@ class AssistantWindow(Adw.ApplicationWindow):
         settings = web.get_settings()
         settings.set_enable_developer_extras(False)
         settings.set_javascript_can_open_windows_automatically(False)
+        if self.provider.local:
+            # Свой чат с file:// ходит к llama-server на 127.0.0.1 и читает
+            # базу знаний рядом с собой; к файлам — только через мост.
+            settings.set_allow_file_access_from_file_urls(True)
+            settings.set_allow_universal_access_from_file_urls(True)
+            content = web.get_user_content_manager()
+            content.register_script_message_handler_with_reply("hypede", None)
+            content.connect("script-message-with-reply-received::hypede", self._on_bridge)
         web.connect("decide-policy", self._on_decide_policy)
         web.connect("permission-request", self._on_permission_request)
         web.connect("load-changed", self._on_load_changed)
         web.connect("notify::title", lambda *_: self._sync_title())
         return web
 
+    def _on_bridge(self, _manager, value, reply):
+        try:
+            result = bridge.handle(json.loads(value.to_string()))
+        except (ValueError, TypeError):
+            result = {"kind": "error", "message": "bad request"}
+        reply.return_value(JavaScriptCore.Value.new_string(value.get_context(), json.dumps(result)))
+        return True
+
     def _switch_provider(self) -> None:
         self.provider = providers.get(self.settings.get_string("provider") if self.settings else "")
+        for name in ("login", "logout"):
+            action = self.lookup_action(name)
+            if action:
+                action.set_enabled(not self.provider.local)
         if self.web is not None:
             self.stack.remove(self.web)
         self.web = self._make_webview()
@@ -256,7 +277,10 @@ class AssistantWindow(Adw.ApplicationWindow):
                 continue
             payload.append({"name": os.path.basename(path), "data": data,
                             "type": mimetypes.guess_type(path)[0] or "application/octet-stream"})
-        script = _INJECT % (json.dumps(prompt), json.dumps(payload))
+        if self.provider.local:
+            script = "window.hypedeAsk(%s, %s)" % (json.dumps(prompt), json.dumps(payload))
+        else:
+            script = _INJECT % (json.dumps(prompt), json.dumps(payload))
         self.web.evaluate_javascript(script, -1, None, None, None, self._on_injected, files)
 
     def _on_injected(self, web, result, files):

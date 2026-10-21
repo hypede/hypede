@@ -21,15 +21,23 @@ depends=(
   'xdg-desktop-portal-gnome' 'ttf-roboto'
   # «Файлы»
   'dconf' 'python' 'python-gobject' 'gtk4' 'libadwaita>=1.7' 'gvfs' 'gnome-desktop-4'
+  'fuse2'  # старые AppImage монтируют себя через libfuse2
+  # «Пароли» и «Погода»
+  'libsecret' 'libsoup3'
+  'vte4'  # «Терминал»
+  'python-cairo'  # анимации тура «Добро пожаловать»
+  'pacman-contrib'  # checkupdates: уведомление об обновлениях
   # «Настройки»
   'qt6-base' 'qt6-declarative' 'qt6-svg' 'kcmutils' 'kcolorscheme' 'kconfig' 'kcoreaddons'
   'kirigami' 'qqc2-desktop-style' 'breeze' 'breeze-icons'
+  'qt6-imageformats' 'kimageformats'  # обои в WebP, JPEG XL и AVIF (у GNOME — JPEG XL)
 )
 makedepends=('cmake' 'extra-cmake-modules' 'qt6-tools' 'gettext')
 optdepends=(
-  'plasma-nm: страница «Сеть → Подключения» (Wi‑Fi, VPN, Ethernet)'
-  'bluedevil: раздел «Bluetooth»'
-  'plasma-pa: «Устройство → Звук»'
+  'gnome-keyring: хранилище паролей для «Паролей» (или KeePassXC, KWallet)'
+  'bluez: «Bluetooth»'
+  'plasma-nm: «Сеть → Дополнительные настройки подключений» (IP, импорт VPN, корпоративный Wi‑Fi)'
+  'libpulse: «Устройство → Звук» (pactl, работает и с PipeWire)'
   'print-manager: «Устройство → Принтеры»'
   'plasma-workspace: «Приложения по умолчанию» и «Автозапуск»'
   'plasma-desktop: «Пользователи»'
@@ -51,6 +59,18 @@ optdepends=(
 options=('!lto' '!debug')
 provides=('hypede')
 conflicts=('hypede')
+
+# Версия из git: 2.1.0.r<число коммитов>.g<хеш>, чтобы пакет из
+# репозитория hypede обновлялся с каждым коммитом. Без git — как есть.
+pkgver() {
+  cd "$startdir/.."
+  local base=${pkgver%%.r*}
+  if git rev-parse --git-dir >/dev/null 2>&1; then
+    printf '%s.r%s.g%s' "$base" "$(git rev-list --count HEAD)" "$(git rev-parse --short=7 HEAD)"
+  else
+    printf '%s' "$pkgver"
+  fi
+}
 
 build() {
   cd "$startdir/.."

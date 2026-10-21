@@ -473,6 +473,52 @@
 /* Лаунчер                                                             */
 /* ------------------------------------------------------------------ */
 
+/* Боковая панель (Edge Panel из One UI) */
+.hypede-edge-handle {
+  width: 7px;
+  height: 84px;
+  border-radius: 4px 0 0 4px;
+  background-color: rgba(31, 31, 31, 0.45);
+  transition-duration: 150ms;
+}
+.hypede-edge-handle:hover {
+  width: 10px;
+  background-color: -st-accent-color;
+}
+.hypede-edge-panel {
+  background-color: rgba(248, 250, 253, 0.98);
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  border-radius: 28px;
+  padding: 14px 10px;
+  spacing: 6px;
+  min-width: 196px;
+  color: #1f1f1f;
+}
+.hypede-edge-title {
+  font-size: 9pt;
+  font-weight: 600;
+  color: #444746;
+  padding: 4px 10px 0;
+}
+.hypede-edge-tools { spacing: 2px; }
+.hypede-edge-tile {
+  border-radius: 18px;
+  padding: 8px 4px;
+  width: 88px;
+}
+.hypede-edge-tile:hover,
+.hypede-edge-tile:focus { background-color: rgba(0, 0, 0, 0.06); }
+.hypede-edge-tile:active { background-color: rgba(0, 0, 0, 0.10); }
+.hypede-edge-tile-box { spacing: 6px; }
+.hypede-edge-tile-icon { icon-size: 40px; }
+.hypede-edge-tools .hypede-edge-tile-icon { icon-size: 22px; padding: 9px; border-radius: 999px; background-color: rgba(0, 0, 0, 0.05); }
+.hypede-edge-tile-label { font-size: 9pt; max-width: 84px; }
+
+/* Обзор окон: затемнение поверх размытых обоев */
+.hypede-overview-shade {
+  background-color: rgba(0, 0, 0, 0.28);
+}
+
 .hypede-launcher-menu .popup-menu-content {
   padding: 0;
   border-radius: 24px;
@@ -838,9 +884,7 @@
   padding: 18px 20px;
   spacing: 6px;
   min-width: 220px;
-  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.18);
 }
-.hypede-widget:drag { box-shadow: 0 14px 40px rgba(0, 0, 0, 0.32); }
 .hypede-widget-time { font-size: 34pt; font-weight: 300; }
 .hypede-widget-date { font-size: 12pt; font-weight: 500; }
 .hypede-widget-title { font-size: 11pt; font-weight: 600; margin-bottom: 4px; }
@@ -859,5 +903,10 @@
 .hypede-widget-controls { spacing: 10px; margin-top: 6px; }
 .hypede-widget-button { padding: 8px; border-radius: 999px; background-color: rgba(0, 0, 0, 0.04); }
 .hypede-widget-button:hover { background-color: rgba(0, 0, 0, 0.08); }
+.hypede-widget-dots { color: #1f1f1f; margin: 6px 0 10px; }
+.hypede-widget-dots-date { letter-spacing: 2px; }
+.hypede-widget-custom-head { spacing: 8px; }
+.hypede-widget-custom-icon { icon-size: 18px; }
+.hypede-widget-custom-body { spacing: 2px; max-width: 360px; }
 .hypede-widget-button StIcon { icon-size: 16px; }
 .hypede-widget-note-entry { min-height: 60px; padding: 4px 0; border: none; background-color: transparent; color: #1f1f1f; font-size: 11pt; box-shadow: none; caret-color: #1f1f1f; }

@@ -55,6 +55,12 @@ DCONF_PROFILE=hypede dconf load / < hypede-backup.ini      # восстанов�
 | `launcher-hidden-apps` | «Настройки» GNOME и KDE, менеджеры расширений | что не показывать в лаунчере |
 | `launcher-opacity` | `96` | непрозрачность лаунчера и меню, % |
 | `launcher-blur` | `true` | размытие под лаунчером |
+| `menu-blur` | `true` | размытие под быстрыми настройками и календарём |
+| `overview-key` | `['<Super>w']` | обзор окон и рабочих столов |
+| `shelf-overview-button` | `true` | кнопка обзора в трее полки |
+| `edge-panel` | `true` | боковая панель у правого края (как Edge Panel в One UI) |
+| `edge-panel-apps` | `[]` | приложения боковой панели; пусто — самые используемые |
+| `tablet-mode` | `'auto'` | режим планшета: `auto` (крышка 2-в-1 или отстёгнутая клавиатура), `on`, `off` |
 | `web-search-url` | Google | адрес веб-поиска, `%s` — запрос |
 | `super-key-action` | `'launcher'` | Super открывает `launcher` или `overview` |
 | `window-animations` | `'hypede'` | анимации окон: `hypede` (мягкие) или `gnome` |

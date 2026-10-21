@@ -18,6 +18,7 @@ import {Extension} from 'resource:///org/gnome/shell/extensions/extension.js';
 import {ExtensionGuard} from './guard.js';
 import {StyleManager} from './style.js';
 import {DecorationSync} from './decoration.js';
+import {AppTheme} from './apptheme.js';
 import {Shelf} from './shelf.js';
 import {Launcher} from './launcher.js';
 import {OverviewTweaks} from './overview.js';
@@ -30,9 +31,14 @@ import {Widgets} from './widgets.js';
 import {Gestures} from './gestures.js';
 import {IslandBridge} from './islandbridge.js';
 import {Extras} from './extras.js';
+import {HypeFeatures} from './hype.js';
 import {FocusModes} from './modes.js';
 import {SessionKeeper} from './session.js';
+import {AutoTiling} from './tiling.js';
 import {ChromeQuickSettings} from './quicksettings.js';
+import {MenuBlur} from './menublur.js';
+import {TabletMode} from './tablet.js';
+import {EdgePanel} from './edgepanel.js';
 import {Assistant} from './assistant.js';
 import {Greeting} from './greeting.js';
 import {LockScreen} from './lockscreen.js';
@@ -56,6 +62,7 @@ export default class HypeDEShellExtension extends Extension {
 
         this._style = new StyleManager(this._settings);
         this._decoration = new DecorationSync();
+        this._appTheme = new AppTheme();
         // Помощник — раньше лаунчера: лаунчер спрашивает, включён ли он.
         this._assistant = new Assistant();
         this._launcher = new Launcher(this._settings);
@@ -70,9 +77,14 @@ export default class HypeDEShellExtension extends Extension {
         this._desktop = new Desktop(this._settings);
         this._widgets = new Widgets(this._settings);
         this._extras = new Extras(this._settings);
+        this._edge = new EdgePanel(this._settings, this._extras);
+        this._hype = new HypeFeatures(this._settings);
+        this._tiling = new AutoTiling(this._settings);
         this._modes = new FocusModes(this._settings);
         this._session = new SessionKeeper(this._settings);
         this._quickSettings = new ChromeQuickSettings();
+        this._menuBlur = new MenuBlur(this._settings);
+        this._tablet = new TabletMode(this._settings);
         this._lock = new LockScreen(this._settings, this._shelf);
         if (inHypeDESession())
             this._greeting = new Greeting(this._settings);
@@ -81,8 +93,8 @@ export default class HypeDEShellExtension extends Extension {
     disable() {
         // Порядок обратный: полка держит кнопку лаунчера, поэтому уходит
         // раньше самого лаунчера.
-        for (const part of ['_greeting', '_lock', '_quickSettings', '_session', '_modes', '_extras', '_widgets', '_desktop', '_live', '_corners', '_windows', '_notifications', '_gestures', '_overview',
-            '_island', '_shelf', '_launcher', '_assistant', '_style', '_decoration', '_guard']) {
+        for (const part of ['_greeting', '_lock', '_tablet', '_menuBlur', '_quickSettings', '_session', '_modes', '_tiling', '_hype', '_edge', '_extras', '_widgets', '_desktop', '_live', '_corners', '_windows', '_notifications', '_gestures', '_overview',
+            '_island', '_shelf', '_launcher', '_assistant', '_style', '_appTheme', '_decoration', '_guard']) {
             this[part]?.destroy();
             this[part] = null;
         }

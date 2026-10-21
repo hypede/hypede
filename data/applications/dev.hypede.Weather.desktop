@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=Weather
+Name[ru]=Погода
+Comment=Forecast for today and the week
+Comment[ru]=Прогноз на сегодня и на неделю
+Exec=hypede-weather
+Icon=weather-few-clouds
+Terminal=false
+Categories=Utility;GTK;
+Keywords=weather;forecast;temperature;rain;
+Keywords[ru]=погода;прогноз;температура;дождь;
+StartupNotify=true

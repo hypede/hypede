@@ -23,7 +23,9 @@ Item {
         { id: "chatgpt", name: "ChatGPT", maker: "OpenAI", color: "#10a37f" },
         { id: "grok", name: "Grok", maker: "xAI", color: "#3c3c3c" },
         { id: "deepseek", name: "DeepSeek", maker: "DeepSeek", color: "#4d6bfe" },
+        { id: "local", name: qsTr("On this computer"), maker: "Gemma · llama.cpp", color: "#34a853" },
     ]
+    readonly property bool local: provider === "local"
     readonly property string providerName: {
         for (const p of providers)
             if (p.id === provider)
@@ -132,6 +134,12 @@ Item {
                             cursorShape: Qt.PointingHandCursor
                             onClicked: {
                                 const changed = card.modelData.id !== block.provider
+                                // Локальный ИИ ставит и запускает тур hypede-welcome
+                                // (страница «ИИ»): там видно ход загрузки модели.
+                                if (card.modelData.id === "local") {
+                                    System.run(["hypede-welcome", "--page", "ai"])
+                                    return
+                                }
                                 block.settings.setValue("provider", card.modelData.id)
                                 // Новый провайдер — сразу его страница входа.
                                 if (changed)
@@ -144,7 +152,7 @@ Item {
         }
 
         SettingRow {
-            visible: block.isOn
+            visible: block.isOn && !block.local
             title: qsTr("Sign in to %1").arg(block.providerName)
             subtitle: qsTr("Use your own account on the provider's website. HypeDE does not see your password.")
             ChromeButton {
@@ -162,7 +170,9 @@ Item {
         SettingRow {
             visible: block.isOn
             title: qsTr("What the assistant can do")
-            subtitle: qsTr("Only chat. It cannot run commands or read your files: it sees just the text and files you send with an “Ask” button.")
+            subtitle: block.local
+                      ? qsTr("Works offline and knows HypeDE. It reads (never changes) the files and folders you name, like ~/Documents, and finds files by name.")
+                      : qsTr("Only chat. It cannot run commands or read your files: it sees just the text and files you send with an “Ask” button.")
         }
     }
 }

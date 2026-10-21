@@ -263,6 +263,11 @@ export class HomePage extends BasePage {
 
     onShow() {
         super.onShow();
+        // onShow может прийти повторно без onHide — держим одну подписку.
+        if (!this._sysHeld) {
+            this._sysHeld = true;
+            this.services.sysmon.acquire();
+        }
         this._media.setActive(true);
         this._updateClock();
         this._updateSys();
@@ -271,6 +276,10 @@ export class HomePage extends BasePage {
 
     onHide() {
         super.onHide();
+        if (this._sysHeld) {
+            this._sysHeld = false;
+            this.services.sysmon.release();
+        }
         this._media.setActive(false);
     }
 

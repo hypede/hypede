@@ -615,4 +615,11 @@ RU.update({
     'Colours, font, corners and animation speed follow your theme': 'Цвета, шрифт, скругления и скорость анимаций — как в вашей теме',
     'Island settings': 'Настройки острова',
     'Tabs, capsule contents, AI, voice input, pet': 'Вкладки, что показывать в капсуле, ИИ, голосовой ввод, питомец',
+    "Overview button": "Кнопка обзора",
+    "All windows and desks at a glance. Also Super+W": "Все окна и рабочие столы разом. Ещё — Super+W",
+    "Edge panel": "Боковая панель",
+    "A handle on the right edge opens favorite apps and tools": "Язычок у правого края открывает любимые приложения и инструменты",
+    "Tablet mode": "Режим планшета",
+    "When the keyboard is folded away": "Когда клавиатура сложена",
+    "Blur behind quick settings and calendar": "Размытие под быстрыми настройками и календарём",
 })

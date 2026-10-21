@@ -56,4 +56,67 @@
     <pcolor>#fbe3ee</pcolor>
     <scolor>#22101f</scolor>
   </wallpaper>
+  <wallpaper deleted="false">
+    <name>HypeDE Dots</name>
+    <filename>/usr/share/hypede/wallpapers/dots-light.svg</filename>
+    <filename-dark>/usr/share/hypede/wallpapers/dots-dark.svg</filename-dark>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#f2f2ef</pcolor>
+    <scolor>#0b0b0c</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>HypeDE Forest</name>
+    <filename>/usr/share/hypede/wallpapers/forest-light.svg</filename>
+    <filename-dark>/usr/share/hypede/wallpapers/forest-dark.svg</filename-dark>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#cfe3e6</pcolor>
+    <scolor>#0b1622</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>HypeDE Lake</name>
+    <filename>/usr/share/hypede/wallpapers/lake-light.svg</filename>
+    <filename-dark>/usr/share/hypede/wallpapers/lake-dark.svg</filename-dark>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#bfdcf5</pcolor>
+    <scolor>#0a1020</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>HypeDE Meadow</name>
+    <filename>/usr/share/hypede/wallpapers/meadow-light.svg</filename>
+    <filename-dark>/usr/share/hypede/wallpapers/meadow-dark.svg</filename-dark>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#a9d6f5</pcolor>
+    <scolor>#0d1a2b</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>HypeDE Coast</name>
+    <filename>/usr/share/hypede/wallpapers/coast-light.svg</filename>
+    <filename-dark>/usr/share/hypede/wallpapers/coast-dark.svg</filename-dark>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#ffd1a8</pcolor>
+    <scolor>#091424</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>HypeDE Autumn</name>
+    <filename>/usr/share/hypede/wallpapers/autumn-light.svg</filename>
+    <filename-dark>/usr/share/hypede/wallpapers/autumn-dark.svg</filename-dark>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#ffe2c2</pcolor>
+    <scolor>#1a0f1e</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>HypeDE Canyon</name>
+    <filename>/usr/share/hypede/wallpapers/canyon-light.svg</filename>
+    <filename-dark>/usr/share/hypede/wallpapers/canyon-dark.svg</filename-dark>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#f9d3b0</pcolor>
+    <scolor>#120c1f</scolor>
+  </wallpaper>
 </wallpapers>

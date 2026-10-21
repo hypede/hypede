@@ -6,9 +6,38 @@
 //   открывает лаунчер с этим текстом.
 // * Сеанс начинается на рабочем столе, а не в обзоре.
 
+import Clutter from 'gi://Clutter';
 import GObject from 'gi://GObject';
+import Meta from 'gi://Meta';
+import Shell from 'gi://Shell';
+import St from 'gi://St';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
+import * as PanelMenu from 'resource:///org/gnome/shell/ui/panelMenu.js';
+import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
+
+import {Backdrop} from './backdrop.js';
+
+const OVERVIEW_FADE = 250;
+
+// Кнопка обзора в трее полки — как «Обзор» в Chrome OS.
+const OverviewButton = GObject.registerClass(
+class OverviewButton extends PanelMenu.Button {
+    _init() {
+        super._init(0.5, _('Overview'), true);
+        this.add_style_class_name('hypede-overview-button');
+        this.add_child(new St.Icon({icon_name: 'view-grid-symbolic', style_class: 'system-status-icon'}));
+        this.connect('button-press-event', () => {
+            Main.overview.toggle();
+            return Clutter.EVENT_STOP;
+        });
+        this.connect('touch-event', (_a, event) => {
+            if (event.type() === Clutter.EventType.TOUCH_BEGIN)
+                Main.overview.toggle();
+            return Clutter.EVENT_STOP;
+        });
+    }
+});
 
 export class OverviewTweaks {
     constructor(settings, launcher) {
@@ -46,6 +75,24 @@ export class OverviewTweaks {
             GObject.signal_handler_block(global.display, this._overlayHandler);
         global.display.connectObject('overlay-key', () => this._onOverlayKey(), this);
 
+        // Фон обзора — размытые обои (дёшево: см. backdrop.js) с затемнением,
+        // проявляются вместе с обзором.
+        this._backdrops = [];
+        Main.overview.connectObject(
+            'showing', () => this._fadeBackdrops(true),
+            'hiding', () => this._fadeBackdrops(false),
+            'hidden', () => this._dropBackdrops(),
+            this);
+
+        // Super+W и кнопка в трее.
+        Main.wm.addKeybinding('overview-key', settings, Meta.KeyBindingFlags.NONE,
+            Shell.ActionMode.NORMAL | Shell.ActionMode.OVERVIEW, () => {
+                this._launcher.close();
+                Main.overview.toggle();
+            });
+        settings.connectObject('changed::shelf-overview-button', () => this._syncButton(), this);
+        this._syncButton();
+
         // Начало сеанса — сразу на рабочий стол. Расширения грузятся
         // асинхронно и могут опоздать к началу анимации входа, поэтому
         // обзор ещё и закрывается по её окончании.
@@ -60,6 +107,50 @@ export class OverviewTweaks {
                     Main.overview.hide();
             }, this);
         }
+    }
+
+    _syncButton() {
+        const want = this._settings.get_boolean('shelf-overview-button');
+        if (want && !this._button) {
+            this._button = new OverviewButton();
+            Main.panel.addToStatusArea('hypede-overview', this._button, 0, 'right');
+        } else if (!want && this._button) {
+            this._button.destroy();
+            this._button = null;
+        }
+    }
+
+    _fadeBackdrops(show) {
+        if (this._settings.get_boolean('lite-mode'))
+            return;
+        if (show && this._backdrops.length === 0) {
+            const group = Main.layoutManager.overviewGroup;
+            for (const monitor of Main.layoutManager.monitors) {
+                const backdrop = new Backdrop();
+                backdrop.set_position(monitor.x, monitor.y);
+                backdrop.set_size(monitor.width, monitor.height);
+                const shade = new St.Widget({style_class: 'hypede-overview-shade', x_expand: true, y_expand: true});
+                shade.add_constraint(new Clutter.BindConstraint({source: backdrop, coordinate: Clutter.BindCoordinate.SIZE}));
+                backdrop.add_child(shade);
+                backdrop.opacity = 0;
+                group.insert_child_at_index(backdrop, 0);
+                backdrop.sync();
+                this._backdrops.push(backdrop);
+            }
+        }
+        for (const backdrop of this._backdrops) {
+            backdrop.ease({
+                opacity: show ? 255 : 0,
+                duration: OVERVIEW_FADE,
+                mode: Clutter.AnimationMode.EASE_OUT_QUAD,
+            });
+        }
+    }
+
+    _dropBackdrops() {
+        for (const backdrop of this._backdrops)
+            backdrop.destroy();
+        this._backdrops = [];
     }
 
     _onOverlayKey() {
@@ -77,6 +168,12 @@ export class OverviewTweaks {
 
     destroy() {
         global.display.disconnectObject(this);
+        Main.overview.disconnectObject(this);
+        this._settings.disconnectObject(this);
+        Main.wm.removeKeybinding('overview-key');
+        this._button?.destroy();
+        this._button = null;
+        this._dropBackdrops();
         if (this._overlayHandler)
             GObject.signal_handler_unblock(global.display, this._overlayHandler);
 

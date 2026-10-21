@@ -89,6 +89,15 @@
       <default>true</default>
       <summary>Значок корзины на рабочем столе</summary>
     </key>
+    <key name="island-position" type="s">
+      <choices>
+        <choice value="top"/>
+        <choice value="shelf"/>
+      </choices>
+      <default>'top'</default>
+      <summary>Где динамический остров</summary>
+      <description>top — капсула вверху по центру экрана, как на iPhone; shelf — на полке рядом с кнопкой лаунчера.</description>
+    </key>
     <key name="island-follow-theme" type="b">
       <default>true</default>
       <summary>Динамический остров в теме HypeDE</summary>
@@ -136,6 +145,26 @@
     <key name="ask-selection" type="as">
       <default>['&lt;Super&gt;a']</default>
       <summary>Спросить ИИ о выделенном тексте</summary>
+    </key>
+    <key name="toggle-tiling" type="as">
+      <default>['&lt;Super&gt;t']</default>
+      <summary>Включить или выключить авто-тайлинг на текущем столе</summary>
+    </key>
+    <key name="auto-tile" type="b">
+      <default>false</default>
+      <summary>Авто-тайлинг на всех столах по умолчанию</summary>
+    </key>
+    <key name="dropdown-terminal" type="as">
+      <default>['F12']</default>
+      <summary>Выпадающий терминал (как Yakuake и Guake)</summary>
+    </key>
+    <key name="shake-to-find" type="b">
+      <default>true</default>
+      <summary>Встряхнуть мышь — курсор на миг становится большим</summary>
+    </key>
+    <key name="update-check" type="b">
+      <default>true</default>
+      <summary>Проверять обновления системы и сообщать о них</summary>
     </key>
     <key name="session-restore" type="s">
       <choices>
@@ -275,6 +304,47 @@
     <key name="launcher-blur" type="b">
       <default>true</default>
       <summary>Размывать фон под лаунчером</summary>
+    </key>
+
+    <key name="edge-panel" type="b">
+      <default>true</default>
+      <summary>Боковая панель у правого края</summary>
+      <description>Язычок у края экрана открывает панель с любимыми приложениями и инструментами, как Edge Panel в One UI.</description>
+    </key>
+    <key name="edge-panel-apps" type="as">
+      <default>[]</default>
+      <summary>Приложения в боковой панели</summary>
+      <description>Список .desktop-файлов. Пусто — самые используемые приложения.</description>
+    </key>
+
+    <key name="tablet-mode" type="s">
+      <choices>
+        <choice value="auto"/>
+        <choice value="on"/>
+        <choice value="off"/>
+      </choices>
+      <default>'auto'</default>
+      <summary>Режим планшета</summary>
+      <description>auto — сам, когда крышка 2-в-1 перевёрнута или клавиатура отстёгнута; on — всегда; off — никогда.</description>
+    </key>
+    <key name="tablet-saved" type="s">
+      <default>''</default>
+      <summary>Настройки до режима планшета (служебное)</summary>
+    </key>
+
+    <key name="overview-key" type="as">
+      <default>['&lt;Super&gt;w']</default>
+      <summary>Обзор окон и рабочих столов</summary>
+    </key>
+
+    <key name="shelf-overview-button" type="b">
+      <default>true</default>
+      <summary>Кнопка обзора в трее полки</summary>
+    </key>
+
+    <key name="menu-blur" type="b">
+      <default>true</default>
+      <summary>Размывать фон под быстрыми настройками и календарём</summary>
     </key>
 
     <key name="web-search-url" type="s">
@@ -492,15 +562,80 @@
         <choice value="chatgpt"/>
         <choice value="grok"/>
         <choice value="deepseek"/>
+        <choice value="local"/>
       </choices>
       <default>'claude'</default>
       <summary>Провайдер</summary>
       <description>Чей чат открывает помощник. Вход — в собственную учётную запись на сайте провайдера.</description>
     </key>
+    <key name="local-model" type="s">
+      <choices><choice value="small"/><choice value="large"/></choices>
+      <default>'small'</default>
+      <summary>Модель локального ИИ</summary>
+      <description>small — Gemma 3 270M (290 МБ), large — Gemma 3 1B (800 МБ). Ставит hypede-ai install.</description>
+    </key>
     <key name="panel-width" type="i">
       <range min="320" max="900"/>
       <default>440</default>
       <summary>Ширина панели помощника</summary>
+    </key>
+  </schema>
+  <!-- ================================================================ -->
+  <!-- «Погода»: города и единицы; виджет погоды берёт их отсюда же      -->
+  <!-- ================================================================ -->
+  <schema id="dev.hypede.weather" path="/dev/hypede/weather/">
+    <key name="places" type="as">
+      <default>[]</default>
+      <summary>Города</summary>
+      <description>JSON каждого города: {"name", "region", "country", "lat", "lon"}.</description>
+    </key>
+    <key name="current" type="i">
+      <default>0</default>
+      <summary>Город, который показывают виджет и окно</summary>
+    </key>
+    <key name="unit" type="s">
+      <choices><choice value="c"/><choice value="f"/></choices>
+      <default>'c'</default>
+      <summary>Градусы Цельсия или Фаренгейта</summary>
+    </key>
+  </schema>
+  <!-- ================================================================ -->
+  <!-- «Терминал»                                                         -->
+  <!-- ================================================================ -->
+  <schema id="dev.hypede.terminal" path="/dev/hypede/terminal/">
+    <key name="scheme" type="s">
+      <default>'hypede'</default>
+      <summary>Цветовая схема</summary>
+    </key>
+    <key name="font" type="s">
+      <default>''</default>
+      <summary>Шрифт; пусто — моноширинный шрифт системы</summary>
+    </key>
+    <key name="zoom" type="i">
+      <default>0</default>
+      <summary>На сколько пунктов крупнее или мельче шрифт (Ctrl+= и Ctrl+-)</summary>
+    </key>
+    <key name="opacity" type="d">
+      <range min="0.3" max="1"/>
+      <default>1</default>
+      <summary>Непрозрачность фона</summary>
+    </key>
+    <key name="cursor-shape" type="s">
+      <choices><choice value="block"/><choice value="ibeam"/><choice value="underline"/></choices>
+      <default>'block'</default>
+      <summary>Форма курсора</summary>
+    </key>
+    <key name="cursor-blink" type="b">
+      <default>true</default>
+      <summary>Мигающий курсор</summary>
+    </key>
+    <key name="scrollback" type="i">
+      <default>10000</default>
+      <summary>Строк прокрутки; -1 — без ограничения</summary>
+    </key>
+    <key name="bell" type="b">
+      <default>false</default>
+      <summary>Звук «звонка» терминала</summary>
     </key>
   </schema>
 </schemalist>

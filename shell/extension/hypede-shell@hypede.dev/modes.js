@@ -7,6 +7,7 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import {QuickMenuToggle, SystemIndicator} from 'resource:///org/gnome/shell/ui/quickSettings.js';
 import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
+import {showOsd} from './util.js';
 
 const ICONS = {work: 'hypede-work-symbolic', game: 'input-gaming-symbolic', study: 'accessories-dictionary-symbolic'};
 const STATE = GLib.build_filenamev([GLib.get_user_state_dir(), 'hypede', 'before-mode.json']);
@@ -113,7 +114,7 @@ export class FocusModes {
         if (!mode) {
             this._settings.set_string('focus-mode', '');
             if (current)
-                Main.osdWindowManager.show(-1, Gio.ThemedIcon.new('hypede-work-symbolic'), _('Focus mode off'));
+                showOsd(Gio.ThemedIcon.new('hypede-work-symbolic'), _('Focus mode off'));
             return;
         }
         const before = {dnd: !this._notifications.get_boolean('show-banners'), power: powerProfile(''), theme: false};
@@ -135,7 +136,7 @@ export class FocusModes {
         for (const appId of mode.apps ?? [])
             Shell.AppSystem.get_default().lookup_app(appId)?.activate();
         this._settings.set_string('focus-mode', mode.id);
-        Main.osdWindowManager.show(-1, Gio.ThemedIcon.new(modeIcon(mode)), _('Focus mode: %s').format(modeName(mode)));
+        showOsd(Gio.ThemedIcon.new(modeIcon(mode)), _('Focus mode: %s').format(modeName(mode)));
     }
 
     _restore() {

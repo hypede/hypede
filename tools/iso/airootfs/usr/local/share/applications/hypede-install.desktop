@@ -1,0 +1,10 @@
+[Desktop Entry]
+Type=Application
+Name=Install HypeDE
+Name[ru]=Установить HypeDE
+Comment=Install HypeDE to this computer's disk
+Comment[ru]=Установить HypeDE на диск этого компьютера
+Icon=system-software-install
+Exec=ptyxis --standalone -- sudo /usr/local/bin/hypede-install
+Terminal=false
+Categories=System;

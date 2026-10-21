@@ -26,9 +26,52 @@ export function normalize(text) {
     return text.toLocaleLowerCase().normalize('NFKD').replace(/[̀-ͯ]/g, '');
 }
 
+// Индекс хранится компактно: все имена — одна строка через «\n», пути —
+// другая, начала записей — в типизированных массивах. Десятки тысяч мелких
+// массивов и строк сборщик мусора GJS обходил бы при каждой полной сборке,
+// а это заметные паузы всей оболочки.
+class Packed {
+    constructor(names = [], paths = [], dirs = []) {
+        this.count = names.length;
+        this.names = `\n${names.join('\n')}\n`;
+        this.paths = paths.join('\n');
+        this.nameStarts = new Int32Array(this.count + 1);
+        this.pathStarts = new Int32Array(this.count + 1);
+        this.dirs = Uint8Array.from(dirs);
+        let n = 1, q = 0;
+        for (let i = 0; i < this.count; i++) {
+            this.nameStarts[i] = n;
+            this.pathStarts[i] = q;
+            n += names[i].length + 1;
+            q += paths[i].length + 1;
+        }
+        this.nameStarts[this.count] = n;
+        this.pathStarts[this.count] = q;
+    }
+
+    // Номер записи, в имени которой лежит позиция pos.
+    entryAt(pos) {
+        let lo = 0, hi = this.count - 1;
+        while (lo < hi) {
+            const mid = (lo + hi + 1) >> 1;
+            if (this.nameStarts[mid] <= pos)
+                lo = mid;
+            else
+                hi = mid - 1;
+        }
+        return lo;
+    }
+
+    path(i) {
+        return this.paths.slice(this.pathStarts[i], this.pathStarts[i + 1] - 1);
+    }
+}
+
+const WORD_BREAK = new Set([' ', '\t', '.', '_', '-', '(', '[']);
+
 class FileIndex {
     constructor() {
-        this._entries = []; // [нормализованное имя, путь, это папка]
+        this._packed = new Packed();
         this._builtAt = 0;
         this._building = null;
         this._cancellable = null;
@@ -53,29 +96,27 @@ class FileIndex {
         this._cancellable = new Gio.Cancellable();
         const cancellable = this._cancellable;
         const home = GLib.get_home_dir();
-        const entries = [];
+        const acc = {names: [], paths: [], dirs: []};
         // Обход в ширину: сначала то, что лежит близко к домашней папке.
         let level = [Gio.File.new_for_path(home)];
         for (let depth = 0; depth < MAX_DEPTH && level.length > 0; depth++) {
             const next = [];
             for (const dir of level) {
-                if (entries.length >= MAX_ENTRIES)
+                if (acc.names.length >= MAX_ENTRIES)
                     break;
                 // eslint-disable-next-line no-await-in-loop
-                await this._scan(dir, entries, next, cancellable);
+                await this._scan(dir, acc, next, cancellable);
             }
             level = next;
             // Промежуточный результат — чтобы поиск работал уже во время обхода.
-            // Копируем лишь на первых уровнях: дальше массив большой, а
-            // следующая копия появилась бы через секунды.
             if (depth < 3)
-                this._entries = entries.slice();
+                this._packed = new Packed(acc.names, acc.paths, acc.dirs);
         }
-        this._entries = entries;
+        this._packed = new Packed(acc.names, acc.paths, acc.dirs);
         this._builtAt = GLib.get_monotonic_time();
     }
 
-    async _scan(dir, entries, subdirs, cancellable) {
+    async _scan(dir, acc, subdirs, cancellable) {
         let enumerator;
         try {
             enumerator = await dir.enumerate_children_async(
@@ -88,18 +129,19 @@ class FileIndex {
         }
         const dirPath = dir.get_path();
         try {
-            while (entries.length < MAX_ENTRIES) {
+            while (acc.names.length < MAX_ENTRIES) {
                 // eslint-disable-next-line no-await-in-loop
                 const infos = await enumerator.next_files_async(BATCH, GLib.PRIORITY_LOW, cancellable);
                 if (infos.length === 0)
                     break;
                 for (const info of infos) {
                     const name = info.get_name();
-                    if (info.get_is_hidden() || name.startsWith('.'))
+                    if (info.get_is_hidden() || name.startsWith('.') || name.includes('\n'))
                         continue;
                     const isDir = info.get_file_type() === Gio.FileType.DIRECTORY;
-                    const path = `${dirPath}/${name}`;
-                    entries.push([normalize(name), path, isDir]);
+                    acc.names.push(normalize(name));
+                    acc.paths.push(`${dirPath}/${name}`);
+                    acc.dirs.push(isDir ? 1 : 0);
                     if (isDir && !info.get_is_symlink() && !SKIP_DIRS.has(name))
                         subdirs.push(dir.get_child(name));
                 }
@@ -113,31 +155,30 @@ class FileIndex {
     // начинается с запроса, потом просто содержит его. При равенстве —
     // то, что лежит ближе к домашней папке (оно раньше в списке).
     search(query, limit) {
-        if (!query)
+        if (!query || query.includes('\n'))
             return [];
-        const scored = [];
-        const wordStart = new RegExp(`(^|[\\s._\\-(\\[])${query.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`);
-        for (let i = 0; i < this._entries.length; i++) {
-            const [name] = this._entries[i];
-            const at = name.indexOf(query);
-            if (at < 0)
-                continue;
-            const score = at === 0 ? 0 : wordStart.test(name) ? 1 : 2;
-            scored.push([score, i]);
+        const packed = this._packed;
+        const best = new Map(); // запись → лучшая оценка
+        let first = 0;
+        for (let pos = packed.names.indexOf(query, 1); pos >= 0; pos = packed.names.indexOf(query, pos + 1)) {
+            const i = packed.entryAt(pos);
+            if (pos + query.length >= packed.nameStarts[i + 1])
+                continue; // совпадение захватило перевод строки
+            const at = pos - packed.nameStarts[i];
+            const score = at === 0 ? 0 : WORD_BREAK.has(packed.names[pos - 1]) ? 1 : 2;
+            if (!best.has(i) || score < best.get(i))
+                best.set(i, score);
             // Лучше уже не будет — дальше можно не искать.
-            if (scored.length > limit * 50 && score === 0)
+            if (score === 0 && ++first > limit * 50)
                 break;
         }
-        scored.sort((a, b) => a[0] - b[0] || a[1] - b[1]);
-        return scored.slice(0, limit).map(([, i]) => {
-            const [, path, isDir] = this._entries[i];
-            return {path, isDir};
-        });
+        return [...best].sort((a, b) => a[1] - b[1] || a[0] - b[0]).slice(0, limit)
+            .map(([i]) => ({path: packed.path(i), isDir: packed.dirs[i] === 1}));
     }
 
     destroy() {
         this._cancellable?.cancel();
-        this._entries = [];
+        this._packed = new Packed();
     }
 }
 

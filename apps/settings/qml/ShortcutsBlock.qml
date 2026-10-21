@@ -31,6 +31,13 @@ Column {
         [mediaId, "terminal", qsTr("Terminal")],
         [mediaId, "www", qsTr("Web browser")],
         [mediaId, "calculator", qsTr("Calculator")],
+        ["dev.hypede.shell", "overview-key", qsTr("Overview")],
+        ["dev.hypede.shell", "clipboard-history", qsTr("Clipboard history")],
+        ["dev.hypede.shell", "dropdown-terminal", qsTr("Drop-down terminal")],
+        ["dev.hypede.shell", "toggle-tiling", qsTr("Auto-tiling on this desk")],
+        ["dev.hypede.shell", "float-window", qsTr("Floating window")],
+        ["dev.hypede.shell", "reopen-window", qsTr("Reopen closed window")],
+        ["dev.hypede.shell", "ask-selection", qsTr("Ask AI about selected text")],
     ]
     width: parent ? parent.width : 0
 

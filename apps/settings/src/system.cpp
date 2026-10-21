@@ -18,6 +18,7 @@
 #include <QFileInfo>
 #include <QFontDatabase>
 #include <QHash>
+#include <QImageReader>
 #include <QProcessEnvironment>
 #include <QStorageInfo>
 #include <QSet>
@@ -369,8 +370,14 @@ QStringList System::wallpapers() const
     if (!devDir.isEmpty())
         dirs.prepend(QString::fromLocal8Bit(devDir));
 
-    const QStringList filters = {QStringLiteral("*.png"), QStringLiteral("*.jpg"), QStringLiteral("*.jpeg"),
-                                 QStringLiteral("*.webp"), QStringLiteral("*.svg"), QStringLiteral("*.jxl")};
+    // Только то, что Qt умеет открыть: обои GNOME лежат в JPEG XL, и без
+    // плагина kimageformats их плитки оставались бы пустыми.
+    QStringList filters;
+    const QList<QByteArray> readable = QImageReader::supportedImageFormats();
+    for (const char *ext : {"png", "jpg", "jpeg", "webp", "svg", "jxl", "avif"}) {
+        if (readable.contains(QByteArray(ext)))
+            filters << QStringLiteral("*.") + QLatin1String(ext);
+    }
     QStringList result;
     QSet<QString> seen;
     auto scan = [&](const QString &path, int depth, auto &&self) -> void {

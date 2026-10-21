@@ -1,0 +1,54 @@
+name: HypeDE ISO
+
+# Собирает живой ISO HypeDE для x86_64 (tools/iso/build.sh): полный HypeDE,
+# автовход и установщик на диск. Из main образ выкладывается в релиз
+# iso-latest, из остальных веток — в пре-релиз iso-test (файлы релизов
+# GitHub раздаёт через CDN, артефакты Actions качаются намного медленнее).
+
+on:
+  push:
+    paths: ['tools/iso/**', 'tools/repo/**', '.github/workflows/iso.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: iso-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  iso:
+    runs-on: ubuntu-latest
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Free disk space
+        run: sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc /opt/hostedtoolcache || true
+      - name: Package
+        run: docker run --rm -v "$PWD:/src" -w /src archlinux:latest tools/repo/build.sh /src/repo
+      - name: ISO
+        run: |
+          docker run --rm --privileged -v "$PWD:/src" -w /src archlinux:latest tools/iso/build.sh /src/repo /src/out
+          sudo chown -R "$(id -u):$(id -g)" out
+          cd out && mv hypede-*.iso HypeDE-x86_64.iso && sha256sum HypeDE-x86_64.iso > HypeDE-x86_64.iso.sha256
+          ls -lh
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref == 'refs/heads/main' && 'iso-latest' || 'iso-test' }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          if [ "$TAG" = iso-latest ]; then
+            title="HypeDE ISO (x86_64)"
+            notes="Live ISO with HypeDE for VirtualBox, VMware, QEMU and PCs. Boots into HypeDE; Install HypeDE in the launcher puts it on a disk."
+          else
+            title="HypeDE ISO (x86_64, test build)"
+            notes="Test build from the $BRANCH branch, not a release. Live ISO with HypeDE; Install HypeDE in the launcher puts it on a disk."
+          fi
+          gh release view "$TAG" >/dev/null 2>&1 ||
+            gh release create "$TAG" --target "$GITHUB_SHA" --prerelease --latest=false --title "$title" --notes "$notes"
+          gh release edit "$TAG" --title "$title" --notes "$notes"
+          gh release upload "$TAG" --clobber out/HypeDE-x86_64.iso out/HypeDE-x86_64.iso.sha256

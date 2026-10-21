@@ -12,7 +12,6 @@ import Cogl from 'gi://Cogl';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
-import Shell from 'gi://Shell';
 import St from 'gi://St';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
@@ -120,18 +119,18 @@ col += (hd_hash2(uv * hd_size + t) - 0.5) / 255.0;
 
 export const LIVE_NAMES = Object.keys(SHADERS);
 
-// Shell.GLSLEffect собирает шейдер один раз на класс, поэтому у каждого
-// вида обоев — свой подкласс.
-const LiveEffectBase = GObject.registerClass(
-class LiveEffectBase extends Shell.GLSLEffect {
-    _init() {
+// Шейдер добавляется в конвейер OffscreenEffect (Shell.GLSLEffect в GNOME 51
+// убрали). Конвейер пересоздаётся при смене размера — тогда шейдер и
+// адреса uniform-переменных берутся заново.
+const LiveEffect = GObject.registerClass(
+class LiveEffect extends Clutter.OffscreenEffect {
+    _init(kind) {
         super._init();
+        this._code = `${PRELUDE}${SHADERS[kind]}\ncogl_color_out = vec4(clamp(col, 0.0, 1.0), 1.0);\n`;
+        this._pipeline = null;
         this._time = 0;
         this._palette = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
         this._dark = 1;
-        this._loc = {};
-        for (const name of ['hd_time', 'hd_size', 'hd_c0', 'hd_c1', 'hd_c2', 'hd_c3', 'hd_dark'])
-            this._loc[name] = this.get_uniform_location(name);
     }
 
     setState(time, palette, dark) {
@@ -142,27 +141,24 @@ class LiveEffectBase extends Shell.GLSLEffect {
     }
 
     vfunc_paint_target(node, paintContext) {
-        const actor = this.get_actor();
-        this.set_uniform_float(this._loc.hd_time, 1, [this._time]);
-        this.set_uniform_float(this._loc.hd_size, 2, [actor.width, actor.height]);
-        this._palette.forEach((c, i) => this.set_uniform_float(this._loc[`hd_c${i}`], 3, c));
-        this.set_uniform_float(this._loc.hd_dark, 1, [this._dark]);
+        const pipeline = this.get_pipeline();
+        if (pipeline && pipeline !== this._pipeline) {
+            pipeline.add_snippet(Cogl.Snippet.new(Cogl.SnippetHook.FRAGMENT, DECLARATIONS, this._code));
+            this._pipeline = pipeline;
+            this._loc = {};
+            for (const name of ['hd_time', 'hd_size', 'hd_c0', 'hd_c1', 'hd_c2', 'hd_c3', 'hd_dark'])
+                this._loc[name] = pipeline.get_uniform_location(name);
+        }
+        if (this._pipeline) {
+            const p = this._pipeline, actor = this.get_actor();
+            p.set_uniform_1f(this._loc.hd_time, this._time);
+            p.set_uniform_float(this._loc.hd_size, 2, 1, [actor.width, actor.height]);
+            this._palette.forEach((c, i) => p.set_uniform_float(this._loc[`hd_c${i}`], 3, 1, c));
+            p.set_uniform_1f(this._loc.hd_dark, this._dark);
+        }
         super.vfunc_paint_target(node, paintContext);
     }
 });
-
-const effectClasses = {};
-
-function effectClass(kind) {
-    effectClasses[kind] ??= GObject.registerClass({GTypeName: `HypeDELiveEffect_${kind}`},
-        class extends LiveEffectBase {
-            vfunc_build_pipeline() {
-                const code = `${PRELUDE}${SHADERS[kind]}\ncogl_color_out = vec4(clamp(col, 0.0, 1.0), 1.0);\n`;
-                this.add_glsl_snippet(Cogl.SnippetHook.FRAGMENT, DECLARATIONS, code, false);
-            }
-        });
-    return effectClasses[kind];
-}
 
 function mix(a, b, t) {
     return a.map((v, i) => v + (b[i] - v) * t);
@@ -237,7 +233,7 @@ export class LiveWallpaper {
                 background_color: new Cogl.Color({red: 0, green: 0, blue: 0, alpha: 255}),
                 reactive: false,
             });
-            actor.add_effect_with_name('live', new (effectClass(kind))());
+            actor.add_effect_with_name('live', new LiveEffect(kind));
             actor.opacity = 0;
             group.add_child(actor);
             actor.ease({opacity: 255, duration: 600, mode: Clutter.AnimationMode.EASE_OUT_CUBIC});

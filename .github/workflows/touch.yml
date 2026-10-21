@@ -1,0 +1,71 @@
+name: HypeDE Touch
+
+# Собирает HypeDE Touch — виртуальную машину UTM: обычную для Mac с Apple
+# M1 и новее и Lite для iPhone и iPad. Пакет HypeDE, диск с Arch Linux ARM
+# (tools/touch/build-image.sh) и папку .utm в zip. Из main образ выкладывается
+# в релиз touch-latest, из остальных веток — в пре-релиз touch-test (файлы
+# релизов идут через CDN GitHub, артефакты Actions качаются медленно и
+# живут три дня).
+
+on:
+  push:
+    paths: ['tools/touch/**', 'tools/repo/**', '.github/workflows/touch.yml']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: touch-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  IMAGE: menci/archlinuxarm:latest
+
+jobs:
+  image:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - variant: full
+            name: HypeDE Touch
+            zip: HypeDE-Touch-aarch64.utm.zip
+          - variant: lite
+            name: HypeDE Touch Lite
+            zip: HypeDE-Touch-Lite-aarch64.utm.zip
+    runs-on: ubuntu-24.04-arm
+    timeout-minutes: 120
+    env:
+      VARIANT: ${{ matrix.variant }}
+      NAME: ${{ matrix.name }}
+      ZIP: ${{ matrix.zip }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: Free disk space
+        run: sudo rm -rf /usr/local/lib/android /usr/share/dotnet /opt/ghc /opt/hostedtoolcache || true
+      - name: Package
+        run: docker run --rm -v "$PWD:/src" -w /src "$IMAGE" tools/repo/build.sh /src/repo
+      - name: Disk image
+        run: docker run --rm --privileged -e VARIANT -v "$PWD:/src" -w /src "$IMAGE" tools/touch/build-image.sh /src/repo /src/image
+      - name: UTM bundle
+        run: |
+          sudo chown -R "$(id -u):$(id -g)" image
+          python3 tools/touch/make-utm.py $([ "$VARIANT" = lite ] && echo --lite) image/disk.qcow2 "$NAME.utm"
+          zip -r -1 "$ZIP" "$NAME.utm"
+          ls -lh "$ZIP"
+      - name: Publish
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ github.ref == 'refs/heads/main' && 'touch-latest' || 'touch-test' }}
+          BRANCH: ${{ github.ref_name }}
+        run: |
+          notes="HypeDE Touch: for UTM on Apple silicon Macs. HypeDE Touch Lite: for UTM on iPhone and iPad (needs JIT). Unzip and open the .utm in UTM. User: hypede, password: hypede."
+          [ "$TAG" = touch-latest ] || notes="Test build from the $BRANCH branch, not a release. $notes"
+          gh release view "$TAG" >/dev/null 2>&1 ||
+            gh release create "$TAG" --target "$GITHUB_SHA" --prerelease --latest=false \
+              --title "HypeDE Touch (UTM)" --notes "$notes" ||
+            true # обе сборки создают релиз одновременно — второй хватит уже созданного
+          gh release upload "$TAG" --clobber "$ZIP"

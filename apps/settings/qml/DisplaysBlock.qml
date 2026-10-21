@@ -1,8 +1,8 @@
 import QtQuick
 import HypeSettings
 
-// Мониторы: для каждого — разрешение, частота обновления, масштаб и
-// поворот. После применения GNOME Shell спрашивает, сохранить ли настройки,
+// Мониторы: схема нескольких мониторов (DisplayArrangement), а для каждого
+// включённого — разрешение, частота обновления, масштаб и поворот. После применения GNOME Shell спрашивает, сохранить ли настройки,
 // и сам откатывает их через 20 секунд без ответа.
 Item {
     id: block
@@ -66,6 +66,11 @@ Item {
         id: column
         width: parent.width
 
+        DisplayArrangement {
+            visible: Displays.monitors.length > 1
+            height: visible ? implicitHeight : 0
+        }
+
         Repeater {
             model: Displays.monitors
             delegate: Column {
@@ -75,13 +80,17 @@ Item {
                 readonly property var mode: block.currentMode(modelData)
                 readonly property string resolution: mode ? mode.width + "×" + mode.height : ""
                 width: column.width
+                // Выключенному монитору настраивать нечего, а в «дублировании»
+                // у всех одни настройки — показываем первый монитор.
+                visible: modelData.enabled
+                         && !(Displays.mirrored && Displays.monitors.findIndex(m => m.enabled) < index)
 
                 SettingRow {
                     title: monitorItem.modelData.name
                     subtitle: (monitorItem.modelData.builtin ? qsTr("Built-in display") : monitorItem.modelData.connector)
                               + (monitorItem.modelData.primary && Displays.monitors.length > 1 ? " · " + qsTr("Main display") : "")
                     iconName: monitorItem.modelData.builtin ? "hypede-device-symbolic" : "video-display-symbolic"
-                    showDivider: monitorItem.index > 0
+                    showDivider: monitorItem.index > 0 || Displays.monitors.length > 1
                     ChromeButton {
                         visible: Displays.monitors.length > 1 && !monitorItem.modelData.primary
                         text: qsTr("Make main")

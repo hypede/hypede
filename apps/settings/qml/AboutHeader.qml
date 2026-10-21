@@ -56,7 +56,7 @@ Item {
                     EasterEgg { id: egg }
                 }
                 Text {
-                    text: qsTr("GNOME in the style of Chrome OS, with KDE settings modules")
+                    text: qsTr("A desktop in the style of Chrome OS")
                     color: Theme.subtext
                     font.pixelSize: 13
                 }

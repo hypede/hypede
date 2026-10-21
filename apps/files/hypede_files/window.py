@@ -24,6 +24,7 @@ from .folder_view import FolderView, display_path, file_of, is_dir
 from .operations import Operation, find_in_trash
 from .pathbar import PathBar
 from .sidebar import Sidebar, add_bookmark
+from .programs import run_program
 from .util import _, ngettext, split_extension, terminal_command, unique_name, validate_filename
 
 
@@ -54,6 +55,7 @@ class Window(Adw.ApplicationWindow):
 
         self._build_ui()
         self._install_actions()
+        self._install_mouse_navigation()
         self.open_tab(location, select=True)
         if search:
             GLib.idle_add(lambda: self._begin_search(search) and False)
@@ -480,6 +482,8 @@ class Window(Adw.ApplicationWindow):
         return file
 
     def _launch(self, file: Gio.File, ask: bool = False) -> None:
+        if not ask and run_program(file, self, self.show_toast):
+            return
         launcher = Gtk.FileLauncher(file=file, always_ask=ask)
 
         def done(launcher, result):
@@ -582,6 +586,21 @@ class Window(Adw.ApplicationWindow):
     # ================================================================
     # Действия
     # ================================================================
+
+    def _install_mouse_navigation(self) -> None:
+        """Боковые кнопки мыши (8 и 9): назад и вперёд, как в браузере."""
+        click = Gtk.GestureClick(button=0)
+        click.set_propagation_phase(Gtk.PropagationPhase.CAPTURE)
+
+        def pressed(gesture, _n, _x, _y):
+            button = gesture.get_current_button()
+            if button not in (8, 9):
+                return
+            gesture.set_state(Gtk.EventSequenceState.CLAIMED)
+            self.activate_action("win.back" if button == 8 else "win.forward", None)
+
+        click.connect("pressed", pressed)
+        self.add_controller(click)
 
     def _install_actions(self) -> None:
         def add(name, callback, accels=(), parameter=None):
@@ -988,8 +1007,7 @@ class Window(Adw.ApplicationWindow):
             version=self.app.version,
             website="https://hypede.github.io",
             license_type=Gtk.License.GPL_3_0,
-            comments=_("File manager of the HypeDE desktop: the layout of GNOME Files with tabs and "
-                       "a details pane inspired by COSMIC Files."),
+            comments=_("File manager of HypeDE: tabs, a details pane and quick search."),
         )
         about.present(self)
 

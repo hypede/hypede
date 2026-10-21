@@ -1,0 +1,13 @@
+[Desktop Entry]
+Type=Application
+Name=HypeDE Tour
+Name[ru]=Тур по HypeDE
+Comment=What HypeDE can do, in a minute
+Comment[ru]=Что умеет HypeDE — за минуту
+Exec=hypede-welcome
+Icon=hypede
+Terminal=false
+Categories=GNOME;GTK;Settings;
+Keywords=welcome;tour;tutorial;help;start;
+Keywords[ru]=приветствие;тур;обучение;помощь;начало;
+OnlyShowIn=HypeDE;

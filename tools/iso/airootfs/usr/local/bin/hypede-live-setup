@@ -1,0 +1,20 @@
+#!/bin/bash
+# Живой сеанс HypeDE: пользователь hypede без пароля для sudo и автовход.
+# Запускает hypede-live.service только при загрузке с ISO (/run/archiso).
+set -euo pipefail
+
+if [[ ! -e /usr/lib/locale/locale-archive ]]; then
+    sed -i 's/^#\(en_US.UTF-8\|ru_RU.UTF-8\)/\1/' /etc/locale.gen
+    locale-gen >/dev/null
+fi
+
+if ! id hypede >/dev/null 2>&1; then
+    useradd -m -G wheel -c 'HypeDE' -s /bin/bash hypede
+    echo hypede:hypede | chpasswd
+fi
+echo 'hypede ALL=(ALL:ALL) NOPASSWD: ALL' > /etc/sudoers.d/hypede-live
+chmod 440 /etc/sudoers.d/hypede-live
+
+mkdir -p /var/lib/AccountsService/users
+printf '[User]\nSession=hypede\nSystemAccount=false\n' > /var/lib/AccountsService/users/hypede
+printf '[daemon]\nAutomaticLoginEnable=True\nAutomaticLogin=hypede\n' > /etc/gdm/custom.conf

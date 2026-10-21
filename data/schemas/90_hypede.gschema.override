@@ -36,7 +36,9 @@ edge-tiling=true
 dynamic-workspaces=true
 
 [org.gnome.shell:HypeDE]
-favorite-apps=['org.chromium.Chromium.desktop', 'chromium.desktop', 'google-chrome.desktop', 'firefox.desktop', 'dev.hypede.Files.desktop', 'org.gnome.Console.desktop', 'org.gnome.TextEditor.desktop', 'dev.hypede.Settings.desktop']
+# Приветственный тур GNOME в HypeDE не показываем.
+welcome-dialog-last-shown-version='999'
+favorite-apps=['org.chromium.Chromium.desktop', 'chromium.desktop', 'google-chrome.desktop', 'firefox.desktop', 'dev.hypede.Files.desktop', 'dev.hypede.Terminal.desktop', 'org.gnome.TextEditor.desktop', 'dev.hypede.Settings.desktop']
 
 [org.gnome.shell.keybindings:HypeDE]
 toggle-message-tray=['<Super>m']
@@ -53,3 +55,7 @@ island-notifications=false
 compact-width=200
 compact-layout='{"media":"left","pet":"left","clock":"hidden","weather":"right","cpu":"hidden","fps":"hidden","ram":"hidden","temp":"hidden","net":"hidden","battery":"hidden","date":"hidden","keyboard":"hidden"}'
 enabled-tabs=['home', 'clipboard', 'shelf', 'ai', 'tools', 'text', 'notes', 'system', 'weather', 'timer', 'pet', 'settings']
+
+# Без ежегодного напоминания «GNOME нуждается в вашей помощи».
+[org.gnome.settings-daemon.plugins.housekeeping:HypeDE]
+donation-reminder-enabled=false
