@@ -30,7 +30,7 @@ import {loadRecentFiles, describeWhen} from './recent.js';
 import {getFileIndex, destroyFileIndex, normalize as normalizeName} from './filesearch.js';
 import {addSecondaryClick, openApp, PRIMARY_AND_MIDDLE} from './util.js';
 import {getAssistant} from './assistant.js';
-import {findActions} from './actions.js';
+import {findActions, prefetchActions} from './actions.js';
 import {Backdrop} from './backdrop.js';
 
 const RESULT_ICON_SIZE = 32;
@@ -836,10 +836,8 @@ class LauncherView extends St.BoxLayout {
     _search_files(text, query) {
         const seen = new Set();
         const found = [];
-        for (const file of loadRecentFiles(200)) {
-            if (found.length >= MAX_FILE_RESULTS)
-                break;
-            if (normalizeName(file.name).includes(query) && !seen.has(file.path)) {
+        for (const file of loadRecentFiles(MAX_FILE_RESULTS, name => normalizeName(name).includes(query))) {
+            if (!seen.has(file.path)) {
                 seen.add(file.path);
                 found.push({path: file.path, name: file.name, parent: file.parentPath, gicon: file.icon});
             }
@@ -1027,6 +1025,7 @@ class LauncherButton extends PanelMenu.Button {
                         return GLib.SOURCE_REMOVE;
                     });
                 }
+                prefetchActions();
                 try {
                     this._prepareOpen();
                     // Экранная клавиатура (режим планшета) должна быть поверх

@@ -675,7 +675,9 @@ class ShelfApps extends St.BoxLayout {
                         mode: Clutter.AnimationMode.EASE_OUT_BACK,
                     });
                 }
-            } else {
+            } else if (this.get_child_at_index(index) !== icon) {
+                // Переставляем, только если значок не на месте: перестановка
+                // заново раскладывает всю полку.
                 this.set_child_at_index(icon, index);
             }
             icons.set(id, icon);

@@ -27,6 +27,8 @@ const SHAKE_TURNS = 4;
 const SHAKE_WINDOW = 900;
 const SHAKE_DISTANCE = 60;
 const SHAKE_SIZE = 96;
+// После стольких мс без ввода курсор перестаёт опрашиваться.
+const SHAKE_IDLE = 500;
 
 const UPDATE_FIRST_CHECK = 10 * 60;
 const UPDATE_INTERVAL = 6 * 60 * 60;
@@ -139,17 +141,44 @@ export class HypeFeatures {
 
     _syncShake() {
         const on = this._settings.get_boolean('shake-to-find');
-        if (on && !this._shakeId) {
-            this._turns = [];
-            this._last = null;
-            this._shakeId = GLib.timeout_add(GLib.PRIORITY_DEFAULT_IDLE, 30, () => {
-                this._sampleShake();
-                return GLib.SOURCE_CONTINUE;
-            });
-        } else if (!on && this._shakeId) {
-            GLib.source_remove(this._shakeId);
-            this._shakeId = 0;
+        const monitor = global.backend.get_core_idle_monitor();
+        if (on && !this._idleWatch) {
+            // Курсор опрашивается, только пока пользователь что-то делает: в
+            // простое таймер стоит и не будит оболочку 33 раза в секунду.
+            this._idleWatch = monitor.add_idle_watch(SHAKE_IDLE, () => this._stopSampling());
+            this._startSampling();
+        } else if (!on && this._idleWatch) {
+            monitor.remove_watch(this._idleWatch);
+            this._idleWatch = 0;
+            this._stopSampling();
             this._restoreCursor();
+        }
+    }
+
+    _startSampling() {
+        if (this._shakeId)
+            return;
+        this._turns = [];
+        this._last = null;
+        this._shakeId = GLib.timeout_add(GLib.PRIORITY_DEFAULT_IDLE, 30, () => {
+            this._sampleShake();
+            return GLib.SOURCE_CONTINUE;
+        });
+    }
+
+    _stopSampling() {
+        if (this._shakeId)
+            GLib.source_remove(this._shakeId);
+        this._shakeId = 0;
+        const monitor = global.backend.get_core_idle_monitor();
+        if (this._idleWatch && !this._activeWatch) {
+            this._activeWatch = monitor.add_user_active_watch(() => {
+                this._activeWatch = 0;
+                this._startSampling();
+            });
+        } else if (!this._idleWatch && this._activeWatch) {
+            monitor.remove_watch(this._activeWatch);
+            this._activeWatch = 0;
         }
     }
 
@@ -272,9 +301,10 @@ export class HypeFeatures {
         this._settings.disconnectObject(this);
         for (const actor of global.get_window_actors())
             actor.meta_window?.disconnectObject(this);
-        if (this._shakeId)
-            GLib.source_remove(this._shakeId);
-        this._shakeId = 0;
+        if (this._idleWatch)
+            global.backend.get_core_idle_monitor().remove_watch(this._idleWatch);
+        this._idleWatch = 0;
+        this._stopSampling();
         this._restoreCursor();
         if (this._updateId)
             GLib.source_remove(this._updateId);

@@ -62,16 +62,22 @@ function _read() {
     return items;
 }
 
-export function loadRecentFiles(limit) {
+// filter(name) отбирает файлы по имени до проверки, что файл ещё есть:
+// поиск в лаунчере вызывает это на каждую букву, а проверка — обращение к
+// диску (на уснувшем сетевом диске — долгое).
+export function loadRecentFiles(limit, filter = null) {
     const result = [];
     for (const item of _read()) {
         if (result.length >= limit)
             break;
+        if (filter && !filter(GLib.path_get_basename(item.path)))
+            continue;
         if (!GLib.file_test(item.path, GLib.FileTest.EXISTS))
             continue;
         const contentType = Gio.content_type_from_mime_type(item.mime) ?? item.mime;
         result.push({
             uri: item.uri,
+            path: item.path,
             name: GLib.path_get_basename(item.path),
             parentPath: GLib.path_get_dirname(item.path)
                 .replace(GLib.get_home_dir(), '~'),

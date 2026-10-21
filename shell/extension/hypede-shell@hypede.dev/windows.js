@@ -422,6 +422,28 @@ export class WindowAnimations {
             w.vy += (-220 * w.oy - 12 * w.vy) * dt;
             w.ox += w.vx * dt;
             w.oy += w.vy * dt;
+            if (Math.abs(w.ox) + Math.abs(w.oy) < 0.3 && Math.abs(w.vx) + Math.abs(w.vy) < 3) {
+                if (!w.held) {
+                    this._dropWobbly(w);
+                    return;
+                }
+                // Окно держат, но не двигают: показываем само окно, а полосы
+                // не пересобираем — иначе окно снималось бы в текстуру
+                // каждый второй кадр, пока его держат на месте.
+                if (!w.resting) {
+                    w.resting = true;
+                    strips.group.hide();
+                    actor.opacity = 255;
+                }
+                return;
+            }
+            if (w.resting) {
+                w.resting = false;
+                strips.refresh();
+                strips.group.show();
+                actor.opacity = 0;
+                w.frame = 0;
+            }
             // Содержимое окна обновляем через кадр: его почти не видно в движении.
             if (++w.frame % 2 === 0)
                 strips.refresh();
@@ -433,8 +455,6 @@ export class WindowAnimations {
                 strips.placeQuad(strip, strip.at + w.oy * top, strip.s + w.oy * (bottom - top) + 0.75,
                     x0, x0 + strips.w, x1, x1 + strips.w);
             }
-            if (!w.held && Math.abs(w.ox) + Math.abs(w.oy) < 0.3 && Math.abs(w.vx) + Math.abs(w.vy) < 3)
-                this._dropWobbly(w);
         });
         actor.connectObject('destroy', () => this._dropWobbly(w), 'notify::size', () => this._dropWobbly(w), this);
         w.timeline.start();

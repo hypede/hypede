@@ -18,13 +18,44 @@ function spawn(argv) {
     } catch {}
 }
 
+// Вывод программы — в фоне: синхронный запуск подвешивал всю оболочку,
+// пока программа не ответит. Зависшая программа (bluetoothctl без
+// bluetoothd ждёт вечно) через несколько секунд завершается.
 function output(argv) {
-    try {
-        const [, out] = GLib.spawn_sync(null, argv, null, GLib.SpawnFlags.SEARCH_PATH | GLib.SpawnFlags.STDERR_TO_DEV_NULL, null);
-        return new TextDecoder().decode(out);
-    } catch {
-        return '';
-    }
+    return new Promise(resolve => {
+        try {
+            const proc = Gio.Subprocess.new(argv, Gio.SubprocessFlags.STDOUT_PIPE | Gio.SubprocessFlags.STDERR_SILENCE);
+            const timer = GLib.timeout_add_seconds(GLib.PRIORITY_DEFAULT, 3, () => {
+                proc.force_exit();
+                return GLib.SOURCE_REMOVE;
+            });
+            proc.communicate_utf8_async(null, null, (_p, res) => {
+                GLib.source_remove(timer);
+                try {
+                    resolve(proc.communicate_utf8_finish(res)[1] ?? '');
+                } catch {
+                    resolve('');
+                }
+            });
+        } catch {
+            resolve('');
+        }
+    });
+}
+
+const readWifi = () => output(['nmcli', 'radio', 'wifi']).then(out => out.trim() === 'enabled');
+const readBluetooth = () => output(['bluetoothctl', 'show']).then(out => /Powered: yes/.test(out));
+
+// Последнее известное состояние Wi-Fi и Bluetooth для подписей в поиске.
+// Раньше nmcli и bluetoothctl запускались на каждую букву запроса.
+const radios = {wifi: false, bluetooth: false};
+
+// Вызывается при открытии лаунчера: к вводу запроса состояние уже известно.
+export function prefetchActions() {
+    if (has('nmcli'))
+        readWifi().then(on => (radios.wifi = on));
+    if (has('bluetoothctl'))
+        readBluetooth().then(on => (radios.bluetooth = on));
 }
 
 const has = program => !!GLib.find_program_in_path(program);
@@ -148,14 +179,15 @@ export function findActions(text) {
             () => toggle('org.gnome.settings-daemon.plugins.color', 'night-light-enabled'));
     }
     if (matches(q, 'wifi') && has('nmcli')) {
-        const on = output(['nmcli', 'radio', 'wifi']).trim() === 'enabled';
+        const on = radios.wifi;
+        // Переключается по свежему состоянию, а не по подписи.
         add('network-wireless-symbolic', on ? _('Turn off Wi‑Fi') : _('Turn on Wi‑Fi'), _('Wireless network'),
-            () => spawn(['nmcli', 'radio', 'wifi', on ? 'off' : 'on']));
+            () => readWifi().then(now => spawn(['nmcli', 'radio', 'wifi', now ? 'off' : 'on'])));
     }
     if (matches(q, 'bluetooth') && has('bluetoothctl')) {
-        const on = /Powered: yes/.test(output(['bluetoothctl', 'show']));
+        const on = radios.bluetooth;
         add('bluetooth-active-symbolic', on ? _('Turn off Bluetooth') : _('Turn on Bluetooth'), 'Bluetooth',
-            () => spawn(['bluetoothctl', 'power', on ? 'off' : 'on']));
+            () => readBluetooth().then(now => spawn(['bluetoothctl', 'power', now ? 'off' : 'on'])));
     }
     const sys = SystemActions.getDefault();
     if (matches(q, 'lock'))

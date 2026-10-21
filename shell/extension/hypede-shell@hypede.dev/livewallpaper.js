@@ -192,6 +192,7 @@ export class LiveWallpaper {
             'changed::lite-mode', () => this._rebuild(),
             'changed::accent-custom', () => this._updatePalette(),
             'changed::wallpaper-live-pause', () => this._updateRunning(),
+            'changed::wallpaper-live-speed', () => this._readSpeed(),
             this);
         this._interface.connectObject(
             'changed::accent-color', () => this._updatePalette(),
@@ -199,7 +200,12 @@ export class LiveWallpaper {
             this);
         St.Settings.get().connectObject('notify::enable-animations', () => this._updateRunning(), this);
         Main.layoutManager.connectObject('monitors-changed', () => this._rebuild(), this);
+        this._readSpeed();
         this._rebuild();
+    }
+
+    _readSpeed() {
+        this._speed = this._settings.get_double('wallpaper-live-speed');
     }
 
     get _kind() {
@@ -211,8 +217,8 @@ export class LiveWallpaper {
     }
 
     _destroyActors() {
-        this._timeline?.stop();
-        this._timeline = null;
+        this._stop();
+        this._running = false;
         this._cover?.destroy();
         this._cover = null;
         Main.layoutManager._backgroundGroup.disconnectObject(this);
@@ -246,20 +252,7 @@ export class LiveWallpaper {
         }, this);
         this._updatePalette();
 
-        this._timeline = new Clutter.Timeline({actor: this._actors[0], duration: 1000, repeat_count: -1});
-        let last = GLib.get_monotonic_time();
-        let sinceDraw = 1e9;
-        this._timeline.connect('new-frame', () => {
-            const now = GLib.get_monotonic_time();
-            const dt = (now - last) / 1e6;
-            last = now;
-            this._time += Math.min(dt, 0.1) * this._settings.get_double('wallpaper-live-speed') / St.Settings.get().slow_down_factor;
-            sinceDraw += dt;
-            if (sinceDraw < 1 / FPS - 0.002)
-                return;
-            sinceDraw = 0;
-            this._draw();
-        });
+        this._running = true;
         this._cover = new CoverWatcher(covered => {
             this._covered = covered;
             this._updateRunning();
@@ -293,21 +286,48 @@ export class LiveWallpaper {
         this._draw();
     }
 
-    _draw() {
-        for (const actor of this._actors)
-            actor.get_effect('live')?.setState(this._time, this._palette, this._dark);
+    // Кадры — по своему таймеру, FPS в секунду. Clutter.Timeline будил
+    // оболочку на каждом кадре монитора (60–144 раза в секунду), хотя
+    // рисовался из них только каждый второй–пятый.
+    _start() {
+        if (this._frameId)
+            return;
+        let last = GLib.get_monotonic_time();
+        this._frameId = GLib.timeout_add(GLib.PRIORITY_DEFAULT, Math.round(1000 / FPS), () => {
+            const now = GLib.get_monotonic_time();
+            const dt = (now - last) / 1e6;
+            last = now;
+            this._time += Math.min(dt, 0.1) * this._speed / St.Settings.get().slow_down_factor;
+            this._draw(true);
+            return GLib.SOURCE_CONTINUE;
+        });
+    }
+
+    _stop() {
+        if (this._frameId)
+            GLib.source_remove(this._frameId);
+        this._frameId = 0;
+    }
+
+    // skipCovered: обои монитора, закрытого развёрнутым окном, не
+    // перерисовываются — иначе каждый кадр перерисовывал бы и сам монитор.
+    _draw(skipCovered = false) {
+        const skip = skipCovered && this._settings.get_boolean('wallpaper-live-pause');
+        this._actors.forEach((actor, i) => {
+            if (!(skip && this._covered[i]))
+                actor.get_effect('live')?.setState(this._time, this._palette, this._dark);
+        });
     }
 
     _updateRunning() {
-        if (!this._timeline)
+        if (!this._running)
             return;
         const pause = this._settings.get_boolean('wallpaper-live-pause');
         const allCovered = this._covered.length > 0 && this._covered.every(c => c);
-        const run = St.Settings.get().enable_animations && !(pause && allCovered);
-        if (run && !this._timeline.is_playing())
-            this._timeline.start();
-        else if (!run && this._timeline.is_playing())
-            this._timeline.stop();
+        if (St.Settings.get().enable_animations && !(pause && allCovered))
+            this._start();
+        else
+            this._stop();
     }
 
     destroy() {
