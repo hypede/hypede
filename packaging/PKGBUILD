@@ -7,8 +7,10 @@
 # (GDM, SDDM, greetd…) появится «HypeDE».
 
 pkgname=hypede-git
-pkgver=2.1.0
+pkgver=0.3
 pkgrel=1
+# epoch: версия сброшена с 2.1.0 на 0.3, без него pacman не обновил бы старые установки.
+epoch=1
 pkgdesc="HypeDE — рабочий стол в стиле Chrome OS на основе GNOME Shell"
 backup=('etc/pam.d/hypede')
 arch=('x86_64' 'aarch64')
@@ -60,7 +62,7 @@ options=('!lto' '!debug')
 provides=('hypede')
 conflicts=('hypede')
 
-# Версия из git: 2.1.0.r<число коммитов>.g<хеш>, чтобы пакет из
+# Версия из git: 0.3.r<число коммитов>.g<хеш>, чтобы пакет из
 # репозитория hypede обновлялся с каждым коммитом. Без git — как есть.
 pkgver() {
   cd "$startdir/.."
