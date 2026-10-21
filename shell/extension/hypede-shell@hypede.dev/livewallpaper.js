@@ -192,7 +192,6 @@ export class LiveWallpaper {
             'changed::lite-mode', () => this._rebuild(),
             'changed::accent-custom', () => this._updatePalette(),
             'changed::wallpaper-live-pause', () => this._updateRunning(),
-            'changed::wallpaper-live-speed', () => this._readSpeed(),
             this);
         this._interface.connectObject(
             'changed::accent-color', () => this._updatePalette(),
@@ -200,12 +199,7 @@ export class LiveWallpaper {
             this);
         St.Settings.get().connectObject('notify::enable-animations', () => this._updateRunning(), this);
         Main.layoutManager.connectObject('monitors-changed', () => this._rebuild(), this);
-        this._readSpeed();
         this._rebuild();
-    }
-
-    _readSpeed() {
-        this._speed = this._settings.get_double('wallpaper-live-speed');
     }
 
     get _kind() {
@@ -297,7 +291,7 @@ export class LiveWallpaper {
             const now = GLib.get_monotonic_time();
             const dt = (now - last) / 1e6;
             last = now;
-            this._time += Math.min(dt, 0.1) * this._speed / St.Settings.get().slow_down_factor;
+            this._time += Math.min(dt, 0.1) * this._settings.get_double('wallpaper-live-speed') / St.Settings.get().slow_down_factor;
             this._draw(true);
             return GLib.SOURCE_CONTINUE;
         });
