@@ -302,42 +302,44 @@
   spacing-rows: 8px;
   spacing-columns: 8px;
 }
-.quick-toggle,
-.quick-toggle-has-menu {
+/* Внутри .quick-settings: иначе .quick-settings .button (у плиток тоже
+   класс button) перебивает цвета включённой плитки. */
+.quick-settings .quick-toggle,
+.quick-settings .quick-toggle-has-menu {
   border-radius: 999px;
   min-height: 3.9em;
 }
-.quick-toggle {
+.quick-settings .quick-toggle {
   color: #1f1f1f;
   background-color: rgba(0, 0, 0, 0.06);
   box-shadow: none;
   transition-duration: 200ms;
 }
-.quick-toggle:hover {
+.quick-settings .quick-toggle:hover {
   background-color: rgba(0, 0, 0, 0.10);
 }
-.quick-toggle:checked {
+.quick-settings .quick-toggle:checked {
   color: #ffffff;
   background-color: st-mix(-st-accent-color, #000000, 80%);
 }
-.quick-toggle:checked:hover {
+.quick-settings .quick-toggle:checked:hover {
   background-color: st-mix(-st-accent-color, #000000, 72%);
 }
-.quick-toggle-has-menu .quick-toggle:ltr { border-radius: 999px 0 0 999px; }
-.quick-toggle-has-menu .quick-toggle:rtl { border-radius: 0 999px 999px 0; }
-.quick-toggle-has-menu .quick-toggle:ltr:last-child,
-.quick-toggle-has-menu .quick-toggle:rtl:last-child { border-radius: 999px; }
-.quick-toggle-has-menu .quick-toggle-menu-button:ltr { border-radius: 0 999px 999px 0; }
-.quick-toggle-has-menu .quick-toggle-menu-button:rtl { border-radius: 999px 0 0 999px; }
-.quick-toggle-has-menu .quick-toggle-menu-button {
+.quick-settings .quick-toggle-has-menu .quick-toggle:ltr { border-radius: 999px 0 0 999px; }
+.quick-settings .quick-toggle-has-menu .quick-toggle:rtl { border-radius: 0 999px 999px 0; }
+.quick-settings .quick-toggle-has-menu .quick-toggle:ltr:last-child,
+.quick-settings .quick-toggle-has-menu .quick-toggle:rtl:last-child { border-radius: 999px; }
+.quick-settings .quick-toggle-has-menu .quick-toggle-menu-button:ltr { border-radius: 0 999px 999px 0; }
+.quick-settings .quick-toggle-has-menu .quick-toggle-menu-button:rtl { border-radius: 999px 0 0 999px; }
+.quick-settings .quick-toggle-has-menu .quick-toggle-menu-button {
   color: #1f1f1f;
   background-color: rgba(0, 0, 0, 0.06);
   transition-duration: 200ms;
 }
-.quick-toggle-has-menu .quick-toggle-menu-button:hover {
+.quick-settings .quick-toggle-has-menu .quick-toggle-menu-button:hover {
   background-color: rgba(0, 0, 0, 0.10);
 }
-.quick-toggle-has-menu .quick-toggle-menu-button:checked {
+.quick-settings .quick-toggle-has-menu .quick-toggle-menu-button:checked {
   color: #ffffff;
   background-color: st-mix(-st-accent-color, #000000, 80%);
 }

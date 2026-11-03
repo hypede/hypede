@@ -9,8 +9,9 @@
 // оболочка не получает событий от них. Поэтому место кнопки вычисляется:
 // порядок кнопок берётся из org.gnome.desktop.wm.preferences
 // button-layout, а размеры — типичные для Adwaita, GTK 3 и рамок Mutter.
-// Указатель отслеживается через PointerWatcher оболочки (он опрашивает
-// положение, только пока мышь двигается), задержку отсчитывает таймер.
+// Положение указателя опрашивается раз в 100 мс (PointerWatcher из
+// GNOME 51 убрали); окно под ним ищется, только если указатель сдвинулся.
+// Задержку отсчитывает отдельный таймер.
 
 import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
@@ -19,7 +20,6 @@ import Meta from 'gi://Meta';
 import St from 'gi://St';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
-import {getPointerWatcher} from 'resource:///org/gnome/shell/ui/pointerWatcher.js';
 import {gettext as _} from 'resource:///org/gnome/shell/extensions/extension.js';
 
 import {toggleFloat} from './extras.js';
@@ -29,7 +29,7 @@ const WATCH_INTERVAL = 100;
 // Заголовок и кнопки в логических пикселях: высота полосы заголовка,
 // ширина места под одну кнопку, отступ от края окна и допуск.
 const TITLEBAR = 50;
-const BUTTON = 34;
+const BUTTON = 37;
 const EDGE = 6;
 const SLACK = 4;
 // Схема экрана в меню.
@@ -118,7 +118,12 @@ class SnapMenu {
 
         // Прозрачная подложка на весь экран: щелчок мимо меню закрывает его.
         this._backdrop = new St.Widget({reactive: true, x: 0, y: 0, width: global.stage.width, height: global.stage.height});
-        this._backdrop.connect('button-press-event', () => {
+        this._backdrop.connect('button-press-event', (_a, event) => {
+            // Нажатия на меню сюда тоже доходят: их не трогаем, иначе
+            // кнопки (в GNOME 51 — жесты щелчка) не сработают.
+            const target = global.stage.get_event_actor(event);
+            if (this.actor && target && this.actor.contains(target))
+                return Clutter.EVENT_PROPAGATE;
             this.close();
             return Clutter.EVENT_STOP;
         });
@@ -131,14 +136,13 @@ class SnapMenu {
         });
 
         // Меню лежит внутри подложки: модальный захват отдаёт события только
-        // ей и её детям. Нажатие на само меню до подложки не доходит.
+        // ей и её детям.
         this.actor = new St.BoxLayout({
             style_class: 'hypede-snap-menu',
             orientation: Clutter.Orientation.VERTICAL,
             reactive: true,
             opacity: 0,
         });
-        this.actor.connect('button-press-event', () => Clutter.EVENT_STOP);
         this.actor.add_child(new St.Label({text: _('Window layout'), style_class: 'hypede-snap-title'}));
 
         const grid = new St.BoxLayout({style_class: 'hypede-snap-grid', orientation: Clutter.Orientation.VERTICAL});
@@ -286,15 +290,25 @@ export class SnapLayouts {
 
     _sync() {
         const enabled = this._settings.get_boolean('snap-menu');
-        if (enabled && !this._watch)
-            this._watch = getPointerWatcher().addWatch(WATCH_INTERVAL, (x, y) => this._moved(x, y));
-        else if (!enabled && this._watch)
+        if (enabled && !this._watch) {
+            this._last = null;
+            this._watch = GLib.timeout_add(GLib.PRIORITY_DEFAULT, WATCH_INTERVAL, () => {
+                const [x, y] = global.get_pointer();
+                if (x !== this._last?.[0] || y !== this._last?.[1]) {
+                    this._last = [x, y];
+                    this._moved(x, y);
+                }
+                return GLib.SOURCE_CONTINUE;
+            });
+        } else if (!enabled && this._watch) {
             this._stopWatching();
+        }
     }
 
     _stopWatching() {
-        this._watch?.remove();
-        this._watch = null;
+        if (this._watch)
+            GLib.source_remove(this._watch);
+        this._watch = 0;
         this._cancel();
     }
 
