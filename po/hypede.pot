@@ -2191,3 +2191,43 @@ msgstr ""
 #: shell/extension/hypede-shell@hypede.dev/widgets.js:645
 msgid "Remove widget"
 msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/snaplayouts.js
+msgid "Window layout"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/snaplayouts.js
+msgid "Halves"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/snaplayouts.js
+msgid "Two thirds and one third"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/snaplayouts.js
+msgid "One third and two thirds"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/snaplayouts.js
+msgid "Three columns"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/snaplayouts.js
+msgid "Half and two quarters"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/snaplayouts.js
+msgid "Quarters"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/snaplayouts.js
+msgid "Full screen"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/snaplayouts.js
+msgid "Float"
+msgstr ""
+
+#: shell/extension/hypede-shell@hypede.dev/snaplayouts.js
+msgid "Stop floating"
+msgstr ""

@@ -1,19 +1,19 @@
-// Быстрые настройки в духе Chrome OS.
+// Быстрые настройки в духе Chrome OS 2024+ («Jelly», Material 3).
 //
-// У GNOME переключатели — широкие «пилюли» в две колонки. В Chrome OS это
-// круглые кнопки со значком и подписью под ними, по три в ряд. Здесь
-// перестраиваются родные переключатели GNOME (сеть, Bluetooth, ночной
-// режим…), поэтому всё, что они умеют, и переключатели сторонних
-// приложений продолжают работать. Ползунки и верхний ряд кнопок занимают
-// всю ширину, как и раньше.
+// В новых Chrome OS переключатели — плитки-«пилюли» в две колонки:
+// значок в круге слева, название и состояние справа, у плиток с
+// подробностями (сеть, Bluetooth) — стрелка «>» внутри той же пилюли.
+// Здесь перекрашиваются и чуть перестраиваются родные переключатели GNOME
+// (сеть, Bluetooth, ночной режим…), поэтому всё, что они умеют, и
+// переключатели сторонних приложений продолжают работать. Ползунки
+// громкости и яркости становятся толстыми полосами (см. стили
+// .hypede-chrome).
 
-import Clutter from 'gi://Clutter';
 import GLib from 'gi://GLib';
-import St from 'gi://St';
 
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 
-const COLUMNS = 3;
+const COLUMNS = 2;
 
 export class ChromeQuickSettings {
     constructor() {
@@ -43,62 +43,34 @@ export class ChromeQuickSettings {
         if (this._changed.has(child) || child === this._layout._overlay)
             return;
         const record = {};
-        // Всё, что занимало всю ширину, занимает её и в трёх колонках.
+        // Всё, что занимало всю ширину, занимает её и в новой сетке.
         const meta = this._layout.get_child_meta(this._grid, child);
-        if (meta && meta.columnSpan >= this._oldColumns) {
+        if (meta && meta.columnSpan >= this._oldColumns && meta.columnSpan !== COLUMNS) {
             record.span = meta.columnSpan;
             meta.columnSpan = COLUMNS;
         }
-        if (child._box && child._title !== undefined)
-            this._makeTile(child, child, record);
-        else if (child._box && child._menuButton)
+        if (child._box && child._title !== undefined) {
+            child.add_style_class_name('hypede-tile');
+            record.tile = child;
+        } else if (child._box && child._menuButton) {
             this._makeMenuTile(child, record);
+        }
         this._changed.set(child, record);
         child.connectObject('destroy', () => this._changed.delete(child), this);
     }
 
-    // Переключатель: значок в круге, подпись под ним.
-    _makeTile(tile, toggle, record) {
-        tile.add_style_class_name('hypede-tile');
-        const box = toggle._box;
-        box.orientation = Clutter.Orientation.VERTICAL;
-        box.x_align = Clutter.ActorAlign.CENTER;
-        toggle._icon.x_align = Clutter.ActorAlign.CENTER;
-        const titleBox = toggle._title.get_parent();
-        titleBox.x_align = Clutter.ActorAlign.CENTER;
-        for (const label of [toggle._title, toggle._subtitle]) {
-            label.x_align = Clutter.ActorAlign.CENTER;
-            label.clutter_text.line_alignment = 1; // PANGO_ALIGN_CENTER
-        }
-        record.tile = {tile, toggle};
-    }
-
-    // Переключатель с меню: круг включает и выключает, стрелка у подписи
-    // открывает подробное меню (список сетей, устройств…).
+    // Переключатель с меню: левая часть включает и выключает, стрелка
+    // справа открывает подробное меню (список сетей, устройств…).
     _makeMenuTile(tile, record) {
-        const contents = tile._box.get_first_child();
-        if (!contents?._title)
-            return;
-        this._makeTile(tile, contents, record);
         const button = tile._menuButton;
         const separator = button.get_previous_sibling();
-        const titleBox = contents._title.get_parent();
-        const row = new St.BoxLayout({
-            style_class: 'hypede-tile-title-row',
-            x_align: Clutter.ActorAlign.CENTER,
-        });
-        titleBox.remove_child(contents._title);
-        row.add_child(contents._title);
-        tile._box.remove_child(button);
-        row.add_child(button);
-        titleBox.insert_child_at_index(row, 0);
-        button.add_style_class_name('hypede-tile-menu-button');
-        button.y_expand = false;
-        button.y_align = Clutter.ActorAlign.CENTER;
         const icon = button.get_child();
-        record.menu = {tile, contents, button, separator, row, titleBox, iconName: icon.icon_name};
-        icon.icon_name = 'pan-down-symbolic';
-        separator.hide();
+        tile.add_style_class_name('hypede-tile');
+        button.add_style_class_name('hypede-tile-menu-button');
+        record.menu = {tile, button, separator, iconName: icon?.icon_name};
+        if (icon)
+            icon.icon_name = 'pan-end-symbolic';
+        separator?.hide();
     }
 
     destroy() {
@@ -114,30 +86,15 @@ export class ChromeQuickSettings {
                 if (meta)
                     meta.columnSpan = record.span;
             }
+            record.tile?.remove_style_class_name('hypede-tile');
             if (record.menu) {
-                const {tile, contents, button, separator, row, titleBox, iconName} = record.menu;
-                row.remove_child(contents._title);
-                row.remove_child(button);
-                titleBox.insert_child_at_index(contents._title, 0);
-                row.destroy();
-                tile._box.add_child(button);
-                button.remove_style_class_name('hypede-tile-menu-button');
-                button.y_expand = true;
-                button.y_align = Clutter.ActorAlign.FILL;
-                button.get_child().icon_name = iconName;
-                separator.visible = button.visible;
-            }
-            if (record.tile) {
-                const {tile, toggle} = record.tile;
+                const {tile, button, separator, iconName} = record.menu;
                 tile.remove_style_class_name('hypede-tile');
-                toggle._box.orientation = Clutter.Orientation.HORIZONTAL;
-                toggle._box.x_align = Clutter.ActorAlign.FILL;
-                toggle._icon.x_align = Clutter.ActorAlign.FILL;
-                toggle._title.get_parent().x_align = Clutter.ActorAlign.START;
-                for (const label of [toggle._title, toggle._subtitle]) {
-                    label.x_align = Clutter.ActorAlign.START;
-                    label.clutter_text.line_alignment = 0;
-                }
+                button.remove_style_class_name('hypede-tile-menu-button');
+                if (iconName)
+                    button.get_child().icon_name = iconName;
+                if (separator)
+                    separator.visible = button.visible;
             }
         }
         this._changed.clear();

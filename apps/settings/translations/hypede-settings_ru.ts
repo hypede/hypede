@@ -2092,6 +2092,14 @@
         <translation>Окна сами делят экран, как в COSMIC и Hyprland. Super+T включает и выключает его для одного стола</translation>
     </message>
     <message>
+        <source>Window layout menu</source>
+        <translation>Меню раскладок окна</translation>
+    </message>
+    <message>
+        <source>Hold the pointer on the maximize button for 2 seconds to put the window on half, a third or a quarter of the screen, like in Chrome OS</source>
+        <translation>Задержите указатель на кнопке «во весь экран» на 2 секунды, чтобы поставить окно на половину, треть или четверть экрана, как в Chrome OS</translation>
+    </message>
+    <message>
         <source>Android apps</source>
         <translation>Android-приложения</translation>
     </message>

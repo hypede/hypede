@@ -154,6 +154,16 @@
       <default>false</default>
       <summary>Авто-тайлинг на всех столах по умолчанию</summary>
     </key>
+    <key name="snap-menu" type="b">
+      <default>true</default>
+      <summary>Меню раскладок у кнопки «во весь экран», как в Chrome OS</summary>
+      <description>Если задержать указатель на кнопке «во весь экран» в заголовке окна, появляется меню: окно можно поставить на половину, треть или четверть экрана.</description>
+    </key>
+    <key name="snap-menu-delay" type="i">
+      <range min="300" max="5000"/>
+      <default>2000</default>
+      <summary>Через сколько миллисекунд появляется меню раскладок</summary>
+    </key>
     <key name="dropdown-terminal" type="as">
       <default>['F12']</default>
       <summary>Выпадающий терминал (как Yakuake и Guake)</summary>

@@ -288,10 +288,14 @@
   background-color: @separator@;
 }
 
-/* Быстрые настройки */
+/* Быстрые настройки — как в Chrome OS 2024+ («Jelly», Material 3):
+   плитки-«пилюли» в две колонки, значок в круге слева, подпись и
+   состояние справа; включённая плитка целиком в цвете акцента.
+   Ползунки — толстые полосы со скруглёнными концами. Перестройку
+   родных переключателей GNOME делает quicksettings.js. */
 .quick-settings {
   padding: 16px;
-  border-radius: 24px;
+  border-radius: 28px;
 }
 .quick-settings-grid {
   spacing-rows: 8px;
@@ -299,8 +303,8 @@
 }
 .quick-toggle,
 .quick-toggle-has-menu {
-  border-radius: 20px;
-  min-height: 3.6em;
+  border-radius: 999px;
+  min-height: 3.9em;
 }
 .quick-toggle {
   color: @fg@;
@@ -318,12 +322,12 @@
 .quick-toggle:checked:hover {
   background-color: @tile_on_hover@;
 }
-.quick-toggle-has-menu .quick-toggle:ltr { border-radius: 20px 0 0 20px; }
-.quick-toggle-has-menu .quick-toggle:rtl { border-radius: 0 20px 20px 0; }
+.quick-toggle-has-menu .quick-toggle:ltr { border-radius: 999px 0 0 999px; }
+.quick-toggle-has-menu .quick-toggle:rtl { border-radius: 0 999px 999px 0; }
 .quick-toggle-has-menu .quick-toggle:ltr:last-child,
-.quick-toggle-has-menu .quick-toggle:rtl:last-child { border-radius: 20px; }
-.quick-toggle-has-menu .quick-toggle-menu-button:ltr { border-radius: 0 20px 20px 0; }
-.quick-toggle-has-menu .quick-toggle-menu-button:rtl { border-radius: 20px 0 0 20px; }
+.quick-toggle-has-menu .quick-toggle:rtl:last-child { border-radius: 999px; }
+.quick-toggle-has-menu .quick-toggle-menu-button:ltr { border-radius: 0 999px 999px 0; }
+.quick-toggle-has-menu .quick-toggle-menu-button:rtl { border-radius: 999px 0 0 999px; }
 .quick-toggle-has-menu .quick-toggle-menu-button {
   color: @fg@;
   background-color: @tile_off@;
@@ -337,7 +341,7 @@
   background-color: @tile_on@;
 }
 .quick-toggle-menu {
-  border-radius: 20px;
+  border-radius: 24px;
   background-color: @submenu_bg@;
   transition-duration: 150ms;
 }
@@ -356,6 +360,7 @@
 .quick-settings .button {
   background-color: @tile_off@;
   color: @fg@;
+  border-radius: 999px;
   transition-duration: 150ms;
 }
 .quick-settings .icon-button:hover,
@@ -363,66 +368,122 @@
   background-color: @tile_off_hover@;
 }
 
-/* Плитки в духе Chrome OS (quicksettings.js): круг со значком, подпись
-   под ним, три колонки. */
+/* Плитки Chrome OS (quicksettings.js) */
 .quick-settings.hypede-chrome .quick-settings-grid {
-  spacing-rows: 14px;
-  spacing-columns: 4px;
+  spacing-rows: 8px;
+  spacing-columns: 8px;
 }
 .quick-settings .hypede-tile.quick-toggle,
-.quick-settings .hypede-tile.quick-toggle-has-menu,
-.quick-settings .hypede-tile .quick-toggle,
-.quick-settings .hypede-tile .quick-toggle:hover,
-.quick-settings .hypede-tile .quick-toggle:checked,
-.quick-settings .hypede-tile.quick-toggle:hover,
-.quick-settings .hypede-tile.quick-toggle:checked {
-  background-color: transparent;
-  color: @fg@;
-  border-radius: 16px;
-  min-height: 0;
-  padding: 2px 0;
+.quick-settings .hypede-tile .quick-toggle {
+  padding: 0 14px 0 6px;
 }
 .quick-settings .hypede-tile .quick-toggle-icon {
   icon-size: 20px;
-  padding: 14px;
-  margin-bottom: 6px;
+  padding: 10px;
+  margin-right: 4px;
   border-radius: 999px;
-  background-color: @tile_off@;
+  background-color: @tile_icon_off@;
   color: @fg@;
   transition-duration: 150ms;
 }
-.quick-settings .hypede-tile .quick-toggle:hover .quick-toggle-icon,
-.quick-settings .hypede-tile.quick-toggle:hover .quick-toggle-icon {
-  background-color: @tile_off_hover@;
-}
 .quick-settings .hypede-tile .quick-toggle:checked .quick-toggle-icon,
 .quick-settings .hypede-tile.quick-toggle:checked .quick-toggle-icon {
-  background-color: @tile_on@;
+  background-color: @tile_icon_on@;
   color: @tile_on_fg@;
 }
-.quick-settings .hypede-tile .quick-toggle:checked:hover .quick-toggle-icon,
-.quick-settings .hypede-tile.quick-toggle:checked:hover .quick-toggle-icon {
-  background-color: @tile_on_hover@;
-}
 .quick-settings .hypede-tile .quick-toggle-title {
-  font-size: 9.5pt;
-  font-weight: normal;
+  font-size: 10pt;
+  font-weight: 500;
 }
 .quick-settings .hypede-tile .quick-toggle-subtitle {
   font-size: 8.5pt;
-  color: @dim@;
+  font-weight: normal;
 }
+/* Стрелка «подробнее» внутри той же пилюли, без разделителя. */
 .quick-settings .hypede-tile .hypede-tile-menu-button,
-.quick-settings .hypede-tile .hypede-tile-menu-button:hover,
 .quick-settings .hypede-tile .hypede-tile-menu-button:checked {
-  background-color: transparent;
-  color: @fg@;
-  padding: 0 0 0 2px;
   min-width: 0;
-  min-height: 0;
-  border-radius: 999px;
+  padding: 0 14px 0 4px;
 }
 .quick-settings .hypede-tile .hypede-tile-menu-button StIcon {
+  icon-size: 16px;
+}
+/* Ползунки громкости и яркости — толстые, как в Chrome OS. */
+.quick-settings.hypede-chrome .quick-slider .slider {
+  -slider-height: 28px;
+  -slider-handle-radius: 0px;
+  -slider-handle-border-width: 0px;
+  -barlevel-height: 28px;
+  height: 28px;
+}
+.quick-settings.hypede-chrome .quick-slider .slider-bin {
+  padding: 4px 0;
+}
+.quick-settings.hypede-chrome .quick-slider .icon-button {
+  padding: 10px;
+}
+
+/* Меню раскладок у кнопки «во весь экран» (snaplayouts.js) */
+.hypede-snap-menu {
+  background-color: @bubble_bg@;
+  border: 1px solid @bubble_border@;
+  border-radius: 24px;
+  padding: 14px;
+  spacing: 10px;
+  color: @fg@;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.30);
+  margin-top: 4px;
+}
+.hypede-snap-title {
+  font-size: 10pt;
+  font-weight: 500;
+  color: @dim@;
+  padding: 0 4px;
+}
+.hypede-snap-grid {
+  spacing: 8px;
+}
+.hypede-snap-row {
+  spacing: 8px;
+}
+.hypede-snap-card {
+  background-color: @tile_off@;
+  border-radius: 12px;
+}
+.hypede-snap-zone {
+  background-color: @snap_zone@;
+  border-radius: 7px;
+  transition-duration: 120ms;
+}
+.hypede-snap-zone:hover,
+.hypede-snap-zone:focus {
+  background-color: @tile_on@;
+}
+.hypede-snap-zone:active {
+  background-color: @tile_on_hover@;
+}
+.hypede-snap-actions {
+  spacing: 8px;
+}
+.hypede-snap-action {
+  background-color: @tile_off@;
+  color: @fg@;
+  border-radius: 999px;
+  padding: 9px 14px;
+  transition-duration: 120ms;
+}
+.hypede-snap-action:hover,
+.hypede-snap-action:focus {
+  background-color: @tile_off_hover@;
+}
+.hypede-snap-action:active {
+  background-color: @tile_on@;
+  color: @tile_on_fg@;
+}
+.hypede-snap-action-box {
+  spacing: 8px;
+}
+.hypede-snap-action-icon {
   icon-size: 16px;
 }
 

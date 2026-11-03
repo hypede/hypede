@@ -15,9 +15,11 @@ from pathlib import Path
 import random
 import sys
 from math import cos, sin
+from xml.sax.saxutils import escape
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 import wallpapers_nature  # noqa: E402
+import wallpapers_photos  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "assets/wallpapers"
@@ -188,6 +190,16 @@ def main():
                 "    <shade_type>solid</shade_type>",
                 f"    <pcolor>{pcolor}</pcolor>",
                 f"    <scolor>{scolor}</scolor>",
+                "  </wallpaper>"]
+    # Фото и картины (tools/fetch-wallpapers.py): один файл на обе схемы.
+    for name, title, _author, _page, _url, _license, _trim, color in wallpapers_photos.PHOTOS:
+        xml += ['  <wallpaper deleted="false">',
+                f"    <name>{escape(title)}</name>",
+                f"    <filename>/usr/share/hypede/wallpapers/{name}.jpg</filename>",
+                "    <options>zoom</options>",
+                "    <shade_type>solid</shade_type>",
+                f"    <pcolor>{color}</pcolor>",
+                f"    <scolor>{color}</scolor>",
                 "  </wallpaper>"]
     xml.append("</wallpapers>")
     XML.write_text("\n".join(xml) + "\n")

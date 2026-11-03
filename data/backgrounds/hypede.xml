@@ -119,4 +119,132 @@
     <pcolor>#f9d3b0</pcolor>
     <scolor>#120c1f</scolor>
   </wallpaper>
+  <wallpaper deleted="false">
+    <name>Alpine lake</name>
+    <filename>/usr/share/hypede/wallpapers/nature-alpine-lake.jpg</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#4a7aa8</pcolor>
+    <scolor>#4a7aa8</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Still lake</name>
+    <filename>/usr/share/hypede/wallpapers/nature-still-lake.jpg</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#3d6b8f</pcolor>
+    <scolor>#3d6b8f</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Northern lights</name>
+    <filename>/usr/share/hypede/wallpapers/nature-aurora.jpg</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#3a2a5a</pcolor>
+    <scolor>#3a2a5a</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Autumn forest</name>
+    <filename>/usr/share/hypede/wallpapers/nature-autumn-forest.jpg</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#8a5a2a</pcolor>
+    <scolor>#8a5a2a</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Sea of fog</name>
+    <filename>/usr/share/hypede/wallpapers/nature-sea-of-fog.jpg</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#9fb3c8</pcolor>
+    <scolor>#9fb3c8</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Snow peaks</name>
+    <filename>/usr/share/hypede/wallpapers/nature-snow-peaks.jpg</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#1f4f8a</pcolor>
+    <scolor>#1f4f8a</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Fall hills</name>
+    <filename>/usr/share/hypede/wallpapers/nature-fall-hills.jpg</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#b0603a</pcolor>
+    <scolor>#b0603a</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Golden field</name>
+    <filename>/usr/share/hypede/wallpapers/nature-golden-field.jpg</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#b8954a</pcolor>
+    <scolor>#b8954a</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Waterfall</name>
+    <filename>/usr/share/hypede/wallpapers/nature-waterfall.jpg</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#4f6b3a</pcolor>
+    <scolor>#4f6b3a</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>The Great Wave off Kanagawa</name>
+    <filename>/usr/share/hypede/wallpapers/art-great-wave.jpg</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#e8dcc0</pcolor>
+    <scolor>#e8dcc0</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Wheat Field with Cypresses</name>
+    <filename>/usr/share/hypede/wallpapers/art-wheat-field.jpg</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#c9a64a</pcolor>
+    <scolor>#c9a64a</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>The Oxbow</name>
+    <filename>/usr/share/hypede/wallpapers/art-oxbow.jpg</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#5a6a4a</pcolor>
+    <scolor>#5a6a4a</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Heart of the Andes</name>
+    <filename>/usr/share/hypede/wallpapers/art-heart-of-the-andes.jpg</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#6a6a3a</pcolor>
+    <scolor>#6a6a3a</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Canadian Rockies (Lake Louise)</name>
+    <filename>/usr/share/hypede/wallpapers/art-lake-louise.jpg</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#4a5a5a</pcolor>
+    <scolor>#4a5a5a</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>View of Marly-le-Roi from Coeur-Volant</name>
+    <filename>/usr/share/hypede/wallpapers/art-marly.jpg</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#8aa8c8</pcolor>
+    <scolor>#8aa8c8</scolor>
+  </wallpaper>
+  <wallpaper deleted="false">
+    <name>Evening Snow at Kanbara</name>
+    <filename>/usr/share/hypede/wallpapers/art-evening-snow.jpg</filename>
+    <options>zoom</options>
+    <shade_type>solid</shade_type>
+    <pcolor>#d8d4c8</pcolor>
+    <scolor>#d8d4c8</scolor>
+  </wallpaper>
 </wallpapers>

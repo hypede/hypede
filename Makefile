@@ -63,7 +63,7 @@ WEATHER_PY := $(wildcard apps/weather/hypede_weather/*.py)
 TERMINAL_PY := $(wildcard apps/terminal/hypede_terminal/*.py)
 WELCOME_PY := $(wildcard apps/welcome/hypede_welcome/*.py)
 DESKTOP_PY := $(wildcard apps/desktop/hypede_desktop/*.py)
-WALLPAPERS := $(wildcard assets/wallpapers/*.svg) $(wildcard assets/wallpapers/*.png)
+WALLPAPERS := $(wildcard assets/wallpapers/*.svg) $(wildcard assets/wallpapers/*.png) $(wildcard assets/wallpapers/*.jpg)
 
 .PHONY: all settings auth mo css pot check install install-shell install-island install-session install-data \
         install-files install-assistant install-passwords install-weather install-terminal install-welcome install-theme install-desktop install-settings install-user uninstall-user clean

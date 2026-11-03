@@ -22,7 +22,11 @@ GNOME session keeps working as before.
   and change size and opacity.
 - **Launcher**, compact next to the shelf or full screen. Searches apps,
   settings, files in your home folder and the web, and does arithmetic.
-- **Quick settings** as round buttons in three columns, like Chrome OS.
+- **Quick settings** in the current Chrome OS style: pill-shaped tiles in two
+  columns, thick volume and brightness sliders.
+- **Window layout menu**: hold the pointer on a window's maximize button for
+  two seconds to put it on half, a third or a quarter of the screen, make it
+  full screen or floating, like in Chrome OS.
 - **Lock screen** with a large clock, battery and load cards and a wave
   animation. Works without GDM too: SDDM, greetd and LightDM.
 - **Settings** in Qt/QML. Network, Bluetooth, sound, printers and users are
@@ -35,7 +39,9 @@ GNOME session keeps working as before.
   provider's website; no API keys. “Ask” buttons live in the launcher,
   Files and Settings. The assistant cannot run commands.
 - Its own icon theme (Material Symbols), sounds, wallpapers and a greeting
-  at sign-in.
+  at sign-in. Besides drawn wallpapers there are nature photos and classic
+  landscape paintings (CC0 and public domain, see
+  `assets/wallpapers/CREDITS.md`).
 - **Window overview** with a blurred background: the tray button or Super+W.
   Windows grow out of the icon you clicked; minimized windows flow into
   their shelf icon (genie).
