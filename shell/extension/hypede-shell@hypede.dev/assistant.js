@@ -43,14 +43,6 @@ export class Assistant {
         return PROVIDER_NAMES[this._settings?.get_string('provider')] ?? 'Claude';
     }
 
-    connectChanged(callback, owner) {
-        this._settings?.connectObject('changed', () => callback(), owner);
-    }
-
-    disconnectChanged(owner) {
-        this._settings?.disconnectObject(owner);
-    }
-
     // Открыть помощника с вопросом и файлами (пути).
     ask(prompt = '', files = []) {
         const argv = ['hypede-assistant'];

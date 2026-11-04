@@ -27,16 +27,6 @@ export function addSecondaryClick(actor, callback) {
     }
 }
 
-// Сторона экрана → смещение «за край» для актёра размером width × height.
-export function offscreenOffset(side, width, height) {
-    return {
-        bottom: [0, height],
-        top: [0, -height],
-        left: [-width, 0],
-        right: [width, 0],
-    }[side] ?? [0, height];
-}
-
 // ---------------------------------------------------------------------------
 // Цвета. Акцент — свой (ключ accent-custom) или один из девяти GNOME.
 

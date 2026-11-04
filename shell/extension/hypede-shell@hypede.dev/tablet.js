@@ -8,7 +8,6 @@
 // (tablet-saved) и возвращаются при выходе — даже если оболочка
 // перезапускалась.
 
-import Clutter from 'gi://Clutter';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';

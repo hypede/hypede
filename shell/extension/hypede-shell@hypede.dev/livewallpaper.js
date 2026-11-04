@@ -117,8 +117,6 @@ col += (hd_hash2(uv * hd_size + t) - 0.5) / 255.0;
 `,
 };
 
-export const LIVE_NAMES = Object.keys(SHADERS);
-
 // Шейдер добавляется в конвейер OffscreenEffect (Shell.GLSLEffect в GNOME 51
 // убрали). Конвейер пересоздаётся при смене размера — тогда шейдер и
 // адреса uniform-переменных берутся заново.

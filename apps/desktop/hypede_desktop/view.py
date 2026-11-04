@@ -14,7 +14,7 @@ import json
 import os
 from gettext import gettext as _
 
-from gi.repository import Gdk, Gio, GLib, GObject, Graphene, Gtk
+from gi.repository import Gdk, Gio, GLib, Graphene, Gtk
 
 from hypede_files import thumbnails
 from hypede_files.operations import Operation

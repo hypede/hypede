@@ -11,7 +11,6 @@
 
 import Clutter from 'gi://Clutter';
 import Cogl from 'gi://Cogl';
-import GLib from 'gi://GLib';
 import GObject from 'gi://GObject';
 import Meta from 'gi://Meta';
 import St from 'gi://St';

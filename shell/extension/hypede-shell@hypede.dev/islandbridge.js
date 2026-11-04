@@ -78,7 +78,7 @@ export class IslandBridge {
         if (!shelf?.mapped || (position !== 'bottom' && position !== 'top'))
             return null;
         const [sx, sy] = shelf.get_transformed_position();
-        const [sw, sh] = shelf.get_transformed_size();
+        const [, sh] = shelf.get_transformed_size();
         const ring = Main.panel.statusArea['hypede-launcher']?.container;
         let start = sx + GAP;
         if (ring?.mapped) {

@@ -11,7 +11,6 @@
 from __future__ import annotations
 
 import random
-from math import cos, pi, sin
 
 W, H = 2560, 1600
 

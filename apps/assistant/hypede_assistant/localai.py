@@ -22,8 +22,6 @@ import subprocess
 import sys
 import urllib.request
 
-import gi
-
 if "HypeDE" in os.environ.get("XDG_CURRENT_DESKTOP", "").split(":"):
     os.environ["DCONF_PROFILE"] = "hypede"
 
